@@ -114718,12 +114718,12 @@ var testErrorText = (code4) => ({
 })[code4] || code4;
 function SettingsPanel({ request, onClose, onIdentity }) {
   const [view, setView] = (0, import_react158.useState)(null);
-  const [form, setForm] = (0, import_react158.useState)({ baseUrl: "", kbId: "", readKey: "", writeKey: "" });
+  const [form, setForm] = (0, import_react158.useState)({ baseUrl: "", kbId: "", tenantId: "", readKey: "", writeKey: "" });
   const [state, setState] = (0, import_react158.useState)({ busy: true, note: "", error: "" });
   const [test, setTest] = (0, import_react158.useState)(null);
   const adopt = (v) => {
     setView(v);
-    setForm((f2) => ({ ...f2, baseUrl: v?.baseUrl || "", kbId: v?.kbId || "", readKey: "", writeKey: "" }));
+    setForm((f2) => ({ ...f2, baseUrl: v?.baseUrl || "", kbId: v?.kbId || "", tenantId: v?.tenantId || "", readKey: "", writeKey: "" }));
   };
   (0, import_react158.useEffect)(() => {
     let cancelled = false;
@@ -114742,14 +114742,14 @@ function SettingsPanel({ request, onClose, onIdentity }) {
   const save = async () => {
     setState({ busy: true, note: "", error: "" });
     try {
-      const settings = { baseUrl: form.baseUrl.trim(), kbId: form.kbId.trim() };
+      const settings = { baseUrl: form.baseUrl.trim(), kbId: form.kbId.trim(), tenantId: form.tenantId.trim() };
       if (form.readKey.trim()) settings.readKey = form.readKey.trim();
       if (form.writeKey.trim()) settings.writeKey = form.writeKey.trim();
       const v = await request("settingsSave", { settings });
       adopt(v);
       setState({ busy: false, error: "", note: v?.connectorActive ? "\u5DF2\u4FDD\u5B58\u5E76\u751F\u6548\u3002\u300C\u914D\u7F6E\u5B8C\u6574\u300D\u53EA\u6821\u9A8C\u672C\u5730\u914D\u7F6E\uFF0C\u4E0D\u4EE3\u8868\u670D\u52A1\u53EF\u8FBE\u2014\u2014\u70B9\u300C\u6D4B\u8BD5\u8FDE\u63A5\u300D\u5B9E\u6D4B\u670D\u52A1\u4E0E\u5BC6\u94A5\uFF1B\u53D1\u5E03\u9700\u8981\u7B2C 3 \u9879\uFF08\u53D1\u5E03\u8EAB\u4EFD\uFF09\u4E3A \u2713\u3002" : `\u5DF2\u4FDD\u5B58\uFF0C\u4F46\u914D\u7F6E\u4E0D\u5B8C\u6574\uFF1A${v?.connectorError === "INCOMPLETE" ? "\u8FD8\u9700\u8865\u5168\u5730\u5740\u3001\u77E5\u8BC6\u5E93 ID \u6216\u8BFB\u53D6\u5BC6\u94A5\u3002" : v?.connectorError || "\u8BF7\u68C0\u67E5\u5404\u5B57\u6BB5\u3002"}` });
     } catch (e6) {
-      setState({ busy: false, note: "", error: e6.code === "SETTINGS_INVALID" ? "\u6709\u5B57\u6BB5\u4E0D\u5408\u6CD5\uFF1A\u5730\u5740\u987B\u4E3A http(s) URL\uFF08http \u4EC5\u9650\u672C\u673A\u56DE\u73AF\uFF09\uFF0C\u77E5\u8BC6\u5E93 ID \u53EA\u80FD\u5305\u542B\u5B57\u6BCD\u6570\u5B57\u3001\u4E0B\u5212\u7EBF\u548C\u6A2A\u7EBF\uFF0C\u5BC6\u94A5\u4E0D\u80FD\u542B\u6362\u884C\u3002" : e6.message || "\u4FDD\u5B58\u5931\u8D25" });
+      setState({ busy: false, note: "", error: e6.code === "SETTINGS_INVALID" ? "\u6709\u5B57\u6BB5\u4E0D\u5408\u6CD5\uFF1A\u5730\u5740\u987B\u4E3A http(s) URL\uFF08http \u4EC5\u9650\u672C\u673A\u56DE\u73AF\uFF09\uFF0C\u77E5\u8BC6\u5E93 ID / \u79DF\u6237 ID \u53EA\u80FD\u5305\u542B\u5B57\u6BCD\u6570\u5B57\u3001\u4E0B\u5212\u7EBF\u548C\u6A2A\u7EBF\uFF0C\u5BC6\u94A5\u4E0D\u80FD\u542B\u6362\u884C\u3002" : e6.message || "\u4FDD\u5B58\u5931\u8D25" });
     }
   };
   const runTest = async () => {
@@ -114779,6 +114779,11 @@ function SettingsPanel({ request, onClose, onIdentity }) {
     /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
       "\u77E5\u8BC6\u5E93 ID",
       /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { "aria-label": "\u77E5\u8BC6\u5E93 ID", placeholder: "\u68C0\u7D22\u4E0E\u53D1\u5E03\u4F7F\u7528\u7684\u77E5\u8BC6\u5E93 ID", value: form.kbId, disabled: state.busy, onChange: (e6) => field("kbId", e6.target.value) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
+      "\u79DF\u6237 ID",
+      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-muted", children: "\uFF08\u53EF\u9009\uFF09" }),
+      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { "aria-label": "\u79DF\u6237 ID", placeholder: "WeKnora \u591A\u79DF\u6237 ID\uFF0C\u5355\u79DF\u6237\u53EF\u7559\u7A7A", value: form.tenantId, disabled: state.busy, onChange: (e6) => field("tenantId", e6.target.value) })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
       "\u8BFB\u53D6\u5BC6\u94A5",
@@ -115103,10 +115108,11 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       if (alive.current) setBusy(false);
     }
   }
+  const isConflict = (e6) => (e6?.code || "").toLowerCase().includes("conflict");
   const fail2 = (e6) => {
     if (alive.current) {
       setError(`${e6.code || "ERROR"}: ${e6.message}`);
-      setStatus(e6.code?.toLowerCase().includes("conflict") ? "\u51B2\u7A81\uFF1A\u672C\u5730\u8349\u7A3F\u5DF2\u4FDD\u7559\uFF0C\u8BF7\u5BF9\u7167\u8FDC\u7AEF\u540E\u5904\u7406" : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u672C\u5730\u8349\u7A3F\u4FDD\u7559");
+      setStatus(isConflict(e6) ? "\u51B2\u7A81\uFF1A\u672C\u5730\u8349\u7A3F\u5DF2\u4FDD\u7559\uFF0C\u8BF7\u5BF9\u7167\u8FDC\u7AEF\u540E\u5904\u7406" : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u672C\u5730\u8349\u7A3F\u4FDD\u7559");
     }
   };
   function adopt(value) {
@@ -115154,7 +115160,16 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
     const seq = revision.current;
     setStatus("\u4FDD\u5B58\u4E2D");
     try {
-      const saved = asDraft(await request("save", { reportId: c4.draft.reportId, saveToken: c4.draft.saveToken, markdown: c4.text }));
+      let saved;
+      try {
+        saved = asDraft(await request("save", { reportId: c4.draft.reportId, saveToken: c4.draft.saveToken, markdown: c4.text }));
+      } catch (e6) {
+        if (!isConflict(e6) || current.current.draft?.reportId !== c4.draft.reportId) throw e6;
+        const latest = asDraft(await request("get", { reportId: c4.draft.reportId }));
+        if (current.current.draft?.reportId !== c4.draft.reportId) return;
+        setStatus("\u4FDD\u5B58\u4E2D\uFF08\u8986\u76D6\u8FDC\u7AEF\u8F83\u65E7\u4EE4\u724C\uFF09");
+        saved = asDraft(await request("save", { reportId: c4.draft.reportId, saveToken: latest.saveToken, markdown: c4.text }));
+      }
       if (!alive.current || current.current.draft?.reportId !== c4.draft.reportId) return;
       if (!saved?.saveToken) throw new Error("\u4FDD\u5B58\u56DE\u6267\u7F3A\u5C11 saveToken");
       const next = { ...c4.draft, ...saved, markdown: saved.markdown ?? c4.text };
@@ -115299,15 +115314,22 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
     setConfirmPublish(false);
     setStatus(demo ? "\u6B63\u5728\u6A21\u62DF\u53D1\u5E03\uFF08\u4E0D\u4E0A\u4F20\uFF09\u2026" : "\u6B63\u5728\u53D1\u5E03\u5230 WeKnora\uFF08runzhouwork\uFF09\u2026");
     try {
-      const reportId = c4.draft.reportId, saveToken = c4.draft.saveToken;
-      const confirmed = asDraft(await request("confirm", { reportId, saveToken }));
+      const reportId = c4.draft.reportId;
+      let confirmed;
+      try {
+        confirmed = asDraft(await request("confirm", { reportId, saveToken: c4.draft.saveToken }));
+      } catch (e6) {
+        if (!isConflict(e6)) throw e6;
+        const latest = asDraft(await request("get", { reportId }));
+        confirmed = asDraft(await request("confirm", { reportId, saveToken: latest.saveToken }));
+      }
       if (!alive.current) return;
       const versions2 = rows(await request("versions", { reportId }), "versions");
       const versionId = versions2.at(-1)?.versionId;
       if (!versionId) throw new Error("\u672A\u627E\u5230\u53EF\u53D1\u5E03\u7684\u786E\u8BA4\u7248\u672C");
       const plan = await request("publishPlan", { reportId, versionId });
       if (!alive.current) return;
-      await request("publish", { reportId, saveToken, versionId, planId: plan?.planId, digest: plan?.digest, publishToken: plan?.publishToken, userInitiated: true });
+      await request("publish", { reportId, versionId, planId: plan?.planId, digest: plan?.digest, publishToken: plan?.publishToken, userInitiated: true });
       const reconciled = await publicationRead(reportId, "reconcile");
       const d = asDraft(await request("get", { reportId }));
       if (alive.current) adopt(d);

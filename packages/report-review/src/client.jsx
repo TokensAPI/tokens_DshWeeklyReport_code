@@ -103,10 +103,10 @@ const testErrorText = code => ({
 }[code] || code);
 export function SettingsPanel({ request, onClose, onIdentity }) {
   const [view, setView] = useState(null);
-  const [form, setForm] = useState({ baseUrl: '', kbId: '', readKey: '', writeKey: '' });
+  const [form, setForm] = useState({ baseUrl: '', kbId: '', tenantId: '', readKey: '', writeKey: '' });
   const [state, setState] = useState({ busy: true, note: '', error: '' });
   const [test, setTest] = useState(null);
-  const adopt = v => { setView(v); setForm(f => ({ ...f, baseUrl: v?.baseUrl || '', kbId: v?.kbId || '', readKey: '', writeKey: '' })); };
+  const adopt = v => { setView(v); setForm(f => ({ ...f, baseUrl: v?.baseUrl || '', kbId: v?.kbId || '', tenantId: v?.tenantId || '', readKey: '', writeKey: '' })); };
   useEffect(() => {
     let cancelled = false;
     request('settingsGet').then(v => { if (!cancelled) { adopt(v); setState({ busy: false, note: '', error: '' }); } })
@@ -116,13 +116,13 @@ export function SettingsPanel({ request, onClose, onIdentity }) {
   const save = async () => {
     setState({ busy: true, note: '', error: '' });
     try {
-      const settings = { baseUrl: form.baseUrl.trim(), kbId: form.kbId.trim() };
+      const settings = { baseUrl: form.baseUrl.trim(), kbId: form.kbId.trim(), tenantId: form.tenantId.trim() };
       if (form.readKey.trim()) settings.readKey = form.readKey.trim();
       if (form.writeKey.trim()) settings.writeKey = form.writeKey.trim();
       const v = await request('settingsSave', { settings });
       adopt(v);
       setState({ busy: false, error: '', note: v?.connectorActive ? '已保存并生效。「配置完整」只校验本地配置，不代表服务可达——点「测试连接」实测服务与密钥；发布需要第 3 项（发布身份）为 ✓。' : `已保存，但配置不完整：${v?.connectorError === 'INCOMPLETE' ? '还需补全地址、知识库 ID 或读取密钥。' : v?.connectorError || '请检查各字段。'}` });
-    } catch (e) { setState({ busy: false, note: '', error: e.code === 'SETTINGS_INVALID' ? '有字段不合法：地址须为 http(s) URL（http 仅限本机回环），知识库 ID 只能包含字母数字、下划线和横线，密钥不能含换行。' : (e.message || '保存失败') }); }
+    } catch (e) { setState({ busy: false, note: '', error: e.code === 'SETTINGS_INVALID' ? '有字段不合法：地址须为 http(s) URL（http 仅限本机回环），知识库 ID / 租户 ID 只能包含字母数字、下划线和横线，密钥不能含换行。' : (e.message || '保存失败') }); }
   };
   const runTest = async () => {
     setState(s => ({ ...s, busy: true, note: '', error: '' })); setTest(null);
@@ -140,6 +140,7 @@ export function SettingsPanel({ request, onClose, onIdentity }) {
       {view?.managedByHost && <p className="rr-muted">部分配置由环境变量 / Profile 管理，此处修改仅补充未被其覆盖的项。</p>}
       <label>WeKnora 地址<input aria-label="WeKnora 地址" placeholder="https://weknora.example.internal 或 http://127.0.0.1:8080" value={form.baseUrl} disabled={state.busy} onChange={e => field('baseUrl', e.target.value)} /></label>
       <label>知识库 ID<input aria-label="知识库 ID" placeholder="检索与发布使用的知识库 ID" value={form.kbId} disabled={state.busy} onChange={e => field('kbId', e.target.value)} /></label>
+      <label>租户 ID<span className="rr-muted">（可选）</span><input aria-label="租户 ID" placeholder="WeKnora 多租户 ID，单租户可留空" value={form.tenantId} disabled={state.busy} onChange={e => field('tenantId', e.target.value)} /></label>
       <label>读取密钥{view?.readKeySet && <span className="rr-muted">（已保存，留空保持不变）</span>}<input aria-label="读取密钥" type="password" autoComplete="off" placeholder={view?.readKeySet ? '••••••（留空不修改）' : '用于检索的 API Key'} value={form.readKey} disabled={state.busy} onChange={e => field('readKey', e.target.value)} /></label>
       <label>发布密钥{view?.writeKeySet && <span className="rr-muted">（已保存，留空保持不变）</span>}<input aria-label="发布密钥" type="password" autoComplete="off" placeholder={view?.writeKeySet ? '••••••（留空不修改）' : '用于发布的 API Key，可留空（只读）'} value={form.writeKey} disabled={state.busy} onChange={e => field('writeKey', e.target.value)} /></label>
       <p className="rr-muted">密钥保存为本机受限文件，不写入任何配置或补丁；界面不回显密钥内容。发布密钥须与读取密钥不同。</p>
@@ -324,13 +325,25 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
     try { const d = asDraft(await request('create', { title: blankTitle.trim(), markdown: '# ' + blankTitle.trim() + '\n', assets: [] })); if (!alive.current) return; adopt(d); setReports(v => [...v, d]); setPanel(null); setStage('editor'); setViewMode('editor'); }
     catch(e) { fail(e); } finally { if (alive.current) setBusy(false); }
   }
-  const fail = e => { if (alive.current) { setError(`${e.code || 'ERROR'}: ${e.message}`); setStatus(e.code?.toLowerCase().includes('conflict') ? '冲突：本地草稿已保留，请对照远端后处理' : '操作失败，本地草稿保留'); } };
+  const isConflict = e => (e?.code || '').toLowerCase().includes('conflict');
+  const fail = e => { if (alive.current) { setError(`${e.code || 'ERROR'}: ${e.message}`); setStatus(isConflict(e) ? '冲突：本地草稿已保留，请对照远端后处理' : '操作失败，本地草稿保留'); } };
   function adopt(value) { const d = asDraft(value); if (!d?.reportId || typeof d.markdown !== 'string') throw new Error('Host 未返回有效工作稿'); const sameReport = current.current.draft?.reportId === d.reportId; setReportWarnings(previous => { const received = safeWarnings(value?.warnings, d.warnings); return sameReport ? safeWarnings(previous.map(w => w.code), received.map(w => w.code)) : received; }); revision.current++; current.current = { ...current.current, draft: d, text: d.markdown, dirty: false }; setDraft(d); setReports(previous => previous.map(r => r.reportId === d.reportId ? { ...r, title: d.title, status: d.status } : r)); setText(d.markdown); setDirty(false); setStatus('已保存'); setError(''); }
   async function load(id) { if (current.current.dirty || saving.current) { setError('请先保存或导出当前脏稿；不会覆盖本地输入。'); return; } setBusy(true); try { const d = await request('get', { reportId: id }); if (alive.current) { adopt(d); setPreview(null); setPanel(null); setStage('editor'); setViewMode('editor'); } } catch(e) { fail(e); } finally { if (alive.current) setBusy(false); } }
   async function save() {
     const c = current.current; if (!c.draft || !c.dirty || saving.current || isDraftReadOnly(c.draft, c.busy)) return;
     saving.current = true; const seq = revision.current; setStatus('保存中');
-    try { const saved = asDraft(await request('save', { reportId: c.draft.reportId, saveToken: c.draft.saveToken, markdown: c.text }));
+    try {
+      let saved;
+      try { saved = asDraft(await request('save', { reportId: c.draft.reportId, saveToken: c.draft.saveToken, markdown: c.text })); }
+      catch (e) {
+        // 单用户 pilot：本地正文即权威。令牌过期（草稿在别处/后台被刷新过）时，取最新令牌用本地正文直接覆盖一次，
+        // 不打断用户，也不丢失本地输入；服务端的令牌校验仍保留，仅客户端在自己的保存里自动跟进。
+        if (!isConflict(e) || current.current.draft?.reportId !== c.draft.reportId) throw e;
+        const latest = asDraft(await request('get', { reportId: c.draft.reportId }));
+        if (current.current.draft?.reportId !== c.draft.reportId) return;
+        setStatus('保存中（覆盖远端较旧令牌）');
+        saved = asDraft(await request('save', { reportId: c.draft.reportId, saveToken: latest.saveToken, markdown: c.text }));
+      }
       if (!alive.current || current.current.draft?.reportId !== c.draft.reportId) return;
       if (!saved?.saveToken) throw new Error('保存回执缺少 saveToken');
       const next = { ...c.draft, ...saved, markdown: saved.markdown ?? c.text };
@@ -380,9 +393,15 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
     current.current.busy = true; setBusy(true); setError(''); setConfirmPublish(false);
     setStatus(demo ? '正在模拟发布（不上传）…' : '正在发布到 WeKnora（runzhouwork）…');
     try {
-      const reportId = c.draft.reportId, saveToken = c.draft.saveToken;
-      // 1) 冻结当前草稿为不可变确认版
-      const confirmed = asDraft(await request('confirm', { reportId, saveToken }));
+      const reportId = c.draft.reportId;
+      // 1) 冻结当前草稿为不可变确认版；令牌过期时取最新令牌直接覆盖确认一次（单用户 pilot，见 save()）。
+      let confirmed;
+      try { confirmed = asDraft(await request('confirm', { reportId, saveToken: c.draft.saveToken })); }
+      catch (e) {
+        if (!isConflict(e)) throw e;
+        const latest = asDraft(await request('get', { reportId }));
+        confirmed = asDraft(await request('confirm', { reportId, saveToken: latest.saveToken }));
+      }
       if (!alive.current) return;
       // 2) 取最新确认版本
       const versions = rows(await request('versions', { reportId }), 'versions');
@@ -392,7 +411,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
       const plan = await request('publishPlan', { reportId, versionId });
       if (!alive.current) return;
       // 4) 真正上传到 WeKnora
-      await request('publish', { reportId, saveToken, versionId, planId: plan?.planId, digest: plan?.digest, publishToken: plan?.publishToken, userInitiated: true });
+      await request('publish', { reportId, versionId, planId: plan?.planId, digest: plan?.digest, publishToken: plan?.publishToken, userInitiated: true });
       // 5) 只读核对 + 加载确认版正文
       const reconciled = await publicationRead(reportId, 'reconcile');
       const d = asDraft(await request('get', { reportId })); if (alive.current) adopt(d);

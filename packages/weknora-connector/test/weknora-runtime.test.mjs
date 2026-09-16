@@ -27,6 +27,19 @@ test('settings persist, keys land in restricted files and are never echoed', asy
   } finally { _resetForTests(); await rm(home, { recursive: true, force: true }) }
 })
 
+test('tenant id round-trips through settings view and stays out of the key files', async () => {
+  const home = await scratch()
+  try {
+    _resetForTests()
+    const view = updateSettings({ baseUrl: 'http://127.0.0.1:8080', kbId: 'kb-demo', tenantId: 'tenant-42', readKey: 'sk-read-1' }, home)
+    assert.equal(view.tenantId, 'tenant-42')
+    assert.equal(settingsView(home).tenantId, 'tenant-42')
+    assert.throws(() => updateSettings({ tenantId: 'has space' }, home), e => e.code === 'SETTINGS_INVALID')
+    // Clearing keeps other fields but empties the tenant.
+    assert.equal(updateSettings({ baseUrl: 'http://127.0.0.1:8080', kbId: 'kb-demo', tenantId: '' }, home).tenantId, '')
+  } finally { _resetForTests(); await rm(home, { recursive: true, force: true }) }
+})
+
 test('empty key field keeps the previously saved key', async () => {
   const home = await scratch()
   try {

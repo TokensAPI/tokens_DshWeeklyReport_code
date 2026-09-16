@@ -102,6 +102,7 @@ export function settingsView(home = pluginHome()) {
   return {
     baseUrl: staticConfig.baseUrl || s.baseUrl || '',
     kbId: staticConfig.allowedKbs?.[0] || s.kbId || '',
+    tenantId: staticConfig.tenantId || s.tenantId || '',
     readKeySet: Boolean(staticConfig.readSecretFile || existsSync(secretFile(home, 'read'))),
     writeKeySet: Boolean(staticConfig.writeSecretFile || existsSync(secretFile(home, 'write'))),
     managedByHost: Boolean(staticConfig.baseUrl),

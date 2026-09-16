@@ -6,7 +6,7 @@ Profile。包保留原始源码、文档、作者署名和已有许可证。
 
 ## 功能
 
-当前适配版：`0.1.8`，合并原开发人员的「周报插件 V1.1」；变更及适配说明见 [CHANGELOG.md](CHANGELOG.md)。
+当前适配版：`0.1.9`，合并原开发人员的「周报插件 V1.1」；变更及适配说明见 [CHANGELOG.md](CHANGELOG.md)。
 
 - 从本机 loopback 数据服务生成 Markdown 与图表。
 - 持久化工作稿、修订、人工重点和确认版本。
@@ -19,7 +19,7 @@ Profile。包保留原始源码、文档、作者署名和已有许可证。
 通过 TokensCowork 插件市场安装后重启应用。手工验证包时只在测试 Profile 中执行：
 
 ```powershell
-dsh plugin --profile weekly-report-test add C:\path\to\tokensapi-dsh-weekly-report-0.1.8.tgz
+dsh plugin --profile weekly-report-test add C:\path\to\tokensapi-dsh-weekly-report-0.1.9.tgz
 ```
 
 默认可加载核心、生成器、PDF 服务和审阅界面。WeKnora 连接器默认关闭，避免在未配置
@@ -45,8 +45,9 @@ dsh plugin --profile weekly-report-test add C:\path\to\tokensapi-dsh-weekly-repo
 
 ## WeKnora 连接（可视化配置）
 
-0.1.6 起，周报工作台头部提供「⚙ 设置」：可直接填写 WeKnora 地址、知识库 ID、读取密钥与
-发布密钥，保存即生效（无需重启）。该知识库 ID 同时作为检索白名单与发布目标。密钥保存为
+0.1.6 起，周报工作台头部提供「⚙ 设置」：可直接填写 WeKnora 地址、知识库 ID、租户 ID（0.1.9
+起，可选，单租户可留空）、读取密钥与发布密钥，保存即生效（无需重启）。该知识库 ID 同时作为
+检索白名单与发布目标。密钥保存为
 `<插件目录>/secrets/` 下的受限文件，不写入任何配置文件或补丁，界面不回显密钥内容；其余
 非密钥项存于 `<插件目录>/weknora-settings.json`。环境变量 / Profile 补丁显式配置的字段
 优先于界面设置，界面会提示哪些项由宿主管理。面板内的「测试连接」按钮可一键实测：连接
