@@ -85,9 +85,10 @@ test('publishing a human-revised version records format-excluded review marks',a
   const meta=calls.find(c=>c.operation==='setKnowledgeMetadata');
   assert.ok(meta,'setKnowledgeMetadata invoked on the published report');
   assert.equal(meta.knowledgeId,'k1');
-  assert.equal(meta.customMetadata.review_marks.baselineVersionId,v1.versionId);
-  assert.equal(meta.customMetadata.review_marks.substantive,true);
-  assert.ok(meta.customMetadata.review_marks.edits.some(e=>e.text.includes('到港冲击')));
+  const marks = JSON.parse(meta.customMetadata.review_marks);
+  assert.equal(marks.llmBaselineVersionId,v1.versionId);
+  assert.equal(marks.substantive,true);
+  assert.ok(marks.edits.some(e=>e.text.includes('到港冲击')));
   assert.ok(receipt.warnings.some(w=>w.includes('人工审阅标记')));
 });
 test('images block publication rather than pretending full report upload',async t=>{

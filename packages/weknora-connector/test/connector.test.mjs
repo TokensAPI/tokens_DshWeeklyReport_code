@@ -59,13 +59,14 @@ test('fake HTTP contract: separate keys, scope, read, publish, title, tags, capa
     // Human-review writes: overwrite a chunk so weKnora records content_revision/last_editor/chunk_revisions.
     assert.equal((await host.execute(host.approve({ operation: 'updateChunk', kbId: 'kb', knowledgeId: 'doc', chunkId: 'chunk1', content: '人工修订后的文本', expectedRevision: 0 }))).ok, true);
     assert.equal(requests.at(-1).method, 'PUT');
-    assert.ok(requests.at(-1).url.startsWith('/api/v1/chunks/kb/doc/chunk1'));
+    assert.equal(requests.at(-1).url, '/api/v1/chunks/doc/chunk1');
     assert.deepEqual(requests.at(-1).body, { content: '人工修订后的文本', expected_revision: 0 });
     // Store format-excluded human-review marks on the published knowledge.
-    assert.equal((await host.execute(host.approve({ operation: 'setKnowledgeMetadata', kbId: 'kb', knowledgeId: 'doc', customMetadata: { review_marks: { substantive: true, edits: [{ op: 'add', text: '风险提示' }] } } }))).ok, true);
+    assert.equal(host.approve({ operation: 'setKnowledgeMetadata', kbId: 'kb', knowledgeId: 'doc', customMetadata: { review_marks: { substantive: true } } }).error, 'invalid_arguments');
+    assert.equal((await host.execute(host.approve({ operation: 'setKnowledgeMetadata', kbId: 'kb', knowledgeId: 'doc', customMetadata: { review_marks: JSON.stringify({ substantive: true, edits: [{ op: 'add', text: '风险提示' }] }) } }))).ok, true);
     assert.equal(requests.at(-1).method, 'PUT');
     assert.ok(requests.at(-1).url.endsWith('/api/v1/knowledge/doc'));
-    assert.equal(requests.at(-1).body.custom_metadata.review_marks.substantive, true);
+    assert.equal(JSON.parse(requests.at(-1).body.custom_metadata.review_marks).substantive, true);
     // Validation guards.
     assert.equal(host.approve({ operation: 'updateChunk', kbId: 'kb', knowledgeId: 'doc', chunkId: 'bad chunk', content: 'x' }).error, 'invalid_arguments');
     assert.equal(host.approve({ operation: 'updateChunk', kbId: 'kb', knowledgeId: 'doc', chunkId: 'c', content: '  ' }).error, 'invalid_content');

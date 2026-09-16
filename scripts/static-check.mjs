@@ -3,7 +3,10 @@ import { readFile } from 'node:fs/promises'
 
 const manifest = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'))
 assert.equal(manifest.name, '@tokensapi/dsh-weekly-report')
-assert.equal(manifest.version, '0.1.0')
+assert.match(manifest.version, /^\d+\.\d+\.\d+$/u)
+const lock = JSON.parse(await readFile(new URL('../package-lock.json', import.meta.url), 'utf8'))
+assert.equal(lock.version, manifest.version)
+assert.equal(lock.packages[''].version, manifest.version)
 assert.equal(manifest.publishConfig?.registry, 'https://npm.tokensapi.ai/')
 assert.equal(manifest.dsh?.bundle?.patch, './cordis.patch.yml')
 assert.equal(manifest.dsh?.client?.platform, 'web')

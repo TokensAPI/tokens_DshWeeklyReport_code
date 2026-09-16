@@ -52,7 +52,7 @@ export class Connector {
     if (!result.ok) return { verified: false, authentication: 'scoped_api_key', principal: null, error: result.error, explanation: 'The server did not provide a verifiable identity; no local display-name or admin fallback is used.' };
     return result.data;
   }
-  capabilities() { return { read: ['detail', 'chunks', 'search'], reviewHostWritesConfigured: Boolean(this.#config.writeSecretFile), images: false, imageUploadConfigured:Boolean(this.#config.writeSecretFile && this.#config.assetRoots.length), automatic_retry: false }; }
+  capabilities() { return { read: ['detail', 'chunks', 'search', 'list'], reviewHostWritesConfigured: Boolean(this.#config.writeSecretFile), images: false, imageUploadConfigured:Boolean(this.#config.writeSecretFile && this.#config.assetRoots.length), automatic_retry: false }; }
   #scope(kb, knowledgeId) { return id(kb) && this.#config.allowedKbs.includes(kb) && (knowledgeId === undefined || id(knowledgeId)); }
   async #read(command, args, signal) {
     if (signal?.aborted) return error('cancelled');
@@ -88,15 +88,45 @@ export class Connector {
     if (!this.#scope(kbId, knowledgeId) || !Number.isInteger(page) || page < 1 || page > 1000000 || !Number.isInteger(pageSize) || pageSize < 1 || pageSize > 100) return Promise.resolve(error('invalid_arguments'));
     return this.#read('chunks', [kbId, knowledgeId, `--page=${page}`, `--page-size=${pageSize}`], signal);
   }
-  search(kbId, query, { matchCount = 10, signal } = {}) {
+  search(kbId, query, { matchCount = 10, knowledgeIds, signal } = {}) {
     if (!this.#scope(kbId) || typeof query !== 'string' || !query.trim() || query.length > 8192 || !Number.isInteger(matchCount) || matchCount < 1 || matchCount > 100) return Promise.resolve(error('invalid_arguments'));
+    if (knowledgeIds !== undefined && (!Array.isArray(knowledgeIds) || !knowledgeIds.length || knowledgeIds.length > 500 || !knowledgeIds.every(id) || Buffer.byteLength(JSON.stringify(knowledgeIds)) > 65536)) return Promise.resolve(error('invalid_arguments'));
     // End options before positional query; user text can never inject CLI options.
-    return this.#read('search', [`--match-count=${matchCount}`, '--', kbId, query], signal);
+    const args = [`--match-count=${matchCount}`];
+    if (Array.isArray(knowledgeIds) && knowledgeIds.length) args.push(`--knowledge-ids=${JSON.stringify(knowledgeIds)}`);
+    args.push('--', kbId, query);
+    return this.#read('search', args, signal);
   }
-  /** Move already-published knowledges into a library folder (POST /knowledge/folder). Trusted host only. */
-  moveToFolder(kbId, knowledgeIds, folderPath) {
-    if (!this.#scope(kbId) || !Array.isArray(knowledgeIds) || !knowledgeIds.length || knowledgeIds.length > 100 || !knowledgeIds.every(id) || !folderPath || typeof folderPath !== 'string' || folderPath.length > 1024 || /[\x00-\x1f]/.test(folderPath)) return Promise.resolve(error('invalid_arguments'));
-    return this.#request('POST', '/knowledge/folder', { kb_id: kbId, knowledge_ids: knowledgeIds, folder_path: folderPath }, { operation: 'moveFolder' });
+  /** List knowledge in a knowledge base, optionally scoped by folder path (+subtree) and/or an update-time window. */
+  listKnowledge(kbId, { folderPath, recursive = false, keyword, startTime, endTime, page = 1, pageSize = 100, signal } = {}) {
+    if (!this.#scope(kbId)) return Promise.resolve(error('scope_rejected'));
+    if (!Number.isInteger(page) || page < 1 || page > 1000000 || !Number.isInteger(pageSize) || pageSize < 1 || pageSize > 1000) return Promise.resolve(error('invalid_arguments'));
+    const clean = (s, max) => (typeof s === 'string' && s.length > 0 && s.length <= max && !/[\x00-\x1f]/.test(s)) ? s : undefined;
+    const iso = s => (typeof s === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})?$/.test(s)) ? s : undefined;
+    folderPath = clean(folderPath, 1024); keyword = clean(keyword, 256); startTime = iso(startTime); endTime = iso(endTime);
+    const args = [kbId];
+    if (folderPath !== undefined) args.push(`--folder-path=${folderPath}`);
+    if (recursive) args.push('--recursive');
+    if (keyword !== undefined) args.push(`--keyword=${keyword}`);
+    if (startTime !== undefined) args.push(`--start-time=${startTime}`);
+    if (endTime !== undefined) args.push(`--end-time=${endTime}`);
+    if (page !== 1) args.push(`--page=${page}`);
+    if (pageSize !== 100) args.push(`--page-size=${pageSize}`);
+    return this.#read('list', args, signal);
+  }
+  /** Move already-published knowledges into a library folder (POST /knowledge/folder). Trusted host only.
+   *  WeKnora accepts a limited batch per call, so large sets are chunked (≤100 each) and the moved count is
+   *  summed; a single failed batch fails the whole move (so the caller's root re-scan can recover stragglers). */
+  async moveToFolder(kbId, knowledgeIds, folderPath) {
+    if (!this.#scope(kbId) || !Array.isArray(knowledgeIds) || !knowledgeIds.length || !knowledgeIds.every(id) || !folderPath || typeof folderPath !== 'string' || folderPath.length > 1024 || /[\x00-\x1f]/.test(folderPath)) return error('invalid_arguments');
+    let total = 0;
+    for (let i = 0; i < knowledgeIds.length; i += 100) {
+      const batch = knowledgeIds.slice(i, i + 100);
+      const r = await this.#request('POST', '/knowledge/folder', { kb_id: kbId, knowledge_ids: batch, folder_path: folderPath }, { operation: 'moveFolder' });
+      if (r?.ok !== true) return { ...error(r?.error || 'folder_move_failed'), moved_count: total };
+      total += (typeof r.data?.moved_count === 'number' ? r.data.moved_count : batch.length);
+    }
+    return { ok: true, data: { folder_path: folderPath, moved_count: total } };
   }
   /** TRUSTED HOST ONLY. Never expose this port, connector instance, or its methods as Agent tools/RPC. */
   createReviewHost() {
@@ -104,6 +134,8 @@ export class Connector {
     return Object.freeze({
       // Host-internal projection only; not the ordinary Agent-facing detail reader.
       imageDetail: (kbId,knowledgeId) => this.#scope(kbId,knowledgeId) ? this.#request('GET',`/knowledge/${knowledgeId}`,undefined,{operation:'imageDetail',purpose:'read',kbId,knowledgeId}) : Promise.resolve(error('scope_rejected')),
+      // Read the immutable per-chunk revision history (LLM baseline -> human edits). Trusted host only.
+      listChunkRevisions: (kbId,knowledgeId,chunkId) => this.#scope(kbId,knowledgeId) && id(chunkId) ? this.#request('GET',`/chunks/${knowledgeId}/${chunkId}/revisions`,undefined,{operation:'chunkRevisions',purpose:'read',kbId,knowledgeId,chunkId}) : Promise.resolve(error('scope_rejected')),
       approve: request => {
         const normalized = this.#validateWrite(request);
         if (normalized.error) return normalized;
@@ -151,9 +183,14 @@ export class Connector {
       return Object.freeze({ operation: r.operation, kbId: r.kbId, knowledgeId: r.knowledgeId, chunkId: r.chunkId, content: r.content, ...(r.expectedRevision === undefined ? {} : { expectedRevision: r.expectedRevision }), ...(r.isEnabled === undefined ? {} : { isEnabled: r.isEnabled }) });
     }
     // Store the format-excluded human-review marks on the published knowledge (machine-readable).
+    // weKnora requires every custom_metadata value to be a scalar (string/number/boolean/null);
+    // nested objects must be JSON-stringified by the caller. We enforce that here so a bad payload
+    // fails fast instead of being silently rejected by WeKnora.
     if (r?.operation === 'setKnowledgeMetadata') {
       if (!strictKeys(r, ['operation', 'kbId', 'knowledgeId', 'customMetadata']) || !this.#scope(r.kbId, r.knowledgeId)) return error('invalid_arguments');
-      if (!r.customMetadata || typeof r.customMetadata !== 'object' || Array.isArray(r.customMetadata) || Buffer.byteLength(JSON.stringify(r.customMetadata)) > 64 * 1024) return error('invalid_arguments');
+      if (!r.customMetadata || typeof r.customMetadata !== 'object' || Array.isArray(r.customMetadata)) return error('invalid_arguments');
+      for (const value of Object.values(r.customMetadata)) if (!(value === null || ['string', 'number', 'boolean'].includes(typeof value))) return error('invalid_arguments');
+      if (Buffer.byteLength(JSON.stringify(r.customMetadata)) > 64 * 1024) return error('invalid_arguments');
       return Object.freeze({ operation: r.operation, kbId: r.kbId, knowledgeId: r.knowledgeId, customMetadata: r.customMetadata });
     }
     if (!strictKeys(r, ['operation', 'kbId', 'knowledgeId', 'title', 'content', 'tagIds']) || !this.#scope(r.kbId, r.knowledgeId)) return error('invalid_arguments');
@@ -206,7 +243,7 @@ export class Connector {
     let path, body;
     if (r.operation === 'publishManual' || r.operation === 'publishReport') { path = `/knowledge-bases/${r.kbId}/knowledge/manual`; body = { title: r.title, content: r.content, status: 'publish', channel: 'api', tag_ids: r.tagIds ?? [] }; }
     else if (r.operation === 'title') { path = `/knowledge/${r.knowledgeId}`; body = { title: r.title }; }
-    else if (r.operation === 'updateChunk') { path = `/chunks/${r.kbId}/${r.knowledgeId}/${r.chunkId}`; body = { content: r.content, ...(r.expectedRevision === undefined ? {} : { expected_revision: r.expectedRevision }), ...(r.isEnabled === undefined ? {} : { is_enabled: r.isEnabled }) }; }
+    else if (r.operation === 'updateChunk') { path = `/chunks/${r.knowledgeId}/${r.chunkId}`; body = { content: r.content, ...(r.expectedRevision === undefined ? {} : { expected_revision: r.expectedRevision }), ...(r.isEnabled === undefined ? {} : { is_enabled: r.isEnabled }) }; }
     else if (r.operation === 'setKnowledgeMetadata') { path = `/knowledge/${r.knowledgeId}`; body = { custom_metadata: r.customMetadata }; }
     else { path = '/knowledge/tags'; body = { kb_id: r.kbId, updates: { [r.knowledgeId]: r.tagIds } }; }
     return this.#request(r.operation === 'publishManual' || r.operation === 'publishReport' ? 'POST' : 'PUT', path, body, r);

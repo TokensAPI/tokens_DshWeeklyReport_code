@@ -1,6 +1,6 @@
 {
   "name": "@tokensapi/dsh-weekly-report",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "TokensCowork 周报生成、审阅、PDF 预览与受控 WeKnora 发布插件",
   "repository": {
     "type": "git",
@@ -34,6 +34,7 @@
     "packages/report-review/lib/client.js",
     "cordis.patch.yml",
     "README.md",
+    "CHANGELOG.md",
     "LICENSES.md",
     "THIRD_PARTY_NOTICES.md",
     "third_party/licenses"

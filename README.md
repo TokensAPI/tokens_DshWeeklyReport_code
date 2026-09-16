@@ -6,6 +6,8 @@ Profile。包保留原始源码、文档、作者署名和已有许可证。
 
 ## 功能
 
+当前适配版：`0.1.1`，合并原开发人员的「周报插件 V1.1」；变更及适配说明见 [CHANGELOG.md](CHANGELOG.md)。
+
 - 从本机 loopback 数据服务生成 Markdown 与图表。
 - 持久化工作稿、修订、人工重点和确认版本。
 - 生成 PDF 预览。
@@ -17,7 +19,7 @@ Profile。包保留原始源码、文档、作者署名和已有许可证。
 通过 TokensCowork 插件市场安装后重启应用。手工验证包时只在测试 Profile 中执行：
 
 ```powershell
-dsh plugin --profile weekly-report-test add C:\path\to\tokensapi-weekly-report-0.1.0.tgz
+dsh plugin --profile weekly-report-test add C:\path\to\tokensapi-dsh-weekly-report-0.1.1.tgz
 ```
 
 默认可加载核心、生成器、PDF 服务和审阅界面。WeKnora 连接器默认关闭，避免在未配置

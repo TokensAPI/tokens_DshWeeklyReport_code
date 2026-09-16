@@ -125,14 +125,16 @@ test('commodityGroups config maps a commodity and moves md/pdf into that weknora
   const plan = await api.dispatchHuman({ action: 'publishPlan', sessionId: 's1', reportId: d.reportId, versionId: v.versionId });
   const receipt = await api.dispatchHuman({ action: 'publish', sessionId: 's1', reportId: d.reportId, ...plan, userInitiated: true });
   assert.equal(receipt.status, 'submitted');
-  assert.equal(moves.length, 1);
-  assert.equal(moves[0].folderPath, '商品策略/有色/锡铝氧化铝锌/周报');
+  assert.equal(moves.length, 2);
+  assert.equal(moves[0].folderPath, `商品策略/有色/锡铝氧化铝锌/周报/${d.reportId}`);
+  assert.equal(moves[1].folderPath, `${moves[0].folderPath}/资产`);
   assert.equal(moves[0].kb, 'kb1');
-  assert.ok(moves[0].ids.length >= 2); // md + pdf (+ image)
+  assert.equal(moves[0].ids.length, 1); // report body
+  assert.equal(moves[1].ids.length, 2); // PDF + image
   assert.ok(receipt.warnings.some(w => w.includes('商品策略/有色/锡铝氧化铝锌/周报')));
 });
 
-test('unknown commodity skip folder placement and surface a visible warning', async t => {
+test('unknown commodity uses unclassified report folder and surfaces a warning', async t => {
   const root = await mkdtemp(join(tmpdir(), 'run19-coordu-')); t.after(() => rm(root, { recursive: true, force: true }));
   const moves = [];
   const connector = {
@@ -147,7 +149,9 @@ test('unknown commodity skip folder placement and surface a visible warning', as
   const plan = await api.dispatchHuman({ action: 'publishPlan', sessionId: 's1', reportId: d.reportId, versionId: v.versionId });
   const receipt = await api.dispatchHuman({ action: 'publish', sessionId: 's1', reportId: d.reportId, ...plan, userInitiated: true });
   assert.equal(receipt.status, 'submitted');
-  assert.equal(moves.length, 0); // skipped placement
+  assert.equal(moves.length, 2);
+  assert.equal(moves[0].folderPath, `商品策略/未分类/周报/${d.reportId}`);
+  assert.equal(moves[1].folderPath, `${moves[0].folderPath}/资产`);
   assert.ok(receipt.warnings.some(w => w.includes('镍') && w.includes('commodityGroups')));
 });
 

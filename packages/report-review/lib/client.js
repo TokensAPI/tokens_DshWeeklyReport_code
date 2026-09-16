@@ -26215,7 +26215,12 @@ var warningLabels = {
   ANNOTATION_AMBIGUOUS_BLOCK: "\u5B58\u5728\u91CD\u590D\u6216\u6B67\u4E49\u5757\uFF0C\u65E0\u6CD5\u53EF\u9760\u5B9A\u4F4D\u4EBA\u5DE5\u4FEE\u8BA2\u3002",
   LIMITED_MARKDOWN: "\u5F53\u524D PDF \u4EC5\u652F\u6301\u90E8\u5206 Markdown \u683C\u5F0F\uFF0C\u8BF7\u5BF9\u7167\u6B63\u6587\u9605\u8BFB\u3002",
   UNCONFIRMED: "\u4EBA\u5DE5\u6CE8\u91CA\u8EAB\u4EFD\u6216\u5B8C\u6210\u65F6\u95F4\u5C1A\u672A\u786E\u8BA4\u3002",
-  LLM_SYNTHESIS_CONTEXT_OVERFLOW: "\u53C2\u8003\u6750\u6599\u8FC7\u591A\uFF0C\u8D85\u51FA\u5F53\u524D\u6A21\u578B\u4E0A\u4E0B\u6587\u5BB9\u91CF\uFF0C\u672C\u6B21\u672A\u5B8C\u6210\u7EFC\u5408\u63A8\u7406\u3002\u8BF7\u7F29\u77ED\u5386\u53F2\u53C2\u8003\u7A97\u53E3\uFF08\u5982\u51CF\u5C11\u201C\u8FD1N\u5468\u201D\u6216\u6539\u7528\u66F4\u5177\u4F53\u7684\u65E5\u671F\u8303\u56F4\uFF09\u3001\u7CBE\u7B80\u3010\u5206\u6790\u8981\u6C42\u3011\uFF0C\u6216\u51CF\u5C11\u8054\u7F51\u4FE1\u6E90\u6570\u91CF\u540E\u91CD\u8BD5\u3002"
+  LLM_SYNTHESIS_CONTEXT_OVERFLOW: "\u53C2\u8003\u6750\u6599\u8FC7\u591A\uFF0C\u8D85\u51FA\u5F53\u524D\u6A21\u578B\u4E0A\u4E0B\u6587\u5BB9\u91CF\uFF0C\u672C\u6B21\u672A\u5B8C\u6210\u7EFC\u5408\u63A8\u7406\u3002\u8BF7\u7F29\u77ED\u5386\u53F2\u53C2\u8003\u7A97\u53E3\uFF08\u5982\u51CF\u5C11\u201C\u8FD1N\u5468\u201D\u6216\u6539\u7528\u66F4\u5177\u4F53\u7684\u65E5\u671F\u8303\u56F4\uFF09\u3001\u7CBE\u7B80\u3010\u5206\u6790\u8981\u6C42\u3011\uFF0C\u6216\u51CF\u5C11\u8054\u7F51\u4FE1\u6E90\u6570\u91CF\u540E\u91CD\u8BD5\u3002",
+  KNOWLEDGE_RANGE_NOT_ENFORCED: "\u4F60\u8981\u6C42\u6309\u201C\u65F6\u95F4\u8303\u56F4/\u6587\u4EF6\u5939\u201D\u68C0\u7D22\uFF0C\u4F46\u672C\u6B21\u672A\u80FD\u6309\u8BE5\u8303\u56F4\u679A\u4E3E\uFF08\u5217\u51FA\u63A5\u53E3\u4E0D\u53EF\u7528\u6216\u51FA\u9519\uFF09\uFF0C\u53EA\u6309\u8BED\u4E49\u76F8\u5173\u6027\u68C0\u7D22\uFF0C\u672A\u4FDD\u8BC1\u53EA\u53D6\u8BE5\u65F6\u95F4\u8303\u56F4/\u8DEF\u5F84\u4E0B\u7684\u6750\u6599\u3002\u8BF7\u53EA\u8BFB\u6838\u5BF9\u8303\u56F4\u540E\u518D\u786E\u8BA4\u751F\u6210\u7ED3\u679C\u3002",
+  KNOWLEDGE_FOLDER_EMPTY: "\u4F60\u6307\u5B9A\u8981\u53C2\u8003\u67D0\u4E2A\u6587\u4EF6\u5939\uFF0C\u4F46\u8BE5\u6587\u4EF6\u5939\u5728\u5F53\u524D\u77E5\u8BC6\u5E93\u4E2D\u672A\u679A\u4E3E\u5230\u53EF\u8BFB\u6761\u76EE\uFF08\u53EF\u80FD\u8DEF\u5F84\u672A\u547D\u4E2D\u3001\u6216\u6761\u76EE\u4ECD\u5728\u5904\u7406\u4E2D\uFF09\u3002\u8BF7\u6838\u5BF9\u6587\u4EF6\u5939\u540D/\u8DEF\u5F84\u540E\u91CD\u8BD5\uFF0C\u6216\u6539\u56DE\u201C\u53C2\u8003\u6574\u4E2A\u77E5\u8BC6\u5E93\u76F8\u5173\u6750\u6599\u201D\u3002",
+  RETRIEVAL_VERIFY_FAILED: "\u6750\u6599\u6838\u9A8C\u5668\u672C\u6B21\u672A\u80FD\u5224\u5B9A\uFF08\u6A21\u578B\u6216\u89E3\u6790\u5F02\u5E38\uFF09\uFF0C\u5DF2\u6309\u201C\u5168\u90E8\u91C7\u7528\u201D\u5904\u7406\uFF1B\u8BF7\u5BF9\u7167\u4E0A\u65B9\u201C\u68C0\u7D22\u7406\u89E3\u201D\u4EBA\u5DE5\u5224\u65AD\u662F\u5426\u8D34\u5408\u3002",
+  RETRIEVAL_OFF_TOPIC: "\u6838\u9A8C\u5668\u8BA4\u4E3A\u672C\u6B21\u68C0\u56DE\u7684\u6750\u6599\u4E0E\u4F60\u8868\u8FBE\u7684\u672C\u610F\u53EF\u80FD\u4E0D\u4E00\u81F4\uFF08\u8DD1\u9898\uFF09\uFF1B\u5DF2\u636E\u5176\u5C1D\u8BD5\u8865\u67E5/\u5254\u9664\uFF0C\u8BF7\u5728\u201C\u68C0\u7D22\u7406\u89E3\u201D\u4E2D\u6838\u5BF9\u3002",
+  RETRIEVAL_GAPS: "\u6838\u9A8C\u5668\u8BA4\u4E3A\u672C\u6B21\u6750\u6599\u5B58\u5728\u7F3A\u53E3\uFF08\u89C1\u201C\u68C0\u7D22\u7406\u89E3\u201D\uFF09\u3002\u5DF2\u5C1D\u8BD5\u8865\u5145\u68C0\u7D22\uFF0C\u4ECD\u7F3A\u7684\u90E8\u5206\u8BF7\u5728\u62A5\u544A\u4E2D\u6807\u6CE8\u6216\u8865\u5145\u540E\u91CD\u8BD5\u3002"
 };
 function safeWarnings(...groups) {
   const codes = /* @__PURE__ */ new Set();
@@ -26421,6 +26426,51 @@ function HumanItemsPanel({ value, readOnly: readOnly2, onSave }) {
       ] })
     ] }, item.annotationId)),
     /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { style: button, disabled: readOnly2, onClick: () => onSave(humanItemPayload(items), value.saveToken), children: "\u4FDD\u5B58\u4EBA\u5DE5\u4FE1\u606F\u9009\u62E9\uFF08\u4EC5\u672C\u5730\uFF09" })
+  ] });
+}
+function DiffOps({ diff: diff2 }) {
+  if (!diff2) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { color: muted }, children: "\u57FA\u7EBF\u7248\u672C\uFF0C\u65E0\u4E0A\u4E00\u7248\u53EF\u6BD4\u3002" });
+  const ops = Array.isArray(diff2.ops) ? diff2.ops : [];
+  if (!diff2.changed) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { color: muted }, children: "\u76F8\u5BF9\u4E0A\u4E00\u7248\uFF1A\u65E0\u5185\u5BB9\u53D8\u5316\u3002" });
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 12, lineHeight: 1.6 }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { style: { color: muted }, children: [
+      "\u76F8\u5BF9\u4E0A\u4E00\u7248\uFF1A+",
+      diff2.add,
+      " \u884C \xB7 \u2212",
+      diff2.del,
+      " \u884C\uFF08\u9AD8\u4EAE\u4E3A\u672C\u6B21\u4FEE\u6539\uFF09"
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("pre", { style: { whiteSpace: "pre-wrap", background: darkBg, borderRadius: 6, padding: 8, maxHeight: "40vh", overflow: "auto", color: text, border: `1px solid ${darkBorder}` }, children: ops.map((o, i) => o.op === "same" ? null : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { color: o.op === "del" || o.op === "delblock" ? "#ff9b9b" : "#9bff9b" }, children: o.op === "del" || o.op === "delblock" ? `- ${o.before ?? ""}` : `+ ${o.after ?? ""}` }) }, i)) })
+  ] });
+}
+function Timeline({ value }) {
+  const versions = Array.isArray(value?.versions) ? value.versions : [];
+  const markdowns = value?.markdowns || {};
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { children: "\u7248\u672C\u5386\u53F2\uFF08report-core \u5207\u7247 \xB7 \u81EA\u52A8\u76F8\u90BB\u5DEE\u5F02\uFF09" }),
+    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { color: muted }, children: "\u6BCF\u4EFD\u62A5\u544A\u5728\u704C\u5165 WeKnora \u524D\uFF0C\u5148\u5728\u672C\u5730\u6309\u7248\u672C\u5207\u7247\u5C55\u793A V0(LLM \u57FA\u7EBF)\u2192V1\u2192V2\u2026 \u53CA\u5176\u5DEE\u5F02\uFF1B\u6B63\u6587\u53EA\u8BFB\uFF0C\u4E0D\u5F71\u54CD\u5DE5\u4F5C\u7A3F\u3002" }),
+    !versions.length && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "\u6682\u65E0\u7248\u672C\u3002" }),
+    versions.map((v) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", { style: { padding: 8, borderBottom: "1px solid #ddd" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: v.versionId }),
+        v.isBaseline && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { color: muted }, children: "(LLM \u57FA\u7EBF)" }),
+        v.humanEdited && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { color: "#7fd6ff" }, children: "\u270E \u4EBA\u5DE5\u4FEE\u8BA2" }),
+        v.published ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { color: "#8fdc8f" }, children: "\u25CF \u5DF2\u63D0\u4EA4\u4E0A\u4F20\uFF08\u89E3\u6790\u4E0E\u68C0\u7D22\u672A\u6838\u9A8C\uFF09" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { color: muted }, children: "\u25CB \u672A\u786E\u8BA4\u4E0A\u4F20" }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { color: muted }, children: [
+          v.author?.displayName || "",
+          v.completedAt ? ` \xB7 ${String(v.completedAt).slice(0, 10)}` : ""
+        ] })
+      ] }),
+      v.diffFromPrevious && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DiffOps, { diff: v.diffFromPrevious }),
+      typeof markdowns[v.versionId] === "string" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("summary", { children: [
+          "\u9605\u8BFB ",
+          v.versionId,
+          " \u6B63\u6587"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("pre", { style: { whiteSpace: "pre-wrap" }, children: markdowns[v.versionId] })
+      ] })
+    ] }, v.versionId))
   ] });
 }
 function Workspace({ sessionId, close }) {
@@ -26715,23 +26765,6 @@ function Workspace({ sessionId, close }) {
       }
     }
   }
-  async function showDiff() {
-    if (!draft) return;
-    try {
-      const a = await request("audit", { reportId: draft.reportId });
-      setPanel({ type: "diff", value: a });
-    } catch (e) {
-      fail(e);
-    }
-  }
-  function exportDraft() {
-    const url = URL.createObjectURL(new Blob([text2], { type: "text/markdown;charset=utf-8" }));
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${draft?.title || "report"}-working.md`;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1e3);
-  }
   const assetKey = previewAssetKey(preview);
   (0, import_react.useEffect)(() => {
     let cancelled = false, ownedUrl;
@@ -26787,11 +26820,8 @@ function Workspace({ sessionId, close }) {
         setError("");
         save();
       }, children: "\u4FDD\u5B58 / \u91CD\u8BD5" }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { style: button, disabled: !draft, onClick: exportDraft, children: "\u5BFC\u51FA\u5DE5\u4F5C\u7A3F MD" }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { style: button, disabled: !draft, onClick: showDiff, children: "\u5DEE\u5F02 / \u4FEE\u8BA2" }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { style: button, disabled: !draft || dirty || busy, onClick: () => action("humanItems"), children: "\u91CD\u70B9\u4EBA\u5DE5\u4FE1\u606F" }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { style: button, disabled: !draft || dirty || busy, onClick: () => action("versions"), children: "\u786E\u8BA4\u7248\u672C" }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { style: button, disabled: !draft || busy, onClick: () => showPublication("publicationStatus"), children: "\u53D1\u5E03\u8BB0\u5F55" }),
+      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { style: button, disabled: !draft || dirty || busy, onClick: () => action("timeline"), children: "\u7248\u672C\u5386\u53F2" }),
+      (draft?.annotations || []).length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { style: button, disabled: !draft || dirty || busy, onClick: () => action("humanItems"), children: "\u91CD\u70B9\u4EBA\u5DE5\u4FE1\u606F" }),
       !confirmPublish ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { style: button, disabled: !draft || dirty || readOnly2 || !verified, title: !verified ? "\u77E5\u8BC6\u5E93\u8EAB\u4EFD\u672A\u786E\u8BA4\uFF0C\u4E0D\u80FD\u53D1\u5E03" : "", onClick: () => setConfirmPublish(true), children: "\u786E\u8BA4\u53D1\u5E03" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { display: "inline-flex", gap: 6, alignItems: "center" }, children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { color: muted }, children: "\u5C06\u51BB\u7ED3\u786E\u8BA4\u7248\u5E76\u4E0A\u4F20\u5230 WeKnora\uFF08runzhouwork\uFF09\u5F00\u59CB\u5206\u6790\uFF0C\u786E\u8BA4\uFF1F" }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { style: { ...button, background: "#1f5c2b", color: "#d7ffd7", borderColor: "#3a8a44" }, disabled: busy, onClick: publishAll, children: "\u786E\u8BA4\u53D1\u5E03" }),
@@ -26863,6 +26893,37 @@ function Workspace({ sessionId, close }) {
         w.message
       ] }, w.code)) })
     ] }),
+    draft?.retrieval && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", { "aria-label": "\u68C0\u7D22\u7406\u89E3", role: "note", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "\u68C0\u7D22\u7406\u89E3\uFF08\u6211\u7406\u89E3\u4E3A\u2014\u2014\u7528\u4EE5\u6838\u5BF9\u6709\u6CA1\u6709\u7406\u89E3\u9519\uFF09" }),
+      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ul", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
+          "\u8303\u56F4\uFF1A\u7C7B\u578B ",
+          draft.retrieval.scope?.kind || "-",
+          "\uFF1B\u8FD1 ",
+          draft.retrieval.scope?.weeksBack || 0,
+          " \u5468\uFF1B\u8DEF\u5F84 ",
+          draft.retrieval.scope?.folderPath || "\uFF08\u672A\u9650\u5B9A\uFF09",
+          "\uFF1B\u68C0\u7D22\u8BCD [",
+          (draft.retrieval.scope?.queries || []).join("\u3001"),
+          "]"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
+          "\u5B9E\u9645\u5F15\u7528 ",
+          draft.retrieval.used?.length || 0,
+          " \u4EFD\u77E5\u8BC6\u5E93\u6750\u6599\uFF1A",
+          (draft.retrieval.used || []).map((u) => u.title).join("\u3001")
+        ] }),
+        draft.retrieval.verification?.applied ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
+          "\u6838\u9A8C\uFF1A",
+          draft.retrieval.verification.onTopic ? "\u8D34\u5408\u672C\u610F" : "\u53EF\u80FD\u4E0D\u8D34\u5408\u672C\u610F",
+          " ",
+          draft.retrieval.verification.gaps?.length ? `\uFF1B\u7F3A\uFF1A${draft.retrieval.verification.gaps.join("\uFF1B")}` : "",
+          " ",
+          draft.retrieval.verification.skipped?.length ? `\uFF1B\u5DF2\u5254\u9664\uFF1A${draft.retrieval.verification.skipped.join("\u3001")}` : "",
+          draft.retrieval.verification.note ? `\uFF1B${draft.retrieval.verification.note}` : ""
+        ] }) : null
+      ] })
+    ] }),
     error && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { role: "alert", style: { color: "#ff8f8f", whiteSpace: "pre-wrap" }, children: error }),
     /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("main", { style: { flex: 1, minHeight: 0, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime.jsx)("section", { style: { minHeight: 0, border: `1px solid ${darkBorder}`, background: "#232b37" }, children: draft ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Editor, { value: text2, readOnly: readOnly2, onChange: (value) => {
@@ -26885,6 +26946,7 @@ function Workspace({ sessionId, close }) {
     panel && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", { style: { borderTop: `1px solid ${darkBorder}`, maxHeight: "45vh", overflow: "auto", background: darkPanel, padding: 8 }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { style: button, onClick: () => setPanel(null), children: "\u5173\u95ED\u8BE6\u60C5" }),
       panel.type === "humanItems" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HumanItemsPanel, { value: panel.value, readOnly: readOnly2 || dirty || panel.value?.status !== "draft", onSave: (items, saveToken) => action("saveHumanItems", { items, saveToken }) }, `${draft?.reportId}:${panel.value?.saveToken}`),
+      panel.type === "timeline" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { style: button, disabled: busy, onClick: () => showPublication("publicationStatus"), children: "\u53D1\u5E03\u8BB0\u5F55" }),
       panel.type === "diff" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "\u5DE6\uFF1A\u672C\u8F6E\u57FA\u7EBF\uFF1B\u53F3\uFF1A\u5F53\u524D\u7A3F\u3002\u65E0\u6CD5\u786E\u5B9A\u57FA\u7EBF\u65F6\u4EC5\u5C55\u793A\u5BA1\u8BA1\u8BB0\u5F55\uFF0C\u4E0D\u4F2A\u9020\u5DEE\u5F02\u3002" }),
         typeof (panel.value?.baselineMarkdown ?? draft?.baselineMarkdown) === "string" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Diff, { before: panel.value?.baselineMarkdown ?? draft.baselineMarkdown, after: text2 }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Host \u5C1A\u672A\u63D0\u4F9B baselineMarkdown\u3002" }),
@@ -26906,6 +26968,7 @@ function Workspace({ sessionId, close }) {
           ] })
         ] }, v.versionId))
       ] }),
+      panel.type === "timeline" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Timeline, { value: panel.value }),
       panel.type === "publishPlan" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", { children: [
           "\u53D1\u5E03\u6E05\u5355\uFF1A",

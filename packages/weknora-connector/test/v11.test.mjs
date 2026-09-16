@@ -1,0 +1,48 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import http from 'node:http';
+import { mkdtemp, writeFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { Connector } from '../src/index.mjs';
+
+test('V1.1 list, scoped search, batch moves and revision reads use the HTTP contract', async t => {
+  const root = await mkdtemp(join(tmpdir(), 'weekly-connector-v11-'));
+  const read = join(root, 'read.key'), write = join(root, 'write.key');
+  await writeFile(read, 'fake-read', { mode: 0o600 });
+  await writeFile(write, 'fake-write', { mode: 0o600 });
+  const requests = [];
+  const server = http.createServer(async (req, res) => {
+    let raw = ''; for await (const part of req) raw += part;
+    const body = raw ? JSON.parse(raw) : null;
+    requests.push({ url: req.url, body, headers: req.headers });
+    res.setHeader('content-type', 'application/json');
+    if (req.url.includes('/hybrid-search')) res.end(JSON.stringify({ success: true, data: [{ id: 'c', knowledge_id: 'doc', knowledge_base_id: 'kb', content: '正文' }] }));
+    else if (req.url.includes('/knowledge?')) res.end(JSON.stringify({ success: true, data: [{ id: 'doc', knowledge_base_id: 'kb', title: '锡', folder_path: '资料/笔记' }], page: 1, page_size: 200, total: 1 }));
+    else if (req.url.endsWith('/revisions')) res.end(JSON.stringify({ success: true, data: [{ content_revision: 1 }] }));
+    else res.end(JSON.stringify({ success: true, data: { moved_count: body.knowledge_ids.length } }));
+  });
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  t.after(async () => { await new Promise(resolve => server.close(resolve)); await rm(root, { recursive: true, force: true }); });
+  const connector = new Connector({ baseUrl: 'http://127.0.0.1:' + server.address().port, readSecretFile: read, writeSecretFile: write, allowedKbs: ['kb'], tenantId: 'tenant' });
+  const listed = await connector.listKnowledge('kb', { folderPath: '资料/笔记', recursive: true, pageSize: 200, startTime: '2026-09-01T00:00:00Z' });
+  assert.equal(listed.ok, true);
+  const query = new URL(requests.at(-1).url, 'http://localhost').searchParams;
+  assert.equal(query.get('folder_path'), '资料/笔记');
+  assert.equal(query.get('folder_recursive'), 'true');
+  assert.equal(query.get('start_time'), '2026-09-01T00:00:00Z');
+  assert.equal(requests.at(-1).headers['x-api-key'], 'fake-read');
+  assert.equal(requests.at(-1).headers['x-tenant-id'], 'tenant');
+  assert.equal((await connector.search('kb', '锡', { knowledgeIds: ['doc'] })).ok, true);
+  assert.deepEqual(requests.at(-1).body.knowledge_ids, ['doc']);
+  const ids = Array.from({ length: 205 }, (_, n) => 'k' + n);
+  assert.equal((await connector.moveToFolder('kb', ids, '周报')).data.moved_count, 205);
+  assert.deepEqual(requests.slice(-3).map(r => r.body.knowledge_ids.length), [100, 100, 5]);
+  assert.ok(requests.slice(-3).every(r => r.headers['x-api-key'] === 'fake-write'));
+  assert.equal((await connector.createReviewHost().listChunkRevisions('kb', 'doc', 'c')).ok, true);
+  assert.equal(requests.at(-1).url, '/api/v1/chunks/doc/c/revisions');
+  const count = requests.length;
+  assert.equal((await connector.listKnowledge('other')).error, 'scope_rejected');
+  assert.equal((await connector.search('kb', '锡', { knowledgeIds: ['bad/id'] })).error, 'invalid_arguments');
+  assert.equal(requests.length, count);
+});

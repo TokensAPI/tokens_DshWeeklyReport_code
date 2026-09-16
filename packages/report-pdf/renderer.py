@@ -558,17 +558,50 @@ class Builder:
 
 
 def _find_marks(text, quotes):
-    """Map an annotation's quote substring(s) onto (s,e) char offsets in `text`."""
+    """Map an annotation's quote substring(s) onto (s,e) char offsets in `text`.
+
+    The host stores `quote` as the exact markdown source span (`lines.slice(start-1,end).join('\\n')`),
+    but a rendered block here is space-joined and line-stripped. So whitespace (newlines, runs of
+    spaces, tabs) is collapsed to a single space on BOTH sides before matching, and the matched
+    collapsed offsets are mapped back to original `text` positions. This keeps a multi-line quote
+    matched to its sub-span instead of the caller's old fallback which over-marked the whole block.
+    """
+    # Whitespace-collapsed view of `text`, plus the original index of each kept character. Runs of
+    # whitespace become a single space; leading/trailing whitespace is dropped (the block text is stripped).
+    collapsed, orig, prev_space = [], [], True
+    for i, ch in enumerate(text):
+        if ch in ' \t\r\n\f\v':
+            if prev_space:
+                continue
+            collapsed.append(' ')
+            orig.append(i)
+            prev_space = True
+        else:
+            collapsed.append(ch)
+            orig.append(i)
+            prev_space = False
+    if collapsed and collapsed[-1] == ' ':
+        collapsed.pop(); orig.pop()
+    ctext = ''.join(collapsed)
+
+    def map_range(start, end):
+        s = orig[start] if 0 <= start < len(orig) else len(text)
+        e = (orig[min(end, len(orig)) - 1] + 1) if 0 < end <= len(orig) else len(text)
+        return (s, e)
+
     marks = []
     for q in quotes:
-        if not isinstance(q, str) or not q:
+        if not isinstance(q, str):
+            continue
+        nq = ' '.join(q.split())
+        if not nq:
             continue
         start = 0
-        while start <= len(text):
-            pos = text.find(q, start)
+        while True:
+            pos = ctext.find(nq, start)
             if pos < 0:
                 break
-            marks.append((pos, pos + len(q)))
+            marks.append(map_range(pos, pos + len(nq)))
             start = pos + 1
     return marks
 
@@ -583,7 +616,10 @@ def render_paragraph(pdf, lines, marked=False, quotes=()):
         if buf:
             text = ' '.join(l.strip() for l in buf)
             mks = _find_marks(text, quotes)
-            if marked and not mks:
+            # Mark the whole block ONLY when the annotation targeted a whole block and supplied no specific
+            # quote. If a specific quote was provided but could not be matched, do NOT over-mark the entire
+            # paragraph (that was the bug: one unmatched quote turned a whole paragraph bold+underline).
+            if marked and not mks and not quotes:
                 mks = [(0, len(text))]
             pdf.para(text, marks=mks)
             buf.clear()

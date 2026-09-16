@@ -5,8 +5,9 @@ import http from 'node:http';
 import https from 'node:https';
 const fields = {
  detail: ['id','knowledge_base_id','title','type','parse_status','summary_status','enable_status','pending_subtasks_count','created_at','updated_at','processed_at'],
- chunks: ['id','knowledge_id','content','chunk_index','chunk_type','start_at','end_at','is_enabled'],
- search: ['id','knowledge_id','knowledge_base_id','knowledge_title','content','score','match_type','chunk_index','chunk_type','start_at','end_at']
+ chunks: ['id','knowledge_id','content','chunk_index','chunk_type','start_at','end_at','is_enabled','content_revision','last_editor_id','index_status'],
+ search: ['id','knowledge_id','knowledge_base_id','knowledge_title','content','score','match_type','chunk_index','chunk_type','start_at','end_at'],
+ list: ['id','knowledge_base_id','title','folder_path','type','source','channel','parse_status','enable_status','created_at','updated_at']
 };
 const failure = error => ({ok:false,error,outcome_unknown:false,automatic_retry:false});
 const integer = (x,min,max) => Number.isSafeInteger(x) && x>=min && x<=max;
@@ -42,19 +43,55 @@ export async function readHttp(config, command, args, signal) {
   timer=setTimeout(()=>{req.destroy();finish(failure('timeout'));},config.timeoutMs);
   signal?.addEventListener('abort',abort,{once:true});if(signal?.aborted)abort();else req.end(body);
  });
- let kb,doc,count,page,pageSize;
- if(command==='search'){count=Number(args[0].split('=')[1]);kb=args[2];}
- else { [kb,doc]=args; if(command==='chunks'){page=Number(args[2].split('=')[1]);pageSize=Number(args[3].split('=')[1]);}}
- if(command!=='search'){
+ let kb,doc,count,page,pageSize,knowledgeIds,folderPath,keyword,startTime,endTime,recursive;
+ const sep=args.indexOf('--');
+ const pre=sep===-1?args.slice():args.slice(0,sep);
+ const post=sep===-1?[]:args.slice(sep+1);
+ const flag=n=>{for(const a of pre){if(a.startsWith(n+'='))return a.slice(n.length+1);}return undefined;};
+ const has=n=>pre.includes(n);
+ if(command==='search'){
+  count=Number(flag('--match-count')??10);
+  [kb,doc]=post; // kbId, query
+  const kj=flag('--knowledge-ids'); if(kj!==undefined){try{knowledgeIds=JSON.parse(kj);}catch{knowledgeIds=undefined;}}
+ } else if(command==='list'){
+  kb=post.length?post[0]:args[0];
+  folderPath=flag('--folder-path'); keyword=flag('--keyword'); startTime=flag('--start-time'); endTime=flag('--end-time');
+  recursive=has('--recursive');
+  page=Number(flag('--page')??1); pageSize=Number(flag('--page-size')??100);
+ } else {
+  [kb,doc]=args; if(command==='chunks'){page=Number(args[2].split('=')[1]);pageSize=Number(args[3].split('=')[1]);}
+ }
+ let result,rows,value;
+ if(command!=='search' && command!=='list'){
   const parent=await request('GET',`/knowledge/${doc}`);if(!parent.ok)return parent;
   const row=parent.value.data;if(!row || row.id!==doc || row.knowledge_base_id!==kb)return failure('response_scope_mismatch');
   if(command==='detail')return {ok:true,data:project(row,'detail')};
+  result=await request('GET',`/chunks/${doc}?page=${page}&page_size=${pageSize}`);
+  if(!result.ok)return result; value=result.value; rows=value.data;
+  if(!Array.isArray(rows))return failure('invalid_response');
+  if(rows.some(r=>!r || typeof r!=='object' || Array.isArray(r) || r.knowledge_id!==doc))return failure('response_scope_mismatch');
+  if(rows.length>pageSize || !integer(value.page,1,1000000) || value.page!==page || !integer(value.page_size,1,100) || value.page_size!==pageSize || !integer(value.total,0,1e12))return failure('invalid_response');
+  return {ok:true,data:{knowledge_base_id:kb,knowledge_id:doc,page:value.page,page_size:value.page_size,total:value.total,data:rows.slice(0,pageSize).map(r=>project(r,'chunks'))}};
  }
- const result=command==='search'?await request('POST',`/knowledge-bases/${kb}/hybrid-search?resource_urls=handle`,{query_text:args[3],match_count:count}):await request('GET',`/chunks/${doc}?page=${page}&page_size=${pageSize}`);
- if(!result.ok)return result;
- const value=result.value,rows=value.data;
- if(!Array.isArray(rows))return failure('invalid_response');
- if(rows.some(r=>!r || typeof r!=='object' || Array.isArray(r) || (command==='chunks'?r.knowledge_id!==doc:![undefined,null,'',kb].includes(r.knowledge_base_id))))return failure('response_scope_mismatch');
- if(command==='chunks' && (rows.length>pageSize || !integer(value.page,1,1000000) || value.page!==page || !integer(value.page_size,1,100) || value.page_size!==pageSize || !integer(value.total,0,1e12)))return failure('invalid_response');
- return {ok:true,data:{knowledge_base_id:kb,...(command==='chunks'?{knowledge_id:doc,page:value.page,page_size:value.page_size,total:value.total}:{}),data:rows.slice(0,command==='search'?count:pageSize).map(r=>project(r,command))}};
+ if(command==='search'){
+  const body={query_text:doc,match_count:count}; if(Array.isArray(knowledgeIds)&&knowledgeIds.length)body.knowledge_ids=knowledgeIds;
+  result=await request('POST',`/knowledge-bases/${kb}/hybrid-search?resource_urls=handle`,body);
+  if(!result.ok)return result; value=result.value; rows=value.data;
+  if(!Array.isArray(rows))return failure('invalid_response');
+  if(rows.some(r=>!r || typeof r!=='object' || Array.isArray(r) || ![undefined,null,'',kb].includes(r.knowledge_base_id)))return failure('response_scope_mismatch');
+  return {ok:true,data:{knowledge_base_id:kb,data:rows.slice(0,count).map(r=>project(r,'search'))}};
+ }
+ // command==='list'
+ const qs=new URLSearchParams();
+ if(folderPath!==undefined)qs.set('folder_path',folderPath);
+ if(recursive)qs.set('folder_recursive','true');
+ if(keyword!==undefined)qs.set('keyword',keyword);
+ if(startTime!==undefined)qs.set('start_time',startTime);
+ if(endTime!==undefined)qs.set('end_time',endTime);
+ qs.set('page',String(page)); qs.set('page_size',String(pageSize));
+ result=await request('GET',`/knowledge-bases/${kb}/knowledge?${qs.toString()}`);
+ if(!result.ok)return result; value=result.value;
+ if(!Array.isArray(value.data) || !integer(value.total,0,1e12) || !integer(value.page,1,1000000) || !integer(value.page_size,1,1000))return failure('invalid_response');
+ if(value.data.some(r=>!r || typeof r!=='object' || Array.isArray(r) || ![undefined,null,'',kb].includes(r.knowledge_base_id)))return failure('response_scope_mismatch');
+ return {ok:true,data:{knowledge_base_id:kb,total:value.total,page:value.page,page_size:value.page_size,data:value.data.slice(0,pageSize).map(r=>project(r,'list'))}};
 }

@@ -29,7 +29,12 @@ const warningLabels = {
   ANNOTATION_AMBIGUOUS_BLOCK: '存在重复或歧义块，无法可靠定位人工修订。',
   LIMITED_MARKDOWN: '当前 PDF 仅支持部分 Markdown 格式，请对照正文阅读。',
   UNCONFIRMED: '人工注释身份或完成时间尚未确认。',
-  LLM_SYNTHESIS_CONTEXT_OVERFLOW: '参考材料过多，超出当前模型上下文容量，本次未完成综合推理。请缩短历史参考窗口（如减少“近N周”或改用更具体的日期范围）、精简【分析要求】，或减少联网信源数量后重试。'
+  LLM_SYNTHESIS_CONTEXT_OVERFLOW: '参考材料过多，超出当前模型上下文容量，本次未完成综合推理。请缩短历史参考窗口（如减少“近N周”或改用更具体的日期范围）、精简【分析要求】，或减少联网信源数量后重试。',
+  KNOWLEDGE_RANGE_NOT_ENFORCED: '你要求按“时间范围/文件夹”检索，但本次未能按该范围枚举（列出接口不可用或出错），只按语义相关性检索，未保证只取该时间范围/路径下的材料。请只读核对范围后再确认生成结果。',
+  KNOWLEDGE_FOLDER_EMPTY: '你指定要参考某个文件夹，但该文件夹在当前知识库中未枚举到可读条目（可能路径未命中、或条目仍在处理中）。请核对文件夹名/路径后重试，或改回“参考整个知识库相关材料”。',
+  RETRIEVAL_VERIFY_FAILED: '材料核验器本次未能判定（模型或解析异常），已按“全部采用”处理；请对照上方“检索理解”人工判断是否贴合。',
+  RETRIEVAL_OFF_TOPIC: '核验器认为本次检回的材料与你表达的本意可能不一致（跑题）；已据其尝试补查/剔除，请在“检索理解”中核对。',
+  RETRIEVAL_GAPS: '核验器认为本次材料存在缺口（见“检索理解”）。已尝试补充检索，仍缺的部分请在报告中标注或补充后重试。'
 };
 export function safeWarnings(...groups) {
   const codes = new Set();
@@ -145,6 +150,37 @@ export function HumanItemsPanel({value,readOnly,onSave}) {
       <label>可公开来源 <input maxLength={4000} value={item.publicSource || ''} onChange={e=>update(n,{publicSource:e.target.value})}/></label>
     </fieldset>)}<button style={button} disabled={readOnly} onClick={()=>onSave(humanItemPayload(items),value.saveToken)}>保存人工信息选择（仅本地）</button></section>;
 }
+function DiffOps({ diff }) {
+  if (!diff) return <p style={{ color: muted }}>基线版本，无上一版可比。</p>;
+  const ops = Array.isArray(diff.ops) ? diff.ops : [];
+  if (!diff.changed) return <p style={{ color: muted }}>相对上一版：无内容变化。</p>;
+  return <div style={{ fontSize: 12, lineHeight: 1.6 }}>
+    <p style={{ color: muted }}>相对上一版：+{diff.add} 行 · −{diff.del} 行（高亮为本次修改）</p>
+    <pre style={{ whiteSpace: 'pre-wrap', background: darkBg, borderRadius: 6, padding: 8, maxHeight: '40vh', overflow: 'auto', color: text, border: `1px solid ${darkBorder}` }}>
+      {ops.map((o, i) => (o.op === 'same') ? null
+        : <div key={i}><span style={{ color: (o.op === 'del' || o.op === 'delblock') ? '#ff9b9b' : '#9bff9b' }}>{(o.op === 'del' || o.op === 'delblock') ? `- ${o.before ?? ''}` : `+ ${o.after ?? ''}`}</span></div>)}
+    </pre>
+  </div>;
+}
+function Timeline({ value }) {
+  const versions = Array.isArray(value?.versions) ? value.versions : [];
+  const markdowns = value?.markdowns || {};
+  return <><h3>版本历史（report-core 切片 · 自动相邻差异）</h3>
+    <p style={{ color: muted }}>每份报告在灌入 WeKnora 前，先在本地按版本切片展示 V0(LLM 基线)→V1→V2… 及其差异；正文只读，不影响工作稿。</p>
+    {!versions.length && <p>暂无版本。</p>}
+    {versions.map(v => <article key={v.versionId} style={{ padding: 8, borderBottom: '1px solid #ddd' }}>
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+        <strong>{v.versionId}</strong>
+        {v.isBaseline && <span style={{ color: muted }}>(LLM 基线)</span>}
+        {v.humanEdited && <span style={{ color: '#7fd6ff' }}>✎ 人工修订</span>}
+        {v.published ? <span style={{ color: '#8fdc8f' }}>● 已提交上传（解析与检索未核验）</span> : <span style={{ color: muted }}>○ 未确认上传</span>}
+        <span style={{ color: muted }}>{v.author?.displayName || ''}{v.completedAt ? ` · ${String(v.completedAt).slice(0, 10)}` : ''}</span>
+      </div>
+      {v.diffFromPrevious && <DiffOps diff={v.diffFromPrevious} />}
+      {typeof markdowns[v.versionId] === 'string' && <details><summary>阅读 {v.versionId} 正文</summary><pre style={{ whiteSpace: 'pre-wrap' }}>{markdowns[v.versionId]}</pre></details>}
+    </article>)}
+  </>;
+}
 function Workspace({ sessionId, close }) {
   const [reports, setReports] = useState([]), [draft, setDraft] = useState(null), [text, setText] = useState('');
   const [dirty, setDirty] = useState(false), [status, setStatus] = useState('正在加载'), [error, setError] = useState('');
@@ -254,8 +290,8 @@ function Workspace({ sessionId, close }) {
       setStatus('已提交发布到 WeKnora；上传/解析为异步，请用只读核对确认结果，核验前不标记发布完成。');
     } catch(e) { fail(e); } finally { if (alive.current) { current.current.busy = false; setBusy(false); } }
   }
-  async function showDiff() { if (!draft) return; try { const a = await request('audit', { reportId: draft.reportId }); setPanel({ type: 'diff', value: a }); } catch(e) { fail(e); } }
-  function exportDraft() { const url = URL.createObjectURL(new Blob([text], { type: 'text/markdown;charset=utf-8' })); const a = document.createElement('a'); a.href = url; a.download = `${draft?.title || 'report'}-working.md`; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); }
+  // 差异/修订 and 导出工作稿 MD were folded into 版本历史 (which shows the change-diff per version) and the
+  // WeKnora upload path respectively, so their standalone buttons/functions were removed.
   const assetKey = previewAssetKey(preview);
   useEffect(() => {
     let cancelled = false, ownedUrl;
@@ -281,11 +317,8 @@ function Workspace({ sessionId, close }) {
       <select aria-label="选择报告" value={draft?.reportId || ''} disabled={busy || dirty} onChange={e => load(e.target.value)}><option value="">选择报告</option>{reports.map(r => <option key={r.reportId} value={r.reportId}>{r.title || r.reportId}</option>)}</select>
       <button style={button} disabled={busy || dirty} onClick={async () => { const title = window.prompt('新报告标题'); if (!title) return; setBusy(true); try { const d = asDraft(await request('create', { title, markdown: '# '+title+'\n', assets: [] })); adopt(d); setReports(v => [...v, d]); } catch(e) { fail(e); } finally { setBusy(false); } }}>新建</button>
       <button style={button} disabled={!dirty || readOnly} onClick={() => { setError(''); save(); }}>保存 / 重试</button>
-      <button style={button} disabled={!draft} onClick={exportDraft}>导出工作稿 MD</button>
-      <button style={button} disabled={!draft} onClick={showDiff}>差异 / 修订</button>
-      <button style={button} disabled={!draft || dirty || busy} onClick={() => action('humanItems')}>重点人工信息</button>
-      <button style={button} disabled={!draft || dirty || busy} onClick={() => action('versions')}>确认版本</button>
-      <button style={button} disabled={!draft || busy} onClick={() => showPublication('publicationStatus')}>发布记录</button>
+      <button style={button} disabled={!draft || dirty || busy} onClick={() => action('timeline')}>版本历史</button>
+      {(draft?.annotations || []).length > 0 && <button style={button} disabled={!draft || dirty || busy} onClick={() => action('humanItems')}>重点人工信息</button>}
       {!confirmPublish ? (
         <button style={button} disabled={!draft || dirty || readOnly || !verified} title={!verified ? '知识库身份未确认，不能发布' : ''} onClick={() => setConfirmPublish(true)}>确认发布</button>
       ) : (
@@ -326,12 +359,19 @@ function Workspace({ sessionId, close }) {
     <div role="status">{status} · {dirty ? '未保存，PDF 为旧预览' : synced && pdf ? 'PDF 已同步' : preview?.status === 'failed' ? 'PDF 生成失败' : 'PDF 旧预览 / 等待生成'} · {verified ? `审核署名：${identity.displayName}` : '知识库身份未确认，禁止完成；不会使用默认 admin'}</div>
     {draft?.status === 'confirmed' && <div role="note">此稿已确认并冻结，正文只读。请点击“开启新一轮修订”后再编辑，不会直接修改确认版。</div>}
     {warnings.length > 0 && <section aria-label="审阅注意事项" role="status"><strong>注意事项</strong><ul>{warnings.map(w => <li key={w.code}><code>{w.code}</code>：{w.message}</li>)}</ul></section>}
+    {draft?.retrieval && <section aria-label="检索理解" role="note"><strong>检索理解（我理解为——用以核对有没有理解错）</strong><ul>
+      <li>范围：类型 {draft.retrieval.scope?.kind || '-'}；近 {draft.retrieval.scope?.weeksBack || 0} 周；路径 {draft.retrieval.scope?.folderPath || '（未限定）'}；检索词 [{(draft.retrieval.scope?.queries || []).join('、')}]</li>
+      <li>实际引用 {draft.retrieval.used?.length || 0} 份知识库材料：{(draft.retrieval.used || []).map(u => u.title).join('、')}</li>
+      {draft.retrieval.verification?.applied ? <li>核验：{draft.retrieval.verification.onTopic ? '贴合本意' : '可能不贴合本意'} {draft.retrieval.verification.gaps?.length ? `；缺：${draft.retrieval.verification.gaps.join('；')}` : ''} {draft.retrieval.verification.skipped?.length ? `；已剔除：${draft.retrieval.verification.skipped.join('、')}` : ''}{draft.retrieval.verification.note ? `；${draft.retrieval.verification.note}` : ''}</li> : null}
+    </ul></section>}
     {error && <div role="alert" style={{color:'#ff8f8f',whiteSpace:'pre-wrap'}}>{error}</div>}
     <main style={{flex:1,minHeight:0,display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}><section style={{minHeight:0,border:`1px solid ${darkBorder}`,background:'#232b37'}}>{draft ? <Editor value={text} readOnly={readOnly} onChange={value => { if (isDraftReadOnly(current.current.draft, current.current.busy)) return; revision.current++; current.current.dirty = true; current.current.text = value; setText(value); setDirty(true); setStatus('有未保存修改'); }} /> : <p>选择或新建报告。生成器与 Agent 共用本工作稿。</p>}</section><section style={{display:'flex',flexDirection:'column',minHeight:0}}>{pdf ? <><a href={pdf.url} target="_blank" rel="noreferrer" download>下载 / 打开当前 PDF{!synced ? '（旧预览）' : ''}</a><object aria-label="实际 PDF 预览" data={pdf.url} type="application/pdf" style={{width:'100%',flex:1,minHeight:0}}><a href={pdf.url} target="_blank" rel="noreferrer">浏览器无法内嵌 PDF，请打开实际 PDF</a></object></> : <p>尚无可用实际 PDF。不以 HTML 预览替代 PDF。</p>}</section></main>
     {panel && <section style={{borderTop:`1px solid ${darkBorder}`,maxHeight:'45vh',overflow:'auto',background:darkPanel,padding:8}}><button style={button} onClick={() => setPanel(null)}>关闭详情</button>
       {panel.type === 'humanItems' && <HumanItemsPanel key={`${draft?.reportId}:${panel.value?.saveToken}`} value={panel.value} readOnly={readOnly || dirty || panel.value?.status!=='draft'} onSave={(items,saveToken)=>action('saveHumanItems',{items,saveToken})}/>}
+      {panel.type === 'timeline' && <button style={button} disabled={busy} onClick={() => showPublication('publicationStatus')}>发布记录</button>}
       {panel.type === 'diff' && <><p>左：本轮基线；右：当前稿。无法确定基线时仅展示审计记录，不伪造差异。</p>{typeof (panel.value?.baselineMarkdown ?? draft?.baselineMarkdown) === 'string' ? <Diff before={panel.value?.baselineMarkdown ?? draft.baselineMarkdown} after={text} /> : <p>Host 尚未提供 baselineMarkdown。</p>}<pre style={{whiteSpace:'pre-wrap'}}>{JSON.stringify(panel.value,null,2)}</pre></>}
       {panel.type === 'versions' && <><h3>确认版本（不可变）</h3>{versions.map(v => <div key={v.versionId} style={{padding:8,borderBottom:'1px solid #ddd'}}><strong>{v.versionId} {v.title}</strong> <button style={button} disabled={busy || dirty} onClick={() => action('publishPlan', {versionId:v.versionId})}>查看此版本发布清单</button>{typeof v.markdown === 'string' && <details><summary>阅读版本正文</summary><pre style={{whiteSpace:'pre-wrap'}}>{v.markdown}</pre></details>}</div>)}</>}
+      {panel.type === 'timeline' && <Timeline value={panel.value} />}
       {panel.type === 'publishPlan' && <><h3>发布清单：{panel.value?.versionId}</h3><p>仅以下按钮会发出 publish 请求。请核对正文、图片、公开信息及知识库身份。</p><pre style={{whiteSpace:'pre-wrap'}}>{JSON.stringify(panel.value,null,2)}</pre><button style={button} disabled={busy || dirty || !verified} onClick={event => { if (!event.nativeEvent.isTrusted) { setError('发布必须由人类实际点击'); return; } action('publish', { versionId:panel.value?.versionId, planId:panel.value?.planId, digest:panel.value?.digest, publishToken:panel.value?.publishToken, userInitiated:true }); }}>发布此确认版至 WeKnora</button></>}
       {panel.type === 'publish' && <><h3>发布回执</h3><p>{publicationStateText(panel.value)}</p><p>已提交并不等于完成。请用只读核对查看状态；此按钮不会再次调用发布。</p><button style={button} disabled={busy} onClick={() => showPublication('reconcile')}>只读核对</button>{' '}<button style={button} disabled={busy} onClick={() => showPublication('publicationStatus')}>查看发布记录</button><pre style={{whiteSpace:'pre-wrap'}}>{JSON.stringify(panel.value,null,2)}</pre></>}
       {panel.type === 'publicationStatus' && <PublicationRecords value={panel.value} busy={busy} onRead={showPublication} />}

@@ -31,6 +31,14 @@ const normalizeMarkdown = (markdown, assets, previous = []) => {
   return markdown;
 };
 
+/** The leading commodity/variety: a CJK run that stops before a report-type word (周报/月报/日报/…), a non-CJK
+ * separator (space/`-`/`：`…), or end. This keeps `锡周报`→`锡` and `碳酸锂周报`→`碳酸锂` correct, instead of over-capturing.
+ * Persisted as report/version metadata so folder placement is stable even if the title is later reworded. */
+export function deriveVariety(title) {
+  const t = String(title || '').trim();
+  return /^([\u4e00-\u9fa5]+?)(?=周报|月报|日报|周度|月度|报告|纪要|[^一-龥]|$)/.exec(t)?.[1] || t.slice(0, 12);
+}
+
 /** One root belongs to one Node process; instances within that process share queues. */
 export class ReportStore {
   constructor({ rootDir } = {}) {
@@ -82,7 +90,7 @@ export class ReportStore {
     if (token !== record.draft.saveToken) fail('CONFLICT', 'Stale saveToken; reload the draft');
   }
   _editable(record) { if (record.draft.status !== 'draft') fail('REVISION_REQUIRED', 'Call startRevision before editing a confirmed report'); }
-  _draft(record) { return clone({ reportId: record.reportId, sessionId: record.sessionId, title: record.title, ...record.draft }); }
+  _draft(record) { return clone({ reportId: record.reportId, sessionId: record.sessionId, title: record.title, variety: record.variety, ...record.draft }); }
   _audit(record, entry) { record.audit.push({ auditId: randomUUID(), at: now(), ...entry }); }
   async _assets(reportId, assets = []) {
     if (!Array.isArray(assets)) fail('INVALID_INPUT', 'assets must be an array of explicit file descriptors');
@@ -116,14 +124,14 @@ export class ReportStore {
     }
     return result;
   }
-  async createDraft({ sessionId, title, markdown, assets = [], markers = [], annotations, source = 'agent_inference' }) {
+  async createDraft({ sessionId, title, markdown, assets = [], markers = [], annotations, source = 'agent_inference', variety }) {
     if (typeof sessionId !== 'string' || !sessionId) fail('INVALID_INPUT', 'sessionId is required');
     text(title, 'title'); text(markdown, 'markdown');
     if (!sources.has(source)) fail('INVALID_INPUT', 'Invalid source');
     const reportId = `r_${randomUUID()}`;
     return this._serial(reportId, async () => {
       const at = now();
-      const record = { schemaVersion: 1, reportId, sessionId, title, createdAt: at,
+      const record = { schemaVersion: 1, reportId, sessionId, title, variety: typeof variety === 'string' && variety ? variety : deriveVariety(title), createdAt: at,
         draft: { markdown, assets: await this._assets(reportId, assets), markers: clone(markers), humanItems: [], saveToken: randomUUID(), status: 'draft', baseVersionId: null, updatedAt: at },
         versions: [], audit: [], publicationPlans: [], publicationRecords: [] };
       record.draft.markdown = normalizeMarkdown(markdown, record.draft.assets);
@@ -143,7 +151,7 @@ export class ReportStore {
     for (const file of files.filter(name => /^r_[a-f0-9-]{36}\.json$/.test(name))) {
       try {
         const record = await this._load(sessionId, file.slice(0, -5));
-        result.push({ reportId: record.reportId, title: record.title, status: record.draft.status, updatedAt: record.draft.updatedAt, baseVersionId: record.draft.baseVersionId });
+        result.push({ reportId: record.reportId, title: record.title, variety: record.variety, status: record.draft.status, updatedAt: record.draft.updatedAt, baseVersionId: record.draft.baseVersionId });
       } catch (error) { if (error.code !== 'NOT_FOUND') throw error; }
     }
     return result.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
@@ -210,7 +218,7 @@ export class ReportStore {
       const completedAt = now();
       record.draft.annotations = (record.draft.annotations || []).map(a => a.pending ? { ...a, pending: false, authorId: approvedBy.authorId, displayName: approvedBy.displayName, completedAt } : a);
       pruneHumanItems(record.draft);
-      const version = { versionId: `V${record.versions.length + 1}`, reportId, title: record.title,
+      const version = { versionId: `V${record.versions.length + 1}`, reportId, title: record.title, variety: record.variety,
         humanItems: clone(record.draft.humanItems || []), markdown: record.draft.markdown, assets: clone(record.draft.assets), markers: clone(record.draft.markers), annotations: clone(record.draft.annotations || []),
         contentHash: key, confirmedFromToken: saveToken, baseVersionId: record.draft.baseVersionId,
         author: approvedBy, completedAt };
@@ -246,7 +254,7 @@ export class ReportStore {
   async exportVersion(input) {
     const v = await this.getVersion(input);
     const annotations = publicAnnotations(v.markdown, v.annotations || []);
-    return { reportId: v.reportId, versionId: v.versionId, title: v.title, baseVersionId: v.baseVersionId, humanItems: exportHumanItems(v), markdown: v.markdown, assets: v.assets.map(({ id, path, sha256, snapshotPath, name, size }) => ({ id, path, sha256, snapshotPath, name, size })), annotations, author: v.author, completedAt: v.completedAt };
+    return { reportId: v.reportId, versionId: v.versionId, title: v.title, variety: v.variety, baseVersionId: v.baseVersionId, humanItems: exportHumanItems(v), markdown: v.markdown, assets: v.assets.map(({ id, path, sha256, snapshotPath, name, size }) => ({ id, path, sha256, snapshotPath, name, size })), annotations, author: v.author, completedAt: v.completedAt };
   }
   async savePublicationPlan({ sessionId, reportId, versionId, target, payload = {} }) {
     text(target, 'target');

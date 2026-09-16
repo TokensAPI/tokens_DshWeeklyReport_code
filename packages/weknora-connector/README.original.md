@@ -40,7 +40,8 @@ Never take these fields from model tool arguments. HTTPS or literal 127.0.0.1/::
 - `capabilities()` → read methods and explicit `images:false`.
 - `detail(kbId, knowledgeId, {signal}?)`; `status(...)` is an alias, not polling.
 - `chunks(kbId, knowledgeId, {page=1,pageSize=20,signal}?)`.
-- `search(kbId, query, {matchCount=10,signal}?)` — may invoke query embedding, so not automatically called for health checks.
+- `search(kbId, query, {matchCount=10,knowledgeIds?,signal}?)` — may invoke query embedding, so not automatically called for health checks. Optional `knowledgeIds` bounds hybrid-search to an explicit knowledge set (used to apply a folder/time scope as a hard boundary).
+- `listKnowledge(kbId, {folderPath?,recursive=false,keyword?,startTime?,endTime?,page=1,pageSize=100,signal}?)` — GET `/knowledge-bases/{id}/knowledge`; scopes by folder path (`folder_recursive` for subtree) and/or an **update-time** window (`start_time`/`end_time`), plus `keyword`/pagination. Returns allowlisted `id/title/folder_path/type/source/parse_status/created_at/updated_at`. This is what makes a "path under the knowledge base" or "近N周周报" scope enumerable — hybrid-search itself cannot filter by date/folder.
 - Success: `{ok:true,data:<allowlisted result>}` (same shape for Node default and Python override). Errors: `{ok:false,error:<sanitized category>,outcome_unknown:false,automatic_retry:false}`. No raw stderr or HTTP error body leaves the adapter.
 
 ## Review Host closed write interface

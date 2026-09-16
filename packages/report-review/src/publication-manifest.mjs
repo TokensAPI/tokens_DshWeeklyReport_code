@@ -1,5 +1,7 @@
 import { createHash } from 'node:crypto';
+import { deriveVariety as _deriveVariety } from '../../report-core/src/index.mjs';
 const sha = value => createHash('sha256').update(value).digest('hex');
+export const deriveVariety = _deriveVariety;
 const fail = code => { const error = new Error(code); error.code = code; throw error; };
 const idOK = value => typeof value === 'string' && /^[A-Za-z0-9_-]{1,160}$/.test(value);
 // Principal (author) ids come from /auth/me and may be platform key users like
@@ -24,12 +26,6 @@ function dateLabel(value) {
 function attribution(value) {
   if (!principalIdOK(value?.authorId) || !text(value?.displayName,256) || !value.displayName.trim() || /[\r\n<>]/.test(value.displayName)) fail('INVALID_PUBLIC_AUTHOR');
   return {authorId:value.authorId,displayName:value.displayName,completedAt:value.completedAt,date:dateLabel(value.completedAt)};
-}
-/** The leading commodity/variety: a CJK run that stops before a report-type word (周报/月报/日报/…), a non-CJK
- * separator (space/`-`/`：`…), or end. This keeps `锡周报`→`锡` and `碳酸锂周报`→`碳酸锂` correct, instead of over-capturing. */
-export function deriveVariety(title) {
-  const t = String(title || '').trim();
-  return /^([\u4e00-\u9fa5]+?)(?=周报|月报|日报|周度|月度|报告|纪要|[^一-龥]|$)/.exec(t)?.[1] || t.slice(0, 12);
 }
 /** Standard report title/filename: `商品-报告类型-日期` (e.g. 锡-周报-2026-09-09). Images append the caption. */
 function stdReportName(title) {
@@ -100,4 +96,23 @@ export function resolvePublicationMarkdown(manifest,bindings) {
   if(map.size!==images.length)fail('INCOMPLETE_RESOURCE_BINDINGS');
   const markdown=manifest.items.find(i=>i.type==='report').markdown;
   return markdown.replace(/(!\[[^\]\r\n]*\]\()asset:([A-Za-z0-9_-]{1,160})(\))/g,(_m,start,id,end)=>start+map.get(id)+end);
+}
+/** The full published report markdown for a version: body + the human-source attribution footer.
+ *  The published report item is `version.markdown + footer(sources)`, so the single-knowledge seed / previous
+ *  baseline must be in the same space — otherwise comparing body-only markdown against the footered report
+ *  treats the footer (which appears on every published version) as a spurious edit and rewrites every chunk. */
+export function publishedReportMarkdown(version) {
+  if (!version?.markdown || typeof version.markdown !== 'string') return '';
+  const sources = [];
+  for (const a of version.annotations ?? []) {
+    if (a?.public !== true || !sourceKinds.has(a.source) || a.mappingConfidence === 'low') continue;
+    if (!a.authorId || !text(a.displayName) || !text(a.completedAt)) continue;
+    sources.push(attribution(a));
+  }
+  for (const h of version.humanItems ?? []) {
+    if (h?.public === false || h?.selected === false || h?.visibility === 'local') continue;
+    if (!h.authorId || !text(h.displayName) || !text(h.completedAt) || !text(h.content)) continue;
+    sources.push(attribution(h));
+  }
+  return version.markdown + footer(sources);
 }
