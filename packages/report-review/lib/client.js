@@ -114747,7 +114747,7 @@ function SettingsPanel({ request, onClose, onIdentity }) {
       if (form.writeKey.trim()) settings.writeKey = form.writeKey.trim();
       const v = await request("settingsSave", { settings });
       adopt(v);
-      setState({ busy: false, error: "", note: v?.connectorActive ? "\u5DF2\u4FDD\u5B58\uFF0CWeKnora \u8FDE\u63A5\u5DF2\u751F\u6548\uFF08\u65E0\u9700\u91CD\u542F\uFF09\u3002" : `\u5DF2\u4FDD\u5B58\uFF0C\u4F46\u8FDE\u63A5\u672A\u6FC0\u6D3B\uFF1A${v?.connectorError === "INCOMPLETE" ? "\u8FD8\u9700\u8865\u5168\u5730\u5740\u3001\u77E5\u8BC6\u5E93 ID \u6216\u8BFB\u53D6\u5BC6\u94A5\u3002" : v?.connectorError || "\u914D\u7F6E\u4E0D\u5B8C\u6574\u3002"}` });
+      setState({ busy: false, error: "", note: v?.connectorActive ? "\u5DF2\u4FDD\u5B58\u5E76\u751F\u6548\u3002\u300C\u914D\u7F6E\u5B8C\u6574\u300D\u53EA\u6821\u9A8C\u672C\u5730\u914D\u7F6E\uFF0C\u4E0D\u4EE3\u8868\u670D\u52A1\u53EF\u8FBE\u2014\u2014\u70B9\u300C\u6D4B\u8BD5\u8FDE\u63A5\u300D\u5B9E\u6D4B\u670D\u52A1\u4E0E\u5BC6\u94A5\uFF1B\u53D1\u5E03\u9700\u8981\u7B2C 3 \u9879\uFF08\u53D1\u5E03\u8EAB\u4EFD\uFF09\u4E3A \u2713\u3002" : `\u5DF2\u4FDD\u5B58\uFF0C\u4F46\u914D\u7F6E\u4E0D\u5B8C\u6574\uFF1A${v?.connectorError === "INCOMPLETE" ? "\u8FD8\u9700\u8865\u5168\u5730\u5740\u3001\u77E5\u8BC6\u5E93 ID \u6216\u8BFB\u53D6\u5BC6\u94A5\u3002" : v?.connectorError || "\u8BF7\u68C0\u67E5\u5404\u5B57\u6BB5\u3002"}` });
     } catch (e6) {
       setState({ busy: false, note: "", error: e6.code === "SETTINGS_INVALID" ? "\u6709\u5B57\u6BB5\u4E0D\u5408\u6CD5\uFF1A\u5730\u5740\u987B\u4E3A http(s) URL\uFF08http \u4EC5\u9650\u672C\u673A\u56DE\u73AF\uFF09\uFF0C\u77E5\u8BC6\u5E93 ID \u53EA\u80FD\u5305\u542B\u5B57\u6BCD\u6570\u5B57\u3001\u4E0B\u5212\u7EBF\u548C\u6A2A\u7EBF\uFF0C\u5BC6\u94A5\u4E0D\u80FD\u542B\u6362\u884C\u3002" : e6.message || "\u4FDD\u5B58\u5931\u8D25" });
     }
@@ -114769,7 +114769,7 @@ function SettingsPanel({ request, onClose, onIdentity }) {
   return /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("section", { className: "rr-settings", role: "dialog", "aria-label": "\u8FDE\u63A5\u8BBE\u7F6E", children: /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-settings-card", children: [
     /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-section-heading", children: [
       /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("h2", { children: "\u8FDE\u63A5\u8BBE\u7F6E" }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-badge", children: view?.connectorActive ? "WeKnora \u5DF2\u8FDE\u63A5" : "\u672A\u8FDE\u63A5" })
+      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-badge", children: view?.connectorActive ? "\u914D\u7F6E\u5B8C\u6574\uFF08\u672A\u5B9E\u6D4B\uFF09" : "\u914D\u7F6E\u4E0D\u5B8C\u6574" })
     ] }),
     view?.managedByHost && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-muted", children: "\u90E8\u5206\u914D\u7F6E\u7531\u73AF\u5883\u53D8\u91CF / Profile \u7BA1\u7406\uFF0C\u6B64\u5904\u4FEE\u6539\u4EC5\u8865\u5145\u672A\u88AB\u5176\u8986\u76D6\u7684\u9879\u3002" }),
     /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [

@@ -121,7 +121,7 @@ export function SettingsPanel({ request, onClose, onIdentity }) {
       if (form.writeKey.trim()) settings.writeKey = form.writeKey.trim();
       const v = await request('settingsSave', { settings });
       adopt(v);
-      setState({ busy: false, error: '', note: v?.connectorActive ? '已保存，WeKnora 连接已生效（无需重启）。' : `已保存，但连接未激活：${v?.connectorError === 'INCOMPLETE' ? '还需补全地址、知识库 ID 或读取密钥。' : v?.connectorError || '配置不完整。'}` });
+      setState({ busy: false, error: '', note: v?.connectorActive ? '已保存并生效。「配置完整」只校验本地配置，不代表服务可达——点「测试连接」实测服务与密钥；发布需要第 3 项（发布身份）为 ✓。' : `已保存，但配置不完整：${v?.connectorError === 'INCOMPLETE' ? '还需补全地址、知识库 ID 或读取密钥。' : v?.connectorError || '请检查各字段。'}` });
     } catch (e) { setState({ busy: false, note: '', error: e.code === 'SETTINGS_INVALID' ? '有字段不合法：地址须为 http(s) URL（http 仅限本机回环），知识库 ID 只能包含字母数字、下划线和横线，密钥不能含换行。' : (e.message || '保存失败') }); }
   };
   const runTest = async () => {
@@ -136,7 +136,7 @@ export function SettingsPanel({ request, onClose, onIdentity }) {
   const field = (key, value) => setForm(f => ({ ...f, [key]: value }));
   return <section className="rr-settings" role="dialog" aria-label="连接设置">
     <div className="rr-settings-card">
-      <div className="rr-section-heading"><h2>连接设置</h2><span className="rr-badge">{view?.connectorActive ? 'WeKnora 已连接' : '未连接'}</span></div>
+      <div className="rr-section-heading"><h2>连接设置</h2><span className="rr-badge">{view?.connectorActive ? '配置完整（未实测）' : '配置不完整'}</span></div>
       {view?.managedByHost && <p className="rr-muted">部分配置由环境变量 / Profile 管理，此处修改仅补充未被其覆盖的项。</p>}
       <label>WeKnora 地址<input aria-label="WeKnora 地址" placeholder="https://weknora.example.internal 或 http://127.0.0.1:8080" value={form.baseUrl} disabled={state.busy} onChange={e => field('baseUrl', e.target.value)} /></label>
       <label>知识库 ID<input aria-label="知识库 ID" placeholder="检索与发布使用的知识库 ID" value={form.kbId} disabled={state.busy} onChange={e => field('kbId', e.target.value)} /></label>
