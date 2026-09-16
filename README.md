@@ -76,3 +76,21 @@ Profile 覆盖示例（值均为占位符）：
 - 三个源模块缺少明确源码许可证；发布前必须由权利人补充或确认再分发授权。
 
 原始设计和安全说明保存在各 `README*.original.md` 中。
+
+## 周报工作台 UI 开发
+
+工作台支持生成/编辑分步流程、隔离的本地演示、Markdown 语法高亮、源码与阅读预览双向同步滚动、PDF 分栏及导出。进入两种浏览模式时自动专注正文，面板保持不透明。原版人工修改归因保留，尚无评论线程。
+
+统一在仓库根目录使用 npm，不再维护 report-review 子包的独立 pnpm 构建：
+
+```sh
+npm ci
+npm run build
+npm run check
+npm run test:client
+npm test
+```
+
+浏览器测试默认使用本机 Chrome，可设置 `BROWSER_CHANNEL=msedge`。PDF 测试需要设置 `RUN19_PYTHON` 指向包含 PyMuPDF 的 Python；`RUN19_FONT` 指定中文字体。两项历史数据集成测试还依赖原始交接的 `packages/weekly-report-source/validation/weekly-8V6p06/` 样例目录（未纳入 Git）。测试截图和样例均不进入发布包。
+
+客户端从 `src/entry.jsx` 构建，保留原生侧栏入口；使用根包标识 `@tokensapi/dsh-weekly-report` 和宿主提供的 UI primitives。UI 说明见 `packages/report-review/FUNCTION-PARITY.md`。
