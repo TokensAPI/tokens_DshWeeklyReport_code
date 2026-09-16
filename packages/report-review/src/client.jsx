@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo, useSyncExternalStore } from 'react';
-import { EditorState } from '@codemirror/state';
+import { Compartment, EditorState } from '@codemirror/state';
 import { EditorView, keymap, lineNumbers } from '@codemirror/view';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { markdown } from '@codemirror/lang-markdown';
@@ -122,12 +122,14 @@ const editorTheme = EditorView.theme({
 });
 function Editor({ value, onChange, readOnly = false, editorRef }) {
   const root = useRef(null), view = useRef(null), change = useRef(onChange);
+  const access = useRef(new Compartment());
   change.current = onChange;
   useEffect(() => {
-    view.current = new EditorView({ parent: root.current, state: EditorState.create({ doc: value || '', extensions: [lineNumbers(), history(), markdown(), markdownHighlight, keymap.of([...defaultKeymap, ...historyKeymap]), EditorView.lineWrapping, editorTheme, EditorState.readOnly.of(readOnly), EditorView.editable.of(!readOnly), EditorView.updateListener.of(u => { if (u.docChanged && !u.transactions.some(t => t.isUserEvent('remote'))) change.current?.(u.state.doc.toString()); })] }) });
+    view.current = new EditorView({ parent: root.current, state: EditorState.create({ doc: value || '', extensions: [lineNumbers(), history(), markdown(), markdownHighlight, keymap.of([...defaultKeymap, ...historyKeymap]), EditorView.lineWrapping, editorTheme, access.current.of([EditorState.readOnly.of(readOnly), EditorView.editable.of(!readOnly)]), EditorView.updateListener.of(u => { if (u.docChanged && !u.transactions.some(t => t.isUserEvent('remote'))) change.current?.(u.state.doc.toString()); })] }) });
     if (editorRef) editorRef.current = view.current;
     return () => { if (editorRef) editorRef.current = null; view.current.destroy(); view.current = null; };
-  }, [readOnly]);
+  }, []);
+  useEffect(() => { view.current?.dispatch({ effects: access.current.reconfigure([EditorState.readOnly.of(readOnly), EditorView.editable.of(!readOnly)]) }); }, [readOnly]);
   useEffect(() => { const v = view.current; if (v && v.state.doc.toString() !== value) v.dispatch({ changes: { from: 0, to: v.state.doc.length, insert: value || '' }, userEvent: 'remote' }); }, [value]);
   return <div ref={root} className="rr-editor" />;
 }
@@ -400,7 +402,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
         <section className="rr-editor-stage" hidden={stage !== 'editor'}>
         <header className="rr-report-header"><span className="rr-eyebrow">WEEKLY RESEARCH</span><h1>{draft?.title || '开始本周研究'}</h1><div className="rr-row"><span className="rr-badge">{draft?.status === 'confirmed' ? '已确认 · 只读' : dirty ? '待保存' : draft ? '研究草稿' : '未选择报告'}</span><span className="rr-muted">先看结论，再核对证据</span></div></header>
         <div className="rr-toolbar" role="group" aria-label="文档视图"><button className="rr-button" aria-pressed={viewMode === 'editor'} onClick={() => setViewMode('editor')}>正文编辑</button><button className="rr-button" disabled={!draft} aria-pressed={viewMode === 'markdown'} onClick={() => { setViewMode('markdown'); setFocused(true); }}>Markdown 实时浏览</button><button className="rr-button" disabled={!draft} aria-pressed={viewMode === 'pdf'} onClick={() => { setViewMode('pdf'); setFocused(true); }}>PDF 实时浏览</button><button className="rr-button" disabled={!synced || busy} title={synced ? '导出当前已保存版本' : '等待当前内容保存并完成 PDF 生成后可导出'} onClick={() => { if (!synced) return; const link = document.createElement('a'); link.href = pdf.url; link.download = demo ? 'demo-weekly-report.pdf' : (draft.title || 'weekly-report').replace(/[<>:"/\\|?*]/g, '_') + '.pdf'; link.click(); }}>导出 PDF</button><button className="rr-button rr-button--primary rr-push" disabled={!dirty || readOnly} onClick={() => { setError(''); save(); }}>保存 / 重试</button></div>
-        <div className="rr-document-panes" data-view={viewMode}><div className="rr-source-pane"><div className="rr-pane-heading"><strong>Markdown 源码</strong><span>{dirty ? '未保存' : '自动保存'}</span></div><section className="rr-canvas" aria-label="报告正文">{draft ? <Editor editorRef={editorRef} value={text} readOnly={readOnly} onChange={value => { if (isDraftReadOnly(current.current.draft, current.current.busy)) return; revision.current++; current.current.dirty = true; current.current.text = value; setText(value); setDirty(true); setStatus('有未保存修改'); }} /> : <div className="rr-welcome"><span className="rr-eyebrow">本周的判断，从这里开始</span><h2>把数据整理成有依据的观点</h2><p>从左侧打开已有报告，或新建周报后使用上方设置生成初稿。</p><p className="rr-muted">生成初稿 → 人工审阅 → 确认版本 → 发布与核对</p></div>}</section>
+        <div className="rr-document-panes" data-view={viewMode}><div className="rr-source-pane"><div className="rr-pane-heading"><strong>Markdown 源码</strong><span>{dirty ? '未保存' : '自动保存'}</span></div><section className="rr-canvas" aria-label="报告正文">{draft ? <Editor key={draft.reportId} editorRef={editorRef} value={text} readOnly={readOnly} onChange={value => { if (isDraftReadOnly(current.current.draft, current.current.busy)) return; revision.current++; current.current.dirty = true; current.current.text = value; setText(value); setDirty(true); setStatus('有未保存修改'); }} /> : <div className="rr-welcome"><span className="rr-eyebrow">本周的判断，从这里开始</span><h2>把数据整理成有依据的观点</h2><p>从左侧打开已有报告，或新建周报后使用上方设置生成初稿。</p><p className="rr-muted">生成初稿 → 人工审阅 → 确认版本 → 发布与核对</p></div>}</section>
         </div><section className="rr-markdown-preview" aria-label="Markdown 实时预览" hidden={viewMode !== 'markdown'}><div className="rr-pane-heading"><strong>阅读预览</strong><span>随输入实时更新</span></div><MarkdownPreview text={text} scrollRef={markdownScrollRef} /></section>
         <section className="rr-pdf" aria-label="报告版式" hidden={viewMode !== 'pdf'}><div className="rr-pane-heading"><strong>PDF 版式</strong><span>{synced ? '已同步' : '等待生成 / 旧预览'}</span></div>{pdf ? <><a href={pdf.url} target="_blank" rel="noreferrer" download={demo ? "demo-weekly-report.pdf" : undefined}>{demo ? "下载演示 PDF（模拟数据）" : "下载 / 打开当前 PDF"}{!synced ? '（旧预览）' : ''}</a><object aria-label="实际 PDF 预览" data={pdf.url} type="application/pdf" className="rr-pdf-object"><a href={pdf.url} target="_blank" rel="noreferrer">浏览器无法内嵌 PDF，请打开实际 PDF</a></object></> : <p className="rr-empty">尚无可用实际 PDF，保存后等待预览生成。</p>}</section></div>
         </section>

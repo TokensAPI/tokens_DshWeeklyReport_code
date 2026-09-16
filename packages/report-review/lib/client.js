@@ -61110,9 +61110,10 @@ var editorTheme = EditorView.theme({
 });
 function Editor({ value, onChange, readOnly: readOnly2 = false, editorRef }) {
   const root4 = (0, import_react3.useRef)(null), view = (0, import_react3.useRef)(null), change = (0, import_react3.useRef)(onChange);
+  const access = (0, import_react3.useRef)(new Compartment());
   change.current = onChange;
   (0, import_react3.useEffect)(() => {
-    view.current = new EditorView({ parent: root4.current, state: EditorState.create({ doc: value || "", extensions: [lineNumbers(), history(), markdown(), markdownHighlight, keymap.of([...defaultKeymap, ...historyKeymap]), EditorView.lineWrapping, editorTheme, EditorState.readOnly.of(readOnly2), EditorView.editable.of(!readOnly2), EditorView.updateListener.of((u) => {
+    view.current = new EditorView({ parent: root4.current, state: EditorState.create({ doc: value || "", extensions: [lineNumbers(), history(), markdown(), markdownHighlight, keymap.of([...defaultKeymap, ...historyKeymap]), EditorView.lineWrapping, editorTheme, access.current.of([EditorState.readOnly.of(readOnly2), EditorView.editable.of(!readOnly2)]), EditorView.updateListener.of((u) => {
       if (u.docChanged && !u.transactions.some((t2) => t2.isUserEvent("remote"))) change.current?.(u.state.doc.toString());
     })] }) });
     if (editorRef) editorRef.current = view.current;
@@ -61121,6 +61122,9 @@ function Editor({ value, onChange, readOnly: readOnly2 = false, editorRef }) {
       view.current.destroy();
       view.current = null;
     };
+  }, []);
+  (0, import_react3.useEffect)(() => {
+    view.current?.dispatch({ effects: access.current.reconfigure([EditorState.readOnly.of(readOnly2), EditorView.editable.of(!readOnly2)]) });
   }, [readOnly2]);
   (0, import_react3.useEffect)(() => {
     const v = view.current;
@@ -61774,7 +61778,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
                 setText(value);
                 setDirty(true);
                 setStatus("\u6709\u672A\u4FDD\u5B58\u4FEE\u6539");
-              } }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "rr-welcome", children: [
+              } }, draft.reportId) : /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "rr-welcome", children: [
                 /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "rr-eyebrow", children: "\u672C\u5468\u7684\u5224\u65AD\uFF0C\u4ECE\u8FD9\u91CC\u5F00\u59CB" }),
                 /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h2", { children: "\u628A\u6570\u636E\u6574\u7406\u6210\u6709\u4F9D\u636E\u7684\u89C2\u70B9" }),
                 /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "\u4ECE\u5DE6\u4FA7\u6253\u5F00\u5DF2\u6709\u62A5\u544A\uFF0C\u6216\u65B0\u5EFA\u5468\u62A5\u540E\u4F7F\u7528\u4E0A\u65B9\u8BBE\u7F6E\u751F\u6210\u521D\u7A3F\u3002" }),
