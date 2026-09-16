@@ -8,22 +8,22 @@ const code = readFileSync(new URL('../lib/client.js', import.meta.url), 'utf8');
 function load(extra = {}) {
   let registration;
   const context = vm.createContext({ console, URL, TextDecoder, Blob, AbortController,
+    document: { documentElement: {style:{}}, createElement: () => ({}) },
     setTimeout, clearTimeout, setInterval, clearInterval,
     window: { __ModuleLoader__: { load(value) { registration = value; } } },
     location: { origin: 'http://127.0.0.1:43120' }, ...extra });
   vm.runInContext(code, context);
   assert.equal(registration.id, '@tokensapi/dsh-weekly-report');
-  const exports = registration.factory(require);
+  const exports = registration.factory(id => id === '@deepseek-ai/dsh-client-ui-primitives' ? {Button:()=>null,Tooltip:()=>null} : require(id));
   return { exports, context };
 }
 test('formal module wrapper registers lazy factory and plugin slot', () => {
   const { exports } = load();
   assert.deepEqual(Array.from(exports.inject), ['slots']);
-  let name, registration;
-  exports.apply({ slots: { inject(n, cb) { name = n; cb(); }, register(meta, component) { registration = {meta,component}; } } });
-  assert.equal(name, 'conversation.session.header.actions');
-  assert.equal(registration.meta.id, 'report-review');
-  assert.equal(typeof registration.component, 'function');
+  const registrations = [];
+  exports.apply({ slots: { inject(n, cb) { cb(); }, register(meta, component) { registrations.push({meta,component}); } } });
+  assert.deepEqual(registrations.map(r=>r.meta.name), ['conversation.session.header.actions','sidebar.footer.action','shell.overlay']);
+  assert.ok(registrations.every(r=>typeof r.component === 'function'));
 });
 test('only ready matching clean receipts certify PDF synchronization', () => {
   const { exports:e } = load();
@@ -48,7 +48,7 @@ test('confirmed drafts are readonly and require a new revision', () => {
   const source=readFileSync(new URL('../src/client.jsx',import.meta.url),'utf8');
   assert.match(source,/readOnly=\{readOnly\}/);
   assert.match(source,/if \(isDraftReadOnly\(current.current.draft, current.current.busy\)\) return/);
-  assert.match(source,/此稿已确认并冻结，正文只读/);
+  assert.match(source,/确认稿只读/);
 });
 test('same cached PDF under a new saveToken has a new effect key and requires new receipt', () => {
   const {exports:e}=load();

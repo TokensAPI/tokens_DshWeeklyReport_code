@@ -50,7 +50,8 @@
       "platform": "web",
       "inject": [
         "@deepseek-ai/dsh-client-ui-slots",
-        "@deepseek-ai/dsh-client-ui-conversation"
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-primitives"
       ]
     },
     "minHarness": "0.1.5-rc.2"

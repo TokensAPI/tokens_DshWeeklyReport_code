@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo, useSyncExternalStore } from 'react';
 import { EditorState } from '@codemirror/state';
 import { EditorView, keymap, lineNumbers } from '@codemirror/view';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { markdown } from '@codemirror/lang-markdown';
 import { MergeView } from '@codemirror/merge';
+import workspaceCss from './workspace.css';
+import { createDemoApi } from './demo-api.mjs';
 
 export function safePdfUrl(value, origin = window.location.origin) {
   if (!value) return null;
@@ -78,11 +80,11 @@ export function PublicationRecords({ value, busy, onRead }) {
   const records = Array.isArray(value?.records) ? value.records : [];
   const notices = safeWarnings(value?.warnings);
   return <><h3>发布记录 / 只读核对结果</h3><p>核对只读取远端状态并更新本地核对记录，不上传、不重解析、不删除，也不会重试发布。解析就绪不等于检索已核验。</p>
-    <button style={button} disabled={busy} onClick={() => onRead('publicationStatus')}>刷新发布记录</button>{' '}
-    <button style={button} disabled={busy} onClick={() => onRead('reconcile')}>只读核对</button>
+    <button className="rr-button" disabled={busy} onClick={() => onRead('publicationStatus')}>刷新发布记录</button>{' '}
+    <button className="rr-button" disabled={busy} onClick={() => onRead('reconcile')}>只读核对</button>
     {notices.length > 0 && <ul>{notices.map(w => <li key={w.code}>{w.code}：{w.message}</li>)}</ul>}
     {!records.length && <p>暂无发布记录；不会自动创建发布任务。</p>}
-    {records.map((r,index) => <article key={`${recordText(r.planId)}-${index}`} style={{padding:8,borderBottom:'1px solid #ddd'}}>
+    {records.map((r,index) => <article key={`${recordText(r.planId)}-${index}`} className="rr-record">
       <strong>{recordText(r.versionId)} · 计划 {recordText(r.planId)}</strong><p>{publicationStateText(r)}</p>
       <dl><dt>上传阶段</dt><dd>{recordText(r.phase || r.status)}</dd><dt>远端资料 ID</dt><dd>{recordText(r.remoteId)}</dd><dt>解析状态</dt><dd>{recordText(r.parseStatus)}{r.parseReady === true ? '（解析就绪）' : ''}</dd><dt>检索核验</dt><dd>未核验；不标记发布完成</dd><dt>最近只读核对时间</dt><dd>{recordText(r.checkedAt)}</dd></dl>
     </article>)}
@@ -90,32 +92,31 @@ export function PublicationRecords({ value, busy, onRead }) {
 }
 const asDraft = v => v?.draft || v?.workingDraft || v;
 const rows = (v, key) => Array.isArray(v) ? v : v?.[key] || [];
-const darkBg = '#1e2530', darkPanel = '#262e3a', darkInput = '#2a3341', darkBorder = '#3a4454', text = '#eef2f6', muted = '#aeb9c6';
-const button = { padding: '6px 10px', border: `1px solid ${darkBorder}`, borderRadius: 5, background: darkInput, color: text, cursor: 'pointer', colorScheme: 'dark' };
-const darkEditorTheme = EditorView.theme({
-  '&': { height: '100%', color: text, backgroundColor: darkBg },
-  '.cm-scroller': { overflow: 'auto' },
-  '.cm-content': { caretColor: text },
-  '.cm-cursor, .cm-dropCursor': { borderLeftColor: text },
-  '.cm-gutters': { backgroundColor: '#232b37', color: muted, border: 'none' },
-  '.cm-activeLine': { backgroundColor: darkInput },
-  '.cm-selectionBackground, .cm-content ::selection': { backgroundColor: '#3a4a63' },
-  '.cm-line, .cm-gutterElement': { color: text }
-}, { dark: true });
+// CodeMirror inherits the same semantic palette as the workspace, including live theme changes.
+const editorTheme = EditorView.theme({
+  '&': { height: '100%', color: 'var(--rr-text)', backgroundColor: 'var(--rr-paper)' },
+  '.cm-scroller': { overflow: 'auto', fontFamily: 'var(--rr-mono)', lineHeight: '1.85' },
+  '.cm-content': { caretColor: 'var(--rr-text)', padding: '24px 0' },
+  '.cm-line': { padding: '0 24px' },
+  '.cm-cursor, .cm-dropCursor': { borderLeftColor: 'var(--rr-text)' },
+  '.cm-gutters': { backgroundColor: 'var(--rr-paper)', color: 'var(--rr-muted)', border: 'none' },
+  '.cm-activeLine, .cm-activeLineGutter': { backgroundColor: 'var(--rr-raised)' },
+  '&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection': { backgroundColor: 'var(--rr-selection)' }
+});
 function Editor({ value, onChange, readOnly = false }) {
   const root = useRef(null), view = useRef(null), change = useRef(onChange);
   change.current = onChange;
   useEffect(() => {
-    view.current = new EditorView({ parent: root.current, state: EditorState.create({ doc: value || '', extensions: [lineNumbers(), history(), markdown(), keymap.of([...defaultKeymap, ...historyKeymap]), EditorView.lineWrapping, darkEditorTheme, EditorState.readOnly.of(readOnly), EditorView.editable.of(!readOnly), EditorView.updateListener.of(u => { if (u.docChanged && !u.transactions.some(t => t.isUserEvent('remote'))) change.current?.(u.state.doc.toString()); })] }) });
+    view.current = new EditorView({ parent: root.current, state: EditorState.create({ doc: value || '', extensions: [lineNumbers(), history(), markdown(), keymap.of([...defaultKeymap, ...historyKeymap]), EditorView.lineWrapping, editorTheme, EditorState.readOnly.of(readOnly), EditorView.editable.of(!readOnly), EditorView.updateListener.of(u => { if (u.docChanged && !u.transactions.some(t => t.isUserEvent('remote'))) change.current?.(u.state.doc.toString()); })] }) });
     return () => { view.current.destroy(); view.current = null; };
   }, [readOnly]);
   useEffect(() => { const v = view.current; if (v && v.state.doc.toString() !== value) v.dispatch({ changes: { from: 0, to: v.state.doc.length, insert: value || '' }, userEvent: 'remote' }); }, [value]);
-  return <div ref={root} style={{ height: '100%', minHeight: 0 }} />;
+  return <div ref={root} className="rr-editor" />;
 }
 function Diff({ before, after }) {
   const root = useRef(null);
-  useEffect(() => { const merge = new MergeView({ parent: root.current, a: { doc: before, extensions: [markdown(), darkEditorTheme, EditorState.readOnly.of(true), EditorView.editable.of(false), EditorView.lineWrapping] }, b: { doc: after, extensions: [markdown(), darkEditorTheme, EditorState.readOnly.of(true), EditorView.editable.of(false), EditorView.lineWrapping] } }); return () => merge.destroy(); }, [before, after]);
-  return <div ref={root} style={{ maxHeight: '45vh', overflow: 'auto' }} />;
+  useEffect(() => { const merge = new MergeView({ parent: root.current, a: { doc: before, extensions: [markdown(), editorTheme, EditorState.readOnly.of(true), EditorView.editable.of(false), EditorView.lineWrapping] }, b: { doc: after, extensions: [markdown(), editorTheme, EditorState.readOnly.of(true), EditorView.editable.of(false), EditorView.lineWrapping] } }); return () => merge.destroy(); }, [before, after]);
+  return <div ref={root} className="rr-diff" />;
 }
 export const DEFAULT_PROMPT_TEMPLATE = [
   '结合近四周同品类周报，做一次综合分析。',
@@ -143,22 +144,22 @@ export function HumanItemsPanel({value,readOnly,onSave}) {
   const [items,setItems]=useState(()=>humanItemPayload(value.items).map((i,n)=>({...value.items[n],...i})));
   const update=(n,patch)=>setItems(previous=>previous.map((i,k)=>k===n?{...i,...patch}:i));
   return <section aria-label="重点人工信息"><h3>重点人工信息</h3><p>仅本地审核确认和发布准备，尚未上传独立资料。默认不全选；措辞/排版类不独立入库。本地敏感备注本版不编辑、不发送。删除原文的撤回条目尚不支持，不能将当前段落分类为撤回冒充删除追溯。</p><ul>{safeWarnings(value.warnings).map(w=><li key={w.code}>{w.code}：{w.message}</li>)}</ul>{readOnly && <p>已确认稿只读，请先开启新一轮修订。</p>}
-    {items.length===0 && <p>暂无可确认的人类修订块。</p>}{items.map((item,n)=><fieldset key={item.annotationId} disabled={readOnly} style={{marginBottom:8}}><legend>{item.annotationId}</legend><pre style={{whiteSpace:'pre-wrap'}}>{item.content || '当前内容无法可靠定位'}</pre>{item.mappingConfidence==='low' && <p>低置信度：请核对来源，不自动认定为有效情报。</p>}
+    {items.length===0 && <p>暂无可确认的人类修订块。</p>}{items.map((item,n)=><fieldset key={item.annotationId} disabled={readOnly} className="rr-fieldset"><legend>{item.annotationId}</legend><pre className="rr-pre">{item.content || '当前内容无法可靠定位'}</pre>{item.mappingConfidence==='low' && <p>低置信度：请核对来源，不自动认定为有效情报。</p>}
       <label><input type="checkbox" checked={item.selected===true} onChange={e=>update(n,{selected:e.target.checked})}/>重点条目</label>{' '}
       <label>类别 <select value={item.category} onChange={e=>update(n,{category:e.target.value})}>{[['supplement','补充'],['correction','纠错'],['retraction','撤回'],['judgment','个人判断'],['style','措辞/排版']].map(([v,l])=><option key={v} value={v}>{l}</option>)}</select></label>{' '}
       <label>公开范围 <select value={item.visibility} onChange={e=>update(n,{visibility:e.target.value})}><option value="local">仅本地</option><option value="public">可公开</option></select></label>{' '}
       <label>可公开来源 <input maxLength={4000} value={item.publicSource || ''} onChange={e=>update(n,{publicSource:e.target.value})}/></label>
-    </fieldset>)}<button style={button} disabled={readOnly} onClick={()=>onSave(humanItemPayload(items),value.saveToken)}>保存人工信息选择（仅本地）</button></section>;
+    </fieldset>)}<button className="rr-button" disabled={readOnly} onClick={()=>onSave(humanItemPayload(items),value.saveToken)}>保存人工信息选择（仅本地）</button></section>;
 }
 function DiffOps({ diff }) {
-  if (!diff) return <p style={{ color: muted }}>基线版本，无上一版可比。</p>;
+  if (!diff) return <p className="rr-muted">基线版本，无上一版可比。</p>;
   const ops = Array.isArray(diff.ops) ? diff.ops : [];
-  if (!diff.changed) return <p style={{ color: muted }}>相对上一版：无内容变化。</p>;
-  return <div style={{ fontSize: 12, lineHeight: 1.6 }}>
-    <p style={{ color: muted }}>相对上一版：+{diff.add} 行 · −{diff.del} 行（高亮为本次修改）</p>
-    <pre style={{ whiteSpace: 'pre-wrap', background: darkBg, borderRadius: 6, padding: 8, maxHeight: '40vh', overflow: 'auto', color: text, border: `1px solid ${darkBorder}` }}>
+  if (!diff.changed) return <p className="rr-muted">相对上一版：无内容变化。</p>;
+  return <div className="rr-diff-summary">
+    <p className="rr-muted">相对上一版：+{diff.add} 行 · −{diff.del} 行（高亮为本次修改）</p>
+    <pre className="rr-diff-body">
       {ops.map((o, i) => (o.op === 'same') ? null
-        : <div key={i}><span style={{ color: (o.op === 'del' || o.op === 'delblock') ? '#ff9b9b' : '#9bff9b' }}>{(o.op === 'del' || o.op === 'delblock') ? `- ${o.before ?? ''}` : `+ ${o.after ?? ''}`}</span></div>)}
+        : <div key={i}><span className={(o.op === 'del' || o.op === 'delblock') ? 'rr-diff-delete' : 'rr-diff-insert'}>{(o.op === 'del' || o.op === 'delblock') ? `- ${o.before ?? ''}` : `+ ${o.after ?? ''}`}</span></div>)}
     </pre>
   </div>;
 }
@@ -166,22 +167,36 @@ function Timeline({ value }) {
   const versions = Array.isArray(value?.versions) ? value.versions : [];
   const markdowns = value?.markdowns || {};
   return <><h3>版本历史（report-core 切片 · 自动相邻差异）</h3>
-    <p style={{ color: muted }}>每份报告在灌入 WeKnora 前，先在本地按版本切片展示 V0(LLM 基线)→V1→V2… 及其差异；正文只读，不影响工作稿。</p>
+    <p className="rr-muted">每份报告在灌入 WeKnora 前，先在本地按版本切片展示 V0(LLM 基线)→V1→V2… 及其差异；正文只读，不影响工作稿。</p>
     {!versions.length && <p>暂无版本。</p>}
-    {versions.map(v => <article key={v.versionId} style={{ padding: 8, borderBottom: '1px solid #ddd' }}>
-      <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+    {versions.map(v => <article key={v.versionId} className="rr-record">
+      <div className="rr-row">
         <strong>{v.versionId}</strong>
-        {v.isBaseline && <span style={{ color: muted }}>(LLM 基线)</span>}
-        {v.humanEdited && <span style={{ color: '#7fd6ff' }}>✎ 人工修订</span>}
-        {v.published ? <span style={{ color: '#8fdc8f' }}>● 已提交上传（解析与检索未核验）</span> : <span style={{ color: muted }}>○ 未确认上传</span>}
-        <span style={{ color: muted }}>{v.author?.displayName || ''}{v.completedAt ? ` · ${String(v.completedAt).slice(0, 10)}` : ''}</span>
+        {v.isBaseline && <span className="rr-muted">(LLM 基线)</span>}
+        {v.humanEdited && <span className="rr-info">✎ 人工修订</span>}
+        {v.published ? <span className="rr-success">● 已提交上传（解析与检索未核验）</span> : <span className="rr-muted">○ 未确认上传</span>}
+        <span className="rr-muted">{v.author?.displayName || ''}{v.completedAt ? ` · ${String(v.completedAt).slice(0, 10)}` : ''}</span>
       </div>
       {v.diffFromPrevious && <DiffOps diff={v.diffFromPrevious} />}
-      {typeof markdowns[v.versionId] === 'string' && <details><summary>阅读 {v.versionId} 正文</summary><pre style={{ whiteSpace: 'pre-wrap' }}>{markdowns[v.versionId]}</pre></details>}
+      {typeof markdowns[v.versionId] === 'string' && <details><summary>阅读 {v.versionId} 正文</summary><pre className="rr-pre">{markdowns[v.versionId]}</pre></details>}
     </article>)}
   </>;
 }
-function Workspace({ sessionId, close }) {
+export function Workspace({ sessionId, close, initialMode = 'real' }) {
+  const [mode, setMode] = useState(initialMode);
+  return <WorkspaceContent key={mode} sessionId={sessionId} close={close} mode={mode} onModeChange={setMode} />;
+}
+function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
+  const demo = mode === 'demo';
+  const demoApi = useMemo(() => demo ? createDemoApi(globalThis.localStorage) : null, [demo]);
+  const [stage, setStage] = useState('generation'), [blankTitle, setBlankTitle] = useState('');
+  const dialogRef = useRef(null);
+  const [search, setSearch] = useState(''), [viewMode, setViewMode] = useState('editor'), [focused, setFocused] = useState(false);
+  useEffect(() => {
+    const dialog = dialogRef.current, previous = document.activeElement;
+    dialog.showModal();
+    return () => { dialog.close(); if (previous?.isConnected) previous.focus(); };
+  }, []);
   const [reports, setReports] = useState([]), [draft, setDraft] = useState(null), [text, setText] = useState('');
   const [dirty, setDirty] = useState(false), [status, setStatus] = useState('正在加载'), [error, setError] = useState('');
   const [reportWarnings, setReportWarnings] = useState([]);
@@ -195,9 +210,9 @@ function Workspace({ sessionId, close }) {
     event.preventDefault();
     if (current.current.dirty || saving.current || current.current.busy) return;
     let input; try { input = generationInput({variety,end,analysisPrompt,webSearchEnabled}); } catch(e) { fail(e); return; }
-    current.current.busy = true; setBusy(true); setError(''); setStatus('正在生成周报（5100 数据 · ' + (analysisPrompt.trim() ? '按分析要求由 LLM 分析' : '纯 7 天数据') + (webSearchEnabled ? ' · 联网检索' : '') + '），请稍候');
+    current.current.busy = true; setBusy(true); setError(''); setStatus(demo ? '正在生成演示周报…' : '正在生成周报（5100 数据 · ' + (analysisPrompt.trim() ? '按分析要求由 LLM 分析' : '纯 7 天数据') + (webSearchEnabled ? ' · 联网检索' : '') + '），请稍候');
     try { const result = await request('generate',input); if (!alive.current) return;
-      const d = asDraft(result); adopt(result); setReports(v => [...v.filter(r => r.reportId !== d.reportId), d]); setPreview(null); setPanel(null); setStatus('初稿已生成并保存，请人工审阅；尚未完成或发布');
+      const d = asDraft(result); adopt(result); setReports(v => [...v.filter(r => r.reportId !== d.reportId), d]); setPreview(null); setPanel(null); setStage('editor'); setViewMode('editor'); setStatus(demo ? '演示初稿已生成并保存在此浏览器' : '初稿已生成并保存，请人工审阅；尚未完成或发布');
     } catch(e) { fail(e); } finally { if (alive.current) { current.current.busy = false; setBusy(false); } }
   }
   async function saveTemplate() {
@@ -214,10 +229,21 @@ function Workspace({ sessionId, close }) {
     const t = templates.find(x => x.id === id); if (t) { setTmplId(t.id); setAnalysisPrompt(t.content); setTmplName(t.name || ''); }
   }
   current.current = { draft, text, dirty, busy };
-  const request = (action, data = {}) => api(sessionId, action, data);
+  const request = (action, data = {}) => {
+    if (demo) return demoApi(action, data);
+    if (!sessionId) return Promise.reject(Object.assign(new Error('请先在客户端选择一个会话，或切换本地演示。'), { code: 'SESSION_REQUIRED' }));
+    return api(sessionId, action, data);
+  };
+  const publicationRead = (reportId, name) => demo ? demoApi(name, { reportId }) : readPublication(sessionId, reportId, name);
+  async function createBlank() {
+    if (!blankTitle.trim() || current.current.dirty || saving.current || current.current.busy) return;
+    setBusy(true); setError('');
+    try { const d = asDraft(await request('create', { title: blankTitle.trim(), markdown: '# ' + blankTitle.trim() + '\n', assets: [] })); if (!alive.current) return; adopt(d); setReports(v => [...v, d]); setPanel(null); setStage('editor'); setViewMode('editor'); }
+    catch(e) { fail(e); } finally { if (alive.current) setBusy(false); }
+  }
   const fail = e => { if (alive.current) { setError(`${e.code || 'ERROR'}: ${e.message}`); setStatus(e.code?.toLowerCase().includes('conflict') ? '冲突：本地草稿已保留，请对照远端后处理' : '操作失败，本地草稿保留'); } };
-  function adopt(value) { const d = asDraft(value); if (!d?.reportId || typeof d.markdown !== 'string') throw new Error('Host 未返回有效工作稿'); const sameReport = current.current.draft?.reportId === d.reportId; setReportWarnings(previous => { const received = safeWarnings(value?.warnings, d.warnings); return sameReport ? safeWarnings(previous.map(w => w.code), received.map(w => w.code)) : received; }); revision.current++; current.current = { ...current.current, draft: d, text: d.markdown, dirty: false }; setDraft(d); setText(d.markdown); setDirty(false); setStatus('已保存'); setError(''); }
-  async function load(id) { if (current.current.dirty || saving.current) { setError('请先保存或导出当前脏稿；不会覆盖本地输入。'); return; } setBusy(true); try { const d = await request('get', { reportId: id }); if (alive.current) { adopt(d); setPreview(null); setPanel(null); } } catch(e) { fail(e); } finally { if (alive.current) setBusy(false); } }
+  function adopt(value) { const d = asDraft(value); if (!d?.reportId || typeof d.markdown !== 'string') throw new Error('Host 未返回有效工作稿'); const sameReport = current.current.draft?.reportId === d.reportId; setReportWarnings(previous => { const received = safeWarnings(value?.warnings, d.warnings); return sameReport ? safeWarnings(previous.map(w => w.code), received.map(w => w.code)) : received; }); revision.current++; current.current = { ...current.current, draft: d, text: d.markdown, dirty: false }; setDraft(d); setReports(previous => previous.map(r => r.reportId === d.reportId ? { ...r, title: d.title, status: d.status } : r)); setText(d.markdown); setDirty(false); setStatus('已保存'); setError(''); }
+  async function load(id) { if (current.current.dirty || saving.current) { setError('请先保存或导出当前脏稿；不会覆盖本地输入。'); return; } setBusy(true); try { const d = await request('get', { reportId: id }); if (alive.current) { adopt(d); setPreview(null); setPanel(null); setStage('editor'); setViewMode('editor'); } } catch(e) { fail(e); } finally { if (alive.current) setBusy(false); } }
   async function save() {
     const c = current.current; if (!c.draft || !c.dirty || saving.current || isDraftReadOnly(c.draft, c.busy)) return;
     saving.current = true; const seq = revision.current; setStatus('保存中');
@@ -229,7 +255,7 @@ function Workspace({ sessionId, close }) {
       if (revision.current === seq) { current.current.dirty = false; setDirty(false); setStatus('已保存'); setError(''); } else setStatus('有未保存修改');
     } catch(e) { fail(e); } finally { saving.current = false; }
   }
-  useEffect(() => { alive.current = true; request('list').then(v => alive.current && setReports(rows(v, 'reports'))).catch(fail); request('identity').then(v => alive.current && setIdentity(v)).catch(fail); request('templateList').then(v => alive.current && setTemplates(v?.templates || [])).catch(() => {}); return () => { alive.current = false; previewSerial.current++; }; }, [sessionId]);
+  useEffect(() => { alive.current = true; request('list').then(v => { if (alive.current) { setReports(rows(v, 'reports')); setStatus(demo ? '本地演示已就绪' : '请选择或生成周报'); } }).catch(fail); request('identity').then(v => alive.current && setIdentity(v)).catch(fail); request('templateList').then(v => alive.current && setTemplates(v?.templates || [])).catch(() => {}); return () => { alive.current = false; previewSerial.current++; }; }, [sessionId]);
   useEffect(() => { if (!dirty || error) return; const timer = setTimeout(save, 650); return () => clearTimeout(timer); }, [text, dirty, draft?.saveToken, busy, error]);
   useEffect(() => {
     const timer = setInterval(async () => { const c = current.current; if (!c.draft || c.dirty || saving.current || c.busy) return;
@@ -250,7 +276,7 @@ function Workspace({ sessionId, close }) {
   useEffect(() => { const warn = e => { if (current.current.dirty) { e.preventDefault(); e.returnValue = ''; } }; window.addEventListener('beforeunload', warn); return () => window.removeEventListener('beforeunload', warn); }, []);
   async function action(name, extra = {}) { if (!draft || dirty || saving.current || busy) return; setBusy(true); setError(''); try { const result = await request(name, { reportId: draft.reportId, saveToken: draft.saveToken, ...extra }); if (!alive.current) return;
     if (name === 'startRevision') { adopt(result); setPanel(null); }
-    else if (name === 'confirm') { setStatus('已完成：确认版已冻结，尚未发布'); setPanel({ type: 'versions', value: await request('versions', { reportId: draft.reportId }) }); const d = await request('get', { reportId: draft.reportId }); adopt(d); setStatus('已完成，尚未发布'); }
+    else if (name === 'confirm') { setStatus('确认版已冻结，尚未发布'); setPanel({ type: 'versions', value: await request('versions', { reportId: draft.reportId }) }); const d = await request('get', { reportId: draft.reportId }); adopt(d); setStatus('确认版已冻结，尚未发布'); }
     else if (name === 'saveHumanItems') { const d=await request('get',{reportId:draft.reportId}); if(!alive.current)return; adopt(d); setPanel({type:'humanItems',value:result}); setStatus('人工信息选择已本地保存，尚未独立入库'); }
     else setPanel({ type: name, value: result });
   } catch(e) { fail(e); } finally { if(alive.current) setBusy(false); } }
@@ -258,17 +284,18 @@ function Workspace({ sessionId, close }) {
     const c = current.current;
     if (!c.draft || c.busy || saving.current) return;
     current.current.busy = true; setBusy(true); setError('');
-    try { const result = await readPublication(sessionId, c.draft.reportId, name);
+    try { const result = await publicationRead(c.draft.reportId, name);
       if (!alive.current || current.current.draft?.reportId !== c.draft.reportId) return;
       setPanel({ type:'publicationStatus', value:result });
       setStatus(name === 'reconcile' ? '只读核对已返回；未触发上传，检索仍未核验' : '已读取发布记录；未触发上传');
     } catch(e) { fail(e); } finally { if (alive.current) { current.current.busy = false; setBusy(false); } }
   }
-  async function publishAll() {
+  async function publishAll(event) {
+    if (!event.nativeEvent.isTrusted) { setError('发布必须由人类实际点击'); return; }
     const c = current.current;
-    if (!c.draft || c.busy || saving.current || dirty) return;
+    if (!c.draft || c.busy || saving.current || dirty || c.draft.status !== 'draft' || !identity?.confirmed) return;
     current.current.busy = true; setBusy(true); setError(''); setConfirmPublish(false);
-    setStatus('正在发布到 WeKnora（runzhouwork）…');
+    setStatus(demo ? '正在模拟发布（不上传）…' : '正在发布到 WeKnora（runzhouwork）…');
     try {
       const reportId = c.draft.reportId, saveToken = c.draft.saveToken;
       // 1) 冻结当前草稿为不可变确认版
@@ -284,21 +311,19 @@ function Workspace({ sessionId, close }) {
       // 4) 真正上传到 WeKnora
       await request('publish', { reportId, saveToken, versionId, planId: plan?.planId, digest: plan?.digest, publishToken: plan?.publishToken, userInitiated: true });
       // 5) 只读核对 + 加载确认版正文
-      const reconciled = await readPublication(sessionId, reportId, 'reconcile');
+      const reconciled = await publicationRead(reportId, 'reconcile');
       const d = asDraft(await request('get', { reportId })); if (alive.current) adopt(d);
       setPanel({ type: 'publicationStatus', value: reconciled });
-      setStatus('已提交发布到 WeKnora；上传/解析为异步，请用只读核对确认结果，核验前不标记发布完成。');
+      setStatus(demo ? '模拟发布完成，未上传任何内容。' : '已提交发布到 WeKnora；上传/解析为异步，请用只读核对确认结果，核验前不标记发布完成。');
     } catch(e) { fail(e); } finally { if (alive.current) { current.current.busy = false; setBusy(false); } }
   }
-  // 差异/修订 and 导出工作稿 MD were folded into 版本历史 (which shows the change-diff per version) and the
-  // WeKnora upload path respectively, so their standalone buttons/functions were removed.
   const assetKey = previewAssetKey(preview);
   useEffect(() => {
     let cancelled = false, ownedUrl;
     setPdf(null);
     if (!assetKey) return;
     const controller = new AbortController();
-    hostFetch(preview.pdfUrl, { credentials:'same-origin', signal:controller.signal }).then(async response => {
+    (demo ? request('demoPdf', {reportId: draft.reportId, saveToken: preview.saveToken}).then(bytes => new Response(bytes)) : hostFetch(preview.pdfUrl, { credentials:'same-origin', signal:controller.signal })).then(async response => {
       if (!response.ok) throw new Error(`PDF HTTP ${response.status}`);
       const bytes = await response.arrayBuffer();
       if (new TextDecoder().decode(bytes.slice(0,5)) !== '%PDF-') throw new Error('预览响应不是实际 PDF');
@@ -312,72 +337,118 @@ function Workspace({ sessionId, close }) {
   const warnings = safeWarnings(reportWarnings.map(w => w.code), draft?.warnings, preview?.warnings);
   const verified = identity?.confirmed === true && !!identity?.displayName;
   const versions = panel?.type === 'versions' ? rows(panel.value, 'versions') : [];
-  return <div role="dialog" aria-modal="true" aria-label="周报审阅工作台" style={{ position: 'fixed', inset: '3vh 2vw', zIndex: 10000, background: darkBg, color: text, border: `1px solid ${darkBorder}`, borderRadius: 10, boxShadow: '0 10px 60px #0007', display: 'flex', flexDirection: 'column', padding: 14, gap: 10, colorScheme: 'dark' }}>
-    <header style={{ display:'flex', gap:8, alignItems:'center', flexWrap:'wrap' }}><strong>RUN-19 周报审阅</strong>
-      <select aria-label="选择报告" value={draft?.reportId || ''} disabled={busy || dirty} onChange={e => load(e.target.value)}><option value="">选择报告</option>{reports.map(r => <option key={r.reportId} value={r.reportId}>{r.title || r.reportId}</option>)}</select>
-      <button style={button} disabled={busy || dirty} onClick={async () => { const title = window.prompt('新报告标题'); if (!title) return; setBusy(true); try { const d = asDraft(await request('create', { title, markdown: '# '+title+'\n', assets: [] })); adopt(d); setReports(v => [...v, d]); } catch(e) { fail(e); } finally { setBusy(false); } }}>新建</button>
-      <button style={button} disabled={!dirty || readOnly} onClick={() => { setError(''); save(); }}>保存 / 重试</button>
-      <button style={button} disabled={!draft || dirty || busy} onClick={() => action('timeline')}>版本历史</button>
-      {(draft?.annotations || []).length > 0 && <button style={button} disabled={!draft || dirty || busy} onClick={() => action('humanItems')}>重点人工信息</button>}
-      {!confirmPublish ? (
-        <button style={button} disabled={!draft || dirty || readOnly || !verified} title={!verified ? '知识库身份未确认，不能发布' : ''} onClick={() => setConfirmPublish(true)}>确认发布</button>
-      ) : (
-        <span style={{display:'inline-flex',gap:6,alignItems:'center'}}>
-          <span style={{color:muted}}>将冻结确认版并上传到 WeKnora（runzhouwork）开始分析，确认？</span>
-          <button style={{...button, background:'#1f5c2b', color:'#d7ffd7', borderColor:'#3a8a44'}} disabled={busy} onClick={publishAll}>确认发布</button>
-          <button style={button} disabled={busy} onClick={() => setConfirmPublish(false)}>取消</button>
-        </span>
-      )}
-      <button style={button} disabled={draft?.status !== 'confirmed' || dirty || busy} onClick={() => action('startRevision')}>开启新一轮修订</button>
-      {!confirmClose ? (
-        <button style={{...button, marginLeft:'auto'}} onClick={() => { if (!dirty && !saving.current) close(); else setConfirmClose(true); }}>关闭</button>
-      ) : (
-        <span style={{display:'inline-flex',gap:6,marginLeft:'auto'}}>
-          <span style={{color:muted}}>有未保存修改，放弃将丢失未保存的临时文档。</span>
-          <button style={{...button, background:'#5c1f28', color:'#ffd7d7', borderColor:'#a33'}} onClick={() => { setConfirmClose(false); close(); }}>放弃并关闭</button>
-          <button style={button} onClick={() => setConfirmClose(false)}>取消</button>
-        </span>
-      )}
+  const visibleReports = reports.filter(r => (r.title || r.reportId).toLowerCase().includes(search.trim().toLowerCase()));
+  const requestClose = () => { if (busy || saving.current) return; if (dirty) setConfirmClose(true); else close(); };
+  return <dialog ref={dialogRef} aria-label="周报审阅工作台" className="rr-workspace" data-focus={focused && stage === 'editor'} data-stage={stage} data-mode={mode} onCancel={event => { event.preventDefault(); requestClose(); }}>
+    <style>{workspaceCss}</style>
+    <header className="rr-header">
+      <strong className="rr-app-title">周报工作台</strong>
+      <div className="rr-steps" role="group" aria-label="工作流程"><button className="rr-button" aria-pressed={stage === 'generation'} onClick={() => { setStage('generation'); setFocused(false); }}>1 生成与分析</button><button className="rr-button" disabled={!draft} aria-pressed={stage === 'editor'} onClick={() => setStage('editor')}>2 正文编辑</button></div>
+      <button className="rr-button rr-mode-switch" disabled={busy || dirty} onClick={() => { if (!saving.current) onModeChange(demo ? 'real' : 'demo'); }}>{demo ? '切换真实模式' : '体验演示数据'}</button>
+      <button className="rr-button" hidden={stage !== 'editor'} aria-pressed={focused} onClick={() => setFocused(v => !v)}>{focused ? '退出专注' : '专注正文'}</button>
+      <button className="rr-button" disabled={busy} onClick={requestClose}>关闭</button>
     </header>
-    <form onSubmit={generate} style={{display:'flex',gap:10,alignItems:'center',flexWrap:'wrap'}} aria-label="生成周报参数">
-      <label>商品 <input aria-label="商品" value={variety} disabled={busy} onChange={e => setVariety(e.target.value)} style={{width:90}} required /></label>
+    {demo && <div className="rr-demo-banner" role="note">本地演示 · 数据与分析均为模拟样例，保存在此浏览器；不连接数据库，不调用 AI，不上传知识库。</div>}
+    <div className="rr-layout">
+      <nav className="rr-sidebar" aria-label="周报档案">
+        <div className="rr-section-heading"><h2>研究档案</h2><span className="rr-badge">{reports.length}</span></div>
+        <button className="rr-button rr-button--primary" disabled={busy || dirty} onClick={() => { setStage('generation'); setFocused(false); }}>＋ 新建周报</button>
+        <input aria-label="搜索报告" placeholder="搜索报告…" type="search" value={search} onChange={e => setSearch(e.target.value)} />
+        <div className="rr-report-list">{visibleReports.map(r => <button className="rr-report-item" key={r.reportId} aria-current={draft?.reportId === r.reportId ? 'page' : undefined} disabled={busy || dirty} onClick={() => load(r.reportId)}><strong>{r.title || r.reportId}</strong><span>{r.status === 'confirmed' ? '已确认版本' : '研究草稿'}</span></button>)}
+          {!visibleReports.length && <p className="rr-empty">{search ? '没有匹配的报告' : '暂无报告，新建一份开始研究。'}</p>}</div>
+        <p className="rr-sidebar-note">从本周数据出发，留下判断与依据。<br/>保存后可切换报告。</p>
+      </nav>
+      <main className="rr-main">
+
+        <section className="rr-generation-stage" aria-label="生成与分析" hidden={stage !== 'generation'}><header><h1>生成周报</h1><p className="rr-muted">先确定品种、截止日期和分析要求。生成后进入正文编辑，已有报告不会被覆盖。</p></header>
+    <form onSubmit={generate} className="rr-generation-form" aria-label="生成周报参数">
+      <label>商品 <input aria-label="商品" value={variety} disabled={busy} onChange={e => setVariety(e.target.value)} className="rr-commodity-input" required /></label>
       <label>截止日期 <input aria-label="截止日期" type="date" value={end} disabled={busy} onChange={e => setEnd(e.target.value)} required /></label>
       <label><input type="checkbox" checked={webSearchEnabled} disabled={busy} onChange={e => setWebSearchEnabled(e.target.checked)} />联网检索（新闻/外部信源）</label>
-      <label style={{display:'block'}}>分析要求（可选，可用下方模板，也可直接增删章节）</label>
-      <span style={{display:'inline-flex',gap:6,alignItems:'center',width:'100%',flexWrap:'wrap'}}>
-        <select aria-label="选择模板" value={tmplId} disabled={busy} onChange={e => loadTemplate(e.target.value)} style={{font:'inherit',padding:'2px 4px'}}>
+      <label className="rr-label">分析要求（可选，可用下方模板，也可直接增删章节）</label>
+      <span className="rr-template-tools">
+        <select aria-label="选择模板" value={tmplId} disabled={busy} onChange={e => loadTemplate(e.target.value)} className="rr-template-select">
           <option value="">默认模板</option>
           {templates.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
         </select>
-        <input aria-label="模板名称" placeholder="模板名称（可留空）" value={tmplName} onChange={e => setTmplName(e.target.value)} disabled={busy} style={{width:150,font:'inherit',padding:'2px 4px'}} />
-        <button type="button" style={button} disabled={busy || !analysisPrompt.trim()} onClick={saveTemplate}>保存为模板</button>
-        {tmplId && <button type="button" style={button} disabled={busy} onClick={async () => { try { const r = await request('templateDelete', { id: tmplId }); if (r?.deleted && alive.current) { setTemplates(v => v.filter(t => t.id !== tmplId)); setTmplId(''); setTmplName(''); } } catch(e) { fail(e); } }}>删除模板</button>}
+        <input aria-label="模板名称" placeholder="模板名称（可留空）" value={tmplName} onChange={e => setTmplName(e.target.value)} disabled={busy} className="rr-template-name" />
+        <button type="button" className="rr-button" disabled={busy || !analysisPrompt.trim()} onClick={saveTemplate}>保存为模板</button>
+        {tmplId && <button type="button" className="rr-button" disabled={busy} onClick={async () => { try { const r = await request('templateDelete', { id: tmplId }); if (r?.deleted && alive.current) { setTemplates(v => v.filter(t => t.id !== tmplId)); setTmplId(''); setTmplName(''); } } catch(e) { fail(e); } }}>删除模板</button>}
       </span>
-      <textarea aria-label="分析要求（可选）" value={analysisPrompt} disabled={busy} onChange={e => setAnalysisPrompt(e.target.value)} rows={3} style={{display:'block',width:'100%',minHeight:56,boxSizing:'border-box',font:'inherit',resize:'vertical'}} placeholder="留空则仅按 7 天数据出周报。需要结合历史周报时写清要求，如“请结合近四周同品类周报做连续性梳理”；也可只写“补充多空逻辑”“分析供需结构”等。" />
-      <button style={button} type="submit" disabled={busy || dirty}>生成周报</button>
+      <textarea aria-label="分析要求（可选）" value={analysisPrompt} disabled={busy} onChange={e => setAnalysisPrompt(e.target.value)} rows={12} className="rr-prompt" placeholder="留空则仅按 7 天数据出周报。需要结合历史周报时写清要求，如“请结合近四周同品类周报做连续性梳理”；也可只写“补充多空逻辑”“分析供需结构”等。" />
+      <button className="rr-button rr-button--primary" type="submit" disabled={busy || dirty || (!demo && !sessionId)}>{demo ? '生成演示周报' : '生成周报'}</button>
     </form>
-    <div role="status">{status} · {dirty ? '未保存，PDF 为旧预览' : synced && pdf ? 'PDF 已同步' : preview?.status === 'failed' ? 'PDF 生成失败' : 'PDF 旧预览 / 等待生成'} · {verified ? `审核署名：${identity.displayName}` : '知识库身份未确认，禁止完成；不会使用默认 admin'}</div>
-    {draft?.status === 'confirmed' && <div role="note">此稿已确认并冻结，正文只读。请点击“开启新一轮修订”后再编辑，不会直接修改确认版。</div>}
+        <section className="rr-blank-create"><h2>或从空白正文开始</h2><div className="rr-row"><input aria-label="空白报告标题" placeholder="输入报告标题" value={blankTitle} onChange={e => setBlankTitle(e.target.value)} /><button type="button" className="rr-button" disabled={busy || dirty || !blankTitle.trim() || (!demo && !sessionId)} onClick={createBlank}>创建空白报告</button></div></section>
+        </section>
+        <section className="rr-editor-stage" hidden={stage !== 'editor'}>
+        <header className="rr-report-header"><span className="rr-eyebrow">WEEKLY RESEARCH</span><h1>{draft?.title || '开始本周研究'}</h1><div className="rr-row"><span className="rr-badge">{draft?.status === 'confirmed' ? '已确认 · 只读' : dirty ? '待保存' : draft ? '研究草稿' : '未选择报告'}</span><span className="rr-muted">先看结论，再核对证据</span></div></header>
+        <div className="rr-toolbar" role="group" aria-label="文档视图"><button className="rr-button" aria-pressed={viewMode === 'editor'} onClick={() => setViewMode('editor')}>正文编辑</button><button className="rr-button" aria-pressed={viewMode === 'pdf'} onClick={() => setViewMode('pdf')}>版式 / PDF</button><button className="rr-button rr-button--primary rr-push" disabled={!dirty || readOnly} onClick={() => { setError(''); save(); }}>保存 / 重试</button></div>
+        <section className="rr-canvas" aria-label="报告正文" hidden={viewMode !== 'editor'}>{draft ? <Editor value={text} readOnly={readOnly} onChange={value => { if (isDraftReadOnly(current.current.draft, current.current.busy)) return; revision.current++; current.current.dirty = true; current.current.text = value; setText(value); setDirty(true); setStatus('有未保存修改'); }} /> : <div className="rr-welcome"><span className="rr-eyebrow">本周的判断，从这里开始</span><h2>把数据整理成有依据的观点</h2><p>从左侧打开已有报告，或新建周报后使用上方设置生成初稿。</p><p className="rr-muted">生成初稿 → 人工审阅 → 确认版本 → 发布与核对</p></div>}</section>
+        <section className="rr-pdf" aria-label="报告版式" hidden={viewMode !== 'pdf'}>{pdf ? <><a href={pdf.url} target="_blank" rel="noreferrer" download={demo ? "demo-weekly-report.pdf" : undefined}>{demo ? "下载演示 PDF（模拟数据）" : "下载 / 打开当前 PDF"}{!synced ? '（旧预览）' : ''}</a><object aria-label="实际 PDF 预览" data={pdf.url} type="application/pdf" className="rr-pdf-object"><a href={pdf.url} target="_blank" rel="noreferrer">浏览器无法内嵌 PDF，请打开实际 PDF</a></object></> : <p className="rr-empty">尚无可用实际 PDF，保存后等待预览生成。</p>}</section>
+        </section>
+      </main>
+      <aside className="rr-inspector" aria-label="审阅与交付" hidden={stage !== 'editor'}>
+        <div className="rr-section-heading"><h2>审阅与交付</h2><span className="rr-badge">{warnings.length} 项提示</span></div>
+        <section className="rr-review-card"><span className="rr-eyebrow">当前版本</span><h3>{draft?.status === 'confirmed' ? '内容已冻结' : '保留你的专业判断'}</h3><p>{draft?.status === 'confirmed' ? '确认稿只读。后续修改请开启新修订。' : '核对数据口径、引用材料与推理，再确认本期版本。'}</p><div className="rr-action-stack">
+          <button className="rr-button" disabled={!draft || dirty || busy} onClick={() => action('timeline')}>版本历史与差异</button>
+          {(draft?.annotations || []).length > 0 && <button className="rr-button" disabled={dirty || busy} onClick={() => action('humanItems')}>重点人工信息</button>}
+          <button className="rr-button rr-button--primary" disabled={!draft || dirty || readOnly || !verified} onClick={() => setConfirmPublish(true)}>{demo ? '模拟确认发布' : '确认发布'}</button>
+          <button className="rr-button" disabled={!draft || dirty || readOnly || !verified} onClick={() => action('confirm')}>仅确认版本</button>
+          {confirmPublish && <div className="rr-notice"><p>{demo ? '将冻结演示版本并模拟发布，全程不上传。' : '将冻结当前正文并上传到 WeKnora，是否继续？'}</p><button className="rr-button rr-button--primary" disabled={busy || dirty || readOnly || !verified} onClick={publishAll}>{demo ? '确认模拟发布' : '确认发布并上传'}</button> <button className="rr-button" disabled={busy} onClick={() => setConfirmPublish(false)}>取消</button></div>}
+          <button className="rr-button" disabled={draft?.status !== 'confirmed' || dirty || busy} onClick={() => action('versions')}>查看确认版 / 准备发布</button>
+          <button className="rr-button" disabled={draft?.status !== 'confirmed' || dirty || busy} onClick={() => action('startRevision')}>开启新一轮修订</button>
+          <button className="rr-button" disabled={!draft || busy} onClick={() => showPublication()}>发布记录 / 只读核对</button>
+        </div><p className="rr-muted">{verified ? '审核署名：' + identity.displayName : '知识库身份未确认，暂不能确认版本。'}</p></section>
     {warnings.length > 0 && <section aria-label="审阅注意事项" role="status"><strong>注意事项</strong><ul>{warnings.map(w => <li key={w.code}><code>{w.code}</code>：{w.message}</li>)}</ul></section>}
     {draft?.retrieval && <section aria-label="检索理解" role="note"><strong>检索理解（我理解为——用以核对有没有理解错）</strong><ul>
       <li>范围：类型 {draft.retrieval.scope?.kind || '-'}；近 {draft.retrieval.scope?.weeksBack || 0} 周；路径 {draft.retrieval.scope?.folderPath || '（未限定）'}；检索词 [{(draft.retrieval.scope?.queries || []).join('、')}]</li>
       <li>实际引用 {draft.retrieval.used?.length || 0} 份知识库材料：{(draft.retrieval.used || []).map(u => u.title).join('、')}</li>
       {draft.retrieval.verification?.applied ? <li>核验：{draft.retrieval.verification.onTopic ? '贴合本意' : '可能不贴合本意'} {draft.retrieval.verification.gaps?.length ? `；缺：${draft.retrieval.verification.gaps.join('；')}` : ''} {draft.retrieval.verification.skipped?.length ? `；已剔除：${draft.retrieval.verification.skipped.join('、')}` : ''}{draft.retrieval.verification.note ? `；${draft.retrieval.verification.note}` : ''}</li> : null}
     </ul></section>}
-    {error && <div role="alert" style={{color:'#ff8f8f',whiteSpace:'pre-wrap'}}>{error}</div>}
-    <main style={{flex:1,minHeight:0,display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}><section style={{minHeight:0,border:`1px solid ${darkBorder}`,background:'#232b37'}}>{draft ? <Editor value={text} readOnly={readOnly} onChange={value => { if (isDraftReadOnly(current.current.draft, current.current.busy)) return; revision.current++; current.current.dirty = true; current.current.text = value; setText(value); setDirty(true); setStatus('有未保存修改'); }} /> : <p>选择或新建报告。生成器与 Agent 共用本工作稿。</p>}</section><section style={{display:'flex',flexDirection:'column',minHeight:0}}>{pdf ? <><a href={pdf.url} target="_blank" rel="noreferrer" download>下载 / 打开当前 PDF{!synced ? '（旧预览）' : ''}</a><object aria-label="实际 PDF 预览" data={pdf.url} type="application/pdf" style={{width:'100%',flex:1,minHeight:0}}><a href={pdf.url} target="_blank" rel="noreferrer">浏览器无法内嵌 PDF，请打开实际 PDF</a></object></> : <p>尚无可用实际 PDF。不以 HTML 预览替代 PDF。</p>}</section></main>
-    {panel && <section style={{borderTop:`1px solid ${darkBorder}`,maxHeight:'45vh',overflow:'auto',background:darkPanel,padding:8}}><button style={button} onClick={() => setPanel(null)}>关闭详情</button>
+
+    {panel && <section className="rr-detail"><button className="rr-button" onClick={() => setPanel(null)}>关闭详情</button>
       {panel.type === 'humanItems' && <HumanItemsPanel key={`${draft?.reportId}:${panel.value?.saveToken}`} value={panel.value} readOnly={readOnly || dirty || panel.value?.status!=='draft'} onSave={(items,saveToken)=>action('saveHumanItems',{items,saveToken})}/>}
-      {panel.type === 'timeline' && <button style={button} disabled={busy} onClick={() => showPublication('publicationStatus')}>发布记录</button>}
-      {panel.type === 'diff' && <><p>左：本轮基线；右：当前稿。无法确定基线时仅展示审计记录，不伪造差异。</p>{typeof (panel.value?.baselineMarkdown ?? draft?.baselineMarkdown) === 'string' ? <Diff before={panel.value?.baselineMarkdown ?? draft.baselineMarkdown} after={text} /> : <p>Host 尚未提供 baselineMarkdown。</p>}<pre style={{whiteSpace:'pre-wrap'}}>{JSON.stringify(panel.value,null,2)}</pre></>}
-      {panel.type === 'versions' && <><h3>确认版本（不可变）</h3>{versions.map(v => <div key={v.versionId} style={{padding:8,borderBottom:'1px solid #ddd'}}><strong>{v.versionId} {v.title}</strong> <button style={button} disabled={busy || dirty} onClick={() => action('publishPlan', {versionId:v.versionId})}>查看此版本发布清单</button>{typeof v.markdown === 'string' && <details><summary>阅读版本正文</summary><pre style={{whiteSpace:'pre-wrap'}}>{v.markdown}</pre></details>}</div>)}</>}
+      {panel.type === 'diff' && <><p>左：本轮基线；右：当前稿。无法确定基线时仅展示审计记录，不伪造差异。</p>{typeof (panel.value?.baselineMarkdown ?? draft?.baselineMarkdown) === 'string' ? <Diff before={panel.value?.baselineMarkdown ?? draft.baselineMarkdown} after={text} /> : <p>Host 尚未提供 baselineMarkdown。</p>}<pre className="rr-pre">{JSON.stringify(panel.value,null,2)}</pre></>}
+      {panel.type === 'versions' && <><h3>确认版本（不可变）</h3>{versions.map(v => <div key={v.versionId} className="rr-record"><strong>{v.versionId} {v.title}</strong> <button className="rr-button" disabled={busy || dirty} onClick={() => action('publishPlan', {versionId:v.versionId})}>查看此版本发布清单</button>{typeof v.markdown === 'string' && <details><summary>阅读版本正文</summary><pre className="rr-pre">{v.markdown}</pre></details>}</div>)}</>}
+      {panel.type === 'timeline' && <button className="rr-button" disabled={busy} onClick={() => showPublication('publicationStatus')}>发布记录</button>}
       {panel.type === 'timeline' && <Timeline value={panel.value} />}
-      {panel.type === 'publishPlan' && <><h3>发布清单：{panel.value?.versionId}</h3><p>仅以下按钮会发出 publish 请求。请核对正文、图片、公开信息及知识库身份。</p><pre style={{whiteSpace:'pre-wrap'}}>{JSON.stringify(panel.value,null,2)}</pre><button style={button} disabled={busy || dirty || !verified} onClick={event => { if (!event.nativeEvent.isTrusted) { setError('发布必须由人类实际点击'); return; } action('publish', { versionId:panel.value?.versionId, planId:panel.value?.planId, digest:panel.value?.digest, publishToken:panel.value?.publishToken, userInitiated:true }); }}>发布此确认版至 WeKnora</button></>}
-      {panel.type === 'publish' && <><h3>发布回执</h3><p>{publicationStateText(panel.value)}</p><p>已提交并不等于完成。请用只读核对查看状态；此按钮不会再次调用发布。</p><button style={button} disabled={busy} onClick={() => showPublication('reconcile')}>只读核对</button>{' '}<button style={button} disabled={busy} onClick={() => showPublication('publicationStatus')}>查看发布记录</button><pre style={{whiteSpace:'pre-wrap'}}>{JSON.stringify(panel.value,null,2)}</pre></>}
+      {panel.type === 'publishPlan' && <><h3>发布清单：{panel.value?.versionId}</h3><p>仅以下按钮会发出 publish 请求。请核对正文、图片、公开信息及知识库身份。</p><pre className="rr-pre">{JSON.stringify(panel.value,null,2)}</pre><button className="rr-button" disabled={busy || dirty || !verified} onClick={event => { if (!event.nativeEvent.isTrusted) { setError('发布必须由人类实际点击'); return; } action('publish', { versionId:panel.value?.versionId, planId:panel.value?.planId, digest:panel.value?.digest, publishToken:panel.value?.publishToken, userInitiated:true }); }}>{demo ? '模拟发布此确认版' : '发布此确认版至 WeKnora'}</button></>}
+      {panel.type === 'publish' && <><h3>{demo ? '模拟发布回执（未上传）' : '发布回执'}</h3><p>{publicationStateText(panel.value)}</p><p>已提交并不等于完成。请用只读核对查看状态；此按钮不会再次调用发布。</p><button className="rr-button" disabled={busy} onClick={() => showPublication('reconcile')}>只读核对</button>{' '}<button className="rr-button" disabled={busy} onClick={() => showPublication('publicationStatus')}>查看发布记录</button><pre className="rr-pre">{JSON.stringify(panel.value,null,2)}</pre></>}
       {panel.type === 'publicationStatus' && <PublicationRecords value={panel.value} busy={busy} onRead={showPublication} />}
     </section>}
-  </div>;
+      </aside>
+    </div>
+    <footer className="rr-status" role="status">{demo ? '演示模式 · ' : ''}{status} · {dirty ? '未保存，PDF 为旧预览' : synced && pdf ? 'PDF 已同步' : preview?.status === 'failed' ? 'PDF 生成失败' : 'PDF 等待生成 / 旧预览'}</footer>
+    {error && <div className="rr-error" role="alert">{error}</div>}
+    {confirmClose && <section className="rr-close-confirm" role="alert"><p>有未保存修改，放弃后将丢失这些内容。</p><button className="rr-button rr-button--danger" onClick={close}>放弃并关闭</button> <button className="rr-button" onClick={() => setConfirmClose(false)}>返回编辑</button></section>}
+  </dialog>;
 }
-function HeaderAction({ sessionId }) { const [open,setOpen] = useState(false); return <><button style={button} onClick={() => setOpen(true)}>生成周报</button>{open && <Workspace key={sessionId} sessionId={sessionId} close={() => setOpen(false)} />}</>; }
+
+// The footer owns only a trigger. The root shell owns the single workspace overlay.
+export function createWorkspaceController() {
+  let value = null;
+  const listeners = new Set();
+  return {
+    snapshot: () => value,
+    subscribe: listener => { listeners.add(listener); return () => listeners.delete(listener); },
+    open: sessionId => { if (value) return; value = { sessionId }; for (const listener of listeners) listener(); },
+    close: () => { value = null; for (const listener of listeners) listener(); }
+  };
+}
+export function WorkspaceOverlay({ controller }) {
+  const opened = useSyncExternalStore(controller.subscribe, controller.snapshot, controller.snapshot);
+  return <><style>{workspaceCss}</style>{opened && <Workspace sessionId={opened.sessionId} close={controller.close} />}</>;
+}
+export function RegisteredTrigger({ controller, sessionId, getSessionId, renderTrigger, footer = false, wide = true }) {
+  const opened = useSyncExternalStore(controller.subscribe, controller.snapshot, controller.snapshot);
+  const onClick = () => controller.open(sessionId || getSessionId?.() || null);
+  return renderTrigger({ footer, wide, opened: !!opened, onClick });
+}
 export const inject = ['slots'];
-export function apply(ctx) { ctx.slots.inject('conversation.session.header.actions', () => ctx.slots.register({ name:'conversation.session.header.actions', id:'report-review', order:30 }, HeaderAction)); }
+export function apply(ctx, renderTrigger) {
+  const controller = createWorkspaceController();
+  const triggerProps = () => ({ controller, renderTrigger, getSessionId: () => ctx.get('sessions')?.list.getSnapshot().current ?? null });
+  ctx.slots.inject('conversation.session.header.actions', () => ctx.slots.register({ name:'conversation.session.header.actions', id:'report-review', order:30, inject:triggerProps }, RegisteredTrigger));
+  ctx.slots.inject('sidebar.footer.action', () => ctx.slots.register({ name:'sidebar.footer.action', id:'report-review', label:'周报工作台', order:15, inject: () => ({ ...triggerProps(), footer:true }) }, RegisteredTrigger));
+  ctx.slots.inject('shell.overlay', () => ctx.slots.register({ name:'shell.overlay', id:'report-review', order:30, inject: () => ({ controller }) }, WorkspaceOverlay));
+}
