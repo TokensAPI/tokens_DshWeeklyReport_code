@@ -94,6 +94,44 @@ export function PublicationRecords({ value, busy, onRead }) {
     </article>)}
   </>;
 }
+export function SettingsPanel({ request, onClose }) {
+  const [view, setView] = useState(null);
+  const [form, setForm] = useState({ baseUrl: '', kbId: '', readKey: '', writeKey: '' });
+  const [state, setState] = useState({ busy: true, note: '', error: '' });
+  const adopt = v => { setView(v); setForm(f => ({ ...f, baseUrl: v?.baseUrl || '', kbId: v?.kbId || '', readKey: '', writeKey: '' })); };
+  useEffect(() => {
+    let cancelled = false;
+    request('settingsGet').then(v => { if (!cancelled) { adopt(v); setState({ busy: false, note: '', error: '' }); } })
+      .catch(e => { if (!cancelled) setState({ busy: false, note: '', error: e.code === 'SETTINGS_UNAVAILABLE' ? '当前 Host 版本不支持可视化设置，请升级插件后完全重启。' : (e.message || '读取设置失败') }); });
+    return () => { cancelled = true; };
+  }, []);
+  const save = async () => {
+    setState({ busy: true, note: '', error: '' });
+    try {
+      const settings = { baseUrl: form.baseUrl.trim(), kbId: form.kbId.trim() };
+      if (form.readKey.trim()) settings.readKey = form.readKey.trim();
+      if (form.writeKey.trim()) settings.writeKey = form.writeKey.trim();
+      const v = await request('settingsSave', { settings });
+      adopt(v);
+      setState({ busy: false, error: '', note: v?.connectorActive ? '已保存，WeKnora 连接已生效（无需重启）。' : `已保存，但连接未激活：${v?.connectorError === 'INCOMPLETE' ? '还需补全地址、知识库 ID 或读取密钥。' : v?.connectorError || '配置不完整。'}` });
+    } catch (e) { setState({ busy: false, note: '', error: e.code === 'SETTINGS_INVALID' ? '有字段不合法：地址须为 http(s) URL（http 仅限本机回环），知识库 ID 只能包含字母数字、下划线和横线，密钥不能含换行。' : (e.message || '保存失败') }); }
+  };
+  const field = (key, value) => setForm(f => ({ ...f, [key]: value }));
+  return <section className="rr-settings" role="dialog" aria-label="连接设置">
+    <div className="rr-settings-card">
+      <div className="rr-section-heading"><h2>连接设置</h2><span className="rr-badge">{view?.connectorActive ? 'WeKnora 已连接' : '未连接'}</span></div>
+      {view?.managedByHost && <p className="rr-muted">部分配置由环境变量 / Profile 管理，此处修改仅补充未被其覆盖的项。</p>}
+      <label>WeKnora 地址<input aria-label="WeKnora 地址" placeholder="https://weknora.example.internal 或 http://127.0.0.1:8080" value={form.baseUrl} disabled={state.busy} onChange={e => field('baseUrl', e.target.value)} /></label>
+      <label>知识库 ID<input aria-label="知识库 ID" placeholder="检索与发布使用的知识库 ID" value={form.kbId} disabled={state.busy} onChange={e => field('kbId', e.target.value)} /></label>
+      <label>读取密钥{view?.readKeySet && <span className="rr-muted">（已保存，留空保持不变）</span>}<input aria-label="读取密钥" type="password" autoComplete="off" placeholder={view?.readKeySet ? '••••••（留空不修改）' : '用于检索的 API Key'} value={form.readKey} disabled={state.busy} onChange={e => field('readKey', e.target.value)} /></label>
+      <label>发布密钥{view?.writeKeySet && <span className="rr-muted">（已保存，留空保持不变）</span>}<input aria-label="发布密钥" type="password" autoComplete="off" placeholder={view?.writeKeySet ? '••••••（留空不修改）' : '用于发布的 API Key，可留空（只读）'} value={form.writeKey} disabled={state.busy} onChange={e => field('writeKey', e.target.value)} /></label>
+      <p className="rr-muted">密钥保存为本机受限文件，不写入任何配置或补丁；界面不回显密钥内容。发布密钥须与读取密钥不同。</p>
+      {state.note && <p className="rr-settings-note" role="status">{state.note}</p>}
+      {state.error && <p className="rr-settings-error" role="alert">{state.error}</p>}
+      <div className="rr-row"><button className="rr-button rr-button--primary" disabled={state.busy} onClick={save}>保存并生效</button><button className="rr-button" disabled={state.busy} onClick={onClose}>关闭</button></div>
+    </div>
+  </section>;
+}
 const asDraft = v => v?.draft || v?.workingDraft || v;
 const rows = (v, key) => Array.isArray(v) ? v : v?.[key] || [];
 const markdownHighlight = syntaxHighlighting(HighlightStyle.define([
@@ -227,6 +265,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
   const [templates,setTemplates] = useState([]), [tmplId,setTmplId] = useState(''), [tmplName,setTmplName] = useState('');
   const [confirmClose, setConfirmClose] = useState(false);
   const [confirmPublish, setConfirmPublish] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const current = useRef({}), alive = useRef(true), saving = useRef(false), revision = useRef(0), previewSerial = useRef(0);
   async function generate(event) {
     event.preventDefault();
@@ -369,6 +408,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
     <header className="rr-header">
       <strong className="rr-app-title">周报工作台</strong>
       <div className="rr-steps" role="group" aria-label="工作流程"><button className="rr-button" aria-pressed={stage === 'generation'} onClick={() => { setStage('generation'); setFocused(false); }}>1 生成与分析</button><button className="rr-button" disabled={!draft} aria-pressed={stage === 'editor'} onClick={() => setStage('editor')}>2 可视化编辑</button></div>
+      <button className="rr-button" disabled={busy || demo} title={demo ? '演示模式不含连接设置' : 'WeKnora 连接与密钥'} aria-haspopup="dialog" onClick={() => setSettingsOpen(true)}>⚙ 设置</button>
       <button className="rr-button rr-mode-switch" disabled={busy || dirty} onClick={() => { if (!saving.current) onModeChange(demo ? 'real' : 'demo'); }}>{demo ? '切换真实模式' : '体验演示数据'}</button>
       <button className="rr-button" hidden={stage !== 'editor'} aria-pressed={focused} onClick={() => setFocused(v => !v)}>{focused ? '退出专注' : '专注正文'}</button>
       <button className="rr-button" disabled={busy} onClick={requestClose}>关闭</button>
@@ -444,6 +484,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
     <footer className="rr-status" role="status">{demo ? '演示模式 · ' : ''}{status} · {dirty ? '未保存，PDF 为旧预览' : synced && pdf ? 'PDF 已同步' : preview?.status === 'failed' ? 'PDF 生成失败' : 'PDF 等待生成 / 旧预览'}</footer>
     {error && <div className="rr-error" role="alert">{error}</div>}
     {confirmClose && <section className="rr-close-confirm" role="alert"><p>有未保存修改，放弃后将丢失这些内容。</p><button className="rr-button rr-button--danger" onClick={close}>放弃并关闭</button> <button className="rr-button" onClick={() => setConfirmClose(false)}>返回编辑</button></section>}
+    {settingsOpen && !demo && <SettingsPanel request={request} onClose={() => { setSettingsOpen(false); request('identity').then(v => alive.current && setIdentity(v)).catch(() => {}); }} />}
   </dialog>;
 }
 

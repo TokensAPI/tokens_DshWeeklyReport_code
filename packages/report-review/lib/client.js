@@ -24209,6 +24209,7 @@ __export(entry_exports, {
   PublicationRecords: () => PublicationRecords,
   RegisteredTrigger: () => RegisteredTrigger,
   ReportTrigger: () => ReportTrigger,
+  SettingsPanel: () => SettingsPanel,
   Workspace: () => Workspace,
   WorkspaceOverlay: () => WorkspaceOverlay,
   acceptsPreview: () => acceptsPreview,
@@ -50851,6 +50852,16 @@ var workspace_default = `/* Local aliases consume the TokensAPI contract; never 
 .rr-workspace .bn-block-content[data-content-type="quote"] { border-left: 3px solid var(--rr-accent); padding-inline-start: 16px; }\r
 .rr-workspace .bn-block-content[data-content-type="codeBlock"] { overflow-x: auto; }\r
 .rr-demo-banner .rr-button { margin-left: 12px; min-height: 30px; padding-block: 4px; }\r
+
+/* Connection settings modal: centered card above the workspace, same tokens as the rest of the UI. */
+.rr-settings { position: absolute; inset: 0; z-index: 30; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--rr-text) 24%, transparent); }
+.rr-settings-card { width: min(520px, calc(100vw - 48px)); max-height: calc(100vh - 96px); overflow: auto; padding: 24px; background: var(--rr-paper); border: 1px solid var(--rr-border); border-radius: 12px; box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25); }
+.rr-settings-card label { display: block; margin: 12px 0 0; font-size: 13px; color: var(--rr-text); }
+.rr-settings-card label .rr-muted { font-size: 12px; margin-left: 6px; }
+.rr-settings-card input { display: block; width: 100%; margin-top: 6px; padding: 8px 10px; border: 1px solid var(--rr-border); border-radius: 6px; color: var(--rr-text); background: var(--rr-paper); }
+.rr-settings-card .rr-row { margin-top: 16px; display: flex; gap: 8px; }
+.rr-settings-note { color: var(--rr-success); font-size: 13px; margin: 10px 0 0; }
+.rr-settings-error { color: var(--rr-danger); font-size: 13px; margin: 10px 0 0; white-space: pre-wrap; }
 `;
 
 // packages/report-review/src/block-editor.jsx
@@ -114696,6 +114707,75 @@ function PublicationRecords({ value, busy, onRead }) {
     ] }, `${recordText(r4.planId)}-${index4}`))
   ] });
 }
+function SettingsPanel({ request, onClose }) {
+  const [view, setView] = (0, import_react158.useState)(null);
+  const [form, setForm] = (0, import_react158.useState)({ baseUrl: "", kbId: "", readKey: "", writeKey: "" });
+  const [state, setState] = (0, import_react158.useState)({ busy: true, note: "", error: "" });
+  const adopt = (v) => {
+    setView(v);
+    setForm((f2) => ({ ...f2, baseUrl: v?.baseUrl || "", kbId: v?.kbId || "", readKey: "", writeKey: "" }));
+  };
+  (0, import_react158.useEffect)(() => {
+    let cancelled = false;
+    request("settingsGet").then((v) => {
+      if (!cancelled) {
+        adopt(v);
+        setState({ busy: false, note: "", error: "" });
+      }
+    }).catch((e6) => {
+      if (!cancelled) setState({ busy: false, note: "", error: e6.code === "SETTINGS_UNAVAILABLE" ? "\u5F53\u524D Host \u7248\u672C\u4E0D\u652F\u6301\u53EF\u89C6\u5316\u8BBE\u7F6E\uFF0C\u8BF7\u5347\u7EA7\u63D2\u4EF6\u540E\u5B8C\u5168\u91CD\u542F\u3002" : e6.message || "\u8BFB\u53D6\u8BBE\u7F6E\u5931\u8D25" });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  const save = async () => {
+    setState({ busy: true, note: "", error: "" });
+    try {
+      const settings = { baseUrl: form.baseUrl.trim(), kbId: form.kbId.trim() };
+      if (form.readKey.trim()) settings.readKey = form.readKey.trim();
+      if (form.writeKey.trim()) settings.writeKey = form.writeKey.trim();
+      const v = await request("settingsSave", { settings });
+      adopt(v);
+      setState({ busy: false, error: "", note: v?.connectorActive ? "\u5DF2\u4FDD\u5B58\uFF0CWeKnora \u8FDE\u63A5\u5DF2\u751F\u6548\uFF08\u65E0\u9700\u91CD\u542F\uFF09\u3002" : `\u5DF2\u4FDD\u5B58\uFF0C\u4F46\u8FDE\u63A5\u672A\u6FC0\u6D3B\uFF1A${v?.connectorError === "INCOMPLETE" ? "\u8FD8\u9700\u8865\u5168\u5730\u5740\u3001\u77E5\u8BC6\u5E93 ID \u6216\u8BFB\u53D6\u5BC6\u94A5\u3002" : v?.connectorError || "\u914D\u7F6E\u4E0D\u5B8C\u6574\u3002"}` });
+    } catch (e6) {
+      setState({ busy: false, note: "", error: e6.code === "SETTINGS_INVALID" ? "\u6709\u5B57\u6BB5\u4E0D\u5408\u6CD5\uFF1A\u5730\u5740\u987B\u4E3A http(s) URL\uFF08http \u4EC5\u9650\u672C\u673A\u56DE\u73AF\uFF09\uFF0C\u77E5\u8BC6\u5E93 ID \u53EA\u80FD\u5305\u542B\u5B57\u6BCD\u6570\u5B57\u3001\u4E0B\u5212\u7EBF\u548C\u6A2A\u7EBF\uFF0C\u5BC6\u94A5\u4E0D\u80FD\u542B\u6362\u884C\u3002" : e6.message || "\u4FDD\u5B58\u5931\u8D25" });
+    }
+  };
+  const field = (key, value) => setForm((f2) => ({ ...f2, [key]: value }));
+  return /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("section", { className: "rr-settings", role: "dialog", "aria-label": "\u8FDE\u63A5\u8BBE\u7F6E", children: /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-settings-card", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-section-heading", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("h2", { children: "\u8FDE\u63A5\u8BBE\u7F6E" }),
+      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-badge", children: view?.connectorActive ? "WeKnora \u5DF2\u8FDE\u63A5" : "\u672A\u8FDE\u63A5" })
+    ] }),
+    view?.managedByHost && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-muted", children: "\u90E8\u5206\u914D\u7F6E\u7531\u73AF\u5883\u53D8\u91CF / Profile \u7BA1\u7406\uFF0C\u6B64\u5904\u4FEE\u6539\u4EC5\u8865\u5145\u672A\u88AB\u5176\u8986\u76D6\u7684\u9879\u3002" }),
+    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
+      "WeKnora \u5730\u5740",
+      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { "aria-label": "WeKnora \u5730\u5740", placeholder: "https://weknora.example.internal \u6216 http://127.0.0.1:8080", value: form.baseUrl, disabled: state.busy, onChange: (e6) => field("baseUrl", e6.target.value) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
+      "\u77E5\u8BC6\u5E93 ID",
+      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { "aria-label": "\u77E5\u8BC6\u5E93 ID", placeholder: "\u68C0\u7D22\u4E0E\u53D1\u5E03\u4F7F\u7528\u7684\u77E5\u8BC6\u5E93 ID", value: form.kbId, disabled: state.busy, onChange: (e6) => field("kbId", e6.target.value) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
+      "\u8BFB\u53D6\u5BC6\u94A5",
+      view?.readKeySet && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-muted", children: "\uFF08\u5DF2\u4FDD\u5B58\uFF0C\u7559\u7A7A\u4FDD\u6301\u4E0D\u53D8\uFF09" }),
+      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { "aria-label": "\u8BFB\u53D6\u5BC6\u94A5", type: "password", autoComplete: "off", placeholder: view?.readKeySet ? "\u2022\u2022\u2022\u2022\u2022\u2022\uFF08\u7559\u7A7A\u4E0D\u4FEE\u6539\uFF09" : "\u7528\u4E8E\u68C0\u7D22\u7684 API Key", value: form.readKey, disabled: state.busy, onChange: (e6) => field("readKey", e6.target.value) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
+      "\u53D1\u5E03\u5BC6\u94A5",
+      view?.writeKeySet && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-muted", children: "\uFF08\u5DF2\u4FDD\u5B58\uFF0C\u7559\u7A7A\u4FDD\u6301\u4E0D\u53D8\uFF09" }),
+      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { "aria-label": "\u53D1\u5E03\u5BC6\u94A5", type: "password", autoComplete: "off", placeholder: view?.writeKeySet ? "\u2022\u2022\u2022\u2022\u2022\u2022\uFF08\u7559\u7A7A\u4E0D\u4FEE\u6539\uFF09" : "\u7528\u4E8E\u53D1\u5E03\u7684 API Key\uFF0C\u53EF\u7559\u7A7A\uFF08\u53EA\u8BFB\uFF09", value: form.writeKey, disabled: state.busy, onChange: (e6) => field("writeKey", e6.target.value) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-muted", children: "\u5BC6\u94A5\u4FDD\u5B58\u4E3A\u672C\u673A\u53D7\u9650\u6587\u4EF6\uFF0C\u4E0D\u5199\u5165\u4EFB\u4F55\u914D\u7F6E\u6216\u8865\u4E01\uFF1B\u754C\u9762\u4E0D\u56DE\u663E\u5BC6\u94A5\u5185\u5BB9\u3002\u53D1\u5E03\u5BC6\u94A5\u987B\u4E0E\u8BFB\u53D6\u5BC6\u94A5\u4E0D\u540C\u3002" }),
+    state.note && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-settings-note", role: "status", children: state.note }),
+    state.error && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-settings-error", role: "alert", children: state.error }),
+    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-row", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button rr-button--primary", disabled: state.busy, onClick: save, children: "\u4FDD\u5B58\u5E76\u751F\u6548" }),
+      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: state.busy, onClick: onClose, children: "\u5173\u95ED" })
+    ] })
+  ] }) });
+}
 var asDraft = (v) => v?.draft || v?.workingDraft || v;
 var rows = (v, key) => Array.isArray(v) ? v : v?.[key] || [];
 var markdownHighlight = syntaxHighlighting(HighlightStyle.define([
@@ -114895,6 +114975,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
   const [templates, setTemplates] = (0, import_react158.useState)([]), [tmplId, setTmplId] = (0, import_react158.useState)(""), [tmplName, setTmplName] = (0, import_react158.useState)("");
   const [confirmClose, setConfirmClose] = (0, import_react158.useState)(false);
   const [confirmPublish, setConfirmPublish] = (0, import_react158.useState)(false);
+  const [settingsOpen, setSettingsOpen] = (0, import_react158.useState)(false);
   const current = (0, import_react158.useRef)({}), alive = (0, import_react158.useRef)(true), saving = (0, import_react158.useRef)(false), revision = (0, import_react158.useRef)(0), previewSerial = (0, import_react158.useRef)(0);
   async function generate(event) {
     event.preventDefault();
@@ -115273,6 +115354,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
         }, children: "1 \u751F\u6210\u4E0E\u5206\u6790" }),
         /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: !draft, "aria-pressed": stage === "editor", onClick: () => setStage("editor"), children: "2 \u53EF\u89C6\u5316\u7F16\u8F91" })
       ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: busy || demo, title: demo ? "\u6F14\u793A\u6A21\u5F0F\u4E0D\u542B\u8FDE\u63A5\u8BBE\u7F6E" : "WeKnora \u8FDE\u63A5\u4E0E\u5BC6\u94A5", "aria-haspopup": "dialog", onClick: () => setSettingsOpen(true), children: "\u2699 \u8BBE\u7F6E" }),
       /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button rr-mode-switch", disabled: busy || dirty, onClick: () => {
         if (!saving.current) onModeChange(demo ? "real" : "demo");
       }, children: demo ? "\u5207\u6362\u771F\u5B9E\u6A21\u5F0F" : "\u4F53\u9A8C\u6F14\u793A\u6570\u636E" }),
@@ -115565,7 +115647,12 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button rr-button--danger", onClick: close2, children: "\u653E\u5F03\u5E76\u5173\u95ED" }),
       " ",
       /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", onClick: () => setConfirmClose(false), children: "\u8FD4\u56DE\u7F16\u8F91" })
-    ] })
+    ] }),
+    settingsOpen && !demo && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)(SettingsPanel, { request, onClose: () => {
+      setSettingsOpen(false);
+      request("identity").then((v) => alive.current && setIdentity(v)).catch(() => {
+      });
+    } })
   ] });
 }
 function createWorkspaceController() {
