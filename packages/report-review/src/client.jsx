@@ -3,8 +3,11 @@ import { EditorState } from '@codemirror/state';
 import { EditorView, keymap, lineNumbers } from '@codemirror/view';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { markdown } from '@codemirror/lang-markdown';
+import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
+import { tags } from '@lezer/highlight';
 import { MergeView } from '@codemirror/merge';
 import workspaceCss from './workspace.css';
+import { MarkdownPreview, TemplateSelect, usePreviewScroll } from './preview.jsx';
 import { createDemoApi } from './demo-api.mjs';
 
 export function safePdfUrl(value, origin = window.location.origin) {
@@ -92,6 +95,20 @@ export function PublicationRecords({ value, busy, onRead }) {
 }
 const asDraft = v => v?.draft || v?.workingDraft || v;
 const rows = (v, key) => Array.isArray(v) ? v : v?.[key] || [];
+const markdownHighlight = syntaxHighlighting(HighlightStyle.define([
+  { tag: tags.heading, color: 'var(--rr-accent)', fontWeight: '700' },
+  { tag: tags.strong, fontWeight: '700', color: 'var(--rr-accent)' },
+  { tag: tags.emphasis, fontStyle: 'italic' },
+  { tag: tags.strikethrough, textDecoration: 'line-through', color: 'var(--rr-muted)' },
+  { tag: [tags.link, tags.url], color: 'var(--rr-info)', textDecoration: 'underline', textUnderlineOffset: '3px' },
+  { tag: tags.monospace, color: 'var(--rr-syntax-code)' },
+  { tag: tags.quote, color: 'var(--rr-success)' },
+  { tag: [tags.processingInstruction, tags.meta], color: 'var(--rr-muted)' },
+  { tag: [tags.list, tags.contentSeparator], color: 'var(--rr-info)' },
+  { tag: [tags.keyword, tags.operator], color: 'var(--rr-accent)' },
+  { tag: [tags.string, tags.number, tags.bool], color: 'var(--rr-syntax-code)' },
+  { tag: tags.comment, color: 'var(--rr-muted)', fontStyle: 'italic' }
+]));
 // CodeMirror inherits the same semantic palette as the workspace, including live theme changes.
 const editorTheme = EditorView.theme({
   '&': { height: '100%', color: 'var(--rr-text)', backgroundColor: 'var(--rr-paper)' },
@@ -103,19 +120,20 @@ const editorTheme = EditorView.theme({
   '.cm-activeLine, .cm-activeLineGutter': { backgroundColor: 'var(--rr-raised)' },
   '&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection': { backgroundColor: 'var(--rr-selection)' }
 });
-function Editor({ value, onChange, readOnly = false }) {
+function Editor({ value, onChange, readOnly = false, editorRef }) {
   const root = useRef(null), view = useRef(null), change = useRef(onChange);
   change.current = onChange;
   useEffect(() => {
-    view.current = new EditorView({ parent: root.current, state: EditorState.create({ doc: value || '', extensions: [lineNumbers(), history(), markdown(), keymap.of([...defaultKeymap, ...historyKeymap]), EditorView.lineWrapping, editorTheme, EditorState.readOnly.of(readOnly), EditorView.editable.of(!readOnly), EditorView.updateListener.of(u => { if (u.docChanged && !u.transactions.some(t => t.isUserEvent('remote'))) change.current?.(u.state.doc.toString()); })] }) });
-    return () => { view.current.destroy(); view.current = null; };
+    view.current = new EditorView({ parent: root.current, state: EditorState.create({ doc: value || '', extensions: [lineNumbers(), history(), markdown(), markdownHighlight, keymap.of([...defaultKeymap, ...historyKeymap]), EditorView.lineWrapping, editorTheme, EditorState.readOnly.of(readOnly), EditorView.editable.of(!readOnly), EditorView.updateListener.of(u => { if (u.docChanged && !u.transactions.some(t => t.isUserEvent('remote'))) change.current?.(u.state.doc.toString()); })] }) });
+    if (editorRef) editorRef.current = view.current;
+    return () => { if (editorRef) editorRef.current = null; view.current.destroy(); view.current = null; };
   }, [readOnly]);
   useEffect(() => { const v = view.current; if (v && v.state.doc.toString() !== value) v.dispatch({ changes: { from: 0, to: v.state.doc.length, insert: value || '' }, userEvent: 'remote' }); }, [value]);
   return <div ref={root} className="rr-editor" />;
 }
 function Diff({ before, after }) {
   const root = useRef(null);
-  useEffect(() => { const merge = new MergeView({ parent: root.current, a: { doc: before, extensions: [markdown(), editorTheme, EditorState.readOnly.of(true), EditorView.editable.of(false), EditorView.lineWrapping] }, b: { doc: after, extensions: [markdown(), editorTheme, EditorState.readOnly.of(true), EditorView.editable.of(false), EditorView.lineWrapping] } }); return () => merge.destroy(); }, [before, after]);
+  useEffect(() => { const merge = new MergeView({ parent: root.current, a: { doc: before, extensions: [markdown(), markdownHighlight, editorTheme, EditorState.readOnly.of(true), EditorView.editable.of(false), EditorView.lineWrapping] }, b: { doc: after, extensions: [markdown(), markdownHighlight, editorTheme, EditorState.readOnly.of(true), EditorView.editable.of(false), EditorView.lineWrapping] } }); return () => merge.destroy(); }, [before, after]);
   return <div ref={root} className="rr-diff" />;
 }
 export const DEFAULT_PROMPT_TEMPLATE = [
@@ -334,6 +352,8 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
   }, [assetKey]);
   const synced = isPreviewSynced(preview, draft, dirty, pdf);
   const readOnly = isDraftReadOnly(draft, busy);
+  const editorRef = useRef(null), markdownScrollRef = useRef(null);
+  usePreviewScroll(editorRef, markdownScrollRef, viewMode === 'markdown' && stage === 'editor', text, readOnly);
   const warnings = safeWarnings(reportWarnings.map(w => w.code), draft?.warnings, preview?.warnings);
   const verified = identity?.confirmed === true && !!identity?.displayName;
   const versions = panel?.type === 'versions' ? rows(panel.value, 'versions') : [];
@@ -362,19 +382,16 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
 
         <section className="rr-generation-stage" aria-label="生成与分析" hidden={stage !== 'generation'}><header><h1>生成周报</h1><p className="rr-muted">先确定品种、截止日期和分析要求。生成后进入正文编辑，已有报告不会被覆盖。</p></header>
     <form onSubmit={generate} className="rr-generation-form" aria-label="生成周报参数">
-      <label>商品 <input aria-label="商品" value={variety} disabled={busy} onChange={e => setVariety(e.target.value)} className="rr-commodity-input" required /></label>
+      <div className="rr-generation-basics"><label>商品 <input aria-label="商品" value={variety} disabled={busy} onChange={e => setVariety(e.target.value)} className="rr-commodity-input" required /></label>
       <label>截止日期 <input aria-label="截止日期" type="date" value={end} disabled={busy} onChange={e => setEnd(e.target.value)} required /></label>
-      <label><input type="checkbox" checked={webSearchEnabled} disabled={busy} onChange={e => setWebSearchEnabled(e.target.checked)} />联网检索（新闻/外部信源）</label>
-      <label className="rr-label">分析要求（可选，可用下方模板，也可直接增删章节）</label>
-      <span className="rr-template-tools">
-        <select aria-label="选择模板" value={tmplId} disabled={busy} onChange={e => loadTemplate(e.target.value)} className="rr-template-select">
-          <option value="">默认模板</option>
-          {templates.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
-        </select>
+      <label><input type="checkbox" checked={webSearchEnabled} disabled={busy} onChange={e => setWebSearchEnabled(e.target.checked)} />联网检索（新闻/外部信源）</label></div>
+      <div className="rr-form-heading"><h2>分析要求</h2><p className="rr-muted">选用模板开始，也可以直接调整章节和研究重点。留空则仅整理 7 天数据。</p></div>
+      <div className="rr-template-tools">
+        <TemplateSelect value={tmplId} templates={templates} disabled={busy} onChange={loadTemplate} />
         <input aria-label="模板名称" placeholder="模板名称（可留空）" value={tmplName} onChange={e => setTmplName(e.target.value)} disabled={busy} className="rr-template-name" />
         <button type="button" className="rr-button" disabled={busy || !analysisPrompt.trim()} onClick={saveTemplate}>保存为模板</button>
         {tmplId && <button type="button" className="rr-button" disabled={busy} onClick={async () => { try { const r = await request('templateDelete', { id: tmplId }); if (r?.deleted && alive.current) { setTemplates(v => v.filter(t => t.id !== tmplId)); setTmplId(''); setTmplName(''); } } catch(e) { fail(e); } }}>删除模板</button>}
-      </span>
+      </div>
       <textarea aria-label="分析要求（可选）" value={analysisPrompt} disabled={busy} onChange={e => setAnalysisPrompt(e.target.value)} rows={12} className="rr-prompt" placeholder="留空则仅按 7 天数据出周报。需要结合历史周报时写清要求，如“请结合近四周同品类周报做连续性梳理”；也可只写“补充多空逻辑”“分析供需结构”等。" />
       <button className="rr-button rr-button--primary" type="submit" disabled={busy || dirty || (!demo && !sessionId)}>{demo ? '生成演示周报' : '生成周报'}</button>
     </form>
@@ -382,9 +399,10 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
         </section>
         <section className="rr-editor-stage" hidden={stage !== 'editor'}>
         <header className="rr-report-header"><span className="rr-eyebrow">WEEKLY RESEARCH</span><h1>{draft?.title || '开始本周研究'}</h1><div className="rr-row"><span className="rr-badge">{draft?.status === 'confirmed' ? '已确认 · 只读' : dirty ? '待保存' : draft ? '研究草稿' : '未选择报告'}</span><span className="rr-muted">先看结论，再核对证据</span></div></header>
-        <div className="rr-toolbar" role="group" aria-label="文档视图"><button className="rr-button" aria-pressed={viewMode === 'editor'} onClick={() => setViewMode('editor')}>正文编辑</button><button className="rr-button" aria-pressed={viewMode === 'pdf'} onClick={() => setViewMode('pdf')}>版式 / PDF</button><button className="rr-button rr-button--primary rr-push" disabled={!dirty || readOnly} onClick={() => { setError(''); save(); }}>保存 / 重试</button></div>
-        <section className="rr-canvas" aria-label="报告正文" hidden={viewMode !== 'editor'}>{draft ? <Editor value={text} readOnly={readOnly} onChange={value => { if (isDraftReadOnly(current.current.draft, current.current.busy)) return; revision.current++; current.current.dirty = true; current.current.text = value; setText(value); setDirty(true); setStatus('有未保存修改'); }} /> : <div className="rr-welcome"><span className="rr-eyebrow">本周的判断，从这里开始</span><h2>把数据整理成有依据的观点</h2><p>从左侧打开已有报告，或新建周报后使用上方设置生成初稿。</p><p className="rr-muted">生成初稿 → 人工审阅 → 确认版本 → 发布与核对</p></div>}</section>
-        <section className="rr-pdf" aria-label="报告版式" hidden={viewMode !== 'pdf'}>{pdf ? <><a href={pdf.url} target="_blank" rel="noreferrer" download={demo ? "demo-weekly-report.pdf" : undefined}>{demo ? "下载演示 PDF（模拟数据）" : "下载 / 打开当前 PDF"}{!synced ? '（旧预览）' : ''}</a><object aria-label="实际 PDF 预览" data={pdf.url} type="application/pdf" className="rr-pdf-object"><a href={pdf.url} target="_blank" rel="noreferrer">浏览器无法内嵌 PDF，请打开实际 PDF</a></object></> : <p className="rr-empty">尚无可用实际 PDF，保存后等待预览生成。</p>}</section>
+        <div className="rr-toolbar" role="group" aria-label="文档视图"><button className="rr-button" aria-pressed={viewMode === 'editor'} onClick={() => setViewMode('editor')}>正文编辑</button><button className="rr-button" disabled={!draft} aria-pressed={viewMode === 'markdown'} onClick={() => { setViewMode('markdown'); setFocused(true); }}>Markdown 实时浏览</button><button className="rr-button" disabled={!draft} aria-pressed={viewMode === 'pdf'} onClick={() => { setViewMode('pdf'); setFocused(true); }}>PDF 实时浏览</button><button className="rr-button" disabled={!synced || busy} title={synced ? '导出当前已保存版本' : '等待当前内容保存并完成 PDF 生成后可导出'} onClick={() => { if (!synced) return; const link = document.createElement('a'); link.href = pdf.url; link.download = demo ? 'demo-weekly-report.pdf' : (draft.title || 'weekly-report').replace(/[<>:"/\\|?*]/g, '_') + '.pdf'; link.click(); }}>导出 PDF</button><button className="rr-button rr-button--primary rr-push" disabled={!dirty || readOnly} onClick={() => { setError(''); save(); }}>保存 / 重试</button></div>
+        <div className="rr-document-panes" data-view={viewMode}><div className="rr-source-pane"><div className="rr-pane-heading"><strong>Markdown 源码</strong><span>{dirty ? '未保存' : '自动保存'}</span></div><section className="rr-canvas" aria-label="报告正文">{draft ? <Editor editorRef={editorRef} value={text} readOnly={readOnly} onChange={value => { if (isDraftReadOnly(current.current.draft, current.current.busy)) return; revision.current++; current.current.dirty = true; current.current.text = value; setText(value); setDirty(true); setStatus('有未保存修改'); }} /> : <div className="rr-welcome"><span className="rr-eyebrow">本周的判断，从这里开始</span><h2>把数据整理成有依据的观点</h2><p>从左侧打开已有报告，或新建周报后使用上方设置生成初稿。</p><p className="rr-muted">生成初稿 → 人工审阅 → 确认版本 → 发布与核对</p></div>}</section>
+        </div><section className="rr-markdown-preview" aria-label="Markdown 实时预览" hidden={viewMode !== 'markdown'}><div className="rr-pane-heading"><strong>阅读预览</strong><span>随输入实时更新</span></div><MarkdownPreview text={text} scrollRef={markdownScrollRef} /></section>
+        <section className="rr-pdf" aria-label="报告版式" hidden={viewMode !== 'pdf'}><div className="rr-pane-heading"><strong>PDF 版式</strong><span>{synced ? '已同步' : '等待生成 / 旧预览'}</span></div>{pdf ? <><a href={pdf.url} target="_blank" rel="noreferrer" download={demo ? "demo-weekly-report.pdf" : undefined}>{demo ? "下载演示 PDF（模拟数据）" : "下载 / 打开当前 PDF"}{!synced ? '（旧预览）' : ''}</a><object aria-label="实际 PDF 预览" data={pdf.url} type="application/pdf" className="rr-pdf-object"><a href={pdf.url} target="_blank" rel="noreferrer">浏览器无法内嵌 PDF，请打开实际 PDF</a></object></> : <p className="rr-empty">尚无可用实际 PDF，保存后等待预览生成。</p>}</section></div>
         </section>
       </main>
       <aside className="rr-inspector" aria-label="审阅与交付" hidden={stage !== 'editor'}>
