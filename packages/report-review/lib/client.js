@@ -115315,13 +115315,15 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
     setStatus(demo ? "\u6B63\u5728\u6A21\u62DF\u53D1\u5E03\uFF08\u4E0D\u4E0A\u4F20\uFF09\u2026" : "\u6B63\u5728\u53D1\u5E03\u5230 WeKnora\uFF08runzhouwork\uFF09\u2026");
     try {
       const reportId = c4.draft.reportId;
+      let saveToken = c4.draft.saveToken;
       let confirmed;
       try {
-        confirmed = asDraft(await request("confirm", { reportId, saveToken: c4.draft.saveToken }));
+        confirmed = asDraft(await request("confirm", { reportId, saveToken }));
       } catch (e6) {
         if (!isConflict(e6)) throw e6;
         const latest = asDraft(await request("get", { reportId }));
-        confirmed = asDraft(await request("confirm", { reportId, saveToken: latest.saveToken }));
+        saveToken = latest.saveToken;
+        confirmed = asDraft(await request("confirm", { reportId, saveToken }));
       }
       if (!alive.current) return;
       const versions2 = rows(await request("versions", { reportId }), "versions");
@@ -115329,7 +115331,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       if (!versionId) throw new Error("\u672A\u627E\u5230\u53EF\u53D1\u5E03\u7684\u786E\u8BA4\u7248\u672C");
       const plan = await request("publishPlan", { reportId, versionId });
       if (!alive.current) return;
-      await request("publish", { reportId, versionId, planId: plan?.planId, digest: plan?.digest, publishToken: plan?.publishToken, userInitiated: true });
+      await request("publish", { reportId, saveToken, versionId, planId: plan?.planId, digest: plan?.digest, publishToken: plan?.publishToken, userInitiated: true });
       const reconciled = await publicationRead(reportId, "reconcile");
       const d = asDraft(await request("get", { reportId }));
       if (alive.current) adopt(d);

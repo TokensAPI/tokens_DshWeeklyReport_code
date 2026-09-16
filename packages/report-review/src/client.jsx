@@ -393,15 +393,14 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
     current.current.busy = true; setBusy(true); setError(''); setConfirmPublish(false);
     setStatus(demo ? '正在模拟发布（不上传）…' : '正在发布到 WeKnora（runzhouwork）…');
     try {
-      const reportId = c.draft.reportId;
+      const reportId = c.draft.reportId; let saveToken = c.draft.saveToken;
       // 1) 冻结当前草稿为不可变确认版；令牌过期时取最新令牌直接覆盖确认一次（单用户 pilot，见 save()）。
       let confirmed;
-      try { confirmed = asDraft(await request('confirm', { reportId, saveToken: c.draft.saveToken })); }
+      try { confirmed = asDraft(await request('confirm', { reportId, saveToken })); }
       catch (e) {
         if (!isConflict(e)) throw e;
-        const latest = asDraft(await request('get', { reportId }));
-        confirmed = asDraft(await request('confirm', { reportId, saveToken: latest.saveToken }));
-      }
+        const latest = asDraft(await request('get', { reportId })); saveToken = latest.saveToken;
+        confirmed = asDraft(await request('confirm', { reportId, saveToken })); }
       if (!alive.current) return;
       // 2) 取最新确认版本
       const versions = rows(await request('versions', { reportId }), 'versions');
@@ -411,7 +410,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
       const plan = await request('publishPlan', { reportId, versionId });
       if (!alive.current) return;
       // 4) 真正上传到 WeKnora
-      await request('publish', { reportId, versionId, planId: plan?.planId, digest: plan?.digest, publishToken: plan?.publishToken, userInitiated: true });
+      await request('publish', { reportId, saveToken, versionId, planId: plan?.planId, digest: plan?.digest, publishToken: plan?.publishToken, userInitiated: true });
       // 5) 只读核对 + 加载确认版正文
       const reconciled = await publicationRead(reportId, 'reconcile');
       const d = asDraft(await request('get', { reportId })); if (alive.current) adopt(d);
