@@ -1,0 +1,50 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { build } from 'esbuild';
+import { chromium, expect } from '@playwright/test';
+import { fileURLToPath } from 'node:url';
+import { mkdir } from 'node:fs/promises';
+
+test('BlockNote: source preservation, Chinese edits, undo, menus and read-only', async () => {
+  const result = await build({ stdin: { contents: `import React from 'react';import {createRoot} from 'react-dom/client';import {BlockEditor} from './src/block-editor.jsx';import css from './src/workspace.css';
+  const initial='# 锡周报\\n\\n价格 **251,000** 元，参考 [来源](https://example.com)。\\n\\n| 项目 | 数值 |\\n| :--- | ---: |\\n| 库存 | 1,250 |\\n\\n![库存图](assets/chart.png)\\n\\n> 引用原始口径\\n\\n尾段保持不变。\\n';
+  window.initial=initial;window.changes=[];
+  function App(){const [value,setValue]=React.useState(initial),[ro,setRo]=React.useState(false);return <dialog open className="rr-workspace"><style>{css}</style><button onClick={()=>setRo(v=>!v)}>只读开关</button><BlockEditor value={value} readOnly={ro} onSource={()=>{}} onChange={v=>{window.changes.push(v);setValue(v)}} /></dialog>};createRoot(document.getElementById('root')).render(<App/>);`, resolveDir: fileURLToPath(new URL('../', import.meta.url)), loader: 'jsx' }, bundle: true, write: false, format: 'iife', loader: { '.css': 'text' } });
+  const browser = await chromium.launch({ channel: process.env.BROWSER_CHANNEL || 'chrome', headless: true });
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  const errors = [], requests = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.route('**/*', route => { requests.push(route.request().url()); return route.abort(); });
+  try {
+    await page.setContent('<!doctype html><div id="root"></div>');
+    await page.addScriptTag({ content: result.outputFiles[0].text });
+    await expect(page.locator('.bn-editor')).toContainText('锡周报');
+    await expect(page.locator('.rr-preserved-block')).toHaveCount(1);
+    assert.deepEqual(await page.evaluate(() => window.changes), [], 'mount does not save');
+    const paragraph = page.locator('.bn-block-content[data-content-type="paragraph"]').first();
+    await paragraph.click();
+    await page.keyboard.press('Control+z');
+    assert.deepEqual(await page.evaluate(() => window.changes), [], 'initial import is outside undo history');
+    await expect(page.locator('.bn-editor')).toContainText('锡周报');
+    await page.keyboard.press('End');
+    await page.keyboard.insertText('人工核实。');
+    await expect.poll(() => page.evaluate(() => window.changes.at(-1))).toContain('人工核实。');
+    const saved = await page.evaluate(() => window.changes.at(-1));
+    const initial = await page.evaluate(() => window.initial);
+    assert.equal(saved.slice(saved.indexOf('| 项目')), initial.slice(initial.indexOf('| 项目')), 'unrelated source stays byte-for-byte identical');
+    await page.keyboard.press('Control+z');
+    await expect(paragraph).not.toContainText('人工核实。');
+    await page.keyboard.press('Control+Shift+z');
+    await expect(paragraph).toContainText('人工核实。');
+    await page.getByRole('button', { name: '只读开关' }).click();
+    await expect(page.locator('.bn-editor')).toHaveAttribute('contenteditable', 'false');
+    await page.getByRole('button', { name: '只读开关' }).click();
+    await paragraph.click(); await page.keyboard.press('End'); await page.keyboard.press('Enter'); await page.keyboard.type('/');
+    await expect(page.getByRole('listbox')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await mkdir(new URL('../test-results/', import.meta.url), { recursive: true });
+    await page.screenshot({ path: fileURLToPath(new URL('../test-results/block-editor.png', import.meta.url)), fullPage: true });
+    assert.deepEqual(errors, []);
+    assert.deepEqual(requests, [], 'no image or font network requests');
+  } finally { await browser.close(); }
+});

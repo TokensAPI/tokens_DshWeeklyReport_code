@@ -1,6 +1,6 @@
 {
   "name": "@tokensapi/dsh-weekly-report",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "TokensCowork 周报生成、审阅、PDF 预览与受控 WeKnora 发布插件",
   "repository": {
     "type": "git",
@@ -37,7 +37,9 @@
     "CHANGELOG.md",
     "LICENSES.md",
     "THIRD_PARTY_NOTICES.md",
-    "third_party/licenses"
+    "third_party/licenses",
+    "packages/report-review/BLOCK-EDITOR.md",
+    "packages/report-review/EDITOR-COMPARISON.md"
   ],
   "engines": {
     "node": "^22.19.0 || >=24.0.0"
@@ -66,24 +68,31 @@
     "check": "node scripts/static-check.mjs",
     "test": "node scripts/run-tests.mjs",
     "prepack": "npm run build:client && npm run check",
-    "test:client": "node --test packages/report-review/test/client.test.mjs packages/report-review/test/workspace.test.mjs packages/report-review/test/demo.test.mjs packages/report-review/test/demo-store.test.mjs packages/report-review/test/parity.test.mjs packages/report-review/test/entry.test.mjs"
+    "test:client": "node --test packages/report-review/test/client.test.mjs packages/report-review/test/workspace.test.mjs packages/report-review/test/demo.test.mjs packages/report-review/test/demo-store.test.mjs packages/report-review/test/parity.test.mjs packages/report-review/test/entry.test.mjs packages/report-review/test/block-editor.test.mjs packages/report-review/test/host-runtime.test.mjs packages/report-review/test/editor-layout.test.mjs packages/report-review/test/editor-playground.test.mjs"
   },
-  "dependencies": {},
   "devDependencies": {
+    "@blocknote/core": "0.54.2",
+    "@blocknote/mantine": "0.54.2",
+    "@blocknote/react": "0.54.2",
     "@codemirror/commands": "6.11.0",
     "@codemirror/lang-markdown": "6.5.2",
+    "@codemirror/language": "^6.12.4",
     "@codemirror/merge": "6.12.2",
     "@codemirror/state": "6.7.4",
     "@codemirror/view": "6.43.11",
-    "esbuild": "0.25.12",
-    "react": "19.2.8",
-    "@codemirror/language": "^6.12.4",
+    "@deepseek-ai/dsh-client-ui-primitives": "0.1.2-rc.1",
     "@lezer/highlight": "^1.2.3",
+    "@mantine/core": "8.3.18",
+    "@mantine/hooks": "8.3.18",
+    "@playwright/test": "^1.63.0",
+    "esbuild": "0.25.12",
     "pdf-lib": "^1.17.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
-    "@deepseek-ai/dsh-client-ui-primitives": "0.1.2-rc.1",
-    "@playwright/test": "^1.63.0",
-    "react-dom": "19.2.8"
-  }
+    "remark-parse": "11.0.0",
+    "unified": "11.0.5"
+  },
+  "dependencies": {}
 }

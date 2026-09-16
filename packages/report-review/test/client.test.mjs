@@ -7,7 +7,7 @@ const require = createRequire(import.meta.url);
 const code = readFileSync(new URL('../lib/client.js', import.meta.url), 'utf8');
 function load(extra = {}) {
   let registration;
-  const context = vm.createContext({ console, URL, TextDecoder, Blob, AbortController,
+  const context = vm.createContext({ console, URL, TextDecoder, Blob, AbortController, crypto: globalThis.crypto, navigator: { userAgent: "test", platform: "Win32" },
     document: { documentElement: {style:{}}, createElement: () => ({}) },
     setTimeout, clearTimeout, setInterval, clearInterval,
     window: { __ModuleLoader__: { load(value) { registration = value; } } },
@@ -142,8 +142,12 @@ test('human item controls default unselected local and omit private notes from p
   for(const category of ['supplement','correction','retraction','judgment','style'])assert.ok(source.includes(category));
   assert.match(source,/name === 'saveHumanItems'[\s\S]*?request\('get'/);
 });
-test('bundle does not ship a second React or unresolved CodeMirror requires', () => {
+test('bundle uses the host React and React DOM without a private renderer', () => {
   assert.match(code,/require\("react"\)/);
+  assert.match(code,/require\("react-dom"\)/);
+  assert.match(code,/require\("react-dom\/client"\)/);
+  assert.doesNotMatch(code,/node_modules\/(?:react|react-dom|scheduler)\//);
+  assert.doesNotMatch(code,/__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE/);
   assert.doesNotMatch(code,/require\("@codemirror\//);
   assert.match(code,/new MergeView/);
   assert.match(code,/nativeEvent.isTrusted/);

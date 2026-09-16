@@ -41,6 +41,19 @@ test('workspace: host themes, responsive layout, save conflicts and explicit pub
     await page.goto('http://workspace.test/');
     await page.addScriptTag({ content: bundled.outputFiles[0].text });
     await page.getByRole('button', { name: /锡 · 周度研究/ }).click();
+    await expect(page.locator('.bn-editor')).toContainText('库存变化');
+    assert.equal(requests.filter(r => r.action === 'save').length, 0, 'Opening visual view must not save');
+    await page.locator('.bn-block-content[data-content-type="paragraph"]').first().click();
+    await page.keyboard.press('End');
+    await page.keyboard.insertText('人工核对。');
+    await expect.poll(() => draft.markdown).toContain('人工核对。');
+    assert.equal(draft.markdown, '# 锡周度研究\n\n## 核心判断\n库存变化仍需结合供需结构核对。人工核对。\n\n## 下周跟踪\n关注库存与价格变化。');
+    await page.getByRole('button', { name: 'Markdown 实时浏览', exact: true }).click();
+    await expect(page.locator('.cm-content')).toContainText('人工核对。');
+    await page.getByRole('button', { name: '可视化编辑', exact: true }).click();
+    await expect(page.locator('.bn-editor')).toContainText('人工核对。');
+    await page.screenshot({ path: 'test-results/workspace-block-editor.png' });
+    await page.getByRole('button', { name: 'Markdown 实时浏览', exact: true }).click();
     await expect(page.locator('.cm-content')).toContainText('库存变化');
     const editorNode = await page.locator('.cm-editor').elementHandle();
     // Use the real reference palettes when supplied; CI uses a minimal semantic host.
@@ -78,14 +91,14 @@ test('workspace: host themes, responsive layout, save conflicts and explicit pub
     }
     await page.getByRole('button', { name: '1 生成与分析', exact:true }).click();
     assert.ok(await page.locator('.rr-main').evaluate(el => el.scrollWidth <= el.clientWidth + 1), 'Expanded generation settings fit narrow screens');
-    await page.getByRole('button', { name: '2 正文编辑', exact:true }).click();
+    await page.getByRole('button', { name: '2 可视化编辑', exact:true }).click();
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.getByRole('button', { name: 'PDF 实时浏览', exact: true }).click();
     await expect(page.locator('.rr-sidebar')).toBeHidden();
     await expect(page.getByLabel('报告版式')).toContainText('尚无可用实际 PDF');
-    await page.getByRole('button', { name: '正文编辑', exact: true }).click();
+    await page.getByRole('button', { name: 'Markdown 实时浏览', exact: true }).click();
     await page.getByRole('button', {name:'退出专注', exact:true}).click();
-    assert.ok(await editorNode.evaluate(el => el.isConnected), 'View switching preserves editor history');
+    assert.ok(await editorNode.evaluate(el => el.isConnected), 'Markdown/PDF switching preserves CodeMirror history');
     await page.evaluate(() => { document.head.querySelectorAll('style').forEach(el => el.remove()); delete document.documentElement.dataset.theme; delete document.documentElement.dataset.colorScheme; });
     const fallbackColors = [];
     for (const colorScheme of ['light', 'dark']) {

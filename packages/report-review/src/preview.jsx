@@ -1,6 +1,7 @@
 import React, { useEffect, useId, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { DEMO_CHART_URL, DEMO_CHART_DATA } from './demo-content.mjs';
 
 const plugins = [remarkGfm];
 function sourceLines() {
@@ -16,7 +17,7 @@ const htmlPlugins = [sourceLines];
 const components = {
   a: ({ node, ...props }) => <a {...props} target="_blank" rel="noopener noreferrer" />,
   // Reading a draft must not automatically contact external image servers.
-  img: ({ alt }) => <span className="rr-image-placeholder">图片：{alt || '未命名图片'}（请在 PDF 中查看）</span>
+  img: ({ alt, src }) => src === DEMO_CHART_URL ? <img src={DEMO_CHART_DATA} alt={alt || '模拟库存示意图'} style={{ maxWidth: '100%' }} /> : <span className="rr-image-placeholder">图片：{alt || '未命名图片'}（请在 PDF 中查看）</span>
 };
 export function MarkdownPreview({ text, scrollRef }) {
   return <article ref={scrollRef} className="rr-markdown-body"><ReactMarkdown remarkPlugins={plugins} rehypePlugins={htmlPlugins} components={components} skipHtml>{text}</ReactMarkdown></article>;

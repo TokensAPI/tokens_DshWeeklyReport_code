@@ -1,4 +1,5 @@
 import { PDFDocument } from 'pdf-lib';
+import { DEMO_CHART_URL, DEMO_CHART_DATA } from './demo-content.mjs';
 
 // Rasterize with local system fonts so Chinese preview needs no downloaded font or server.
 // This is a real, downloadable PDF of the current demo draft, not the production renderer.
@@ -22,6 +23,14 @@ export async function renderDemoPdf(draft) {
   };
   begin();
   for (const raw of draft.markdown.split('\n')) {
+    if (raw.startsWith('![') && raw.includes(DEMO_CHART_URL)) {
+      if (y + 370 > height - 100) { await finish(); begin(); }
+      const picture = new Image(); picture.src = DEMO_CHART_DATA; await picture.decode();
+      ctx.drawImage(picture, margin, y, width - 2 * margin, 330); y += 345;
+      ctx.font = '22px "Microsoft YaHei", sans-serif'; ctx.fillStyle = '#63756a';
+      ctx.fillText(raw.slice(2, raw.indexOf(']')), margin, y); y += 36;
+      continue;
+    }
     if (/^\|[\s:|\-]+\|$/.test(raw)) continue;
     const heading = raw.match(/^(#{1,6})\s/);
     const size = heading ? (heading[1].length === 1 ? 40 : 30) : 25;

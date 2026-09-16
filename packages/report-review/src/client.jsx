@@ -7,6 +7,7 @@ import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { tags } from '@lezer/highlight';
 import { MergeView } from '@codemirror/merge';
 import workspaceCss from './workspace.css';
+import { BlockEditor } from './block-editor.jsx';
 import { MarkdownPreview, TemplateSelect, usePreviewScroll } from './preview.jsx';
 import { createDemoApi } from './demo-api.mjs';
 
@@ -212,6 +213,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
   const [stage, setStage] = useState('generation'), [blankTitle, setBlankTitle] = useState('');
   const dialogRef = useRef(null);
   const [search, setSearch] = useState(''), [viewMode, setViewMode] = useState('editor'), [focused, setFocused] = useState(false);
+  const sourceMode = viewMode !== 'editor';
   useEffect(() => {
     const dialog = dialogRef.current, previous = document.activeElement;
     dialog.showModal();
@@ -354,6 +356,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
   }, [assetKey]);
   const synced = isPreviewSynced(preview, draft, dirty, pdf);
   const readOnly = isDraftReadOnly(draft, busy);
+  const changeText = value => { if (isDraftReadOnly(current.current.draft, current.current.busy)) return; revision.current++; current.current.dirty = true; current.current.text = value; setText(value); setDirty(true); setStatus('有未保存修改'); };
   const editorRef = useRef(null), markdownScrollRef = useRef(null);
   usePreviewScroll(editorRef, markdownScrollRef, viewMode === 'markdown' && stage === 'editor', text, readOnly);
   const warnings = safeWarnings(reportWarnings.map(w => w.code), draft?.warnings, preview?.warnings);
@@ -365,12 +368,12 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
     <style>{workspaceCss}</style>
     <header className="rr-header">
       <strong className="rr-app-title">周报工作台</strong>
-      <div className="rr-steps" role="group" aria-label="工作流程"><button className="rr-button" aria-pressed={stage === 'generation'} onClick={() => { setStage('generation'); setFocused(false); }}>1 生成与分析</button><button className="rr-button" disabled={!draft} aria-pressed={stage === 'editor'} onClick={() => setStage('editor')}>2 正文编辑</button></div>
+      <div className="rr-steps" role="group" aria-label="工作流程"><button className="rr-button" aria-pressed={stage === 'generation'} onClick={() => { setStage('generation'); setFocused(false); }}>1 生成与分析</button><button className="rr-button" disabled={!draft} aria-pressed={stage === 'editor'} onClick={() => setStage('editor')}>2 可视化编辑</button></div>
       <button className="rr-button rr-mode-switch" disabled={busy || dirty} onClick={() => { if (!saving.current) onModeChange(demo ? 'real' : 'demo'); }}>{demo ? '切换真实模式' : '体验演示数据'}</button>
       <button className="rr-button" hidden={stage !== 'editor'} aria-pressed={focused} onClick={() => setFocused(v => !v)}>{focused ? '退出专注' : '专注正文'}</button>
       <button className="rr-button" disabled={busy} onClick={requestClose}>关闭</button>
     </header>
-    {demo && <div className="rr-demo-banner" role="note">本地演示 · 数据与分析均为模拟样例，保存在此浏览器；不连接数据库，不调用 AI，不上传知识库。</div>}
+    {demo && <div className="rr-demo-banner" role="note">本地演示 · 数据与分析均为模拟样例，保存在此浏览器；不连接数据库，不调用 AI，不上传知识库。<button className="rr-button" disabled={busy || dirty} title={dirty ? '请先保存当前稿' : '新建完整样例，不覆盖已有演示稿'} onClick={generate}>新建完整演示周报</button></div>}
     <div className="rr-layout">
       <nav className="rr-sidebar" aria-label="周报档案">
         <div className="rr-section-heading"><h2>研究档案</h2><span className="rr-badge">{reports.length}</span></div>
@@ -382,7 +385,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
       </nav>
       <main className="rr-main">
 
-        <section className="rr-generation-stage" aria-label="生成与分析" hidden={stage !== 'generation'}><header><h1>生成周报</h1><p className="rr-muted">先确定品种、截止日期和分析要求。生成后进入正文编辑，已有报告不会被覆盖。</p></header>
+        <section className="rr-generation-stage" aria-label="生成与分析" hidden={stage !== 'generation'}><header><h1>生成周报</h1><p className="rr-muted">先确定品种、截止日期和分析要求。生成后进入可视化编辑，已有报告不会被覆盖。</p></header>
     <form onSubmit={generate} className="rr-generation-form" aria-label="生成周报参数">
       <div className="rr-generation-basics"><label>商品 <input aria-label="商品" value={variety} disabled={busy} onChange={e => setVariety(e.target.value)} className="rr-commodity-input" required /></label>
       <label>截止日期 <input aria-label="截止日期" type="date" value={end} disabled={busy} onChange={e => setEnd(e.target.value)} required /></label>
@@ -401,9 +404,9 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
         </section>
         <section className="rr-editor-stage" hidden={stage !== 'editor'}>
         <header className="rr-report-header"><span className="rr-eyebrow">WEEKLY RESEARCH</span><h1>{draft?.title || '开始本周研究'}</h1><div className="rr-row"><span className="rr-badge">{draft?.status === 'confirmed' ? '已确认 · 只读' : dirty ? '待保存' : draft ? '研究草稿' : '未选择报告'}</span><span className="rr-muted">先看结论，再核对证据</span></div></header>
-        <div className="rr-toolbar" role="group" aria-label="文档视图"><button className="rr-button" aria-pressed={viewMode === 'editor'} onClick={() => setViewMode('editor')}>正文编辑</button><button className="rr-button" disabled={!draft} aria-pressed={viewMode === 'markdown'} onClick={() => { setViewMode('markdown'); setFocused(true); }}>Markdown 实时浏览</button><button className="rr-button" disabled={!draft} aria-pressed={viewMode === 'pdf'} onClick={() => { setViewMode('pdf'); setFocused(true); }}>PDF 实时浏览</button><button className="rr-button" disabled={!synced || busy} title={synced ? '导出当前已保存版本' : '等待当前内容保存并完成 PDF 生成后可导出'} onClick={() => { if (!synced) return; const link = document.createElement('a'); link.href = pdf.url; link.download = demo ? 'demo-weekly-report.pdf' : (draft.title || 'weekly-report').replace(/[<>:"/\\|?*]/g, '_') + '.pdf'; link.click(); }}>导出 PDF</button><button className="rr-button rr-button--primary rr-push" disabled={!dirty || readOnly} onClick={() => { setError(''); save(); }}>保存 / 重试</button></div>
-        <div className="rr-document-panes" data-view={viewMode}><div className="rr-source-pane"><div className="rr-pane-heading"><strong>Markdown 源码</strong><span>{dirty ? '未保存' : '自动保存'}</span></div><section className="rr-canvas" aria-label="报告正文">{draft ? <Editor key={draft.reportId} editorRef={editorRef} value={text} readOnly={readOnly} onChange={value => { if (isDraftReadOnly(current.current.draft, current.current.busy)) return; revision.current++; current.current.dirty = true; current.current.text = value; setText(value); setDirty(true); setStatus('有未保存修改'); }} /> : <div className="rr-welcome"><span className="rr-eyebrow">本周的判断，从这里开始</span><h2>把数据整理成有依据的观点</h2><p>从左侧打开已有报告，或新建周报后使用上方设置生成初稿。</p><p className="rr-muted">生成初稿 → 人工审阅 → 确认版本 → 发布与核对</p></div>}</section>
-        </div><section className="rr-markdown-preview" aria-label="Markdown 实时预览" hidden={viewMode !== 'markdown'}><div className="rr-pane-heading"><strong>阅读预览</strong><span>随输入实时更新</span></div><MarkdownPreview text={text} scrollRef={markdownScrollRef} /></section>
+        <div className="rr-toolbar" role="group" aria-label="文档视图"><button className="rr-button" aria-pressed={viewMode === 'editor'} onClick={() => setViewMode('editor')}>可视化编辑</button><button className="rr-button" disabled={!draft} aria-pressed={viewMode === 'markdown'} onClick={() => { setViewMode('markdown'); setFocused(true); }}>Markdown 实时浏览</button><button className="rr-button" disabled={!draft} aria-pressed={viewMode === 'pdf'} onClick={() => { setViewMode('pdf'); setFocused(true); }}>PDF 实时浏览</button><button className="rr-button" disabled={!synced || busy} title={synced ? '导出当前已保存版本' : '等待当前内容保存并完成 PDF 生成后可导出'} onClick={() => { if (!synced) return; const link = document.createElement('a'); link.href = pdf.url; link.download = demo ? 'demo-weekly-report.pdf' : (draft.title || 'weekly-report').replace(/[<>:"/\\|?*]/g, '_') + '.pdf'; link.click(); }}>导出 PDF</button><button className="rr-button rr-button--primary rr-push" disabled={!dirty || readOnly} onClick={() => { setError(''); save(); }}>保存 / 重试</button></div>
+        <p className="rr-engine-note">切换模式保留正文内容；可视化与源码之间切换时，撤销历史重新开始。</p><div className="rr-document-panes" data-view={viewMode}><div className="rr-source-pane"><div className="rr-pane-heading"><strong>{sourceMode ? 'Markdown 源码' : '可视化编辑'}</strong><span>{dirty ? '未保存' : '自动保存'}</span></div><section className="rr-canvas" aria-label="报告正文">{draft ? (sourceMode ? <Editor key={draft.reportId} editorRef={editorRef} value={text} readOnly={readOnly} onChange={changeText} /> : <BlockEditor key={draft.reportId} value={text} readOnly={readOnly} onSource={() => { setViewMode('markdown'); setFocused(true); }} onChange={changeText} />) : <div className="rr-welcome"><span className="rr-eyebrow">本周的判断，从这里开始</span><h2>把数据整理成有依据的观点</h2><p>从左侧打开已有报告，或新建周报后使用上方设置生成初稿。</p><p className="rr-muted">生成初稿 → 人工审阅 → 确认版本 → 发布与核对</p></div>}</section>
+        </div><section className="rr-markdown-preview" aria-label="Markdown 实时预览" hidden={viewMode !== 'markdown'}><div className="rr-pane-heading"><strong>阅读预览</strong><span>随输入实时更新</span></div>{viewMode === 'markdown' && <MarkdownPreview text={text} scrollRef={markdownScrollRef} />}</section>
         <section className="rr-pdf" aria-label="报告版式" hidden={viewMode !== 'pdf'}><div className="rr-pane-heading"><strong>PDF 版式</strong><span>{synced ? '已同步' : '等待生成 / 旧预览'}</span></div>{pdf ? <><a href={pdf.url} target="_blank" rel="noreferrer" download={demo ? "demo-weekly-report.pdf" : undefined}>{demo ? "下载演示 PDF（模拟数据）" : "下载 / 打开当前 PDF"}{!synced ? '（旧预览）' : ''}</a><object aria-label="实际 PDF 预览" data={pdf.url} type="application/pdf" className="rr-pdf-object"><a href={pdf.url} target="_blank" rel="noreferrer">浏览器无法内嵌 PDF，请打开实际 PDF</a></object></> : <p className="rr-empty">尚无可用实际 PDF，保存后等待预览生成。</p>}</section></div>
         </section>
       </main>

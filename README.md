@@ -6,7 +6,7 @@ Profile。包保留原始源码、文档、作者署名和已有许可证。
 
 ## 功能
 
-当前适配版：`0.1.1`，合并原开发人员的「周报插件 V1.1」；变更及适配说明见 [CHANGELOG.md](CHANGELOG.md)。
+当前适配版：`0.1.3`，合并原开发人员的「周报插件 V1.1」；变更及适配说明见 [CHANGELOG.md](CHANGELOG.md)。
 
 - 从本机 loopback 数据服务生成 Markdown 与图表。
 - 持久化工作稿、修订、人工重点和确认版本。
@@ -19,7 +19,7 @@ Profile。包保留原始源码、文档、作者署名和已有许可证。
 通过 TokensCowork 插件市场安装后重启应用。手工验证包时只在测试 Profile 中执行：
 
 ```powershell
-dsh plugin --profile weekly-report-test add C:\path\to\tokensapi-dsh-weekly-report-0.1.1.tgz
+dsh plugin --profile weekly-report-test add C:\path\to\tokensapi-dsh-weekly-report-0.1.3.tgz
 ```
 
 默认可加载核心、生成器、PDF 服务和审阅界面。WeKnora 连接器默认关闭，避免在未配置
@@ -78,6 +78,14 @@ Profile 覆盖示例（值均为占位符）：
 原始设计和安全说明保存在各 `README*.original.md` 中。
 
 ## 周报工作台 UI 开发
+
+现已试接入 BlockNote 可视化块编辑器，默认直接编辑排版后的正文，保留 Markdown 源码入口。未修改块复用原始 Markdown，复杂语法以保留块展示；实现范围、限制和验收记录见 [BLOCK-EDITOR.md](packages/report-review/BLOCK-EDITOR.md)。
+
+「可视化编辑」固定使用 BlockNote；Markdown 与 PDF 实时浏览使用 CodeMirror 编辑源码。模式与转换逻辑见 [EDITOR-COMPARISON.md](packages/report-review/EDITOR-COMPARISON.md)。
+
+进入本地演示，点击「新建完整演示周报」可体验六级标题、嵌套列表、任务清单、引用、代码、分隔线、表格和图片说明/地址编辑。原有草稿保留；有未保存修改时先保存。内置图片支持离线预览和演示 PDF，其他图片资产预览与上传尚未接入。
+
+宿主兼容基线为 React/React DOM 18.3.1，Mantine 使用 8.3.18。插件必须复用 DSH 提供的 `react`、`react-dom` 和 `react-dom/client`，不能捆绑自己的 React DOM。客户端测试包含最终构建包的宿主加载回归。
 
 工作台支持生成/编辑分步流程、隔离的本地演示、Markdown 语法高亮、源码与阅读预览双向同步滚动、PDF 分栏及导出。进入两种浏览模式时自动专注正文，面板保持不透明。原版人工修改归因保留，尚无评论线程。
 

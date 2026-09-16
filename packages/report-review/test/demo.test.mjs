@@ -51,6 +51,8 @@ test('offline demo: two flows, templates, edits, real PDF, history, mock publish
     await page.getByLabel('分析要求（可选）',{exact:true}).fill('核对库存变化');
     await page.getByRole('button',{name:'生成演示周报',exact:true}).click();
     await expect(page.getByLabel('生成与分析',{exact:true})).toBeHidden();
+    await expect(page.locator('.bn-editor')).toContainText('铜周报');
+    await page.getByRole('button', { name: 'Markdown 实时浏览', exact: true }).click();
     await expect(page.locator('.cm-content')).toContainText('铜周报');
     const editorNode = await page.locator('.cm-editor').elementHandle();
     await page.getByRole('button',{name:'Markdown 实时浏览',exact:true}).click();
@@ -108,20 +110,20 @@ test('offline demo: two flows, templates, edits, real PDF, history, mock publish
     const bytes = await readFile(await download.path());
     assert.equal(bytes.subarray(0,5).toString(),'%PDF-');
     assert.ok((await PDFDocument.load(bytes)).getPageCount() >= 1);
-    await page.getByRole('button',{name:'正文编辑',exact:true}).click();
+    await page.getByRole('button',{name:'可视化编辑',exact:true}).click();
     await page.getByRole('button', {name:'退出专注', exact:true}).click();
     await page.getByRole('button',{name:'模拟确认发布',exact:true}).click();
     await page.getByRole('button',{name:'确认模拟发布',exact:true}).click();
     await expect(page.locator('.rr-status')).toContainText('模拟发布完成');
-    await expect(page.locator('.cm-content')).toHaveAttribute('contenteditable','false');
+    await expect(page.locator('.bn-editor')).toHaveAttribute('contenteditable','false');
     await page.getByRole('button',{name:'版本历史与差异',exact:true}).click();
     await expect(page.locator('.rr-detail')).toContainText('v1');
     await page.getByRole('button',{name:'开启新一轮修订'}).click();
-    await expect(page.locator('.cm-content')).toHaveAttribute('contenteditable','true');
+    await expect(page.locator('.bn-editor')).toHaveAttribute('contenteditable','true');
     await page.getByRole('button',{name:'1 生成与分析',exact:true}).click();
     await expect(page.locator('.rr-generation-stage')).toBeVisible();
-    await page.getByRole('button',{name:'2 正文编辑',exact:true}).click();
-    await expect(page.locator('.cm-content')).toContainText('这是我的人工修改');
+    await page.getByRole('button',{name:'2 可视化编辑',exact:true}).click();
+    await expect(page.locator('.bn-editor')).toContainText('这是我的人工修改');
     await mkdir('test-results',{recursive:true});
     await page.screenshot({path:'test-results/demo-editor.png'});
     await page.getByRole('button',{name:'1 生成与分析',exact:true}).click();
@@ -133,7 +135,7 @@ test('offline demo: two flows, templates, edits, real PDF, history, mock publish
     await page.getByRole('button',{name:'周报工作台',exact:true}).click();
     await page.getByRole('button',{name:'体验演示数据'}).click();
     await page.getByRole('button',{name:/铜周报.*演示/}).click();
-    await expect(page.locator('.cm-content')).toContainText('这是我的人工修改');
+    await expect(page.locator('.bn-editor')).toContainText('这是我的人工修改');
     assert.deepEqual(outbound,[], 'Demo must never access Host, database, models, fonts or publication services');
     assert.deepEqual(errors,[]);
   } finally { await browser.close(); }
