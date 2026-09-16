@@ -50820,36 +50820,36 @@ var workspace_default = `/* Local aliases consume the TokensAPI contract; never 
   .rr-markdown-preview, .rr-document-panes .rr-pdf { height: 440px; }\r
   .rr-template-select { flex-basis: 100%; }\r
 }\r
-/* BlockNote stays inside the workspace dialog, including its floating menus. */
-.rr-block-editor { min-height: 400px; padding: 16px 12px 48px; }
-.rr-block-hint { padding: 0 40px 20px; font-size: 12px; color: var(--rr-muted); }
-.rr-workspace :is(.bn-container, .bn-root) { --bn-colors-editor-text: var(--rr-text); --bn-colors-editor-background: var(--rr-paper); --bn-colors-menu-text: var(--rr-text); --bn-colors-menu-background: var(--rr-paper); --bn-colors-tooltip-text: var(--rr-text); --bn-colors-tooltip-background: var(--rr-raised); --bn-colors-hovered-background: var(--rr-raised); --bn-colors-border: var(--rr-border); --bn-font-family: var(--theme-font-sans, "Segoe UI"), "Microsoft YaHei", sans-serif; color-scheme: inherit; }
-.rr-workspace .bn-editor { padding-inline: 40px; font-size: 15px; line-height: 1.8; background: var(--rr-paper); color: var(--rr-text); }
-.rr-workspace .bn-block-content { max-width: 100%; }
-.rr-preserved-block { width: 100%; min-width: 0; padding: 12px; border: 1px dashed var(--rr-border); border-radius: 8px; background: var(--rr-raised); }
-.rr-preserved-block > span { font-size: 11px; }
-.rr-preserved-block .rr-markdown-body { padding: 8px 0 0; overflow: auto; }
-.rr-editor-fallback { padding: 30px; display: grid; gap: 16px; }
+/* BlockNote stays inside the workspace dialog, including its floating menus. */\r
+.rr-block-editor { min-height: 400px; padding: 16px 12px 48px; }\r
+.rr-block-hint { padding: 0 40px 20px; font-size: 12px; color: var(--rr-muted); }\r
+.rr-workspace :is(.bn-container, .bn-root) { --bn-colors-editor-text: var(--rr-text); --bn-colors-editor-background: var(--rr-paper); --bn-colors-menu-text: var(--rr-text); --bn-colors-menu-background: var(--rr-paper); --bn-colors-tooltip-text: var(--rr-text); --bn-colors-tooltip-background: var(--rr-raised); --bn-colors-hovered-background: var(--rr-raised); --bn-colors-border: var(--rr-border); --bn-font-family: var(--theme-font-sans, "Segoe UI"), "Microsoft YaHei", sans-serif; color-scheme: inherit; }\r
+.rr-workspace .bn-editor { padding-inline: 40px; font-size: 15px; line-height: 1.8; background: var(--rr-paper); color: var(--rr-text); }\r
+.rr-workspace .bn-block-content { max-width: 100%; }\r
+.rr-preserved-block { width: 100%; min-width: 0; padding: 12px; border: 1px dashed var(--rr-border); border-radius: 8px; background: var(--rr-raised); }\r
+.rr-preserved-block > span { font-size: 11px; }\r
+.rr-preserved-block .rr-markdown-body { padding: 8px 0 0; overflow: auto; }\r
+.rr-editor-fallback { padding: 30px; display: grid; gap: 16px; }\r
 @media (max-width:650px) { .rr-workspace .bn-editor { padding-inline: 24px 8px; } .rr-block-hint { padding-inline: 24px 8px; } }\r
-
-.rr-workspace .bn-editor h1 { font-size: 28px; }
-.rr-workspace .bn-editor h2 { font-size: 22px; }
-.rr-workspace .bn-editor h3 { font-size: 18px; }
-
-/* The document owns scrolling; menus live beside it in the dialog top layer. */
-.rr-canvas > .rr-block-editor { position: absolute; inset: 0; min-height: 0; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
-.rr-workspace > .bn-root { position: absolute; inset: 0; pointer-events: none; z-index: 20; }
-.rr-workspace > .bn-root > * { pointer-events: auto; }
-/* The compact five-button toolbar must not clip its nested link form. */
-.rr-workspace .bn-mantine .bn-toolbar { overflow: visible; flex-wrap: wrap; max-width: calc(100vw - 48px); }
-.rr-workspace .bn-form-popover { max-width: calc(100vw - 64px); }
-.rr-engine-note { margin: 0 24px 10px !important; font-size: 11px; color: var(--rr-muted); }
-.rr-editable-image { margin: 12px 0; padding: 12px; width: 100%; border: 1px solid var(--rr-border); border-radius: 8px; }
-.rr-editable-image > img { display: block; max-width: 100%; height: auto; margin: 0 auto 12px; border-radius: 6px; }
-.rr-editable-image label { display: flex; align-items: center; gap: 8px; margin: 6px 0; font-size: 12px; color: var(--rr-muted); }
-.rr-workspace .rr-editable-image input { flex: 1; min-width: 0; width: 100%; padding: 6px 8px; border: 1px solid var(--rr-border); border-radius: 4px; color: var(--rr-text); background: var(--rr-paper); }
-.rr-workspace .bn-block-content[data-content-type="quote"] { border-left: 3px solid var(--rr-accent); padding-inline-start: 16px; }
-.rr-workspace .bn-block-content[data-content-type="codeBlock"] { overflow-x: auto; }
+\r
+.rr-workspace .bn-editor h1 { font-size: 28px; }\r
+.rr-workspace .bn-editor h2 { font-size: 22px; }\r
+.rr-workspace .bn-editor h3 { font-size: 18px; }\r
+\r
+/* The document owns scrolling; menus live beside it in the dialog top layer. */\r
+.rr-canvas > .rr-block-editor { position: absolute; inset: 0; min-height: 0; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }\r
+.rr-workspace > .bn-root { position: absolute; inset: 0; pointer-events: none; z-index: 20; }\r
+.rr-workspace > .bn-root > * { pointer-events: auto; }\r
+/* The compact five-button toolbar must not clip its nested link form. */\r
+.rr-workspace .bn-mantine .bn-toolbar { overflow: visible; flex-wrap: wrap; max-width: calc(100vw - 48px); }\r
+.rr-workspace .bn-form-popover { max-width: calc(100vw - 64px); }\r
+.rr-engine-note { margin: 0 24px 10px !important; font-size: 11px; color: var(--rr-muted); }\r
+.rr-editable-image { margin: 12px 0; padding: 12px; width: 100%; border: 1px solid var(--rr-border); border-radius: 8px; }\r
+.rr-editable-image > img { display: block; max-width: 100%; height: auto; margin: 0 auto 12px; border-radius: 6px; }\r
+.rr-editable-image label { display: flex; align-items: center; gap: 8px; margin: 6px 0; font-size: 12px; color: var(--rr-muted); }\r
+.rr-workspace .rr-editable-image input { flex: 1; min-width: 0; width: 100%; padding: 6px 8px; border: 1px solid var(--rr-border); border-radius: 4px; color: var(--rr-text); background: var(--rr-paper); }\r
+.rr-workspace .bn-block-content[data-content-type="quote"] { border-left: 3px solid var(--rr-accent); padding-inline-start: 16px; }\r
+.rr-workspace .bn-block-content[data-content-type="codeBlock"] { overflow-x: auto; }\r
 .rr-demo-banner .rr-button { margin-left: 12px; min-height: 30px; padding-block: 4px; }\r
 `;
 
