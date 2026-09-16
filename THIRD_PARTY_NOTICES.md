@@ -1,9 +1,6 @@
 # Bundled browser dependencies
 
-The browser client bundles the following exact packages. The build metafile was
-used to identify code that entered `packages/report-review/lib/client.js`; every
-listed package declares MIT and supplied a LICENSE file. Verbatim license files
-are retained under `third_party/licenses/`.
+Packages below are identified from the current esbuild metafile. Verbatim license files are retained under `third_party/licenses/`.
 
 | Package | Version | License |
 | --- | --- | --- |
@@ -25,10 +22,86 @@ are retained under `third_party/licenses/`.
 | `@lezer/lr` | 1.4.10 | MIT |
 | `@lezer/markdown` | 1.7.2 | MIT |
 | `@marijn/find-cluster-break` | 1.0.4 | MIT |
+| `@pdf-lib/standard-fonts` | 1.0.0 | MIT |
+| `@pdf-lib/upng` | 1.0.1 | MIT |
+| `@ungap/structured-clone` | 1.4.0 | ISC |
+| `bail` | 2.0.2 | MIT |
+| `ccount` | 2.0.1 | MIT |
+| `comma-separated-tokens` | 2.0.3 | MIT |
 | `crelt` | 1.0.7 | MIT |
+| `decode-named-character-reference` | 1.3.0 | MIT |
+| `devlop` | 1.1.0 | MIT |
+| `escape-string-regexp` | 5.0.0 | MIT |
+| `estree-util-is-identifier-name` | 3.0.0 | MIT |
+| `extend` | 3.0.2 | MIT |
+| `hast-util-to-jsx-runtime` | 2.3.6 | MIT |
+| `hast-util-whitespace` | 3.0.0 | MIT |
+| `html-url-attributes` | 3.0.1 | MIT |
+| `inline-style-parser` | 0.2.7 | MIT |
+| `is-plain-obj` | 4.1.0 | MIT |
+| `longest-streak` | 3.1.0 | MIT |
+| `markdown-table` | 3.0.4 | MIT |
+| `mdast-util-find-and-replace` | 3.0.2 | MIT |
+| `mdast-util-from-markdown` | 2.0.3 | MIT |
+| `mdast-util-gfm` | 3.1.0 | MIT |
+| `mdast-util-gfm-autolink-literal` | 2.0.1 | MIT |
+| `mdast-util-gfm-footnote` | 2.1.0 | MIT |
+| `mdast-util-gfm-strikethrough` | 2.0.0 | MIT |
+| `mdast-util-gfm-table` | 2.0.0 | MIT |
+| `mdast-util-gfm-task-list-item` | 2.0.0 | MIT |
+| `mdast-util-phrasing` | 4.1.0 | MIT |
+| `mdast-util-to-hast` | 13.2.1 | MIT |
+| `mdast-util-to-markdown` | 2.1.2 | MIT |
+| `mdast-util-to-string` | 4.0.0 | MIT |
+| `micromark` | 4.0.2 | MIT |
+| `micromark-core-commonmark` | 2.0.3 | MIT |
+| `micromark-extension-gfm` | 3.0.0 | MIT |
+| `micromark-extension-gfm-autolink-literal` | 2.1.0 | MIT |
+| `micromark-extension-gfm-footnote` | 2.1.0 | MIT |
+| `micromark-extension-gfm-strikethrough` | 2.1.0 | MIT |
+| `micromark-extension-gfm-table` | 2.1.2 | MIT |
+| `micromark-extension-gfm-tagfilter` | 2.0.0 | MIT |
+| `micromark-extension-gfm-task-list-item` | 2.1.0 | MIT |
+| `micromark-factory-destination` | 2.0.1 | MIT |
+| `micromark-factory-label` | 2.0.1 | MIT |
+| `micromark-factory-space` | 2.0.1 | MIT |
+| `micromark-factory-title` | 2.0.1 | MIT |
+| `micromark-factory-whitespace` | 2.0.1 | MIT |
+| `micromark-util-character` | 2.1.1 | MIT |
+| `micromark-util-chunked` | 2.0.1 | MIT |
+| `micromark-util-classify-character` | 2.0.1 | MIT |
+| `micromark-util-combine-extensions` | 2.0.1 | MIT |
+| `micromark-util-decode-numeric-character-reference` | 2.0.2 | MIT |
+| `micromark-util-decode-string` | 2.0.1 | MIT |
+| `micromark-util-encode` | 2.0.1 | MIT |
+| `micromark-util-html-tag-name` | 2.0.1 | MIT |
+| `micromark-util-normalize-identifier` | 2.0.1 | MIT |
+| `micromark-util-resolve-all` | 2.0.1 | MIT |
+| `micromark-util-sanitize-uri` | 2.0.1 | MIT |
+| `micromark-util-subtokenize` | 2.1.0 | MIT |
+| `pako` | 1.0.11 | (MIT AND Zlib) |
+| `pdf-lib` | 1.17.1 | MIT |
+| `property-information` | 7.2.0 | MIT |
+| `react-markdown` | 10.1.0 | MIT |
+| `remark-gfm` | 4.0.1 | MIT |
+| `remark-parse` | 11.0.0 | MIT |
+| `remark-rehype` | 11.1.2 | MIT |
+| `space-separated-tokens` | 2.0.2 | MIT |
 | `style-mod` | 4.1.3 | MIT |
+| `style-to-js` | 1.1.21 | MIT |
+| `style-to-object` | 1.0.14 | MIT |
+| `trim-lines` | 3.0.1 | MIT |
+| `trough` | 2.2.0 | MIT |
+| `tslib` | 1.14.1 | 0BSD |
+| `unified` | 11.0.5 | MIT |
+| `unist-util-is` | 6.0.1 | MIT |
+| `unist-util-position` | 5.0.0 | MIT |
+| `unist-util-stringify-position` | 4.0.0 | MIT |
+| `unist-util-visit` | 5.1.0 | MIT |
+| `unist-util-visit-parents` | 6.0.2 | MIT |
+| `vfile` | 6.0.3 | MIT |
+| `vfile-message` | 4.0.3 | MIT |
 | `w3c-keyname` | 2.2.8 | MIT |
+| `zwitch` | 2.0.4 | MIT |
 
-React and `react/jsx-runtime` are external module-table inputs provided by the
-DSH Web shell and are not copied into this package. Esbuild is a development
-tool and is not shipped.
+React, `react/jsx-runtime`, and `@deepseek-ai/dsh-client-ui-primitives` are external inputs supplied by the DSH Web shell. Build and test tools are not shipped.
