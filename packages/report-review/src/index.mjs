@@ -29,7 +29,9 @@ const isContextOverflow = e => /context\s*length|context[_\\-\s]?(length|size|wi
 const safeError = e => {
   const known = new Set(['NOT_FOUND','INVALID_INPUT','CONFLICT','DRAFT_EXISTS','REVISION_REQUIRED','ASSET_CORRUPT','SESSION_FORBIDDEN','IDENTITY_UNVERIFIED','IDENTITY_CHANGED','CONNECTOR_UNAVAILABLE','SOURCE_UNAVAILABLE','SOURCE_ROOT_REQUIRED','SOURCE_MANIFEST_INVALID','SOURCE_FILE_INVALID','SOURCE_HASH_MISMATCH','SOURCE_FAILED','WEB_SEARCH_UNAVAILABLE','KNOWLEDGE_SEARCH_FAILED','KNOWLEDGE_RESPONSE_INVALID','LIST_UNAVAILABLE','PUBLISH_TARGET_REQUIRED','IMAGES_UNSUPPORTED','PUBLICATION_RECONCILIATION_REQUIRED','PUBLISH_TOKEN_INVALID','HUMAN_CLICK_REQUIRED','PUBLICATION_IN_PROGRESS','PUBLISH_REJECTED','PREVIEW_STALE','PREVIEW_NOT_FOUND','PDF_INVALID','DISPOSED','BODY_TOO_LARGE','ACTION_UNSUPPORTED','HUMAN_ITEMS_UNAVAILABLE','HUMAN_ITEMS_PUBLICATION_UNSUPPORTED','UNSUPPORTED_ASSET_REFERENCE','UNREGISTERED_ASSET','AMBIGUOUS_ASSET_CAPTION','UNREFERENCED_ASSET','INVALID_PUBLIC_VERSION','INVALID_IMAGE_CAPTION','INVALID_PUBLIC_SOURCE','INVALID_PUBLIC_SOURCE_TIME','INVALID_PUBLIC_AUTHOR','UNSUPPORTED_PUBLIC_MARKDOWN','INVALID_OR_DUPLICATE_ASSET','INVALID_HUMAN_ITEM','PRIVATE_HUMAN_ITEM','HUMAN_ITEM_ASSET_UNSUPPORTED','HUMAN_CONTENT_NOT_IN_VERSION','HUMAN_ANNOTATION_MISMATCH','UNTRUSTED_MANIFEST','INVALID_RESOURCE_BINDING','RESOURCE_BINDING_MISMATCH','INCOMPLETE_RESOURCE_BINDINGS']);
   const code = known.has(e?.code) ? e.code : 'INTERNAL_ERROR';
-  return { ok: false, error: { code, message: code === 'INTERNAL_ERROR' ? 'Host operation failed; private diagnostics are not exposed.' : code } };
+  // Known codes pass their own message through so a coded failure can carry a sanitized cause suffix
+  // (every producer is our own fail(), which defaults message to the code itself).
+  return { ok: false, error: { code, message: code === 'INTERNAL_ERROR' ? 'Host operation failed; private diagnostics are not exposed.' : (e?.message || code) } };
 };
 function annotationView(a) {
   return { ...pick(a, ['id','source','public','pending','mappingConfidence','displayName','completedAt']), ...(a.target ? { target: pick(a.target, ['startLine','endLine']) } : {}) };
@@ -537,7 +539,9 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
         if (wantsScope && scopeStatus === 'failed') generationWarnings.push('KNOWLEDGE_RANGE_NOT_ENFORCED');
       } else generationWarnings.push('KNOWLEDGE_UNAVAILABLE');
     }
-    let manifest; try { manifest = await source.generate(request); } catch { fail('SOURCE_FAILED'); }
+    // Surface only the inner machine code (GENERATION_FAILED / GENERATION_TIMEOUT / spawn errno); stderr and
+    // failure.json contents stay private, but a bare SOURCE_FAILED made field diagnosis near-impossible.
+    let manifest; try { manifest = await source.generate(request); } catch (error) { const cause = /^[A-Z0-9_]{1,40}$/.test(error?.code || '') ? error.code : 'UNKNOWN'; fail('SOURCE_FAILED', `SOURCE_FAILED(cause=${cause})`); }
     if (!manifest || !Array.isArray(manifest.assets) || !validString(manifest.runDir,8192)) fail('SOURCE_MANIFEST_INVALID');
     const root = await realpath(config.sourceOutputRoot), runDir = await realpath(manifest.runDir), rel = relative(root, runDir);
     if (!rel || rel === '..' || rel.startsWith(`..${sep}`) || isAbsolute(rel)) fail('SOURCE_FILE_INVALID');

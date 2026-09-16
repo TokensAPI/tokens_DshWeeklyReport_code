@@ -4,6 +4,9 @@ import { generatedRoot, pythonCommand } from './runtime-config.mjs'
 export * from '../packages/weekly-report-source/lib/plugin.js'
 export const name = 'tokens-weekly-report-source'
 export function apply(ctx, config = {}) {
-  return original.apply(ctx, { outputRoot: generatedRoot(), python: pythonCommand(), ...config })
+  // `pythonPath` is accepted as an alias for `python` (mirror of the report-pdf row) so a profile override
+  // written with either key configures both rows consistently.
+  const { pythonPath, ...rest } = config
+  return original.apply(ctx, { outputRoot: generatedRoot(), python: pythonPath ?? pythonCommand(), ...rest })
 }
 export default { name, apply }

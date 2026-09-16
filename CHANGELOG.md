@@ -1,5 +1,12 @@
 # 更新记录
 
+## 0.1.4 — 运行时配置与诊断修复
+
+- `SOURCE_FAILED` 不再吞掉根因：错误消息带出内部机器码（如 `cause=GENERATION_FAILED`、`cause=GENERATION_TIMEOUT`、`cause=ENOENT`），stderr 与上游数据仍不对外暴露。
+- `tokens-weekly-report-pdf` 行接受 `python` 作为 `pythonPath` 的别名，`tokens-weekly-report-source` 行反向接受 `pythonPath`；Profile 补丁用同一个键名即可同时配好两行,避免只覆盖生成器、漏掉 PDF 导致「PDF 生成失败」。
+- 新增 `TOKENSCOWORK_WEEKLY_REPORT_ASSET_ROOTS`（逗号分隔）：把旧数据根目录加入 PDF 与 WeKnora 连接器的资产白名单,旧安装生成的草稿可以继续导出 PDF,不再报 `ASSET_OUTSIDE_WHITELIST`。
+- README 补全 Python/资产根目录配置说明,并给出按行 id 覆盖（`- id:`,非 `- insert:`）的正确补丁示例。
+
 ## 0.1.3 — BlockNote 可视化编辑
 
 - 可视化编辑使用 BlockNote，Markdown/PDF 实时浏览继续使用 CodeMirror；移除独立 Tiptap 编辑器入口。

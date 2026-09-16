@@ -6,7 +6,7 @@ Profile。包保留原始源码、文档、作者署名和已有许可证。
 
 ## 功能
 
-当前适配版：`0.1.3`，合并原开发人员的「周报插件 V1.1」；变更及适配说明见 [CHANGELOG.md](CHANGELOG.md)。
+当前适配版：`0.1.4`，合并原开发人员的「周报插件 V1.1」；变更及适配说明见 [CHANGELOG.md](CHANGELOG.md)。
 
 - 从本机 loopback 数据服务生成 Markdown 与图表。
 - 持久化工作稿、修订、人工重点和确认版本。
@@ -19,7 +19,7 @@ Profile。包保留原始源码、文档、作者署名和已有许可证。
 通过 TokensCowork 插件市场安装后重启应用。手工验证包时只在测试 Profile 中执行：
 
 ```powershell
-dsh plugin --profile weekly-report-test add C:\path\to\tokensapi-dsh-weekly-report-0.1.3.tgz
+dsh plugin --profile weekly-report-test add C:\path\to\tokensapi-dsh-weekly-report-0.1.4.tgz
 ```
 
 默认可加载核心、生成器、PDF 服务和审阅界面。WeKnora 连接器默认关闭，避免在未配置
@@ -36,8 +36,9 @@ dsh plugin --profile weekly-report-test add C:\path\to\tokensapi-dsh-weekly-repo
 | `TOKENSCOWORK_WEEKLY_REPORT_HOME` | 插件数据根目录 |
 | `TOKENSCOWORK_WEEKLY_REPORT_DATA_DIR` | 工作稿与资产目录 |
 | `TOKENSCOWORK_WEEKLY_REPORT_OUTPUT_DIR` | 生成器输出目录 |
-| `TOKENSCOWORK_WEEKLY_REPORT_PYTHON` | 已配置 Python 解释器 |
+| `TOKENSCOWORK_WEEKLY_REPORT_PYTHON` | 生成器与 PDF 共用的 Python 解释器（须带 Matplotlib、PyMuPDF 等依赖；未设置时用系统 `python`/`python3`，几乎必然缺依赖） |
 | `TOKENSCOWORK_WEEKLY_REPORT_FONT_PATH` | PDF 使用的字体文件 |
+| `TOKENSCOWORK_WEEKLY_REPORT_ASSET_ROOTS` | 逗号分隔的额外资产根目录；旧安装（如 `~/.dsh/report-review/data`）生成的草稿要继续导出 PDF 时加在这里 |
 | `TOKENSCOWORK_WEEKLY_REPORT_CONNECTOR_ENABLED=1` | 启用 WeKnora 连接器 |
 | `TOKENSCOWORK_WEEKLY_REPORT_WEKNORA_URL` | WeKnora HTTP(S) 地址 |
 | `TOKENSCOWORK_WEEKLY_REPORT_READ_SECRET_FILE` | 只读密钥文件路径 |
@@ -61,6 +62,24 @@ Profile 覆盖示例（值均为占位符）：
   config:
     publishKbId: kb-example
 ```
+
+指定 Python 时建议优先用环境变量 `TOKENSCOWORK_WEEKLY_REPORT_PYTHON`（一处生效于生成器和
+PDF 两行）。改用 Profile 补丁时，`python` 与 `pythonPath` 两个键名在两行上互为别名，写任一
+个即可，但两行都要写（覆盖已注册行必须用顶层 `- id:`，不要用 `- insert:`，否则会报
+`duplicate loader entry id`）：
+
+```yaml
+- id: tokens-weekly-report-source
+  config:
+    python: /path/to/venv/bin/python
+- id: tokens-weekly-report-pdf
+  config:
+    python: /path/to/venv/bin/python
+```
+
+生成失败时错误会带出内部原因代码，如 `SOURCE_FAILED(cause=GENERATION_FAILED)`（Python 进程
+非零退出，常见原因是解释器缺依赖）、`cause=GENERATION_TIMEOUT`（超时）、`cause=ENOENT`
+（Python 路径不存在）；详细 stderr 仍不对外暴露，只落在运行目录的诊断里。
 
 发布会调用外部 WeKnora，可能触发上传、解析、向量化、摘要、标签或计费。适配测试不使用
 真实账号、不执行真实写入。生成器还需要本机 `127.0.0.1:5100` 数据服务及带 Matplotlib

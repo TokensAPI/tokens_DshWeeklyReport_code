@@ -1,5 +1,5 @@
 import { Connector } from '../packages/weknora-connector/src/index.mjs'
-import { dataRoot, listEnv } from './runtime-config.mjs'
+import { assetRoots, listEnv } from './runtime-config.mjs'
 
 export * from '../packages/weknora-connector/src/index.mjs'
 export const name = 'tokens-weekly-report-weknora'
@@ -12,7 +12,7 @@ export function apply(ctx, config = {}) {
     writeSecretFile: process.env.TOKENSCOWORK_WEEKLY_REPORT_WRITE_SECRET_FILE,
     tenantId: process.env.TOKENSCOWORK_WEEKLY_REPORT_TENANT_ID,
     allowedKbs: listEnv('TOKENSCOWORK_WEEKLY_REPORT_ALLOWED_KBS'),
-    assetRoots: [dataRoot()],
+    assetRoots: assetRoots(),
     ...config,
   }
   delete merged.enabled

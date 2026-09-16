@@ -33,3 +33,10 @@ export function fontPath() {
 export function listEnv(name) {
   return (env[name] || '').split(',').map(value => value.trim()).filter(Boolean)
 }
+
+export function assetRoots() {
+  // Extra roots let PDF/connector read assets written under a previous data root (e.g. drafts created by a
+  // pre-bundle install); nonexistent extras are dropped because the renderer realpath()s every root up front.
+  const extras = listEnv('TOKENSCOWORK_WEEKLY_REPORT_ASSET_ROOTS').map(value => path.resolve(value)).filter(existsSync)
+  return [...new Set([dataRoot(), ...extras])]
+}
