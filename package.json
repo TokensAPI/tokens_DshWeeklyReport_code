@@ -65,7 +65,8 @@
     "build:client": "node scripts/build-client.mjs",
     "check": "node scripts/static-check.mjs",
     "test": "node scripts/run-tests.mjs",
-    "prepack": "npm run build:client && npm run check"
+    "prepack": "npm run build:client && npm run check",
+    "test:client": "node --test packages/report-review/test/client.test.mjs packages/report-review/test/workspace.test.mjs packages/report-review/test/demo.test.mjs packages/report-review/test/demo-store.test.mjs packages/report-review/test/parity.test.mjs packages/report-review/test/entry.test.mjs"
   },
   "dependencies": {},
   "devDependencies": {

@@ -22,3 +22,5 @@ __pycache__/
 Thumbs.db
 .idea/
 .vscode/
+
+**/test-results/
