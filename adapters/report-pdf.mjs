@@ -1,6 +1,7 @@
 import * as original from '../packages/report-pdf/index.js'
 import path from 'node:path'
-import { assetRoots, fontPath, pluginHome, pythonCommand } from './runtime-config.mjs'
+import { assetRoots, fontPath, pluginHome } from './runtime-config.mjs'
+import { resolvePython } from './python-runtime.mjs'
 
 export * from '../packages/report-pdf/index.js'
 export const name = 'tokens-weekly-report-pdf'
@@ -11,7 +12,7 @@ export function apply(ctx, config = {}) {
   return original.apply(ctx, {
     cacheDir: path.join(pluginHome(), 'pdf-cache'),
     assetRoots: assetRoots(),
-    pythonPath: python ?? pythonCommand(),
+    pythonPath: python ?? resolvePython(),
     fontPath: fontPath(),
     ...rest,
   })

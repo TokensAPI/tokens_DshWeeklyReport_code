@@ -1,5 +1,11 @@
 # 更新记录
 
+## 0.1.5 — Python 环境零配置
+
+- 未显式配置 Python 时自动探测常见解释器（要求同时具备 Matplotlib 与 PyMuPDF），结果缓存到 `<插件目录>/python-runtime.json`;显式 env/按行配置仍最优先且不做校验。
+- 全部候选不合格时自动创建托管 venv（`<插件目录>/venv`）并后台 `pip install matplotlib pymupdf`,尊重 `PIP_INDEX_URL`;进度与失败原因写入 `<插件目录>/python-setup.log`。
+- 新装机器不再需要手工配置 Python 路径或预装依赖;仅在机器完全没有 Python 时需要先安装 Python 3.9+。
+
 ## 0.1.4 — 运行时配置与诊断修复
 
 - `SOURCE_FAILED` 不再吞掉根因：错误消息带出内部机器码（如 `cause=GENERATION_FAILED`、`cause=GENERATION_TIMEOUT`、`cause=ENOENT`），stderr 与上游数据仍不对外暴露。

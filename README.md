@@ -6,7 +6,7 @@ Profile。包保留原始源码、文档、作者署名和已有许可证。
 
 ## 功能
 
-当前适配版：`0.1.4`，合并原开发人员的「周报插件 V1.1」；变更及适配说明见 [CHANGELOG.md](CHANGELOG.md)。
+当前适配版：`0.1.5`，合并原开发人员的「周报插件 V1.1」；变更及适配说明见 [CHANGELOG.md](CHANGELOG.md)。
 
 - 从本机 loopback 数据服务生成 Markdown 与图表。
 - 持久化工作稿、修订、人工重点和确认版本。
@@ -19,12 +19,29 @@ Profile。包保留原始源码、文档、作者署名和已有许可证。
 通过 TokensCowork 插件市场安装后重启应用。手工验证包时只在测试 Profile 中执行：
 
 ```powershell
-dsh plugin --profile weekly-report-test add C:\path\to\tokensapi-dsh-weekly-report-0.1.4.tgz
+dsh plugin --profile weekly-report-test add C:\path\to\tokensapi-dsh-weekly-report-0.1.5.tgz
 ```
 
 默认可加载核心、生成器、PDF 服务和审阅界面。WeKnora 连接器默认关闭，避免在未配置
 凭证和知识库白名单时启动。数据默认写到
 `%USERPROFILE%\.tokenscowork\weekly-report`（其他系统为用户主目录下同名目录）。
+
+## Python 环境（零配置）
+
+生成器需要 Matplotlib，PDF 需要 PyMuPDF。0.1.5 起插件自动解决 Python 环境，新机器
+默认无需任何配置：
+
+1. 显式配置最优先：环境变量 `TOKENSCOWORK_WEEKLY_REPORT_PYTHON` 或按行 `python` 配置，
+   一旦设置不做任何探测和校验。
+2. 未显式配置时，首次启动自动探测常见解释器（托管 venv、`python3`/`python`、Homebrew、
+   系统 Python），选第一个同时具备 Matplotlib 与 PyMuPDF 的并缓存到
+   `<插件目录>/python-runtime.json`。
+3. 都不具备时，自动用现有 Python 在 `<插件目录>/venv` 创建托管 venv 并在后台
+   `pip install matplotlib pymupdf`（尊重 `PIP_INDEX_URL`，国内可设 pypi 镜像）。安装期间
+   生成会短暂失败，完成后无需重启即可用；进度与失败原因见 `<插件目录>/python-setup.log`。
+4. 机器上完全没有 Python 时无法自举，需安装 Python 3.9+ 后重启（macOS 系统自带）。
+
+数据服务（默认 `127.0.0.1:5100`）与 WeKnora 属外部服务，插件不代为部署。
 
 ## 运行时配置
 
@@ -36,7 +53,7 @@ dsh plugin --profile weekly-report-test add C:\path\to\tokensapi-dsh-weekly-repo
 | `TOKENSCOWORK_WEEKLY_REPORT_HOME` | 插件数据根目录 |
 | `TOKENSCOWORK_WEEKLY_REPORT_DATA_DIR` | 工作稿与资产目录 |
 | `TOKENSCOWORK_WEEKLY_REPORT_OUTPUT_DIR` | 生成器输出目录 |
-| `TOKENSCOWORK_WEEKLY_REPORT_PYTHON` | 生成器与 PDF 共用的 Python 解释器（须带 Matplotlib、PyMuPDF 等依赖；未设置时用系统 `python`/`python3`，几乎必然缺依赖） |
+| `TOKENSCOWORK_WEEKLY_REPORT_PYTHON` | 显式指定生成器与 PDF 共用的 Python 解释器；未设置时走上文自动探测/自建 venv |
 | `TOKENSCOWORK_WEEKLY_REPORT_FONT_PATH` | PDF 使用的字体文件 |
 | `TOKENSCOWORK_WEEKLY_REPORT_ASSET_ROOTS` | 逗号分隔的额外资产根目录；旧安装（如 `~/.dsh/report-review/data`）生成的草稿要继续导出 PDF 时加在这里 |
 | `TOKENSCOWORK_WEEKLY_REPORT_CONNECTOR_ENABLED=1` | 启用 WeKnora 连接器 |
