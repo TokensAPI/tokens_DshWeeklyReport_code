@@ -50862,6 +50862,8 @@ var workspace_default = `/* Local aliases consume the TokensAPI contract; never 
 .rr-settings-card .rr-row { margin-top: 16px; display: flex; gap: 8px; }
 .rr-settings-note { color: var(--rr-success); font-size: 13px; margin: 10px 0 0; }
 .rr-settings-error { color: var(--rr-danger); font-size: 13px; margin: 10px 0 0; white-space: pre-wrap; }
+.rr-settings-test { margin: 12px 0 0; padding: 10px 12px 10px 28px; border: 1px solid var(--rr-border); border-radius: 8px; font-size: 13px; }
+.rr-settings-test li { margin: 4px 0; }
 `;
 
 // packages/report-review/src/block-editor.jsx
@@ -114707,10 +114709,18 @@ function PublicationRecords({ value, busy, onRead }) {
     ] }, `${recordText(r4.planId)}-${index4}`))
   ] });
 }
-function SettingsPanel({ request, onClose }) {
+var testErrorText = (code4) => ({
+  identity_credential_unavailable: "\u672A\u914D\u7F6E\u53D1\u5E03\u5BC6\u94A5\uFF08\u5F53\u524D\u4E3A\u53EA\u8BFB\u6A21\u5F0F\uFF09",
+  IDENTITY_UNVERIFIED: "\u670D\u52A1\u7AEF\u672A\u786E\u8BA4\u8BE5\u5BC6\u94A5\u7684\u53D1\u5E03\u8EAB\u4EFD\uFF0C\u8BF7\u68C0\u67E5\u53D1\u5E03\u5BC6\u94A5\u53CA\u5176\u6743\u9650",
+  scope_rejected: "\u77E5\u8BC6\u5E93 ID \u4E0D\u5728\u5141\u8BB8\u8303\u56F4",
+  INCOMPLETE: "\u914D\u7F6E\u4E0D\u5B8C\u6574\uFF1A\u9700\u8981\u5730\u5740\u3001\u77E5\u8BC6\u5E93 ID \u548C\u8BFB\u53D6\u5BC6\u94A5",
+  plaintext_non_loopback: "\u660E\u6587 http \u53EA\u5141\u8BB8\u672C\u673A\u56DE\u73AF\u5730\u5740\uFF0C\u8FDC\u7AEF\u8BF7\u4F7F\u7528 https"
+})[code4] || code4;
+function SettingsPanel({ request, onClose, onIdentity }) {
   const [view, setView] = (0, import_react158.useState)(null);
   const [form, setForm] = (0, import_react158.useState)({ baseUrl: "", kbId: "", readKey: "", writeKey: "" });
   const [state, setState] = (0, import_react158.useState)({ busy: true, note: "", error: "" });
+  const [test, setTest] = (0, import_react158.useState)(null);
   const adopt = (v) => {
     setView(v);
     setForm((f2) => ({ ...f2, baseUrl: v?.baseUrl || "", kbId: v?.kbId || "", readKey: "", writeKey: "" }));
@@ -114742,6 +114752,19 @@ function SettingsPanel({ request, onClose }) {
       setState({ busy: false, note: "", error: e6.code === "SETTINGS_INVALID" ? "\u6709\u5B57\u6BB5\u4E0D\u5408\u6CD5\uFF1A\u5730\u5740\u987B\u4E3A http(s) URL\uFF08http \u4EC5\u9650\u672C\u673A\u56DE\u73AF\uFF09\uFF0C\u77E5\u8BC6\u5E93 ID \u53EA\u80FD\u5305\u542B\u5B57\u6BCD\u6570\u5B57\u3001\u4E0B\u5212\u7EBF\u548C\u6A2A\u7EBF\uFF0C\u5BC6\u94A5\u4E0D\u80FD\u542B\u6362\u884C\u3002" : e6.message || "\u4FDD\u5B58\u5931\u8D25" });
     }
   };
+  const runTest = async () => {
+    setState((s4) => ({ ...s4, busy: true, note: "", error: "" }));
+    setTest(null);
+    try {
+      const r4 = await request("settingsTest");
+      setTest(r4);
+      setState((s4) => ({ ...s4, busy: false }));
+      if (r4?.publish?.ok) request("identity").then((v) => onIdentity?.(v)).catch(() => {
+      });
+    } catch (e6) {
+      setState((s4) => ({ ...s4, busy: false, error: e6.message || "\u6D4B\u8BD5\u5931\u8D25" }));
+    }
+  };
   const field = (key, value) => setForm((f2) => ({ ...f2, [key]: value }));
   return /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("section", { className: "rr-settings", role: "dialog", "aria-label": "\u8FDE\u63A5\u8BBE\u7F6E", children: /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-settings-card", children: [
     /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-section-heading", children: [
@@ -114770,8 +114793,14 @@ function SettingsPanel({ request, onClose }) {
     /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-muted", children: "\u5BC6\u94A5\u4FDD\u5B58\u4E3A\u672C\u673A\u53D7\u9650\u6587\u4EF6\uFF0C\u4E0D\u5199\u5165\u4EFB\u4F55\u914D\u7F6E\u6216\u8865\u4E01\uFF1B\u754C\u9762\u4E0D\u56DE\u663E\u5BC6\u94A5\u5185\u5BB9\u3002\u53D1\u5E03\u5BC6\u94A5\u987B\u4E0E\u8BFB\u53D6\u5BC6\u94A5\u4E0D\u540C\u3002" }),
     state.note && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-settings-note", role: "status", children: state.note }),
     state.error && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-settings-error", role: "alert", children: state.error }),
+    test && /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("ul", { className: "rr-settings-test", role: "status", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("li", { children: test.connectorActive ? "\u2713 \u8FDE\u63A5\u914D\u7F6E\u5DF2\u6FC0\u6D3B" : `\u2717 \u8FDE\u63A5\u672A\u6FC0\u6D3B\uFF1A${testErrorText(test.connectorError)}` }),
+      test.read && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("li", { children: test.read.ok ? `\u2713 \u8BFB\u53D6\u68C0\u7D22\u53EF\u7528\uFF08\u77E5\u8BC6\u5E93 ${test.kbId}${Number.isFinite(test.read.total) ? `\uFF0C\u5171 ${test.read.total} \u6761\u8D44\u6599` : ""}\uFF09` : `\u2717 \u8BFB\u53D6\u68C0\u7D22\u5931\u8D25\uFF1A${testErrorText(test.read.error)}` }),
+      test.publish && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("li", { children: test.publish.ok ? `\u2713 \u53D1\u5E03\u8EAB\u4EFD\u5DF2\u786E\u8BA4\uFF1A${test.publish.username}\uFF08\u300C\u786E\u8BA4\u53D1\u5E03\u300D\u5C06\u89E3\u9501\uFF09` : `\u2717 \u53D1\u5E03\u8EAB\u4EFD\u672A\u901A\u8FC7\uFF1A${testErrorText(test.publish.error)}` })
+    ] }),
     /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-row", children: [
       /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button rr-button--primary", disabled: state.busy, onClick: save, children: "\u4FDD\u5B58\u5E76\u751F\u6548" }),
+      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: state.busy, onClick: runTest, children: "\u6D4B\u8BD5\u8FDE\u63A5" }),
       /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: state.busy, onClick: onClose, children: "\u5173\u95ED" })
     ] })
   ] }) });
@@ -115648,7 +115677,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       " ",
       /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", onClick: () => setConfirmClose(false), children: "\u8FD4\u56DE\u7F16\u8F91" })
     ] }),
-    settingsOpen && !demo && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)(SettingsPanel, { request, onClose: () => {
+    settingsOpen && !demo && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)(SettingsPanel, { request, onIdentity: (v) => alive.current && setIdentity(v), onClose: () => {
       setSettingsOpen(false);
       request("identity").then((v) => alive.current && setIdentity(v)).catch(() => {
       });

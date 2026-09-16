@@ -76,3 +76,30 @@ test('non-loopback plain http is rejected by the connector and surfaced as an er
     assert.equal(view.connectorError, 'plaintext_non_loopback')
   } finally { _resetForTests(); await rm(home, { recursive: true, force: true }) }
 })
+
+test('testConnection reports inactive connector without any network call', async () => {
+  const home = await mkdtemp(join(tmpdir(), 'wr-weknora-'))
+  try {
+    _resetForTests()
+    const { testConnection } = await import('../../../adapters/weknora-runtime.mjs')
+    const r = await testConnection(home)
+    assert.equal(r.connectorActive, false)
+    assert.equal(r.connectorError, 'INCOMPLETE')
+    assert.ok(!('read' in r) && !('publish' in r))
+  } finally { _resetForTests(); await rm(home, { recursive: true, force: true }) }
+})
+
+test('testConnection with unreachable local service reports both checks as failed, never throws', async () => {
+  const home = await mkdtemp(join(tmpdir(), 'wr-weknora-'))
+  try {
+    _resetForTests()
+    const { testConnection } = await import('../../../adapters/weknora-runtime.mjs')
+    updateSettings({ baseUrl: 'http://127.0.0.1:9', kbId: 'kb-x', readKey: 'k1', writeKey: 'k2' }, home)
+    const r = await testConnection(home)
+    assert.equal(r.connectorActive, true)
+    assert.equal(r.kbId, 'kb-x')
+    assert.equal(r.read.ok, false)
+    assert.equal(r.publish.ok, false)
+    assert.ok(typeof r.read.error === 'string' && typeof r.publish.error === 'string')
+  } finally { _resetForTests(); await rm(home, { recursive: true, force: true }) }
+})

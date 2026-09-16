@@ -32,6 +32,7 @@ function writeSecret(home, purpose, value) {
 let staticConfig = {}
 let current = null
 let lastError = null
+let lastConfig = null
 
 function connectorConfig(home) {
   const s = readSettings(home)
@@ -50,9 +51,30 @@ export function rebuildConnector(home = pluginHome()) {
     current = null; lastError = merged.baseUrl || merged.readSecretFile || merged.allowedKbs?.length ? 'INCOMPLETE' : null
     return null
   }
-  try { current = new Connector(merged); lastError = null }
-  catch (error) { current = null; lastError = error?.message || 'invalid_config' }
+  try { current = new Connector(merged); lastError = null; lastConfig = merged }
+  catch (error) { current = null; lastError = error?.message || 'invalid_config'; lastConfig = null }
   return current
+}
+
+// Live end-to-end check for the settings UI: is the service reachable with the read key, and does the
+// publish key pass identity verification (the exact gate that unlocks 确认发布). Only status codes and the
+// server-verified username travel back — no key material, no response bodies.
+export async function testConnection(home = pluginHome()) {
+  rebuildConnector(home)
+  if (!current) return { connectorActive: false, connectorError: lastError || 'INCOMPLETE' }
+  const kbId = lastConfig.allowedKbs[0]
+  const result = { connectorActive: true, kbId }
+  try {
+    const read = await current.listKnowledge(kbId, { page: 1, pageSize: 1 })
+    result.read = read?.ok ? { ok: true, total: Number.isFinite(read.data?.total) ? read.data.total : null } : { ok: false, error: String(read?.error || 'unknown').slice(0, 200) }
+  } catch (error) { result.read = { ok: false, error: String(error?.message || 'request_failed').slice(0, 200) } }
+  try {
+    const idn = await current.identity({ forPublication: true })
+    result.publish = idn?.verified === true && idn.credentialPurpose === 'publish' && idn.principal?.username
+      ? { ok: true, username: String(idn.principal.username).slice(0, 256) }
+      : { ok: false, error: String(idn?.error || 'IDENTITY_UNVERIFIED').slice(0, 200) }
+  } catch (error) { result.publish = { ok: false, error: String(error?.message || 'request_failed').slice(0, 200) } }
+  return result
 }
 
 export function initWeknoraRuntime(config = {}, home = pluginHome()) {
@@ -122,4 +144,4 @@ export function updateSettings(input, home = pluginHome()) {
 }
 
 // Test-only.
-export function _resetForTests() { staticConfig = {}; current = null; lastError = null }
+export function _resetForTests() { staticConfig = {}; current = null; lastError = null; lastConfig = null }

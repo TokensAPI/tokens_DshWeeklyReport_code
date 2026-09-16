@@ -331,3 +331,5 @@
 .rr-settings-card .rr-row { margin-top: 16px; display: flex; gap: 8px; }
 .rr-settings-note { color: var(--rr-success); font-size: 13px; margin: 10px 0 0; }
 .rr-settings-error { color: var(--rr-danger); font-size: 13px; margin: 10px 0 0; white-space: pre-wrap; }
+.rr-settings-test { margin: 12px 0 0; padding: 10px 12px 10px 28px; border: 1px solid var(--rr-border); border-radius: 8px; font-size: 13px; }
+.rr-settings-test li { margin: 4px 0; }

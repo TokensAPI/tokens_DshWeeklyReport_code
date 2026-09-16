@@ -94,10 +94,18 @@ export function PublicationRecords({ value, busy, onRead }) {
     </article>)}
   </>;
 }
-export function SettingsPanel({ request, onClose }) {
+const testErrorText = code => ({
+  identity_credential_unavailable: '未配置发布密钥（当前为只读模式）',
+  IDENTITY_UNVERIFIED: '服务端未确认该密钥的发布身份，请检查发布密钥及其权限',
+  scope_rejected: '知识库 ID 不在允许范围',
+  INCOMPLETE: '配置不完整：需要地址、知识库 ID 和读取密钥',
+  plaintext_non_loopback: '明文 http 只允许本机回环地址，远端请使用 https',
+}[code] || code);
+export function SettingsPanel({ request, onClose, onIdentity }) {
   const [view, setView] = useState(null);
   const [form, setForm] = useState({ baseUrl: '', kbId: '', readKey: '', writeKey: '' });
   const [state, setState] = useState({ busy: true, note: '', error: '' });
+  const [test, setTest] = useState(null);
   const adopt = v => { setView(v); setForm(f => ({ ...f, baseUrl: v?.baseUrl || '', kbId: v?.kbId || '', readKey: '', writeKey: '' })); };
   useEffect(() => {
     let cancelled = false;
@@ -116,6 +124,15 @@ export function SettingsPanel({ request, onClose }) {
       setState({ busy: false, error: '', note: v?.connectorActive ? '已保存，WeKnora 连接已生效（无需重启）。' : `已保存，但连接未激活：${v?.connectorError === 'INCOMPLETE' ? '还需补全地址、知识库 ID 或读取密钥。' : v?.connectorError || '配置不完整。'}` });
     } catch (e) { setState({ busy: false, note: '', error: e.code === 'SETTINGS_INVALID' ? '有字段不合法：地址须为 http(s) URL（http 仅限本机回环），知识库 ID 只能包含字母数字、下划线和横线，密钥不能含换行。' : (e.message || '保存失败') }); }
   };
+  const runTest = async () => {
+    setState(s => ({ ...s, busy: true, note: '', error: '' })); setTest(null);
+    try {
+      const r = await request('settingsTest');
+      setTest(r);
+      setState(s => ({ ...s, busy: false }));
+      if (r?.publish?.ok) request('identity').then(v => onIdentity?.(v)).catch(() => {});
+    } catch (e) { setState(s => ({ ...s, busy: false, error: e.message || '测试失败' })); }
+  };
   const field = (key, value) => setForm(f => ({ ...f, [key]: value }));
   return <section className="rr-settings" role="dialog" aria-label="连接设置">
     <div className="rr-settings-card">
@@ -128,7 +145,12 @@ export function SettingsPanel({ request, onClose }) {
       <p className="rr-muted">密钥保存为本机受限文件，不写入任何配置或补丁；界面不回显密钥内容。发布密钥须与读取密钥不同。</p>
       {state.note && <p className="rr-settings-note" role="status">{state.note}</p>}
       {state.error && <p className="rr-settings-error" role="alert">{state.error}</p>}
-      <div className="rr-row"><button className="rr-button rr-button--primary" disabled={state.busy} onClick={save}>保存并生效</button><button className="rr-button" disabled={state.busy} onClick={onClose}>关闭</button></div>
+      {test && <ul className="rr-settings-test" role="status">
+        <li>{test.connectorActive ? '✓ 连接配置已激活' : `✗ 连接未激活：${testErrorText(test.connectorError)}`}</li>
+        {test.read && <li>{test.read.ok ? `✓ 读取检索可用（知识库 ${test.kbId}${Number.isFinite(test.read.total) ? `，共 ${test.read.total} 条资料` : ''}）` : `✗ 读取检索失败：${testErrorText(test.read.error)}`}</li>}
+        {test.publish && <li>{test.publish.ok ? `✓ 发布身份已确认：${test.publish.username}（「确认发布」将解锁）` : `✗ 发布身份未通过：${testErrorText(test.publish.error)}`}</li>}
+      </ul>}
+      <div className="rr-row"><button className="rr-button rr-button--primary" disabled={state.busy} onClick={save}>保存并生效</button><button className="rr-button" disabled={state.busy} onClick={runTest}>测试连接</button><button className="rr-button" disabled={state.busy} onClick={onClose}>关闭</button></div>
     </div>
   </section>;
 }
@@ -484,7 +506,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
     <footer className="rr-status" role="status">{demo ? '演示模式 · ' : ''}{status} · {dirty ? '未保存，PDF 为旧预览' : synced && pdf ? 'PDF 已同步' : preview?.status === 'failed' ? 'PDF 生成失败' : 'PDF 等待生成 / 旧预览'}</footer>
     {error && <div className="rr-error" role="alert">{error}</div>}
     {confirmClose && <section className="rr-close-confirm" role="alert"><p>有未保存修改，放弃后将丢失这些内容。</p><button className="rr-button rr-button--danger" onClick={close}>放弃并关闭</button> <button className="rr-button" onClick={() => setConfirmClose(false)}>返回编辑</button></section>}
-    {settingsOpen && !demo && <SettingsPanel request={request} onClose={() => { setSettingsOpen(false); request('identity').then(v => alive.current && setIdentity(v)).catch(() => {}); }} />}
+    {settingsOpen && !demo && <SettingsPanel request={request} onIdentity={v => alive.current && setIdentity(v)} onClose={() => { setSettingsOpen(false); request('identity').then(v => alive.current && setIdentity(v)).catch(() => {}); }} />}
   </dialog>;
 }
 

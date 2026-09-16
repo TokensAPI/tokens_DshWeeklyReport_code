@@ -1017,6 +1017,7 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
         const view = await config.settingsApi.update(input.settings);
         if (validString(view?.publishKbId)) config.publishKbId = view.publishKbId;
         return view; }
+      case 'settingsTest': if (!human) fail('HUMAN_CLICK_REQUIRED'); if (!config.settingsApi?.test) fail('SETTINGS_UNAVAILABLE'); return config.settingsApi.test();
       default: fail('ACTION_UNSUPPORTED');
     }
   }
