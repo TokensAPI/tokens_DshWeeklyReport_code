@@ -1,0 +1,78 @@
+{
+  "name": "@tokensapi/dsh-weekly-report",
+  "version": "0.1.0",
+  "description": "TokensCowork 周报生成、审阅、PDF 预览与受控 WeKnora 发布插件",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TokensAPI/tokens_DshWeeklyReport_code.git"
+  },
+  "type": "module",
+  "main": "./adapters/report-review.mjs",
+  "exports": {
+    ".": "./adapters/report-review.mjs",
+    "./client": "./packages/report-review/lib/client.js",
+    "./report-core": "./adapters/report-core.mjs",
+    "./report-pdf": "./adapters/report-pdf.mjs",
+    "./weekly-report-source": "./adapters/weekly-report-source.mjs",
+    "./weknora-connector": "./adapters/weknora-connector.mjs",
+    "./tools": "./packages/report-review/src/tools.mjs",
+    "./package.json": "./package.json",
+    "./cordis.patch.yml": "./cordis.patch.yml"
+  },
+  "files": [
+    "adapters",
+    "packages/report-core/src",
+    "packages/report-pdf/index.js",
+    "packages/report-pdf/package.json",
+    "packages/report-pdf/renderer.py",
+    "packages/report-pdf/LICENSE",
+    "packages/weekly-report-source/lib",
+    "packages/weekly-report-source/python",
+    "packages/weekly-report-source/LICENSE",
+    "packages/weknora-connector/src",
+    "packages/report-review/src/*.mjs",
+    "packages/report-review/lib/client.js",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSES.md",
+    "THIRD_PARTY_NOTICES.md",
+    "third_party/licenses"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots",
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ]
+    },
+    "minHarness": "0.1.5-rc.2"
+  },
+  "publishConfig": {
+    "registry": "https://npm.tokensapi.ai/"
+  },
+  "license": "SEE LICENSE IN LICENSES.md",
+  "scripts": {
+    "build": "npm run build:client",
+    "build:client": "node scripts/build-client.mjs",
+    "check": "node scripts/static-check.mjs",
+    "test": "node scripts/run-tests.mjs",
+    "prepack": "npm run build:client && npm run check"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@codemirror/commands": "6.11.0",
+    "@codemirror/lang-markdown": "6.5.2",
+    "@codemirror/merge": "6.12.2",
+    "@codemirror/state": "6.7.4",
+    "@codemirror/view": "6.43.11",
+    "esbuild": "0.25.12",
+    "react": "19.2.8"
+  }
+}

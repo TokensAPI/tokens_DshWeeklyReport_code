@@ -1,0 +1,14 @@
+# Installed as one DSH bundle. Later profile/user patches may override config by id.
+- insert:
+    - id: tokens-weekly-report-core
+      name: '@tokensapi/dsh-weekly-report/report-core'
+    - id: tokens-weekly-report-pdf
+      name: '@tokensapi/dsh-weekly-report/report-pdf'
+    - id: tokens-weekly-report-source
+      name: '@tokensapi/dsh-weekly-report/weekly-report-source'
+    - id: tokens-weekly-report-weknora
+      name: '@tokensapi/dsh-weekly-report/weknora-connector'
+      config:
+        enabled: false
+    - id: tokens-weekly-report-review
+      name: '@tokensapi/dsh-weekly-report'
