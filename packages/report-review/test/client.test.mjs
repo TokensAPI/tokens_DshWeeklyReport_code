@@ -22,7 +22,7 @@ test('formal module wrapper registers lazy factory and plugin slot', () => {
   assert.deepEqual(Array.from(exports.inject), ['slots']);
   const registrations = [];
   exports.apply({ slots: { inject(n, cb) { cb(); }, register(meta, component) { registrations.push({meta,component}); } } });
-  assert.deepEqual(registrations.map(r=>r.meta.name), ['conversation.session.header.actions','sidebar.footer.action','shell.overlay']);
+  assert.deepEqual(registrations.map(r=>r.meta.name), ['sidebar.footer.action','shell.overlay']);
   assert.ok(registrations.every(r=>typeof r.component === 'function'));
 });
 test('only ready matching clean receipts certify PDF synchronization', () => {

@@ -115743,7 +115743,6 @@ function RegisteredTrigger({ controller, sessionId, getSessionId, renderTrigger,
 function apply3(ctx, renderTrigger) {
   const controller = createWorkspaceController();
   const triggerProps = () => ({ controller, renderTrigger, getSessionId: () => ctx.get("sessions")?.list.getSnapshot().current ?? null });
-  ctx.slots.inject("conversation.session.header.actions", () => ctx.slots.register({ name: "conversation.session.header.actions", id: "report-review", order: 30, inject: triggerProps }, RegisteredTrigger));
   ctx.slots.inject("sidebar.footer.action", () => ctx.slots.register({ name: "sidebar.footer.action", id: "report-review", label: "\u5468\u62A5\u5DE5\u4F5C\u53F0", order: 15, inject: () => ({ ...triggerProps(), footer: true }) }, RegisteredTrigger));
   ctx.slots.inject("shell.overlay", () => ctx.slots.register({ name: "shell.overlay", id: "report-review", order: 30, inject: () => ({ controller }) }, WorkspaceOverlay));
 }

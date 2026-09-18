@@ -552,7 +552,6 @@ export const inject = ['slots'];
 export function apply(ctx, renderTrigger) {
   const controller = createWorkspaceController();
   const triggerProps = () => ({ controller, renderTrigger, getSessionId: () => ctx.get('sessions')?.list.getSnapshot().current ?? null });
-  ctx.slots.inject('conversation.session.header.actions', () => ctx.slots.register({ name:'conversation.session.header.actions', id:'report-review', order:30, inject:triggerProps }, RegisteredTrigger));
   ctx.slots.inject('sidebar.footer.action', () => ctx.slots.register({ name:'sidebar.footer.action', id:'report-review', label:'周报工作台', order:15, inject: () => ({ ...triggerProps(), footer:true }) }, RegisteredTrigger));
   ctx.slots.inject('shell.overlay', () => ctx.slots.register({ name:'shell.overlay', id:'report-review', order:30, inject: () => ({ controller }) }, WorkspaceOverlay));
 }
