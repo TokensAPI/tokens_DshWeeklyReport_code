@@ -5,6 +5,12 @@ import './build-editor-styles.mjs'
 import { clientExternals } from './client-externals.mjs'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
+
+// Our own BlockNote AI-editor extension lives under packages/report-review/src/editor-ai.
+// block-editor.jsx imports it by relative path; the sources import their few `ai` /
+// `@ai-sdk` type/helper symbols straight from editor-ai/ai-shim.ts (a local stand-in),
+// so no package redirect / aliasing plugin is needed here.
+
 const result = await build({
   absWorkingDir: root,
   entryPoints: ['packages/report-review/src/entry.jsx'],
@@ -19,6 +25,7 @@ const result = await build({
   loader: { '.css': 'text' },
   legalComments: 'inline',
   minify: false,
+  plugins: [],
 })
 for (const path of Object.keys(result.metafile.inputs)) {
   if (/(?:^|\/)node_modules\/(?:react|react-dom|scheduler)\//.test(path)) {

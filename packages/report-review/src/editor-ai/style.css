@@ -1,0 +1,14 @@
+.bn-combobox {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.bn-combobox-items {
+  max-width: 50%;
+}
+
+.bn-combobox-items:empty {
+  display: none;
+}

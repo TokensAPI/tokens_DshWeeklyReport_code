@@ -1,4 +1,4 @@
-import { readFile, realpath, lstat, copyFile, mkdir } from 'node:fs/promises';
+import { readFile, realpath, lstat, copyFile, mkdir, appendFile } from 'node:fs/promises';
 import { resolve, relative, isAbsolute, sep, dirname, join } from 'node:path';
 import { createHash, randomBytes } from 'node:crypto';
 import { preparePublicationManifest, resolvePublicationMarkdown, publishedReportMarkdown } from './publication-manifest.mjs';
@@ -12,6 +12,10 @@ const pick = (value, keys) => Object.fromEntries(keys.filter(k => value?.[k] !==
 const fail = (code, message = code) => { const e = new Error(message); e.code = code; throw e; };
 const token = () => randomBytes(32).toString('hex');
 const hex = x => typeof x === 'string' && /^[a-f0-9]{64}$/.test(x);
+// Debug capture of the AI-stream round trip (host side). Written to a file so the
+// real runtime behavior is observable without access to the host stderr.
+const aiDebugFile = join(process.env.USERPROFILE || '.', '.dsh', 'report-review', 'ai-stream-debug.ndjson');
+const aiDebug = (rec) => { try { appendFile(aiDebugFile, JSON.stringify(rec) + '\n').catch(() => {}); } catch { /* ignore */ } };
 const validString = (x, max = 512) => typeof x === 'string' && x.length > 0 && x.length <= max && !x.includes('\0');
 // Whether the human EXPLICITLY asked to combine historical weeks / compare with past periods, so the script
 // fetches past WeKnora weekly reports. Bare "周报"/"周度" do NOT imply historical comparison; an explicit
@@ -27,7 +31,7 @@ const KNOWLEDGE_RE = /(知识库|数据库|上传|上载|材料|资料|素材|�
 // this as a distinct, user-actionable warning (reduce the reference scope) instead of a generic OR failure.
 const isContextOverflow = e => /context\s*length|context[_\\-\s]?(length|size|window)|maximum\s*context|too\s*many\s*tokens|token\s*limit|exceeds?\s*(the\s*)?maximum|reduce\s*(the\s*)?(length|input|message)|input[\s_-]?too[\s_-]?large|maximum\s*(model\s*)?token/i.test(`${e?.message || ''} ${e?.code || ''} ${e?.error?.message || ''} ${e?.error?.code || ''}`);
 const safeError = e => {
-  const known = new Set(['NOT_FOUND','INVALID_INPUT','CONFLICT','DRAFT_EXISTS','REVISION_REQUIRED','ASSET_CORRUPT','SESSION_FORBIDDEN','IDENTITY_UNVERIFIED','IDENTITY_CHANGED','CONNECTOR_UNAVAILABLE','SOURCE_UNAVAILABLE','SOURCE_ROOT_REQUIRED','SOURCE_MANIFEST_INVALID','SOURCE_FILE_INVALID','SOURCE_HASH_MISMATCH','SOURCE_FAILED','WEB_SEARCH_UNAVAILABLE','KNOWLEDGE_SEARCH_FAILED','KNOWLEDGE_RESPONSE_INVALID','LIST_UNAVAILABLE','PUBLISH_TARGET_REQUIRED','IMAGES_UNSUPPORTED','PUBLICATION_RECONCILIATION_REQUIRED','PUBLISH_TOKEN_INVALID','HUMAN_CLICK_REQUIRED','PUBLICATION_IN_PROGRESS','PUBLISH_REJECTED','PREVIEW_STALE','PREVIEW_NOT_FOUND','PDF_INVALID','DISPOSED','BODY_TOO_LARGE','ACTION_UNSUPPORTED','HUMAN_ITEMS_UNAVAILABLE','HUMAN_ITEMS_PUBLICATION_UNSUPPORTED','UNSUPPORTED_ASSET_REFERENCE','UNREGISTERED_ASSET','AMBIGUOUS_ASSET_CAPTION','UNREFERENCED_ASSET','INVALID_PUBLIC_VERSION','INVALID_IMAGE_CAPTION','INVALID_PUBLIC_SOURCE','INVALID_PUBLIC_SOURCE_TIME','INVALID_PUBLIC_AUTHOR','UNSUPPORTED_PUBLIC_MARKDOWN','INVALID_OR_DUPLICATE_ASSET','INVALID_HUMAN_ITEM','PRIVATE_HUMAN_ITEM','HUMAN_ITEM_ASSET_UNSUPPORTED','HUMAN_CONTENT_NOT_IN_VERSION','HUMAN_ANNOTATION_MISMATCH','UNTRUSTED_MANIFEST','INVALID_RESOURCE_BINDING','RESOURCE_BINDING_MISMATCH','INCOMPLETE_RESOURCE_BINDINGS','SETTINGS_UNAVAILABLE','SETTINGS_INVALID']);
+  const known = new Set(['NOT_FOUND','INVALID_INPUT','CONFLICT','DRAFT_EXISTS','REVISION_REQUIRED','ASSET_CORRUPT','SESSION_FORBIDDEN','IDENTITY_UNVERIFIED','IDENTITY_CHANGED','CONNECTOR_UNAVAILABLE','SOURCE_UNAVAILABLE','SOURCE_ROOT_REQUIRED','SOURCE_MANIFEST_INVALID','SOURCE_FILE_INVALID','SOURCE_HASH_MISMATCH','SOURCE_FAILED','WEB_SEARCH_UNAVAILABLE','KNOWLEDGE_SEARCH_FAILED','KNOWLEDGE_RESPONSE_INVALID','LIST_UNAVAILABLE','PUBLISH_TARGET_REQUIRED','IMAGES_UNSUPPORTED','PUBLICATION_RECONCILIATION_REQUIRED','PUBLISH_TOKEN_INVALID','HUMAN_CLICK_REQUIRED','PUBLICATION_IN_PROGRESS','PUBLISH_REJECTED','PREVIEW_STALE','PREVIEW_NOT_FOUND','PDF_INVALID','DISPOSED','BODY_TOO_LARGE','ACTION_UNSUPPORTED','HUMAN_ITEMS_UNAVAILABLE','HUMAN_ITEMS_PUBLICATION_UNSUPPORTED','UNSUPPORTED_ASSET_REFERENCE','UNREGISTERED_ASSET','AMBIGUOUS_ASSET_CAPTION','UNREFERENCED_ASSET','INVALID_PUBLIC_VERSION','INVALID_IMAGE_CAPTION','INVALID_PUBLIC_SOURCE','INVALID_PUBLIC_SOURCE_TIME','INVALID_PUBLIC_AUTHOR','UNSUPPORTED_PUBLIC_MARKDOWN','INVALID_OR_DUPLICATE_ASSET','INVALID_HUMAN_ITEM','PRIVATE_HUMAN_ITEM','HUMAN_ITEM_ASSET_UNSUPPORTED','HUMAN_CONTENT_NOT_IN_VERSION','HUMAN_ANNOTATION_MISMATCH','UNTRUSTED_MANIFEST','INVALID_RESOURCE_BINDING','RESOURCE_BINDING_MISMATCH','INCOMPLETE_RESOURCE_BINDINGS','SETTINGS_UNAVAILABLE','SETTINGS_INVALID','LLM_UNSUPPORTED','LLM_SYNTHESIS_UNSUPPORTED','LLM_SYNTHESIS_NO_MODEL','LLM_SYNTHESIS_TIMEOUT','LLM_SYNTHESIS_EMPTY','LLM_SYNTHESIS_EMPTY_RETRY','LLM_SYNTHESIS_FAILED','LLM_SYNTHESIS_CONTEXT_OVERFLOW']);
   const code = known.has(e?.code) ? e.code : 'INTERNAL_ERROR';
   // Known codes pass their own message through so a coded failure can carry a sanitized cause suffix
   // (every producer is our own fail(), which defaults message to the code itself).
@@ -90,6 +94,12 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
   if (config.allowedSessionIds !== undefined && (!Array.isArray(config.allowedSessionIds) || config.allowedSessionIds.some(x => !validString(x)))) fail('INVALID_INPUT');
   const allowed = config.allowedSessionIds === undefined ? null : new Set(config.allowedSessionIds);
   const maxBodyBytes = config.maxBodyBytes ?? 1024 * 1024;
+  // AI edit bridge (xl-ai) round-trip bounds: cap tokens so the model can't generate
+  // forever, and abort the stream if it doesn't settle in time (avoids a stuck AI UI).
+  // No output-token cap: a reasoning model may burn its budget thinking and never reach
+  // the tool call. Let it finish reasoning and issue applyDocumentOperations; the
+  // timeout below still bounds wall-clock time.
+  const AI_TIMEOUT_MS = config.aiTimeoutMs ?? 90000;
   const ttl = config.publishTokenTtlMs ?? 5 * 60 * 1000;
   // Honor an explicit session whitelist. Without a live-registry gate, a report is addressed by its OWN sessionId (report-core enforces the
   // ownership match), so a caller may use any well-formed session to reach reports it stored — including a session
@@ -984,7 +994,14 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
         message: phase === 'submitted' ? '所有条目已提交上传；解析与检索未核验。请只读核对。' : phase === 'unknown' ? '部分条目上传结果未知；未自动重试，请只读核对后决定。' : '发布存在失败条目；未自动重传，请核对每条记录。' };
     } finally { publishing.delete(lock); }
   }
+  const fetchAiModel = async () => {
+    const selection = getDefaultModel()?.currentSelection?.();
+    const out = { provider: selection?.provider ?? null, model: selection?.model ?? null };
+    aiDebug({ evt: 'default-model', contains: JSON.stringify(out) });
+    return out;
+  };
   async function dispatch(input, human = false) {
+    if (input.action === 'aiDefaultModel') return fetchAiModel(); // no session needed
     const b = await binding(input);
     switch (input.action) {
       case 'identity': return identity();
@@ -1049,6 +1066,69 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
         return new Response(bytes, { headers: { 'content-type':'application/pdf', 'cache-control':'private, no-store', 'x-content-type-options':'nosniff', 'content-disposition':'inline; filename="report-preview.pdf"' } });
       } catch(e) { return json(safeError(e), e.code === 'SESSION_FORBIDDEN' ? 403 : e.code === 'PREVIEW_STALE' ? 409 : 404); }
     },
+    async fetchAiStream(request) {
+      // Streaming LLM endpoint for the BlockNote XL-AI bridge. The client already
+      // converts model messages/tools into DSH Message[]/ToolSchema[], so this only
+      // calls llm.stream and streams the DSH chunks back as NDJSON (one chunk/line),
+      // including tool-call chunks. Streamed for the client's LanguageModelV3 adapter.
+      try {
+        if (request.method !== 'POST') return json({ ok:false, error:{code:'METHOD_NOT_ALLOWED',message:'POST required'} },405);
+        const text = await request.text(); if (Buffer.byteLength(text) > maxBodyBytes) fail('BODY_TOO_LARGE');
+        let input; try { input = JSON.parse(text); } catch { fail('INVALID_INPUT'); }
+        if (!input || typeof input !== 'object' || Array.isArray(input)) fail('INVALID_INPUT');
+        const llm = getLlm(); if (!llm?.stream) fail('LLM_UNSUPPORTED');
+        const selection = getDefaultModel()?.currentSelection?.();
+        const provider = validString(input.provider, 64) ? input.provider : selection?.provider;
+        const model = validString(input.model, 128) ? input.model : selection?.model;
+        if (!Array.isArray(input.messages)) fail('INVALID_INPUT');
+        const tools = Array.isArray(input.tools) && input.tools.length ? input.tools : undefined;
+        if (!validString(provider, 64) || !validString(model, 128)) { aiDebug({ evt: 'req', provider, model, noModel: true, tools: (tools||[]).map(t=>t.name) }); fail('LLM_SYNTHESIS_NO_MODEL'); }
+        aiDebug({ evt: 'req', provider, model, tools: (tools||[]).map(t=>({ name:t?.name, hasParams:!!t?.parameters, paramKeys:Object.keys(t?.parameters||{}) })), toolsFull: tools, msgs: input.messages?.map(m=>({ role:m?.role, len:(m?.content||'').length, head:typeof m?.content==='string'?m.content.slice(0,120):null })), system: (validString(input.system,4096)?input.system:'').slice(0,160) });
+        // DSH GenerateOptions has no toolChoice, so a tool-capable model may still reply
+        // in plain text instead of calling the tool. Nudge it hard when tools are present.
+        let system = validString(input.system, 4096) ? input.system : undefined;
+        if (tools?.length) {
+          const names = tools.map(t => t.name).join(', ');
+          system = `${system ?? 'You are editing a document.'}\n\nIMPORTANT: To make any change to this document you MUST call one of the tools (${names}). Do NOT reply with a summary or plain text — issue the tool call with the required arguments. If no change is needed, reply with the exact text "NO_EDIT".`;
+        }
+        const streamOpts = {
+          provider, model,
+          messages: input.messages,
+          system,
+          temperature: typeof input.temperature === 'number' ? input.temperature : undefined,
+          maxTokens: typeof input.maxTokens === 'number' ? input.maxTokens : undefined,
+          ...(tools ? { tools } : {}),
+        };
+        if (validString(input.reasoningEffort, 64)) streamOpts.reasoningEffort = input.reasoningEffort;
+        const controller = new AbortController();
+        const encoder = new TextEncoder();
+        // Bound the round-trip so a misbehaving model can't hang the AI UI forever.
+        let timedOut = false;
+        const timer = setTimeout(() => { timedOut = true; try { controller.abort(); } catch { /* ignore */ } }, AI_TIMEOUT_MS);
+        const stream = new ReadableStream({
+          async start(ctrl) {
+            try {
+              // Lead with the resolved model so the client can show it in the status bar.
+              ctrl.enqueue(encoder.encode(JSON.stringify({ t:'meta', provider, model }) + '\n'));
+              for await (const chunk of llm.stream({ ...streamOpts, signal: controller.signal })) {
+                if (chunk?.type === 'tool-call-delta' || chunk?.type === 'block-end' || chunk?.type === 'finish') {
+                  console.error(`[run19/ai-stream] chunk type=${chunk.type}`, (chunk.type === 'finish' ? `reason=${chunk.reason?.kind}` : chunk.type === 'block-end' ? `block=${chunk.block?.type} name=${chunk.block?.name} id=${chunk.block?.id}` : `name=${chunk.name}`));
+                }
+                aiDebug({ evt: 'chunk', type: chunk?.type, name: chunk?.name, blockType: chunk?.block?.type, blockName: chunk?.block?.name, blockId: chunk?.block?.id, reason: chunk?.reason?.kind });
+                ctrl.enqueue(encoder.encode(JSON.stringify({ t:'chunk', chunk }) + '\n'));
+              }
+              ctrl.enqueue(encoder.encode(JSON.stringify({ t:'done' }) + '\n'));
+            } catch (e) {
+              const msg = timedOut ? 'AI 请求超时（模型未在时限内返回）' : (e?.message || String(e));
+              aiDebug({ evt: 'error', code: e?.code ?? 'AI_TIMEOUT', message: msg, timedOut });
+              ctrl.enqueue(encoder.encode(JSON.stringify({ t:'error', error: { code: e?.code ?? 'AI_TIMEOUT', message: msg } }) + '\n'));
+            } finally { clearTimeout(timer); try { ctrl.close(); } catch { /* ignore */ } }
+          },
+          cancel() { clearTimeout(timer); try { controller.abort(); } catch { /* ignore */ } },
+        });
+        return new Response(stream, { headers: { 'content-type':'application/x-ndjson; charset=utf-8', 'cache-control':'no-store', 'x-accel-buffering':'no' } });
+      } catch(e) { return json(safeError(e), e.code === 'SESSION_FORBIDDEN' ? 403 : 400); }
+    },
     dispose() { disposed = true; plans.clear(); previews.clear(); retrievalMemory.clear(); }
   });
 }
@@ -1063,6 +1143,7 @@ export function apply(ctx, config = {}) {
     llmSynthesisTimeoutMs: config.llmSynthesisTimeoutMs ?? 300000 }, config);
   ctx.provide('reportReview', api);
   ctx.connection.fetch.register({ path:'/api/run19/review', methods:['POST'], requestBody:'buffered', fetch: request => api.fetchReview(request) });
+  ctx.connection.fetch.register({ path:'/api/run19/ai-stream', methods:['POST'], requestBody:'buffered', fetch: request => api.fetchAiStream(request) });
   ctx.connection.fetch.register({ path:'/api/run19/pdf', methods:['GET'], requestBody:'buffered', fetch: request => api.fetchPdf(request) });
   ctx.effect(() => () => api.dispose());
 }

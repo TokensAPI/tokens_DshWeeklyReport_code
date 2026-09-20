@@ -289,7 +289,13 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
   const [confirmClose, setConfirmClose] = useState(false);
   const [confirmPublish, setConfirmPublish] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [aiModel, setAiModel] = useState(null); // current AI provider/model for the status bar
   const current = useRef({}), alive = useRef(true), saving = useRef(false), revision = useRef(0), previewSerial = useRef(0);
+  useEffect(() => {
+    let live = true;
+    hostFetch('/api/run19/review', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'aiDefaultModel' }) }).then(async r => { if (live && r.ok) { const d = await r.json(); const m = d?.value; if (m?.model) setAiModel({ provider: m.provider, model: m.model }); } else { console.error('[run19] ai-default-model failed:', r.status); } }).catch(e => { console.error('[run19] ai-default-model error:', e); });
+    return () => { live = false; };
+  }, []);
   async function generate(event) {
     event.preventDefault();
     if (current.current.dirty || saving.current || current.current.busy) return;
@@ -521,7 +527,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
     </section>}
       </aside>
     </div>
-    <footer className="rr-status" role="status">{demo ? '演示模式 · ' : ''}{status} · {dirty ? '未保存，PDF 为旧预览' : synced && pdf ? 'PDF 已同步' : preview?.status === 'failed' ? 'PDF 生成失败' : 'PDF 等待生成 / 旧预览'}</footer>
+    <footer className="rr-status" role="status">{demo ? '演示模式 · ' : ''}{status} · {dirty ? '未保存，PDF 为旧预览' : synced && pdf ? 'PDF 已同步' : preview?.status === 'failed' ? 'PDF 生成失败' : 'PDF 等待生成 / 旧预览'}{aiModel?.model ? ` · AI ${aiModel.provider || ''}${aiModel.provider ? '/' : ''}${aiModel.model}` : ''}</footer>
     {error && <div className="rr-error" role="alert">{error}</div>}
     {confirmClose && <section className="rr-close-confirm" role="alert"><p>有未保存修改，放弃后将丢失这些内容。</p><button className="rr-button rr-button--danger" onClick={close}>放弃并关闭</button> <button className="rr-button" onClick={() => setConfirmClose(false)}>返回编辑</button></section>}
     {settingsOpen && !demo && <SettingsPanel request={request} onIdentity={v => alive.current && setIdentity(v)} onClose={() => { setSettingsOpen(false); request('identity').then(v => alive.current && setIdentity(v)).catch(() => {}); }} />}

@@ -323,7 +323,7 @@
 .rr-demo-banner .rr-button { margin-left: 12px; min-height: 30px; padding-block: 4px; }
 
 /* Connection settings modal: centered card above the workspace, same tokens as the rest of the UI. */
-.rr-settings { position: absolute; inset: 0; z-index: 30; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--rr-text) 24%, transparent); }
+.rr-settings { position: fixed; inset: 0; z-index: 30; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--rr-text) 24%, transparent); }
 .rr-settings-card { width: min(520px, calc(100vw - 48px)); max-height: calc(100vh - 96px); overflow: auto; padding: 24px; background: var(--rr-paper); border: 1px solid var(--rr-border); border-radius: 12px; box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25); }
 .rr-settings-card label { display: block; margin: 12px 0 0; font-size: 13px; color: var(--rr-text); }
 .rr-settings-card label .rr-muted { font-size: 12px; margin-left: 6px; }

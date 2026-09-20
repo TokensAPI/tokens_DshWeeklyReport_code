@@ -2700,7 +2700,7 @@ var require_use_sync_external_store_shim_development = __commonJS({
         return x3 === y4 && (0 !== x3 || 1 / x3 === 1 / y4) || x3 !== x3 && y4 !== y4;
       }
       function useSyncExternalStore$2(subscribe, getSnapshot) {
-        didWarnOld18Alpha || void 0 === React12.startTransition || (didWarnOld18Alpha = true, console.error(
+        didWarnOld18Alpha || void 0 === React14.startTransition || (didWarnOld18Alpha = true, console.error(
           "You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."
         ));
         var value = getSnapshot();
@@ -2710,7 +2710,7 @@ var require_use_sync_external_store_shim_development = __commonJS({
             "The result of getSnapshot should be cached to avoid an infinite loop"
           ), didWarnUncachedGetSnapshot = true);
         }
-        cachedValue = useState23({
+        cachedValue = useState25({
           inst: { value, getSnapshot }
         });
         var inst = cachedValue[0].inst, forceUpdate = cachedValue[1];
@@ -2722,7 +2722,7 @@ var require_use_sync_external_store_shim_development = __commonJS({
           },
           [subscribe, value, getSnapshot]
         );
-        useEffect22(
+        useEffect24(
           function() {
             checkIfSnapshotChanged(inst) && forceUpdate({ inst });
             return subscribe(function() {
@@ -2748,8 +2748,8 @@ var require_use_sync_external_store_shim_development = __commonJS({
         return getSnapshot();
       }
       "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-      var React12 = require("react"), objectIs = "function" === typeof Object.is ? Object.is : is3, useState23 = React12.useState, useEffect22 = React12.useEffect, useLayoutEffect5 = React12.useLayoutEffect, useDebugValue2 = React12.useDebugValue, didWarnOld18Alpha = false, didWarnUncachedGetSnapshot = false, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
-      exports.useSyncExternalStore = void 0 !== React12.useSyncExternalStore ? React12.useSyncExternalStore : shim;
+      var React14 = require("react"), objectIs = "function" === typeof Object.is ? Object.is : is3, useState25 = React14.useState, useEffect24 = React14.useEffect, useLayoutEffect5 = React14.useLayoutEffect, useDebugValue2 = React14.useDebugValue, didWarnOld18Alpha = false, didWarnUncachedGetSnapshot = false, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+      exports.useSyncExternalStore = void 0 !== React14.useSyncExternalStore ? React14.useSyncExternalStore : shim;
       "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
     })();
   }
@@ -2785,23 +2785,23 @@ var require_with_selector_development = __commonJS({
         return x3 === y4 && (0 !== x3 || 1 / x3 === 1 / y4) || x3 !== x3 && y4 !== y4;
       }
       "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-      var React12 = require("react"), shim = require_shim(), objectIs = "function" === typeof Object.is ? Object.is : is3, useSyncExternalStore3 = shim.useSyncExternalStore, useRef29 = React12.useRef, useEffect22 = React12.useEffect, useMemo8 = React12.useMemo, useDebugValue2 = React12.useDebugValue;
-      exports.useSyncExternalStoreWithSelector = function(subscribe, getSnapshot, getServerSnapshot, selector, isEqual) {
-        var instRef = useRef29(null);
+      var React14 = require("react"), shim = require_shim(), objectIs = "function" === typeof Object.is ? Object.is : is3, useSyncExternalStore3 = shim.useSyncExternalStore, useRef30 = React14.useRef, useEffect24 = React14.useEffect, useMemo11 = React14.useMemo, useDebugValue2 = React14.useDebugValue;
+      exports.useSyncExternalStoreWithSelector = function(subscribe, getSnapshot, getServerSnapshot, selector, isEqual2) {
+        var instRef = useRef30(null);
         if (null === instRef.current) {
           var inst = { hasValue: false, value: null };
           instRef.current = inst;
         } else inst = instRef.current;
-        instRef = useMemo8(
+        instRef = useMemo11(
           function() {
             function memoizedSelector(nextSnapshot) {
               if (!hasMemo) {
                 hasMemo = true;
                 memoizedSnapshot = nextSnapshot;
                 nextSnapshot = selector(nextSnapshot);
-                if (void 0 !== isEqual && inst.hasValue) {
+                if (void 0 !== isEqual2 && inst.hasValue) {
                   var currentSelection = inst.value;
-                  if (isEqual(currentSelection, nextSnapshot))
+                  if (isEqual2(currentSelection, nextSnapshot))
                     return memoizedSelection = currentSelection;
                 }
                 return memoizedSelection = nextSnapshot;
@@ -2810,7 +2810,7 @@ var require_with_selector_development = __commonJS({
               if (objectIs(memoizedSnapshot, nextSnapshot))
                 return currentSelection;
               var nextSelection = selector(nextSnapshot);
-              if (void 0 !== isEqual && isEqual(currentSelection, nextSelection))
+              if (void 0 !== isEqual2 && isEqual2(currentSelection, nextSelection))
                 return memoizedSnapshot = nextSnapshot, currentSelection;
               memoizedSnapshot = nextSnapshot;
               return memoizedSelection = nextSelection;
@@ -2825,10 +2825,10 @@ var require_with_selector_development = __commonJS({
               }
             ];
           },
-          [getSnapshot, getServerSnapshot, selector, isEqual]
+          [getSnapshot, getServerSnapshot, selector, isEqual2]
         );
         var value = useSyncExternalStore3(subscribe, instRef[0], instRef[1]);
-        useEffect22(
+        useEffect24(
           function() {
             inst.hasValue = true;
             inst.value = value;
@@ -2911,6 +2911,1429 @@ var require_react = __commonJS({
       }
       return a3 !== a3 && b4 !== b4;
     };
+  }
+});
+
+// node_modules/lodash.merge/index.js
+var require_lodash = __commonJS({
+  "node_modules/lodash.merge/index.js"(exports, module2) {
+    var LARGE_ARRAY_SIZE = 200;
+    var HASH_UNDEFINED = "__lodash_hash_undefined__";
+    var HOT_COUNT = 800;
+    var HOT_SPAN = 16;
+    var MAX_SAFE_INTEGER = 9007199254740991;
+    var argsTag = "[object Arguments]";
+    var arrayTag = "[object Array]";
+    var asyncTag = "[object AsyncFunction]";
+    var boolTag = "[object Boolean]";
+    var dateTag = "[object Date]";
+    var errorTag = "[object Error]";
+    var funcTag = "[object Function]";
+    var genTag = "[object GeneratorFunction]";
+    var mapTag = "[object Map]";
+    var numberTag = "[object Number]";
+    var nullTag = "[object Null]";
+    var objectTag = "[object Object]";
+    var proxyTag = "[object Proxy]";
+    var regexpTag = "[object RegExp]";
+    var setTag = "[object Set]";
+    var stringTag = "[object String]";
+    var undefinedTag = "[object Undefined]";
+    var weakMapTag = "[object WeakMap]";
+    var arrayBufferTag = "[object ArrayBuffer]";
+    var dataViewTag = "[object DataView]";
+    var float32Tag = "[object Float32Array]";
+    var float64Tag = "[object Float64Array]";
+    var int8Tag = "[object Int8Array]";
+    var int16Tag = "[object Int16Array]";
+    var int32Tag = "[object Int32Array]";
+    var uint8Tag = "[object Uint8Array]";
+    var uint8ClampedTag = "[object Uint8ClampedArray]";
+    var uint16Tag = "[object Uint16Array]";
+    var uint32Tag = "[object Uint32Array]";
+    var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+    var reIsHostCtor = /^\[object .+?Constructor\]$/;
+    var reIsUint = /^(?:0|[1-9]\d*)$/;
+    var typedArrayTags = {};
+    typedArrayTags[float32Tag] = typedArrayTags[float64Tag] = typedArrayTags[int8Tag] = typedArrayTags[int16Tag] = typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] = typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] = typedArrayTags[uint32Tag] = true;
+    typedArrayTags[argsTag] = typedArrayTags[arrayTag] = typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] = typedArrayTags[dataViewTag] = typedArrayTags[dateTag] = typedArrayTags[errorTag] = typedArrayTags[funcTag] = typedArrayTags[mapTag] = typedArrayTags[numberTag] = typedArrayTags[objectTag] = typedArrayTags[regexpTag] = typedArrayTags[setTag] = typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
+    var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
+    var freeSelf = typeof self == "object" && self && self.Object === Object && self;
+    var root4 = freeGlobal || freeSelf || Function("return this")();
+    var freeExports = typeof exports == "object" && exports && !exports.nodeType && exports;
+    var freeModule = freeExports && typeof module2 == "object" && module2 && !module2.nodeType && module2;
+    var moduleExports = freeModule && freeModule.exports === freeExports;
+    var freeProcess = moduleExports && freeGlobal.process;
+    var nodeUtil = (function() {
+      try {
+        var types2 = freeModule && freeModule.require && freeModule.require("util").types;
+        if (types2) {
+          return types2;
+        }
+        return freeProcess && freeProcess.binding && freeProcess.binding("util");
+      } catch (e6) {
+      }
+    })();
+    var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
+    function apply5(func, thisArg, args) {
+      switch (args.length) {
+        case 0:
+          return func.call(thisArg);
+        case 1:
+          return func.call(thisArg, args[0]);
+        case 2:
+          return func.call(thisArg, args[0], args[1]);
+        case 3:
+          return func.call(thisArg, args[0], args[1], args[2]);
+      }
+      return func.apply(thisArg, args);
+    }
+    function baseTimes(n3, iteratee) {
+      var index4 = -1, result = Array(n3);
+      while (++index4 < n3) {
+        result[index4] = iteratee(index4);
+      }
+      return result;
+    }
+    function baseUnary(func) {
+      return function(value) {
+        return func(value);
+      };
+    }
+    function getValue(object, key) {
+      return object == null ? void 0 : object[key];
+    }
+    function overArg(func, transform) {
+      return function(arg) {
+        return func(transform(arg));
+      };
+    }
+    var arrayProto = Array.prototype;
+    var funcProto = Function.prototype;
+    var objectProto = Object.prototype;
+    var coreJsData = root4["__core-js_shared__"];
+    var funcToString = funcProto.toString;
+    var hasOwnProperty2 = objectProto.hasOwnProperty;
+    var maskSrcKey = (function() {
+      var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || "");
+      return uid ? "Symbol(src)_1." + uid : "";
+    })();
+    var nativeObjectToString = objectProto.toString;
+    var objectCtorString = funcToString.call(Object);
+    var reIsNative = RegExp(
+      "^" + funcToString.call(hasOwnProperty2).replace(reRegExpChar, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"
+    );
+    var Buffer3 = moduleExports ? root4.Buffer : void 0;
+    var Symbol2 = root4.Symbol;
+    var Uint8Array2 = root4.Uint8Array;
+    var allocUnsafe = Buffer3 ? Buffer3.allocUnsafe : void 0;
+    var getPrototype = overArg(Object.getPrototypeOf, Object);
+    var objectCreate = Object.create;
+    var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+    var splice2 = arrayProto.splice;
+    var symToStringTag = Symbol2 ? Symbol2.toStringTag : void 0;
+    var defineProperty2 = (function() {
+      try {
+        var func = getNative(Object, "defineProperty");
+        func({}, "", {});
+        return func;
+      } catch (e6) {
+      }
+    })();
+    var nativeIsBuffer = Buffer3 ? Buffer3.isBuffer : void 0;
+    var nativeMax = Math.max;
+    var nativeNow = Date.now;
+    var Map2 = getNative(root4, "Map");
+    var nativeCreate = getNative(Object, "create");
+    var baseCreate = /* @__PURE__ */ (function() {
+      function object() {
+      }
+      return function(proto) {
+        if (!isObject2(proto)) {
+          return {};
+        }
+        if (objectCreate) {
+          return objectCreate(proto);
+        }
+        object.prototype = proto;
+        var result = new object();
+        object.prototype = void 0;
+        return result;
+      };
+    })();
+    function Hash(entries) {
+      var index4 = -1, length = entries == null ? 0 : entries.length;
+      this.clear();
+      while (++index4 < length) {
+        var entry = entries[index4];
+        this.set(entry[0], entry[1]);
+      }
+    }
+    function hashClear() {
+      this.__data__ = nativeCreate ? nativeCreate(null) : {};
+      this.size = 0;
+    }
+    function hashDelete(key) {
+      var result = this.has(key) && delete this.__data__[key];
+      this.size -= result ? 1 : 0;
+      return result;
+    }
+    function hashGet(key) {
+      var data2 = this.__data__;
+      if (nativeCreate) {
+        var result = data2[key];
+        return result === HASH_UNDEFINED ? void 0 : result;
+      }
+      return hasOwnProperty2.call(data2, key) ? data2[key] : void 0;
+    }
+    function hashHas(key) {
+      var data2 = this.__data__;
+      return nativeCreate ? data2[key] !== void 0 : hasOwnProperty2.call(data2, key);
+    }
+    function hashSet(key, value) {
+      var data2 = this.__data__;
+      this.size += this.has(key) ? 0 : 1;
+      data2[key] = nativeCreate && value === void 0 ? HASH_UNDEFINED : value;
+      return this;
+    }
+    Hash.prototype.clear = hashClear;
+    Hash.prototype["delete"] = hashDelete;
+    Hash.prototype.get = hashGet;
+    Hash.prototype.has = hashHas;
+    Hash.prototype.set = hashSet;
+    function ListCache(entries) {
+      var index4 = -1, length = entries == null ? 0 : entries.length;
+      this.clear();
+      while (++index4 < length) {
+        var entry = entries[index4];
+        this.set(entry[0], entry[1]);
+      }
+    }
+    function listCacheClear() {
+      this.__data__ = [];
+      this.size = 0;
+    }
+    function listCacheDelete(key) {
+      var data2 = this.__data__, index4 = assocIndexOf(data2, key);
+      if (index4 < 0) {
+        return false;
+      }
+      var lastIndex = data2.length - 1;
+      if (index4 == lastIndex) {
+        data2.pop();
+      } else {
+        splice2.call(data2, index4, 1);
+      }
+      --this.size;
+      return true;
+    }
+    function listCacheGet(key) {
+      var data2 = this.__data__, index4 = assocIndexOf(data2, key);
+      return index4 < 0 ? void 0 : data2[index4][1];
+    }
+    function listCacheHas(key) {
+      return assocIndexOf(this.__data__, key) > -1;
+    }
+    function listCacheSet(key, value) {
+      var data2 = this.__data__, index4 = assocIndexOf(data2, key);
+      if (index4 < 0) {
+        ++this.size;
+        data2.push([key, value]);
+      } else {
+        data2[index4][1] = value;
+      }
+      return this;
+    }
+    ListCache.prototype.clear = listCacheClear;
+    ListCache.prototype["delete"] = listCacheDelete;
+    ListCache.prototype.get = listCacheGet;
+    ListCache.prototype.has = listCacheHas;
+    ListCache.prototype.set = listCacheSet;
+    function MapCache(entries) {
+      var index4 = -1, length = entries == null ? 0 : entries.length;
+      this.clear();
+      while (++index4 < length) {
+        var entry = entries[index4];
+        this.set(entry[0], entry[1]);
+      }
+    }
+    function mapCacheClear() {
+      this.size = 0;
+      this.__data__ = {
+        "hash": new Hash(),
+        "map": new (Map2 || ListCache)(),
+        "string": new Hash()
+      };
+    }
+    function mapCacheDelete(key) {
+      var result = getMapData(this, key)["delete"](key);
+      this.size -= result ? 1 : 0;
+      return result;
+    }
+    function mapCacheGet(key) {
+      return getMapData(this, key).get(key);
+    }
+    function mapCacheHas(key) {
+      return getMapData(this, key).has(key);
+    }
+    function mapCacheSet(key, value) {
+      var data2 = getMapData(this, key), size4 = data2.size;
+      data2.set(key, value);
+      this.size += data2.size == size4 ? 0 : 1;
+      return this;
+    }
+    MapCache.prototype.clear = mapCacheClear;
+    MapCache.prototype["delete"] = mapCacheDelete;
+    MapCache.prototype.get = mapCacheGet;
+    MapCache.prototype.has = mapCacheHas;
+    MapCache.prototype.set = mapCacheSet;
+    function Stack3(entries) {
+      var data2 = this.__data__ = new ListCache(entries);
+      this.size = data2.size;
+    }
+    function stackClear() {
+      this.__data__ = new ListCache();
+      this.size = 0;
+    }
+    function stackDelete(key) {
+      var data2 = this.__data__, result = data2["delete"](key);
+      this.size = data2.size;
+      return result;
+    }
+    function stackGet(key) {
+      return this.__data__.get(key);
+    }
+    function stackHas(key) {
+      return this.__data__.has(key);
+    }
+    function stackSet(key, value) {
+      var data2 = this.__data__;
+      if (data2 instanceof ListCache) {
+        var pairs = data2.__data__;
+        if (!Map2 || pairs.length < LARGE_ARRAY_SIZE - 1) {
+          pairs.push([key, value]);
+          this.size = ++data2.size;
+          return this;
+        }
+        data2 = this.__data__ = new MapCache(pairs);
+      }
+      data2.set(key, value);
+      this.size = data2.size;
+      return this;
+    }
+    Stack3.prototype.clear = stackClear;
+    Stack3.prototype["delete"] = stackDelete;
+    Stack3.prototype.get = stackGet;
+    Stack3.prototype.has = stackHas;
+    Stack3.prototype.set = stackSet;
+    function arrayLikeKeys(value, inherited) {
+      var isArr = isArray(value), isArg = !isArr && isArguments(value), isBuff = !isArr && !isArg && isBuffer(value), isType2 = !isArr && !isArg && !isBuff && isTypedArray(value), skipIndexes = isArr || isArg || isBuff || isType2, result = skipIndexes ? baseTimes(value.length, String) : [], length = result.length;
+      for (var key in value) {
+        if ((inherited || hasOwnProperty2.call(value, key)) && !(skipIndexes && // Safari 9 has enumerable `arguments.length` in strict mode.
+        (key == "length" || // Node.js 0.10 has enumerable non-index properties on buffers.
+        isBuff && (key == "offset" || key == "parent") || // PhantomJS 2 has enumerable non-index properties on typed arrays.
+        isType2 && (key == "buffer" || key == "byteLength" || key == "byteOffset") || // Skip index properties.
+        isIndex(key, length)))) {
+          result.push(key);
+        }
+      }
+      return result;
+    }
+    function assignMergeValue(object, key, value) {
+      if (value !== void 0 && !eq(object[key], value) || value === void 0 && !(key in object)) {
+        baseAssignValue(object, key, value);
+      }
+    }
+    function assignValue(object, key, value) {
+      var objValue = object[key];
+      if (!(hasOwnProperty2.call(object, key) && eq(objValue, value)) || value === void 0 && !(key in object)) {
+        baseAssignValue(object, key, value);
+      }
+    }
+    function assocIndexOf(array, key) {
+      var length = array.length;
+      while (length--) {
+        if (eq(array[length][0], key)) {
+          return length;
+        }
+      }
+      return -1;
+    }
+    function baseAssignValue(object, key, value) {
+      if (key == "__proto__" && defineProperty2) {
+        defineProperty2(object, key, {
+          "configurable": true,
+          "enumerable": true,
+          "value": value,
+          "writable": true
+        });
+      } else {
+        object[key] = value;
+      }
+    }
+    var baseFor = createBaseFor();
+    function baseGetTag(value) {
+      if (value == null) {
+        return value === void 0 ? undefinedTag : nullTag;
+      }
+      return symToStringTag && symToStringTag in Object(value) ? getRawTag(value) : objectToString(value);
+    }
+    function baseIsArguments(value) {
+      return isObjectLike(value) && baseGetTag(value) == argsTag;
+    }
+    function baseIsNative(value) {
+      if (!isObject2(value) || isMasked(value)) {
+        return false;
+      }
+      var pattern = isFunction2(value) ? reIsNative : reIsHostCtor;
+      return pattern.test(toSource(value));
+    }
+    function baseIsTypedArray(value) {
+      return isObjectLike(value) && isLength(value.length) && !!typedArrayTags[baseGetTag(value)];
+    }
+    function baseKeysIn(object) {
+      if (!isObject2(object)) {
+        return nativeKeysIn(object);
+      }
+      var isProto = isPrototype(object), result = [];
+      for (var key in object) {
+        if (!(key == "constructor" && (isProto || !hasOwnProperty2.call(object, key)))) {
+          result.push(key);
+        }
+      }
+      return result;
+    }
+    function baseMerge(object, source, srcIndex, customizer, stack) {
+      if (object === source) {
+        return;
+      }
+      baseFor(source, function(srcValue, key) {
+        stack || (stack = new Stack3());
+        if (isObject2(srcValue)) {
+          baseMergeDeep(object, source, key, srcIndex, baseMerge, customizer, stack);
+        } else {
+          var newValue = customizer ? customizer(safeGet(object, key), srcValue, key + "", object, source, stack) : void 0;
+          if (newValue === void 0) {
+            newValue = srcValue;
+          }
+          assignMergeValue(object, key, newValue);
+        }
+      }, keysIn);
+    }
+    function baseMergeDeep(object, source, key, srcIndex, mergeFunc, customizer, stack) {
+      var objValue = safeGet(object, key), srcValue = safeGet(source, key), stacked = stack.get(srcValue);
+      if (stacked) {
+        assignMergeValue(object, key, stacked);
+        return;
+      }
+      var newValue = customizer ? customizer(objValue, srcValue, key + "", object, source, stack) : void 0;
+      var isCommon = newValue === void 0;
+      if (isCommon) {
+        var isArr = isArray(srcValue), isBuff = !isArr && isBuffer(srcValue), isTyped = !isArr && !isBuff && isTypedArray(srcValue);
+        newValue = srcValue;
+        if (isArr || isBuff || isTyped) {
+          if (isArray(objValue)) {
+            newValue = objValue;
+          } else if (isArrayLikeObject(objValue)) {
+            newValue = copyArray(objValue);
+          } else if (isBuff) {
+            isCommon = false;
+            newValue = cloneBuffer(srcValue, true);
+          } else if (isTyped) {
+            isCommon = false;
+            newValue = cloneTypedArray(srcValue, true);
+          } else {
+            newValue = [];
+          }
+        } else if (isPlainObject3(srcValue) || isArguments(srcValue)) {
+          newValue = objValue;
+          if (isArguments(objValue)) {
+            newValue = toPlainObject(objValue);
+          } else if (!isObject2(objValue) || isFunction2(objValue)) {
+            newValue = initCloneObject(srcValue);
+          }
+        } else {
+          isCommon = false;
+        }
+      }
+      if (isCommon) {
+        stack.set(srcValue, newValue);
+        mergeFunc(newValue, srcValue, srcIndex, customizer, stack);
+        stack["delete"](srcValue);
+      }
+      assignMergeValue(object, key, newValue);
+    }
+    function baseRest(func, start2) {
+      return setToString(overRest(func, start2, identity2), func + "");
+    }
+    var baseSetToString = !defineProperty2 ? identity2 : function(func, string4) {
+      return defineProperty2(func, "toString", {
+        "configurable": true,
+        "enumerable": false,
+        "value": constant(string4),
+        "writable": true
+      });
+    };
+    function cloneBuffer(buffer, isDeep) {
+      if (isDeep) {
+        return buffer.slice();
+      }
+      var length = buffer.length, result = allocUnsafe ? allocUnsafe(length) : new buffer.constructor(length);
+      buffer.copy(result);
+      return result;
+    }
+    function cloneArrayBuffer(arrayBuffer) {
+      var result = new arrayBuffer.constructor(arrayBuffer.byteLength);
+      new Uint8Array2(result).set(new Uint8Array2(arrayBuffer));
+      return result;
+    }
+    function cloneTypedArray(typedArray, isDeep) {
+      var buffer = isDeep ? cloneArrayBuffer(typedArray.buffer) : typedArray.buffer;
+      return new typedArray.constructor(buffer, typedArray.byteOffset, typedArray.length);
+    }
+    function copyArray(source, array) {
+      var index4 = -1, length = source.length;
+      array || (array = Array(length));
+      while (++index4 < length) {
+        array[index4] = source[index4];
+      }
+      return array;
+    }
+    function copyObject(source, props, object, customizer) {
+      var isNew = !object;
+      object || (object = {});
+      var index4 = -1, length = props.length;
+      while (++index4 < length) {
+        var key = props[index4];
+        var newValue = customizer ? customizer(object[key], source[key], key, object, source) : void 0;
+        if (newValue === void 0) {
+          newValue = source[key];
+        }
+        if (isNew) {
+          baseAssignValue(object, key, newValue);
+        } else {
+          assignValue(object, key, newValue);
+        }
+      }
+      return object;
+    }
+    function createAssigner(assigner) {
+      return baseRest(function(object, sources) {
+        var index4 = -1, length = sources.length, customizer = length > 1 ? sources[length - 1] : void 0, guard2 = length > 2 ? sources[2] : void 0;
+        customizer = assigner.length > 3 && typeof customizer == "function" ? (length--, customizer) : void 0;
+        if (guard2 && isIterateeCall(sources[0], sources[1], guard2)) {
+          customizer = length < 3 ? void 0 : customizer;
+          length = 1;
+        }
+        object = Object(object);
+        while (++index4 < length) {
+          var source = sources[index4];
+          if (source) {
+            assigner(object, source, index4, customizer);
+          }
+        }
+        return object;
+      });
+    }
+    function createBaseFor(fromRight) {
+      return function(object, iteratee, keysFunc) {
+        var index4 = -1, iterable = Object(object), props = keysFunc(object), length = props.length;
+        while (length--) {
+          var key = props[fromRight ? length : ++index4];
+          if (iteratee(iterable[key], key, iterable) === false) {
+            break;
+          }
+        }
+        return object;
+      };
+    }
+    function getMapData(map4, key) {
+      var data2 = map4.__data__;
+      return isKeyable(key) ? data2[typeof key == "string" ? "string" : "hash"] : data2.map;
+    }
+    function getNative(object, key) {
+      var value = getValue(object, key);
+      return baseIsNative(value) ? value : void 0;
+    }
+    function getRawTag(value) {
+      var isOwn = hasOwnProperty2.call(value, symToStringTag), tag = value[symToStringTag];
+      try {
+        value[symToStringTag] = void 0;
+        var unmasked = true;
+      } catch (e6) {
+      }
+      var result = nativeObjectToString.call(value);
+      if (unmasked) {
+        if (isOwn) {
+          value[symToStringTag] = tag;
+        } else {
+          delete value[symToStringTag];
+        }
+      }
+      return result;
+    }
+    function initCloneObject(object) {
+      return typeof object.constructor == "function" && !isPrototype(object) ? baseCreate(getPrototype(object)) : {};
+    }
+    function isIndex(value, length) {
+      var type = typeof value;
+      length = length == null ? MAX_SAFE_INTEGER : length;
+      return !!length && (type == "number" || type != "symbol" && reIsUint.test(value)) && (value > -1 && value % 1 == 0 && value < length);
+    }
+    function isIterateeCall(value, index4, object) {
+      if (!isObject2(object)) {
+        return false;
+      }
+      var type = typeof index4;
+      if (type == "number" ? isArrayLike(object) && isIndex(index4, object.length) : type == "string" && index4 in object) {
+        return eq(object[index4], value);
+      }
+      return false;
+    }
+    function isKeyable(value) {
+      var type = typeof value;
+      return type == "string" || type == "number" || type == "symbol" || type == "boolean" ? value !== "__proto__" : value === null;
+    }
+    function isMasked(func) {
+      return !!maskSrcKey && maskSrcKey in func;
+    }
+    function isPrototype(value) {
+      var Ctor = value && value.constructor, proto = typeof Ctor == "function" && Ctor.prototype || objectProto;
+      return value === proto;
+    }
+    function nativeKeysIn(object) {
+      var result = [];
+      if (object != null) {
+        for (var key in Object(object)) {
+          result.push(key);
+        }
+      }
+      return result;
+    }
+    function objectToString(value) {
+      return nativeObjectToString.call(value);
+    }
+    function overRest(func, start2, transform) {
+      start2 = nativeMax(start2 === void 0 ? func.length - 1 : start2, 0);
+      return function() {
+        var args = arguments, index4 = -1, length = nativeMax(args.length - start2, 0), array = Array(length);
+        while (++index4 < length) {
+          array[index4] = args[start2 + index4];
+        }
+        index4 = -1;
+        var otherArgs = Array(start2 + 1);
+        while (++index4 < start2) {
+          otherArgs[index4] = args[index4];
+        }
+        otherArgs[start2] = transform(array);
+        return apply5(func, this, otherArgs);
+      };
+    }
+    function safeGet(object, key) {
+      if (key === "constructor" && typeof object[key] === "function") {
+        return;
+      }
+      if (key == "__proto__") {
+        return;
+      }
+      return object[key];
+    }
+    var setToString = shortOut(baseSetToString);
+    function shortOut(func) {
+      var count3 = 0, lastCalled = 0;
+      return function() {
+        var stamp = nativeNow(), remaining = HOT_SPAN - (stamp - lastCalled);
+        lastCalled = stamp;
+        if (remaining > 0) {
+          if (++count3 >= HOT_COUNT) {
+            return arguments[0];
+          }
+        } else {
+          count3 = 0;
+        }
+        return func.apply(void 0, arguments);
+      };
+    }
+    function toSource(func) {
+      if (func != null) {
+        try {
+          return funcToString.call(func);
+        } catch (e6) {
+        }
+        try {
+          return func + "";
+        } catch (e6) {
+        }
+      }
+      return "";
+    }
+    function eq(value, other) {
+      return value === other || value !== value && other !== other;
+    }
+    var isArguments = baseIsArguments(/* @__PURE__ */ (function() {
+      return arguments;
+    })()) ? baseIsArguments : function(value) {
+      return isObjectLike(value) && hasOwnProperty2.call(value, "callee") && !propertyIsEnumerable.call(value, "callee");
+    };
+    var isArray = Array.isArray;
+    function isArrayLike(value) {
+      return value != null && isLength(value.length) && !isFunction2(value);
+    }
+    function isArrayLikeObject(value) {
+      return isObjectLike(value) && isArrayLike(value);
+    }
+    var isBuffer = nativeIsBuffer || stubFalse;
+    function isFunction2(value) {
+      if (!isObject2(value)) {
+        return false;
+      }
+      var tag = baseGetTag(value);
+      return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
+    }
+    function isLength(value) {
+      return typeof value == "number" && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+    }
+    function isObject2(value) {
+      var type = typeof value;
+      return value != null && (type == "object" || type == "function");
+    }
+    function isObjectLike(value) {
+      return value != null && typeof value == "object";
+    }
+    function isPlainObject3(value) {
+      if (!isObjectLike(value) || baseGetTag(value) != objectTag) {
+        return false;
+      }
+      var proto = getPrototype(value);
+      if (proto === null) {
+        return true;
+      }
+      var Ctor = hasOwnProperty2.call(proto, "constructor") && proto.constructor;
+      return typeof Ctor == "function" && Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString;
+    }
+    var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
+    function toPlainObject(value) {
+      return copyObject(value, keysIn(value));
+    }
+    function keysIn(object) {
+      return isArrayLike(object) ? arrayLikeKeys(object, true) : baseKeysIn(object);
+    }
+    var merge3 = createAssigner(function(object, source, srcIndex) {
+      baseMerge(object, source, srcIndex);
+    });
+    function constant(value) {
+      return function() {
+        return value;
+      };
+    }
+    function identity2(value) {
+      return value;
+    }
+    function stubFalse() {
+      return false;
+    }
+    module2.exports = merge3;
+  }
+});
+
+// node_modules/lodash.isequal/index.js
+var require_lodash2 = __commonJS({
+  "node_modules/lodash.isequal/index.js"(exports, module2) {
+    var LARGE_ARRAY_SIZE = 200;
+    var HASH_UNDEFINED = "__lodash_hash_undefined__";
+    var COMPARE_PARTIAL_FLAG = 1;
+    var COMPARE_UNORDERED_FLAG = 2;
+    var MAX_SAFE_INTEGER = 9007199254740991;
+    var argsTag = "[object Arguments]";
+    var arrayTag = "[object Array]";
+    var asyncTag = "[object AsyncFunction]";
+    var boolTag = "[object Boolean]";
+    var dateTag = "[object Date]";
+    var errorTag = "[object Error]";
+    var funcTag = "[object Function]";
+    var genTag = "[object GeneratorFunction]";
+    var mapTag = "[object Map]";
+    var numberTag = "[object Number]";
+    var nullTag = "[object Null]";
+    var objectTag = "[object Object]";
+    var promiseTag = "[object Promise]";
+    var proxyTag = "[object Proxy]";
+    var regexpTag = "[object RegExp]";
+    var setTag = "[object Set]";
+    var stringTag = "[object String]";
+    var symbolTag = "[object Symbol]";
+    var undefinedTag = "[object Undefined]";
+    var weakMapTag = "[object WeakMap]";
+    var arrayBufferTag = "[object ArrayBuffer]";
+    var dataViewTag = "[object DataView]";
+    var float32Tag = "[object Float32Array]";
+    var float64Tag = "[object Float64Array]";
+    var int8Tag = "[object Int8Array]";
+    var int16Tag = "[object Int16Array]";
+    var int32Tag = "[object Int32Array]";
+    var uint8Tag = "[object Uint8Array]";
+    var uint8ClampedTag = "[object Uint8ClampedArray]";
+    var uint16Tag = "[object Uint16Array]";
+    var uint32Tag = "[object Uint32Array]";
+    var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+    var reIsHostCtor = /^\[object .+?Constructor\]$/;
+    var reIsUint = /^(?:0|[1-9]\d*)$/;
+    var typedArrayTags = {};
+    typedArrayTags[float32Tag] = typedArrayTags[float64Tag] = typedArrayTags[int8Tag] = typedArrayTags[int16Tag] = typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] = typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] = typedArrayTags[uint32Tag] = true;
+    typedArrayTags[argsTag] = typedArrayTags[arrayTag] = typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] = typedArrayTags[dataViewTag] = typedArrayTags[dateTag] = typedArrayTags[errorTag] = typedArrayTags[funcTag] = typedArrayTags[mapTag] = typedArrayTags[numberTag] = typedArrayTags[objectTag] = typedArrayTags[regexpTag] = typedArrayTags[setTag] = typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
+    var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
+    var freeSelf = typeof self == "object" && self && self.Object === Object && self;
+    var root4 = freeGlobal || freeSelf || Function("return this")();
+    var freeExports = typeof exports == "object" && exports && !exports.nodeType && exports;
+    var freeModule = freeExports && typeof module2 == "object" && module2 && !module2.nodeType && module2;
+    var moduleExports = freeModule && freeModule.exports === freeExports;
+    var freeProcess = moduleExports && freeGlobal.process;
+    var nodeUtil = (function() {
+      try {
+        return freeProcess && freeProcess.binding && freeProcess.binding("util");
+      } catch (e6) {
+      }
+    })();
+    var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
+    function arrayFilter(array, predicate) {
+      var index4 = -1, length = array == null ? 0 : array.length, resIndex = 0, result = [];
+      while (++index4 < length) {
+        var value = array[index4];
+        if (predicate(value, index4, array)) {
+          result[resIndex++] = value;
+        }
+      }
+      return result;
+    }
+    function arrayPush(array, values4) {
+      var index4 = -1, length = values4.length, offset4 = array.length;
+      while (++index4 < length) {
+        array[offset4 + index4] = values4[index4];
+      }
+      return array;
+    }
+    function arraySome(array, predicate) {
+      var index4 = -1, length = array == null ? 0 : array.length;
+      while (++index4 < length) {
+        if (predicate(array[index4], index4, array)) {
+          return true;
+        }
+      }
+      return false;
+    }
+    function baseTimes(n3, iteratee) {
+      var index4 = -1, result = Array(n3);
+      while (++index4 < n3) {
+        result[index4] = iteratee(index4);
+      }
+      return result;
+    }
+    function baseUnary(func) {
+      return function(value) {
+        return func(value);
+      };
+    }
+    function cacheHas(cache2, key) {
+      return cache2.has(key);
+    }
+    function getValue(object, key) {
+      return object == null ? void 0 : object[key];
+    }
+    function mapToArray(map4) {
+      var index4 = -1, result = Array(map4.size);
+      map4.forEach(function(value, key) {
+        result[++index4] = [key, value];
+      });
+      return result;
+    }
+    function overArg(func, transform) {
+      return function(arg) {
+        return func(transform(arg));
+      };
+    }
+    function setToArray(set) {
+      var index4 = -1, result = Array(set.size);
+      set.forEach(function(value) {
+        result[++index4] = value;
+      });
+      return result;
+    }
+    var arrayProto = Array.prototype;
+    var funcProto = Function.prototype;
+    var objectProto = Object.prototype;
+    var coreJsData = root4["__core-js_shared__"];
+    var funcToString = funcProto.toString;
+    var hasOwnProperty2 = objectProto.hasOwnProperty;
+    var maskSrcKey = (function() {
+      var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || "");
+      return uid ? "Symbol(src)_1." + uid : "";
+    })();
+    var nativeObjectToString = objectProto.toString;
+    var reIsNative = RegExp(
+      "^" + funcToString.call(hasOwnProperty2).replace(reRegExpChar, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"
+    );
+    var Buffer3 = moduleExports ? root4.Buffer : void 0;
+    var Symbol2 = root4.Symbol;
+    var Uint8Array2 = root4.Uint8Array;
+    var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+    var splice2 = arrayProto.splice;
+    var symToStringTag = Symbol2 ? Symbol2.toStringTag : void 0;
+    var nativeGetSymbols = Object.getOwnPropertySymbols;
+    var nativeIsBuffer = Buffer3 ? Buffer3.isBuffer : void 0;
+    var nativeKeys = overArg(Object.keys, Object);
+    var DataView2 = getNative(root4, "DataView");
+    var Map2 = getNative(root4, "Map");
+    var Promise2 = getNative(root4, "Promise");
+    var Set2 = getNative(root4, "Set");
+    var WeakMap2 = getNative(root4, "WeakMap");
+    var nativeCreate = getNative(Object, "create");
+    var dataViewCtorString = toSource(DataView2);
+    var mapCtorString = toSource(Map2);
+    var promiseCtorString = toSource(Promise2);
+    var setCtorString = toSource(Set2);
+    var weakMapCtorString = toSource(WeakMap2);
+    var symbolProto = Symbol2 ? Symbol2.prototype : void 0;
+    var symbolValueOf = symbolProto ? symbolProto.valueOf : void 0;
+    function Hash(entries) {
+      var index4 = -1, length = entries == null ? 0 : entries.length;
+      this.clear();
+      while (++index4 < length) {
+        var entry = entries[index4];
+        this.set(entry[0], entry[1]);
+      }
+    }
+    function hashClear() {
+      this.__data__ = nativeCreate ? nativeCreate(null) : {};
+      this.size = 0;
+    }
+    function hashDelete(key) {
+      var result = this.has(key) && delete this.__data__[key];
+      this.size -= result ? 1 : 0;
+      return result;
+    }
+    function hashGet(key) {
+      var data2 = this.__data__;
+      if (nativeCreate) {
+        var result = data2[key];
+        return result === HASH_UNDEFINED ? void 0 : result;
+      }
+      return hasOwnProperty2.call(data2, key) ? data2[key] : void 0;
+    }
+    function hashHas(key) {
+      var data2 = this.__data__;
+      return nativeCreate ? data2[key] !== void 0 : hasOwnProperty2.call(data2, key);
+    }
+    function hashSet(key, value) {
+      var data2 = this.__data__;
+      this.size += this.has(key) ? 0 : 1;
+      data2[key] = nativeCreate && value === void 0 ? HASH_UNDEFINED : value;
+      return this;
+    }
+    Hash.prototype.clear = hashClear;
+    Hash.prototype["delete"] = hashDelete;
+    Hash.prototype.get = hashGet;
+    Hash.prototype.has = hashHas;
+    Hash.prototype.set = hashSet;
+    function ListCache(entries) {
+      var index4 = -1, length = entries == null ? 0 : entries.length;
+      this.clear();
+      while (++index4 < length) {
+        var entry = entries[index4];
+        this.set(entry[0], entry[1]);
+      }
+    }
+    function listCacheClear() {
+      this.__data__ = [];
+      this.size = 0;
+    }
+    function listCacheDelete(key) {
+      var data2 = this.__data__, index4 = assocIndexOf(data2, key);
+      if (index4 < 0) {
+        return false;
+      }
+      var lastIndex = data2.length - 1;
+      if (index4 == lastIndex) {
+        data2.pop();
+      } else {
+        splice2.call(data2, index4, 1);
+      }
+      --this.size;
+      return true;
+    }
+    function listCacheGet(key) {
+      var data2 = this.__data__, index4 = assocIndexOf(data2, key);
+      return index4 < 0 ? void 0 : data2[index4][1];
+    }
+    function listCacheHas(key) {
+      return assocIndexOf(this.__data__, key) > -1;
+    }
+    function listCacheSet(key, value) {
+      var data2 = this.__data__, index4 = assocIndexOf(data2, key);
+      if (index4 < 0) {
+        ++this.size;
+        data2.push([key, value]);
+      } else {
+        data2[index4][1] = value;
+      }
+      return this;
+    }
+    ListCache.prototype.clear = listCacheClear;
+    ListCache.prototype["delete"] = listCacheDelete;
+    ListCache.prototype.get = listCacheGet;
+    ListCache.prototype.has = listCacheHas;
+    ListCache.prototype.set = listCacheSet;
+    function MapCache(entries) {
+      var index4 = -1, length = entries == null ? 0 : entries.length;
+      this.clear();
+      while (++index4 < length) {
+        var entry = entries[index4];
+        this.set(entry[0], entry[1]);
+      }
+    }
+    function mapCacheClear() {
+      this.size = 0;
+      this.__data__ = {
+        "hash": new Hash(),
+        "map": new (Map2 || ListCache)(),
+        "string": new Hash()
+      };
+    }
+    function mapCacheDelete(key) {
+      var result = getMapData(this, key)["delete"](key);
+      this.size -= result ? 1 : 0;
+      return result;
+    }
+    function mapCacheGet(key) {
+      return getMapData(this, key).get(key);
+    }
+    function mapCacheHas(key) {
+      return getMapData(this, key).has(key);
+    }
+    function mapCacheSet(key, value) {
+      var data2 = getMapData(this, key), size4 = data2.size;
+      data2.set(key, value);
+      this.size += data2.size == size4 ? 0 : 1;
+      return this;
+    }
+    MapCache.prototype.clear = mapCacheClear;
+    MapCache.prototype["delete"] = mapCacheDelete;
+    MapCache.prototype.get = mapCacheGet;
+    MapCache.prototype.has = mapCacheHas;
+    MapCache.prototype.set = mapCacheSet;
+    function SetCache(values4) {
+      var index4 = -1, length = values4 == null ? 0 : values4.length;
+      this.__data__ = new MapCache();
+      while (++index4 < length) {
+        this.add(values4[index4]);
+      }
+    }
+    function setCacheAdd(value) {
+      this.__data__.set(value, HASH_UNDEFINED);
+      return this;
+    }
+    function setCacheHas(value) {
+      return this.__data__.has(value);
+    }
+    SetCache.prototype.add = SetCache.prototype.push = setCacheAdd;
+    SetCache.prototype.has = setCacheHas;
+    function Stack3(entries) {
+      var data2 = this.__data__ = new ListCache(entries);
+      this.size = data2.size;
+    }
+    function stackClear() {
+      this.__data__ = new ListCache();
+      this.size = 0;
+    }
+    function stackDelete(key) {
+      var data2 = this.__data__, result = data2["delete"](key);
+      this.size = data2.size;
+      return result;
+    }
+    function stackGet(key) {
+      return this.__data__.get(key);
+    }
+    function stackHas(key) {
+      return this.__data__.has(key);
+    }
+    function stackSet(key, value) {
+      var data2 = this.__data__;
+      if (data2 instanceof ListCache) {
+        var pairs = data2.__data__;
+        if (!Map2 || pairs.length < LARGE_ARRAY_SIZE - 1) {
+          pairs.push([key, value]);
+          this.size = ++data2.size;
+          return this;
+        }
+        data2 = this.__data__ = new MapCache(pairs);
+      }
+      data2.set(key, value);
+      this.size = data2.size;
+      return this;
+    }
+    Stack3.prototype.clear = stackClear;
+    Stack3.prototype["delete"] = stackDelete;
+    Stack3.prototype.get = stackGet;
+    Stack3.prototype.has = stackHas;
+    Stack3.prototype.set = stackSet;
+    function arrayLikeKeys(value, inherited) {
+      var isArr = isArray(value), isArg = !isArr && isArguments(value), isBuff = !isArr && !isArg && isBuffer(value), isType2 = !isArr && !isArg && !isBuff && isTypedArray(value), skipIndexes = isArr || isArg || isBuff || isType2, result = skipIndexes ? baseTimes(value.length, String) : [], length = result.length;
+      for (var key in value) {
+        if ((inherited || hasOwnProperty2.call(value, key)) && !(skipIndexes && // Safari 9 has enumerable `arguments.length` in strict mode.
+        (key == "length" || // Node.js 0.10 has enumerable non-index properties on buffers.
+        isBuff && (key == "offset" || key == "parent") || // PhantomJS 2 has enumerable non-index properties on typed arrays.
+        isType2 && (key == "buffer" || key == "byteLength" || key == "byteOffset") || // Skip index properties.
+        isIndex(key, length)))) {
+          result.push(key);
+        }
+      }
+      return result;
+    }
+    function assocIndexOf(array, key) {
+      var length = array.length;
+      while (length--) {
+        if (eq(array[length][0], key)) {
+          return length;
+        }
+      }
+      return -1;
+    }
+    function baseGetAllKeys(object, keysFunc, symbolsFunc) {
+      var result = keysFunc(object);
+      return isArray(object) ? result : arrayPush(result, symbolsFunc(object));
+    }
+    function baseGetTag(value) {
+      if (value == null) {
+        return value === void 0 ? undefinedTag : nullTag;
+      }
+      return symToStringTag && symToStringTag in Object(value) ? getRawTag(value) : objectToString(value);
+    }
+    function baseIsArguments(value) {
+      return isObjectLike(value) && baseGetTag(value) == argsTag;
+    }
+    function baseIsEqual(value, other, bitmask, customizer, stack) {
+      if (value === other) {
+        return true;
+      }
+      if (value == null || other == null || !isObjectLike(value) && !isObjectLike(other)) {
+        return value !== value && other !== other;
+      }
+      return baseIsEqualDeep(value, other, bitmask, customizer, baseIsEqual, stack);
+    }
+    function baseIsEqualDeep(object, other, bitmask, customizer, equalFunc, stack) {
+      var objIsArr = isArray(object), othIsArr = isArray(other), objTag = objIsArr ? arrayTag : getTag(object), othTag = othIsArr ? arrayTag : getTag(other);
+      objTag = objTag == argsTag ? objectTag : objTag;
+      othTag = othTag == argsTag ? objectTag : othTag;
+      var objIsObj = objTag == objectTag, othIsObj = othTag == objectTag, isSameTag = objTag == othTag;
+      if (isSameTag && isBuffer(object)) {
+        if (!isBuffer(other)) {
+          return false;
+        }
+        objIsArr = true;
+        objIsObj = false;
+      }
+      if (isSameTag && !objIsObj) {
+        stack || (stack = new Stack3());
+        return objIsArr || isTypedArray(object) ? equalArrays(object, other, bitmask, customizer, equalFunc, stack) : equalByTag(object, other, objTag, bitmask, customizer, equalFunc, stack);
+      }
+      if (!(bitmask & COMPARE_PARTIAL_FLAG)) {
+        var objIsWrapped = objIsObj && hasOwnProperty2.call(object, "__wrapped__"), othIsWrapped = othIsObj && hasOwnProperty2.call(other, "__wrapped__");
+        if (objIsWrapped || othIsWrapped) {
+          var objUnwrapped = objIsWrapped ? object.value() : object, othUnwrapped = othIsWrapped ? other.value() : other;
+          stack || (stack = new Stack3());
+          return equalFunc(objUnwrapped, othUnwrapped, bitmask, customizer, stack);
+        }
+      }
+      if (!isSameTag) {
+        return false;
+      }
+      stack || (stack = new Stack3());
+      return equalObjects(object, other, bitmask, customizer, equalFunc, stack);
+    }
+    function baseIsNative(value) {
+      if (!isObject2(value) || isMasked(value)) {
+        return false;
+      }
+      var pattern = isFunction2(value) ? reIsNative : reIsHostCtor;
+      return pattern.test(toSource(value));
+    }
+    function baseIsTypedArray(value) {
+      return isObjectLike(value) && isLength(value.length) && !!typedArrayTags[baseGetTag(value)];
+    }
+    function baseKeys(object) {
+      if (!isPrototype(object)) {
+        return nativeKeys(object);
+      }
+      var result = [];
+      for (var key in Object(object)) {
+        if (hasOwnProperty2.call(object, key) && key != "constructor") {
+          result.push(key);
+        }
+      }
+      return result;
+    }
+    function equalArrays(array, other, bitmask, customizer, equalFunc, stack) {
+      var isPartial = bitmask & COMPARE_PARTIAL_FLAG, arrLength = array.length, othLength = other.length;
+      if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
+        return false;
+      }
+      var stacked = stack.get(array);
+      if (stacked && stack.get(other)) {
+        return stacked == other;
+      }
+      var index4 = -1, result = true, seen = bitmask & COMPARE_UNORDERED_FLAG ? new SetCache() : void 0;
+      stack.set(array, other);
+      stack.set(other, array);
+      while (++index4 < arrLength) {
+        var arrValue = array[index4], othValue = other[index4];
+        if (customizer) {
+          var compared = isPartial ? customizer(othValue, arrValue, index4, other, array, stack) : customizer(arrValue, othValue, index4, array, other, stack);
+        }
+        if (compared !== void 0) {
+          if (compared) {
+            continue;
+          }
+          result = false;
+          break;
+        }
+        if (seen) {
+          if (!arraySome(other, function(othValue2, othIndex) {
+            if (!cacheHas(seen, othIndex) && (arrValue === othValue2 || equalFunc(arrValue, othValue2, bitmask, customizer, stack))) {
+              return seen.push(othIndex);
+            }
+          })) {
+            result = false;
+            break;
+          }
+        } else if (!(arrValue === othValue || equalFunc(arrValue, othValue, bitmask, customizer, stack))) {
+          result = false;
+          break;
+        }
+      }
+      stack["delete"](array);
+      stack["delete"](other);
+      return result;
+    }
+    function equalByTag(object, other, tag, bitmask, customizer, equalFunc, stack) {
+      switch (tag) {
+        case dataViewTag:
+          if (object.byteLength != other.byteLength || object.byteOffset != other.byteOffset) {
+            return false;
+          }
+          object = object.buffer;
+          other = other.buffer;
+        case arrayBufferTag:
+          if (object.byteLength != other.byteLength || !equalFunc(new Uint8Array2(object), new Uint8Array2(other))) {
+            return false;
+          }
+          return true;
+        case boolTag:
+        case dateTag:
+        case numberTag:
+          return eq(+object, +other);
+        case errorTag:
+          return object.name == other.name && object.message == other.message;
+        case regexpTag:
+        case stringTag:
+          return object == other + "";
+        case mapTag:
+          var convert2 = mapToArray;
+        case setTag:
+          var isPartial = bitmask & COMPARE_PARTIAL_FLAG;
+          convert2 || (convert2 = setToArray);
+          if (object.size != other.size && !isPartial) {
+            return false;
+          }
+          var stacked = stack.get(object);
+          if (stacked) {
+            return stacked == other;
+          }
+          bitmask |= COMPARE_UNORDERED_FLAG;
+          stack.set(object, other);
+          var result = equalArrays(convert2(object), convert2(other), bitmask, customizer, equalFunc, stack);
+          stack["delete"](object);
+          return result;
+        case symbolTag:
+          if (symbolValueOf) {
+            return symbolValueOf.call(object) == symbolValueOf.call(other);
+          }
+      }
+      return false;
+    }
+    function equalObjects(object, other, bitmask, customizer, equalFunc, stack) {
+      var isPartial = bitmask & COMPARE_PARTIAL_FLAG, objProps = getAllKeys(object), objLength = objProps.length, othProps = getAllKeys(other), othLength = othProps.length;
+      if (objLength != othLength && !isPartial) {
+        return false;
+      }
+      var index4 = objLength;
+      while (index4--) {
+        var key = objProps[index4];
+        if (!(isPartial ? key in other : hasOwnProperty2.call(other, key))) {
+          return false;
+        }
+      }
+      var stacked = stack.get(object);
+      if (stacked && stack.get(other)) {
+        return stacked == other;
+      }
+      var result = true;
+      stack.set(object, other);
+      stack.set(other, object);
+      var skipCtor = isPartial;
+      while (++index4 < objLength) {
+        key = objProps[index4];
+        var objValue = object[key], othValue = other[key];
+        if (customizer) {
+          var compared = isPartial ? customizer(othValue, objValue, key, other, object, stack) : customizer(objValue, othValue, key, object, other, stack);
+        }
+        if (!(compared === void 0 ? objValue === othValue || equalFunc(objValue, othValue, bitmask, customizer, stack) : compared)) {
+          result = false;
+          break;
+        }
+        skipCtor || (skipCtor = key == "constructor");
+      }
+      if (result && !skipCtor) {
+        var objCtor = object.constructor, othCtor = other.constructor;
+        if (objCtor != othCtor && ("constructor" in object && "constructor" in other) && !(typeof objCtor == "function" && objCtor instanceof objCtor && typeof othCtor == "function" && othCtor instanceof othCtor)) {
+          result = false;
+        }
+      }
+      stack["delete"](object);
+      stack["delete"](other);
+      return result;
+    }
+    function getAllKeys(object) {
+      return baseGetAllKeys(object, keys4, getSymbols);
+    }
+    function getMapData(map4, key) {
+      var data2 = map4.__data__;
+      return isKeyable(key) ? data2[typeof key == "string" ? "string" : "hash"] : data2.map;
+    }
+    function getNative(object, key) {
+      var value = getValue(object, key);
+      return baseIsNative(value) ? value : void 0;
+    }
+    function getRawTag(value) {
+      var isOwn = hasOwnProperty2.call(value, symToStringTag), tag = value[symToStringTag];
+      try {
+        value[symToStringTag] = void 0;
+        var unmasked = true;
+      } catch (e6) {
+      }
+      var result = nativeObjectToString.call(value);
+      if (unmasked) {
+        if (isOwn) {
+          value[symToStringTag] = tag;
+        } else {
+          delete value[symToStringTag];
+        }
+      }
+      return result;
+    }
+    var getSymbols = !nativeGetSymbols ? stubArray : function(object) {
+      if (object == null) {
+        return [];
+      }
+      object = Object(object);
+      return arrayFilter(nativeGetSymbols(object), function(symbol) {
+        return propertyIsEnumerable.call(object, symbol);
+      });
+    };
+    var getTag = baseGetTag;
+    if (DataView2 && getTag(new DataView2(new ArrayBuffer(1))) != dataViewTag || Map2 && getTag(new Map2()) != mapTag || Promise2 && getTag(Promise2.resolve()) != promiseTag || Set2 && getTag(new Set2()) != setTag || WeakMap2 && getTag(new WeakMap2()) != weakMapTag) {
+      getTag = function(value) {
+        var result = baseGetTag(value), Ctor = result == objectTag ? value.constructor : void 0, ctorString = Ctor ? toSource(Ctor) : "";
+        if (ctorString) {
+          switch (ctorString) {
+            case dataViewCtorString:
+              return dataViewTag;
+            case mapCtorString:
+              return mapTag;
+            case promiseCtorString:
+              return promiseTag;
+            case setCtorString:
+              return setTag;
+            case weakMapCtorString:
+              return weakMapTag;
+          }
+        }
+        return result;
+      };
+    }
+    function isIndex(value, length) {
+      length = length == null ? MAX_SAFE_INTEGER : length;
+      return !!length && (typeof value == "number" || reIsUint.test(value)) && (value > -1 && value % 1 == 0 && value < length);
+    }
+    function isKeyable(value) {
+      var type = typeof value;
+      return type == "string" || type == "number" || type == "symbol" || type == "boolean" ? value !== "__proto__" : value === null;
+    }
+    function isMasked(func) {
+      return !!maskSrcKey && maskSrcKey in func;
+    }
+    function isPrototype(value) {
+      var Ctor = value && value.constructor, proto = typeof Ctor == "function" && Ctor.prototype || objectProto;
+      return value === proto;
+    }
+    function objectToString(value) {
+      return nativeObjectToString.call(value);
+    }
+    function toSource(func) {
+      if (func != null) {
+        try {
+          return funcToString.call(func);
+        } catch (e6) {
+        }
+        try {
+          return func + "";
+        } catch (e6) {
+        }
+      }
+      return "";
+    }
+    function eq(value, other) {
+      return value === other || value !== value && other !== other;
+    }
+    var isArguments = baseIsArguments(/* @__PURE__ */ (function() {
+      return arguments;
+    })()) ? baseIsArguments : function(value) {
+      return isObjectLike(value) && hasOwnProperty2.call(value, "callee") && !propertyIsEnumerable.call(value, "callee");
+    };
+    var isArray = Array.isArray;
+    function isArrayLike(value) {
+      return value != null && isLength(value.length) && !isFunction2(value);
+    }
+    var isBuffer = nativeIsBuffer || stubFalse;
+    function isEqual2(value, other) {
+      return baseIsEqual(value, other);
+    }
+    function isFunction2(value) {
+      if (!isObject2(value)) {
+        return false;
+      }
+      var tag = baseGetTag(value);
+      return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
+    }
+    function isLength(value) {
+      return typeof value == "number" && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+    }
+    function isObject2(value) {
+      var type = typeof value;
+      return value != null && (type == "object" || type == "function");
+    }
+    function isObjectLike(value) {
+      return value != null && typeof value == "object";
+    }
+    var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
+    function keys4(object) {
+      return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
+    }
+    function stubArray() {
+      return [];
+    }
+    function stubFalse() {
+      return false;
+    }
+    module2.exports = isEqual2;
   }
 });
 
@@ -21131,12 +22554,12 @@ var init_PDFDropdown = __esm({
         }
         this.acroField.setOptions(existingOptions.concat(newOptions));
       };
-      PDFDropdown2.prototype.select = function(options, merge2) {
-        if (merge2 === void 0) {
-          merge2 = false;
+      PDFDropdown2.prototype.select = function(options, merge3) {
+        if (merge3 === void 0) {
+          merge3 = false;
         }
         assertIs(options, "options", ["string", Array]);
-        assertIs(merge2, "merge", ["boolean"]);
+        assertIs(merge3, "merge", ["boolean"]);
         var optionsArr = Array.isArray(options) ? options : [options];
         var validOptions = this.getOptions();
         var hasCustomOption = optionsArr.find(function(option) {
@@ -21145,14 +22568,14 @@ var init_PDFDropdown = __esm({
         if (hasCustomOption)
           this.enableEditing();
         this.markAsDirty();
-        if (optionsArr.length > 1 || optionsArr.length === 1 && merge2) {
+        if (optionsArr.length > 1 || optionsArr.length === 1 && merge3) {
           this.enableMultiselect();
         }
         var values4 = new Array(optionsArr.length);
         for (var idx = 0, len = optionsArr.length; idx < len; idx++) {
           values4[idx] = PDFHexString_default.fromText(optionsArr[idx]);
         }
-        if (merge2) {
+        if (merge3) {
           var existingValues = this.acroField.getValues();
           this.acroField.setValues(existingValues.concat(values4));
         } else {
@@ -21346,24 +22769,24 @@ var init_PDFOptionList = __esm({
         }
         this.acroField.setOptions(existingOptions.concat(newOptions));
       };
-      PDFOptionList2.prototype.select = function(options, merge2) {
-        if (merge2 === void 0) {
-          merge2 = false;
+      PDFOptionList2.prototype.select = function(options, merge3) {
+        if (merge3 === void 0) {
+          merge3 = false;
         }
         assertIs(options, "options", ["string", Array]);
-        assertIs(merge2, "merge", ["boolean"]);
+        assertIs(merge3, "merge", ["boolean"]);
         var optionsArr = Array.isArray(options) ? options : [options];
         var validOptions = this.getOptions();
         assertIsSubset(optionsArr, "option", validOptions);
         this.markAsDirty();
-        if (optionsArr.length > 1 || optionsArr.length === 1 && merge2) {
+        if (optionsArr.length > 1 || optionsArr.length === 1 && merge3) {
           this.enableMultiselect();
         }
         var values4 = new Array(optionsArr.length);
         for (var idx = 0, len = optionsArr.length; idx < len; idx++) {
           values4[idx] = PDFHexString_default.fromText(optionsArr[idx]);
         }
-        if (merge2) {
+        if (merge3) {
           var existingValues = this.acroField.getValues();
           this.acroField.setValues(existingValues.concat(values4));
         } else {
@@ -24230,11 +25653,11 @@ __export(entry_exports, {
   safeWarnings: () => safeWarnings
 });
 module.exports = __toCommonJS(entry_exports);
-var import_react159 = __toESM(require("react"), 1);
+var import_react170 = __toESM(require("react"), 1);
 var import_dsh_client_ui_primitives = require("@deepseek-ai/dsh-client-ui-primitives");
 
 // packages/report-review/src/client.jsx
-var import_react158 = __toESM(require("react"), 1);
+var import_react169 = __toESM(require("react"), 1);
 
 // node_modules/@marijn/find-cluster-break/src/index.js
 var rangeFrom = [];
@@ -25724,13 +27147,13 @@ function checkSelection(selection, docLength) {
 }
 var nextID = 0;
 var Facet = class _Facet {
-  constructor(combine, compareInput, compare2, isStatic, enables) {
-    this.combine = combine;
+  constructor(combine2, compareInput, compare2, isStatic, enables) {
+    this.combine = combine2;
     this.compareInput = compareInput;
     this.compare = compare2;
     this.isStatic = isStatic;
     this.id = nextID++;
-    this.default = combine([]);
+    this.default = combine2([]);
     this.extensions = typeof enables == "function" ? enables(this) : enables;
   }
   /**
@@ -26861,7 +28284,7 @@ EditorState.changeFilter = changeFilter;
 EditorState.transactionFilter = transactionFilter;
 EditorState.transactionExtender = transactionExtender;
 Compartment.reconfigure = /* @__PURE__ */ StateEffect.define();
-function combineConfig(configs, defaults2, combine = {}) {
+function combineConfig(configs, defaults2, combine2 = {}) {
   let result = {};
   for (let config of configs)
     for (let key of Object.keys(config)) {
@@ -26869,8 +28292,8 @@ function combineConfig(configs, defaults2, combine = {}) {
       if (current === void 0)
         result[key] = value;
       else if (current === value || value === void 0) ;
-      else if (Object.hasOwnProperty.call(combine, key))
-        result[key] = combine[key](current, value);
+      else if (Object.hasOwnProperty.call(combine2, key))
+        result[key] = combine2[key](current, value);
       else
         throw new Error("Config merge conflict for field " + key);
     }
@@ -26937,10 +28360,10 @@ var Chunk = class _Chunk {
       if (lo2 == hi3)
         return lo2;
       let mid = lo2 + hi3 >> 1;
-      let diff2 = arr[mid] - pos || (end ? this.value[mid].endSide : this.value[mid].startSide) - side;
+      let diff3 = arr[mid] - pos || (end ? this.value[mid].endSide : this.value[mid].startSide) - side;
       if (mid == lo2)
-        return diff2 >= 0 ? lo2 : hi3;
-      if (diff2 >= 0)
+        return diff3 >= 0 ? lo2 : hi3;
+      if (diff3 >= 0)
         hi3 = mid;
       else
         lo2 = mid + 1;
@@ -27302,10 +28725,10 @@ var RangeSetBuilder = class _RangeSetBuilder {
   @internal
   */
   addInner(from2, to, value, strict) {
-    let diff2 = from2 - this.lastTo || value.startSide - this.last.endSide;
-    if (strict && diff2 <= 0 && (from2 - this.lastFrom || value.startSide - this.last.startSide) < 0)
+    let diff3 = from2 - this.lastTo || value.startSide - this.last.endSide;
+    if (strict && diff3 <= 0 && (from2 - this.lastFrom || value.startSide - this.last.startSide) < 0)
       throw new Error("Ranges must be added sorted by `from` position and `startSide`");
-    if (diff2 < 0)
+    if (diff3 < 0)
       return false;
     if (this.from.length == 250)
       this.finishChunk(true);
@@ -27638,8 +29061,8 @@ function compare(a3, startA, b4, startB, length, comparator) {
   let pos = startB, dPos = startB - startA;
   let bounds = !!comparator.boundChange;
   for (let boundChange = false; ; ) {
-    let dEnd = a3.to + dPos - b4.to, diff2 = dEnd || a3.endSide - b4.endSide;
-    let end = diff2 < 0 ? a3.to + dPos : b4.to, clipEnd = Math.min(end, endB);
+    let dEnd = a3.to + dPos - b4.to, diff3 = dEnd || a3.endSide - b4.endSide;
+    let end = diff3 < 0 ? a3.to + dPos : b4.to, clipEnd = Math.min(end, endB);
     let point4 = a3.point || b4.point;
     if (point4) {
       if (!(a3.point && b4.point && cmpVal(a3.point, b4.point) && sameValues(a3.activeForPoint(a3.to), b4.activeForPoint(b4.to))))
@@ -27656,9 +29079,9 @@ function compare(a3, startA, b4, startB, length, comparator) {
     if (end > endB)
       break;
     pos = end;
-    if (diff2 <= 0)
+    if (diff3 <= 0)
       a3.next();
-    if (diff2 >= 0)
+    if (diff3 >= 0)
       b4.next();
   }
 }
@@ -29294,12 +30717,12 @@ var ChangedRange = class _ChangedRange {
   // positions. These pairs are generated in unchanged ranges, so the
   // offset between doc A and doc B is the same for their start and
   // end points.
-  static extendWithRanges(diff2, ranges) {
+  static extendWithRanges(diff3, ranges) {
     if (ranges.length == 0)
-      return diff2;
+      return diff3;
     let result = [];
     for (let dI = 0, rI = 0, off = 0; ; ) {
-      let nextD = dI < diff2.length ? diff2[dI].fromB : 1e9;
+      let nextD = dI < diff3.length ? diff3[dI].fromB : 1e9;
       let nextR = rI < ranges.length ? ranges[rI] : 1e9;
       let fromB = Math.min(nextD, nextR);
       if (fromB == 1e9)
@@ -29310,11 +30733,11 @@ var ChangedRange = class _ChangedRange {
           let end = ranges[rI + 1];
           rI += 2;
           toB = Math.max(toB, end);
-          for (let i3 = dI; i3 < diff2.length && diff2[i3].fromB <= toB; i3++)
-            off = diff2[i3].toA - diff2[i3].toB;
+          for (let i3 = dI; i3 < diff3.length && diff3[i3].fromB <= toB; i3++)
+            off = diff3[i3].toA - diff3[i3].toB;
           toA = Math.max(toA, end + off);
-        } else if (dI < diff2.length && diff2[dI].fromB <= toB) {
-          let next = diff2[dI++];
+        } else if (dI < diff3.length && diff3[dI].fromB <= toB) {
+          let next = diff3[dI++];
           toB = Math.max(toB, next.toB);
           toA = Math.max(toA, next.toA);
           off = next.toA - next.toB;
@@ -31210,9 +32633,9 @@ var DecorationComparator$1 = class DecorationComparator {
     addRange(pos, pos, this.changes);
   }
 };
-function findChangedDeco(a3, b4, diff2) {
+function findChangedDeco(a3, b4, diff3) {
   let comp = new DecorationComparator$1();
-  RangeSet.compare(a3, b4, diff2, comp);
+  RangeSet.compare(a3, b4, diff3, comp);
   return comp.changes;
 }
 var WrapperComparator = class {
@@ -31228,9 +32651,9 @@ var WrapperComparator = class {
     addRange(pos, pos, this.changes);
   }
 };
-function findChangedWrappers(a3, b4, diff2) {
+function findChangedWrappers(a3, b4, diff3) {
   let comp = new WrapperComparator();
-  RangeSet.compare(a3, b4, diff2, comp);
+  RangeSet.compare(a3, b4, diff3, comp);
   return comp.changes;
 }
 function inUneditable(node2, inside) {
@@ -31864,20 +33287,20 @@ function applyDOMChange(view, domChange) {
       preferredPos = sel.to;
       preferredSide = "end";
     }
-    let cmp2 = state.doc.sliceString(from2, to, LineBreakPlaceholder), selEnd, diff2;
+    let cmp2 = state.doc.sliceString(from2, to, LineBreakPlaceholder), selEnd, diff3;
     if (!sel.empty && sel.from >= from2 && sel.to <= to && (domChange.typeOver || cmp2 != domChange.text) && cmp2.slice(0, sel.from - from2) == domChange.text.slice(0, sel.from - from2) && cmp2.slice(sel.to - from2) == domChange.text.slice(selEnd = domChange.text.length - (cmp2.length - (sel.to - from2)))) {
       change = {
         from: sel.from,
         to: sel.to,
         insert: Text.of(domChange.text.slice(sel.from - from2, selEnd).split(LineBreakPlaceholder))
       };
-    } else if (diff2 = findDiff(cmp2, domChange.text, preferredPos - from2, preferredSide)) {
-      if (browser.chrome && lastKey == 13 && diff2.toB == diff2.from + 2 && domChange.text.slice(diff2.from, diff2.toB) == LineBreakPlaceholder + LineBreakPlaceholder)
-        diff2.toB--;
+    } else if (diff3 = findDiff(cmp2, domChange.text, preferredPos - from2, preferredSide)) {
+      if (browser.chrome && lastKey == 13 && diff3.toB == diff3.from + 2 && domChange.text.slice(diff3.from, diff3.toB) == LineBreakPlaceholder + LineBreakPlaceholder)
+        diff3.toB--;
       change = {
-        from: from2 + diff2.from,
-        to: from2 + diff2.toA,
-        insert: Text.of(domChange.text.slice(diff2.from, diff2.toB).split(LineBreakPlaceholder))
+        from: from2 + diff3.from,
+        to: from2 + diff3.toA,
+        insert: Text.of(domChange.text.slice(diff3.from, diff3.toB).split(LineBreakPlaceholder))
       };
     }
   } else if (newSel && (!view.hasFocus && state.facet(editable) || sameSelPos(newSel, sel))) {
@@ -33521,9 +34944,9 @@ var NodeBuilder = class _NodeBuilder {
     return builder.finish(from2);
   }
 };
-function heightRelevantDecoChanges(a3, b4, diff2) {
+function heightRelevantDecoChanges(a3, b4, diff3) {
   let comp = new DecorationComparator2();
-  RangeSet.compare(a3, b4, diff2, comp, 0);
+  RangeSet.compare(a3, b4, diff3, comp, 0);
   return comp.changes;
 }
 var DecorationComparator2 = class {
@@ -34954,17 +36377,17 @@ var EditContextManager = class {
         from2 = anchor;
       else if (to == this.to && anchor > this.to)
         to = anchor;
-      let diff2 = findDiff(view.state.sliceDoc(from2, to), e6.text, (deletes ? main.from : main.to) - from2, deletes ? "end" : null);
-      if (!diff2) {
+      let diff3 = findDiff(view.state.sliceDoc(from2, to), e6.text, (deletes ? main.from : main.to) - from2, deletes ? "end" : null);
+      if (!diff3) {
         let newSel = EditorSelection.single(this.toEditorPos(e6.selectionStart), this.toEditorPos(e6.selectionEnd));
         if (!sameSelPos(newSel, main))
           view.dispatch({ selection: newSel, userEvent: "select" });
         return;
       }
       let change = {
-        from: diff2.from + from2,
-        to: diff2.toA + from2,
-        insert: Text.of(e6.text.slice(diff2.from, diff2.toB).split("\n"))
+        from: diff3.from + from2,
+        to: diff3.toA + from2,
+        insert: Text.of(e6.text.slice(diff3.from, diff3.toB).split("\n"))
       };
       if ((browser.mac || browser.android) && change.from == head - 1 && /^\. ?$/.test(e6.text) && view.contentDOM.getAttribute("autocorrect") == "off")
         change = { from: from2, to, insert: Text.of([e6.text.replace(".", " ")]) };
@@ -35512,15 +36935,15 @@ var EditorView = class _EditorView {
               continue;
             } else {
               let newAnchorHeight = scrollAnchorPos < 0 ? this.viewState.heightMap.height : this.viewState.lineBlockAt(scrollAnchorPos).top;
-              let diff2 = newAnchorHeight / this.viewState.scaleY - scrollAnchorHeight / scrollScale;
-              if ((diff2 > 1 || diff2 < -1) && !(browser.ios && this.inputState.lastIOSMomentumScroll > Date.now() - 100) && (scroll == this.scrollDOM || this.hasFocus || Math.max(this.inputState.lastWheelEvent, this.inputState.lastTouchTime) > Date.now() - 100)) {
-                scrollOffset = scrollOffset + diff2;
+              let diff3 = newAnchorHeight / this.viewState.scaleY - scrollAnchorHeight / scrollScale;
+              if ((diff3 > 1 || diff3 < -1) && !(browser.ios && this.inputState.lastIOSMomentumScroll > Date.now() - 100) && (scroll == this.scrollDOM || this.hasFocus || Math.max(this.inputState.lastWheelEvent, this.inputState.lastTouchTime) > Date.now() - 100)) {
+                scrollOffset = scrollOffset + diff3;
                 if (!scroll)
-                  this.win.scrollBy(0, diff2);
+                  this.win.scrollBy(0, diff3);
                 else if (scrollAnchorPos < 0)
                   scroll.scrollTop = scroll.scrollHeight;
                 else
-                  scroll.scrollTop += diff2;
+                  scroll.scrollTop += diff3;
                 scrollAnchorHeight = -1;
                 continue;
               }
@@ -40920,21 +42343,21 @@ function selectedLineRanges(state) {
   return ranges;
 }
 function changeBlockComment(option, state, ranges = state.selection.ranges) {
-  let tokens = ranges.map((r4) => getConfig(state, r4.from).block);
-  if (!tokens.every((c4) => c4))
+  let tokens2 = ranges.map((r4) => getConfig(state, r4.from).block);
+  if (!tokens2.every((c4) => c4))
     return null;
-  let comments = ranges.map((r4, i3) => findBlockComment(state, tokens[i3], r4.from, r4.to));
+  let comments = ranges.map((r4, i3) => findBlockComment(state, tokens2[i3], r4.from, r4.to));
   if (option != 2 && !comments.every((c4) => c4)) {
     return { changes: state.changes(ranges.map((range2, i3) => {
       if (comments[i3])
         return [];
-      return [{ from: range2.from, insert: tokens[i3].open + " " }, { from: range2.to, insert: " " + tokens[i3].close }];
+      return [{ from: range2.from, insert: tokens2[i3].open + " " }, { from: range2.to, insert: " " + tokens2[i3].close }];
     })) };
   } else if (option != 1 && comments.some((c4) => c4)) {
     let changes = [];
     for (let i3 = 0, comment2; i3 < comments.length; i3++)
       if (comment2 = comments[i3]) {
-        let token = tokens[i3], { open, close: close2 } = comment2;
+        let token = tokens2[i3], { open, close: close2 } = comment2;
         changes.push({ from: open.pos - token.open.length, to: open.pos + open.margin }, { from: close2.pos - close2.margin, to: close2.pos + token.close.length });
       }
     return { changes };
@@ -45795,10 +47218,10 @@ var Parse = class {
       }
     }
   }
-  runRecovery(stacks, tokens, newStacks) {
+  runRecovery(stacks, tokens2, newStacks) {
     let finished = null, restarted = false;
     for (let i3 = 0; i3 < stacks.length; i3++) {
-      let stack = stacks[i3], token = tokens[i3 << 1], tokenEnd = tokens[(i3 << 1) + 1];
+      let stack = stacks[i3], token = tokens2[i3 << 1], tokenEnd = tokens2[(i3 << 1) + 1];
       let base2 = verbose ? this.stackID(stack) + " -> " : "";
       if (stack.deadEnd) {
         if (restarted)
@@ -49739,8 +51162,8 @@ var Chunk2 = class _Chunk {
   Build a set of changed chunks for the given documents.
   */
   static build(a3, b4, conf) {
-    let diff2 = presentableDiff(a3.toString(), b4.toString(), conf);
-    return toChunks(diff2, a3, b4, 0, 0, diffIsPrecise());
+    let diff3 = presentableDiff(a3.toString(), b4.toString(), conf);
+    return toChunks(diff3, a3, b4, 0, 0, diffIsPrecise());
   }
   /**
   Update a set of chunks for changes in document A. `a` should
@@ -49847,8 +51270,8 @@ function updateChunks(ranges, chunks, a3, b4, conf) {
     if (!range2)
       break;
     let toA = range2.toA + offA + range2.diffA, toB = range2.toB + offB + range2.diffB;
-    let diff2 = presentableDiff(a3.sliceString(fromA, toA), b4.sliceString(fromB, toB), conf);
-    for (let chunk of toChunks(diff2, a3, b4, fromA, fromB, diffIsPrecise()))
+    let diff3 = presentableDiff(a3.sliceString(fromA, toA), b4.sliceString(fromB, toB), conf);
+    for (let chunk of toChunks(diff3, a3, b4, fromA, fromB, diffIsPrecise()))
       result.push(chunk);
     offA += range2.diffA;
     offB += range2.diffB;
@@ -50007,18 +51430,18 @@ function updateSpacers(a3, b4, chunks) {
     if (posA < endA) {
       let heightA = a3.lineBlockAt(posA).top + offA;
       let heightB = b4.lineBlockAt(posB).top + offB;
-      let diff2 = heightA - heightB;
-      if (diff2 < -epsilon) {
-        offA -= diff2;
+      let diff3 = heightA - heightB;
+      if (diff3 < -epsilon) {
+        offA -= diff3;
         buildA.add(posA, posA, Decoration.widget({
-          widget: new Spacer(-diff2),
+          widget: new Spacer(-diff3),
           block: true,
           side: -1
         }));
-      } else if (diff2 > epsilon) {
-        offB += diff2;
+      } else if (diff3 > epsilon) {
+        offB += diff3;
         buildB.add(posB, posB, Decoration.widget({
-          widget: new Spacer(diff2),
+          widget: new Spacer(diff3),
           block: true,
           side: -1
         }));
@@ -50852,22 +52275,22 @@ var workspace_default = `/* Local aliases consume the TokensAPI contract; never 
 .rr-workspace .bn-block-content[data-content-type="quote"] { border-left: 3px solid var(--rr-accent); padding-inline-start: 16px; }\r
 .rr-workspace .bn-block-content[data-content-type="codeBlock"] { overflow-x: auto; }\r
 .rr-demo-banner .rr-button { margin-left: 12px; min-height: 30px; padding-block: 4px; }\r
-
-/* Connection settings modal: centered card above the workspace, same tokens as the rest of the UI. */
-.rr-settings { position: absolute; inset: 0; z-index: 30; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--rr-text) 24%, transparent); }
-.rr-settings-card { width: min(520px, calc(100vw - 48px)); max-height: calc(100vh - 96px); overflow: auto; padding: 24px; background: var(--rr-paper); border: 1px solid var(--rr-border); border-radius: 12px; box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25); }
-.rr-settings-card label { display: block; margin: 12px 0 0; font-size: 13px; color: var(--rr-text); }
-.rr-settings-card label .rr-muted { font-size: 12px; margin-left: 6px; }
-.rr-settings-card input { display: block; width: 100%; margin-top: 6px; padding: 8px 10px; border: 1px solid var(--rr-border); border-radius: 6px; color: var(--rr-text); background: var(--rr-paper); }
-.rr-settings-card .rr-row { margin-top: 16px; display: flex; gap: 8px; }
-.rr-settings-note { color: var(--rr-success); font-size: 13px; margin: 10px 0 0; }
-.rr-settings-error { color: var(--rr-danger); font-size: 13px; margin: 10px 0 0; white-space: pre-wrap; }
-.rr-settings-test { margin: 12px 0 0; padding: 10px 12px 10px 28px; border: 1px solid var(--rr-border); border-radius: 8px; font-size: 13px; }
-.rr-settings-test li { margin: 4px 0; }
+\r
+/* Connection settings modal: centered card above the workspace, same tokens as the rest of the UI. */\r
+.rr-settings { position: fixed; inset: 0; z-index: 30; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--rr-text) 24%, transparent); }\r
+.rr-settings-card { width: min(520px, calc(100vw - 48px)); max-height: calc(100vh - 96px); overflow: auto; padding: 24px; background: var(--rr-paper); border: 1px solid var(--rr-border); border-radius: 12px; box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25); }\r
+.rr-settings-card label { display: block; margin: 12px 0 0; font-size: 13px; color: var(--rr-text); }\r
+.rr-settings-card label .rr-muted { font-size: 12px; margin-left: 6px; }\r
+.rr-settings-card input { display: block; width: 100%; margin-top: 6px; padding: 8px 10px; border: 1px solid var(--rr-border); border-radius: 6px; color: var(--rr-text); background: var(--rr-paper); }\r
+.rr-settings-card .rr-row { margin-top: 16px; display: flex; gap: 8px; }\r
+.rr-settings-note { color: var(--rr-success); font-size: 13px; margin: 10px 0 0; }\r
+.rr-settings-error { color: var(--rr-danger); font-size: 13px; margin: 10px 0 0; white-space: pre-wrap; }\r
+.rr-settings-test { margin: 12px 0 0; padding: 10px 12px 10px 28px; border: 1px solid var(--rr-border); border-radius: 8px; font-size: 13px; }\r
+.rr-settings-test li { margin: 4px 0; }\r
 `;
 
 // packages/report-review/src/block-editor.jsx
-var import_react156 = __toESM(require("react"), 1);
+var import_react167 = __toESM(require("react"), 1);
 
 // node_modules/@tiptap/core/dist/rolldown-runtime-D7D4PA-g.js
 var __defProp2 = Object.defineProperty;
@@ -53335,7 +54758,7 @@ function isTagRule(rule) {
 function isStyleRule(rule) {
   return rule.style != null;
 }
-var DOMParser = class _DOMParser {
+var DOMParser2 = class _DOMParser {
   /**
   Create a parser that targets the given schema, using the given
   parsing rules.
@@ -54287,11 +55710,11 @@ var StepMap = class _StepMap {
   @internal
   */
   recover(value) {
-    let diff2 = 0, index4 = recoverIndex(value);
+    let diff3 = 0, index4 = recoverIndex(value);
     if (!this.inverted)
       for (let i3 = 0; i3 < index4; i3++)
-        diff2 += this.ranges[i3 * 3 + 2] - this.ranges[i3 * 3 + 1];
-    return this.ranges[index4 * 3] + diff2 + recoverOffset(value);
+        diff3 += this.ranges[i3 * 3 + 2] - this.ranges[i3 * 3 + 1];
+    return this.ranges[index4 * 3] + diff3 + recoverOffset(value);
   }
   mapResult(pos, assoc = 1) {
     return this._map(pos, assoc, false);
@@ -54303,15 +55726,15 @@ var StepMap = class _StepMap {
   @internal
   */
   _map(pos, assoc, simple) {
-    let diff2 = 0, oldIndex = this.inverted ? 2 : 1, newIndex = this.inverted ? 1 : 2;
+    let diff3 = 0, oldIndex = this.inverted ? 2 : 1, newIndex = this.inverted ? 1 : 2;
     for (let i3 = 0; i3 < this.ranges.length; i3 += 3) {
-      let start2 = this.ranges[i3] - (this.inverted ? diff2 : 0);
+      let start2 = this.ranges[i3] - (this.inverted ? diff3 : 0);
       if (start2 > pos)
         break;
       let oldSize = this.ranges[i3 + oldIndex], newSize = this.ranges[i3 + newIndex], end = start2 + oldSize;
       if (pos <= end) {
         let side = !oldSize ? assoc : pos == start2 ? -1 : pos == end ? 1 : assoc;
-        let result = start2 + diff2 + (side < 0 ? 0 : newSize);
+        let result = start2 + diff3 + (side < 0 ? 0 : newSize);
         if (simple)
           return result;
         let recover = pos == (assoc < 0 ? start2 : end) ? null : makeRecover(i3 / 3, pos - start2);
@@ -54320,24 +55743,24 @@ var StepMap = class _StepMap {
           del2 |= DEL_SIDE;
         return new MapResult(result, del2, recover);
       }
-      diff2 += newSize - oldSize;
+      diff3 += newSize - oldSize;
     }
-    return simple ? pos + diff2 : new MapResult(pos + diff2, 0, null);
+    return simple ? pos + diff3 : new MapResult(pos + diff3, 0, null);
   }
   /**
   @internal
   */
   touches(pos, recover) {
-    let diff2 = 0, index4 = recoverIndex(recover);
+    let diff3 = 0, index4 = recoverIndex(recover);
     let oldIndex = this.inverted ? 2 : 1, newIndex = this.inverted ? 1 : 2;
     for (let i3 = 0; i3 < this.ranges.length; i3 += 3) {
-      let start2 = this.ranges[i3] - (this.inverted ? diff2 : 0);
+      let start2 = this.ranges[i3] - (this.inverted ? diff3 : 0);
       if (start2 > pos)
         break;
       let oldSize = this.ranges[i3 + oldIndex], end = start2 + oldSize;
       if (pos <= end && i3 == index4 * 3)
         return true;
-      diff2 += this.ranges[i3 + newIndex] - oldSize;
+      diff3 += this.ranges[i3 + newIndex] - oldSize;
     }
     return false;
   }
@@ -54347,11 +55770,11 @@ var StepMap = class _StepMap {
   */
   forEach(f2) {
     let oldIndex = this.inverted ? 2 : 1, newIndex = this.inverted ? 1 : 2;
-    for (let i3 = 0, diff2 = 0; i3 < this.ranges.length; i3 += 3) {
-      let start2 = this.ranges[i3], oldStart = start2 - (this.inverted ? diff2 : 0), newStart = start2 + (this.inverted ? 0 : diff2);
+    for (let i3 = 0, diff3 = 0; i3 < this.ranges.length; i3 += 3) {
+      let start2 = this.ranges[i3], oldStart = start2 - (this.inverted ? diff3 : 0), newStart = start2 + (this.inverted ? 0 : diff3);
       let oldSize = this.ranges[i3 + oldIndex], newSize = this.ranges[i3 + newIndex];
       f2(oldStart, oldStart + oldSize, newStart, newStart + newSize);
-      diff2 += newSize - oldSize;
+      diff3 += newSize - oldSize;
     }
   }
   /**
@@ -60246,7 +61669,7 @@ function parseFromClipboard(view, text7, html6, plainText, $context) {
       dom = child;
     }
   if (!slice2) {
-    let parser6 = view.someProp("clipboardParser") || view.someProp("domParser") || DOMParser.fromSchema(view.state.schema);
+    let parser6 = view.someProp("clipboardParser") || view.someProp("domParser") || DOMParser2.fromSchema(view.state.schema);
     slice2 = parser6.parseSlice(dom, {
       preserveWhitespace: !!(asText || sliceData),
       context: $context,
@@ -62189,7 +63612,7 @@ function parseBetween(view, from_, to_, addedNodes) {
     }
   }
   let startDoc = view.state.doc;
-  let parser6 = view.someProp("domParser") || DOMParser.fromSchema(view.state.schema);
+  let parser6 = view.someProp("domParser") || DOMParser2.fromSchema(view.state.schema);
   let $from = startDoc.resolve(from2);
   let sel = null, doc4 = parser6.parse(parent, {
     topNode: $from.parent,
@@ -63542,11 +64965,11 @@ function createNodeFromContent(content4, schema2, options) {
           }]
         } })
       });
-      if (options.slice) DOMParser.fromSchema(contentCheckSchema).parseSlice(elementFromString(content4), options.parseOptions);
-      else DOMParser.fromSchema(contentCheckSchema).parse(elementFromString(content4), options.parseOptions);
+      if (options.slice) DOMParser2.fromSchema(contentCheckSchema).parseSlice(elementFromString(content4), options.parseOptions);
+      else DOMParser2.fromSchema(contentCheckSchema).parse(elementFromString(content4), options.parseOptions);
       if (options.errorOnInvalidContent && hasInvalidContent) throw new Error("[tiptap error]: Invalid HTML content", { cause: /* @__PURE__ */ new Error(`Invalid element found: ${invalidContent}`) });
     }
-    const parser6 = DOMParser.fromSchema(schema2);
+    const parser6 = DOMParser2.fromSchema(schema2);
     if (options.slice) return parser6.parseSlice(elementFromString(content4), options.parseOptions).content;
     return parser6.parse(elementFromString(content4), options.parseOptions);
   }
@@ -70671,7 +72094,7 @@ function ft(e6, t4) {
       if (e6.content === "inline" || e6.content === "plain") {
         let i3 = n4.cloneNode(true);
         We(i3, e6.content === "plain" || t4.meta?.code ? "\n" : "<br>");
-        let a3 = DOMParser.fromSchema(r4).parse(i3, {
+        let a3 = DOMParser2.fromSchema(r4).parse(i3, {
           topNode: r4.nodes.paragraph.create(),
           preserveWhitespace: true
         });
@@ -71696,7 +73119,7 @@ var On = (e6) => {
   }
 };
 var kn = ({ el: e6, schema: t4 }, n3) => {
-  let r4 = DOMParser.fromSchema(t4), i3 = e6.firstElementChild;
+  let r4 = DOMParser2.fromSchema(t4), i3 = e6.firstElementChild;
   return r4.parse(i3, {
     preserveWhitespace: "full",
     topNode: t4.nodes[n3].create()
@@ -71876,7 +73299,7 @@ var Un = I(Vn, {
   }
 });
 function Wn(e6, t4, n3) {
-  let a3 = DOMParser.fromSchema(t4), o4 = e6.querySelector(":scope > summary"), s4;
+  let a3 = DOMParser2.fromSchema(t4), o4 = e6.querySelector(":scope > summary"), s4;
   if (o4) {
     let e7 = o4.cloneNode(true);
     We(e7), s4 = a3.parse(e7, {
@@ -72203,7 +73626,7 @@ var sr = (e6, t4) => {
   }), true) : a3.node.childCount > 0 && e6.transact((e7) => (e7.deleteSelection(), e7.scrollIntoView(), or(e7, e7.selection.from, true)));
 };
 function cr(e6, t4, n3) {
-  let a3 = DOMParser.fromSchema(t4), o4 = e6, s4 = document.createElement("div");
+  let a3 = DOMParser2.fromSchema(t4), o4 = e6, s4 = document.createElement("div");
   s4.setAttribute("data-node-type", "blockGroup");
   for (let e7 of Array.from(o4.childNodes)) s4.appendChild(e7.cloneNode(true));
   let c4 = a3.parse(s4, { topNode: t4.nodes.blockGroup.create() });
@@ -72874,7 +74297,7 @@ var Ir = Node3.create({
   }
 });
 function Lr(e6, t4) {
-  let n3 = DOMParser.fromSchema(t4).parse(e6, { topNode: t4.nodes.blockGroup.create() }), a3 = [];
+  let n3 = DOMParser2.fromSchema(t4).parse(e6, { topNode: t4.nodes.blockGroup.create() }), a3 = [];
   return n3.content.descendants((e7) => {
     if (e7.isInline) return a3.push(e7), false;
   }), Fragment.fromArray(a3);
@@ -74244,7 +75667,7 @@ function collectCodeBlocks(doc4, nodeTypes2) {
 function createParser(highlighter, options) {
   return function parser6({ content: content4, language: language2, pos, size: size4 }) {
     const decorations2 = [];
-    const { tokens, fg, bg, rootStyle } = highlighter.codeToTokens(content4, {
+    const { tokens: tokens2, fg, bg, rootStyle } = highlighter.codeToTokens(content4, {
       lang: language2,
       ...options ?? { theme: highlighter.getLoadedThemes()[0] }
     });
@@ -74254,7 +75677,7 @@ function createParser(highlighter, options) {
       decorations2.push(decoration);
     }
     let from2 = pos + 1;
-    for (const line of tokens) {
+    for (const line of tokens2) {
       for (const token of line) {
         const to = from2 + token.content.length;
         const decoration = Decoration2.inline(from2, to, {
@@ -75471,7 +76894,7 @@ var Gt2 = class {
     if (!t4 || this.pmView.dragging) return;
     let n3 = document.createElement("div");
     n3.innerHTML = t4;
-    let r4 = DOMParser.fromSchema(this.pmView.state.schema).parse(n3, { topNode: this.pmView.state.schema.nodes.blockGroup.create() });
+    let r4 = DOMParser2.fromSchema(this.pmView.state.schema).parse(n3, { topNode: this.pmView.state.schema.nodes.blockGroup.create() });
     this.pmView.dragging = {
       slice: new Slice(r4.content, 0, 0),
       move: true
@@ -77741,7 +79164,7 @@ function vn2(e6) {
 function K3(e6, t4) {
   let n3 = pn2(e6);
   gn2(n3);
-  let r4 = DOMParser.fromSchema(t4).parse(n3, { topNode: t4.nodes.blockGroup.create() }), i3 = [];
+  let r4 = DOMParser2.fromSchema(t4).parse(n3, { topNode: t4.nodes.blockGroup.create() }), i3 = [];
   for (let e7 = 0; e7 < r4.childCount; e7++) i3.push(N(r4.child(e7), r4));
   return vn2(i3), i3;
 }
@@ -91382,7 +92805,7 @@ function deepMerge(target, source) {
 
 // node_modules/@mantine/core/esm/core/utils/camel-to-kebab-case/camel-to-kebab-case.mjs
 function camelToKebabCase(value) {
-  return value.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
+  return value.replace(/[A-Z]/g, (letter2) => `-${letter2.toLowerCase()}`);
 }
 
 // node_modules/@mantine/core/esm/core/utils/units-converters/px.mjs
@@ -101274,23 +102697,4312 @@ var ht4 = {
   fontFamily: $6.fontFamily
 };
 
-// packages/report-review/src/report-image.jsx
+// packages/report-review/src/editor-ai/style.css
+var style_default = ".bn-combobox {\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n  width: 100%;\n}\n\n.bn-combobox-items {\n  max-width: 50%;\n}\n\n.bn-combobox-items:empty {\n  display: none;\n}\n";
+
+// packages/report-review/src/editor-ai/ai-shim.ts
+var Chat = void 0;
+function getErrorMessage(e6) {
+  if (e6 == null) return "";
+  if (typeof e6 === "string") return e6;
+  if (typeof e6.message === "string") return e6.message;
+  try {
+    return String(e6);
+  } catch {
+    return "unknown error";
+  }
+}
+function isToolUIPart(part) {
+  return typeof part?.type === "string" && part.type.startsWith("tool-");
+}
+function jsonSchema(schema2) {
+  return { type: "json", jsonSchema: schema2 };
+}
+function asSchema(schema2) {
+  if (schema2 && typeof schema2 === "object" && "jsonSchema" in schema2) return schema2;
+  return { jsonSchema: schema2 };
+}
+function parsePartialJson(input) {
+  if (input === void 0 || input === null || input === "") {
+    return { state: "undefined-input" };
+  }
+  const str = typeof input === "string" ? input : JSON.stringify(input);
+  try {
+    const value = JSON.parse(str);
+    return { state: "full-parse", value };
+  } catch {
+    try {
+      const repaired = str.replace(/,\s*([}\]])/g, "$1").replace(/,\s*$/, "");
+      const value = JSON.parse(repaired);
+      return { state: "repaired-parse", value };
+    } catch {
+      return { state: "failed-parse" };
+    }
+  }
+}
+
+// node_modules/@handlewithcare/prosemirror-suggest-changes/dist/utils.js
+function getSuggestionMarks(schema2) {
+  const { insertion: insertion2, deletion: deletion2, modification: modification2 } = schema2.marks;
+  if (!insertion2) {
+    throw new Error("Failed to find insertion mark in schema. Did you forget to add it?");
+  }
+  if (!deletion2) {
+    throw new Error("Failed to find deletion mark in schema. Did you forget to add it?");
+  }
+  if (!modification2) {
+    throw new Error("Failed to find modification mark in schema. Did you forget to add it?");
+  }
+  return {
+    insertion: insertion2,
+    deletion: deletion2,
+    modification: modification2
+  };
+}
+
+// node_modules/@handlewithcare/prosemirror-suggest-changes/dist/findSuggestionMarkEnd.js
+function findSuggestionMarkEnd($pos, markType) {
+  const initialDeletionMark = ($pos.nodeAfter ?? $pos.nodeBefore)?.marks.find((mark2) => mark2.type === markType);
+  if (!initialDeletionMark) {
+    return $pos.pos;
+  }
+  let afterPos = $pos.pos + ($pos.nodeAfter?.nodeSize ?? 0);
+  while (true) {
+    const $afterPos = $pos.doc.resolve(afterPos);
+    if ($afterPos.depth < 1 || $afterPos.nodeAfter && !markType.isInSet($afterPos.marks())) {
+      return $afterPos.pos;
+    }
+    let afterParentPos = $afterPos.after();
+    let $afterParentPos = $pos.doc.resolve(afterParentPos);
+    let nextParent = $afterParentPos.nodeAfter;
+    while ($afterParentPos.depth > 0 && !nextParent) {
+      afterParentPos = $afterPos.after($afterParentPos.depth);
+      $afterParentPos = $pos.doc.resolve(afterParentPos);
+      nextParent = $afterParentPos.nodeAfter;
+    }
+    let cousinStartPos = afterParentPos + 1;
+    let cousin = nextParent?.firstChild;
+    while (cousin && !cousin.isLeaf && !markType.isInSet(cousin.marks)) {
+      cousin = cousin.firstChild;
+      cousinStartPos++;
+    }
+    const deletionMark = cousin?.marks.find((mark2) => mark2.type === markType);
+    if (!cousin || !deletionMark || deletionMark.attrs["id"] !== initialDeletionMark.attrs["id"]) {
+      return $afterPos.pos;
+    }
+    const $cousinStartPos = $pos.doc.resolve(cousinStartPos);
+    afterPos = $cousinStartPos.pos + ($cousinStartPos.nodeAfter?.nodeSize ?? 0);
+  }
+}
+
+// node_modules/@handlewithcare/prosemirror-suggest-changes/dist/decorations.js
+function pilcrow() {
+  const span = document.createElement("span");
+  span.appendChild(document.createTextNode("\xB6"));
+  return span;
+}
+function getSuggestionDecorations(state) {
+  const { deletion: deletion2, insertion: insertion2 } = getSuggestionMarks(state.schema);
+  const changeDecorations = [];
+  let lastParentNode = null;
+  let lastTextNode = null;
+  let lastTextNodeEndPos = 0;
+  state.doc.descendants((node2, pos, parent) => {
+    if (node2.isTextblock && node2.childCount) {
+      if (node2.children.every((child) => deletion2.isInSet(child.marks))) {
+        changeDecorations.push(Decoration2.node(pos, pos + node2.nodeSize, {
+          "data-node-deletion": "true"
+        }));
+      }
+      if (node2.children.every((child) => insertion2.isInSet(child.marks))) {
+        changeDecorations.push(Decoration2.node(pos, pos + node2.nodeSize, {
+          "data-node-insertion": "true"
+        }));
+      }
+    }
+    if (node2.type.name !== "text") return true;
+    const currentDeletionMark = node2.marks.find((mark2) => mark2.type === deletion2);
+    const currentInsertionMark = node2.marks.find((mark2) => mark2.type === insertion2);
+    const lastDeletionMark = lastTextNode?.marks.find((mark2) => mark2.type === deletion2);
+    const lastInsertionMark = lastTextNode?.marks.find((mark2) => mark2.type === insertion2);
+    const widgetPos = lastTextNodeEndPos;
+    lastTextNode = node2;
+    lastTextNodeEndPos = pos + node2.nodeSize;
+    if (parent === lastParentNode) {
+      lastParentNode = parent;
+      return true;
+    }
+    lastParentNode = parent;
+    if ((!currentDeletionMark || !lastDeletionMark) && (!currentInsertionMark || !lastInsertionMark)) {
+      return true;
+    }
+    if (currentDeletionMark?.attrs["id"] !== lastDeletionMark?.attrs["id"] && currentInsertionMark?.attrs["id"] !== lastInsertionMark?.attrs["id"]) {
+      return true;
+    }
+    if (currentDeletionMark) {
+      changeDecorations.push(Decoration2.widget(widgetPos, pilcrow, {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        key: currentDeletionMark.attrs["id"],
+        marks: [
+          deletion2.create({
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            id: currentDeletionMark.attrs["id"]
+          })
+        ]
+      }));
+    }
+    if (currentInsertionMark) {
+      changeDecorations.push(Decoration2.widget(widgetPos, pilcrow, {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        key: currentInsertionMark.attrs["id"],
+        marks: [
+          insertion2.create({
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            id: currentInsertionMark.attrs["id"]
+          })
+        ]
+      }));
+    }
+    return true;
+  });
+  return DecorationSet.create(state.doc, changeDecorations);
+}
+
+// node_modules/@handlewithcare/prosemirror-suggest-changes/dist/plugin.js
+var suggestChangesKey = new PluginKey("@handlewithcare/prosemirror-suggest-changes");
+function suggestChanges() {
+  return new Plugin({
+    key: suggestChangesKey,
+    state: {
+      init() {
+        return {
+          enabled: false
+        };
+      },
+      apply(tr4, value) {
+        const meta2 = tr4.getMeta(suggestChangesKey);
+        if (meta2 && "enabled" in meta2) return meta2;
+        return value;
+      }
+    },
+    props: {
+      decorations: getSuggestionDecorations,
+      // Add a custom keydown handler that skips over any zero-width
+      // spaces that we've inserted so that users aren't aware of them
+      handleKeyDown(view, event) {
+        if (event.key === "ArrowRight" && view.state.selection instanceof TextSelection && view.state.selection.empty && view.state.selection.$cursor?.nodeAfter?.text?.startsWith("\u200B")) {
+          view.dispatch(view.state.tr.setSelection(TextSelection.create(view.state.doc, view.state.selection.$cursor.pos + 1)));
+        }
+        if (event.key === "ArrowLeft" && view.state.selection instanceof TextSelection && view.state.selection.empty && view.state.selection.$cursor?.nodeBefore?.text?.endsWith("\u200B")) {
+          view.dispatch(view.state.tr.setSelection(TextSelection.create(view.state.doc, view.state.selection.$cursor.pos - 1)));
+        }
+        return false;
+      }
+    }
+  });
+}
+
+// node_modules/@handlewithcare/prosemirror-suggest-changes/dist/commands.js
+function applySuggestionsToTransform(node2, tr4, markTypeToApply, markTypeToRevert, suggestionId, from2, to) {
+  const toApplyIsInSet = suggestionId === void 0 ? (marks2) => markTypeToApply.isInSet(marks2) : (marks2) => {
+    const mark2 = markTypeToApply.isInSet(marks2);
+    return mark2 && mark2.attrs["id"] === suggestionId ? mark2 : void 0;
+  };
+  const toRevertIsInSet = suggestionId === void 0 ? (marks2) => markTypeToRevert.isInSet(marks2) : (marks2) => {
+    const mark2 = markTypeToRevert.isInSet(marks2);
+    return mark2 && mark2.attrs["id"] === suggestionId ? mark2 : void 0;
+  };
+  const isToApply = toApplyIsInSet(node2.marks);
+  if (isToApply) {
+    if (node2.isInline) {
+      tr4.removeMark(0, node2.nodeSize, markTypeToApply);
+    } else {
+      tr4.removeNodeMark(0, markTypeToApply);
+    }
+  }
+  node2.descendants((child, pos) => {
+    if (from2 !== void 0 && pos < from2) {
+      return true;
+    }
+    if (to !== void 0 && pos > to) {
+      return false;
+    }
+    const isToRevert = toRevertIsInSet(child.marks);
+    const isToApply2 = toApplyIsInSet(child.marks);
+    if (!isToRevert && !isToApply2) {
+      return true;
+    }
+    if (isToRevert) {
+      const { pos: deletionFrom, deleted: deleted2 } = tr4.mapping.mapResult(pos);
+      if (deleted2) return false;
+      const deletionTo = findSuggestionMarkEnd(tr4.doc.resolve(deletionFrom + child.nodeSize), markTypeToRevert);
+      const prevChar = tr4.doc.textBetween(deletionFrom - 1, deletionFrom, "x", "x");
+      const nextChar = (
+        // textBetween is fine with negative positions (??),
+        // but it errors if passed a position greater than the
+        // size of the doc
+        deletionTo <= tr4.doc.content.size ? tr4.doc.textBetween(deletionTo, deletionTo + 1, "x", "x") : ""
+      );
+      const addedRange = prevChar === " " && nextChar === " " ? 1 : 0;
+      tr4.deleteRange(deletionFrom, deletionTo + addedRange);
+      return false;
+    }
+    const insertionFrom = tr4.mapping.map(pos);
+    const insertionTo = insertionFrom + child.nodeSize;
+    if (child.isInline) {
+      tr4.removeMark(insertionFrom, insertionTo, markTypeToApply);
+      if (child.text === "\u200B") {
+        tr4.delete(insertionFrom, insertionTo);
+      }
+    } else {
+      tr4.removeNodeMark(insertionFrom, markTypeToApply);
+    }
+    return true;
+  });
+}
+function revertModifications(node2, pos, tr4) {
+  const { modification: modification2 } = getSuggestionMarks(node2.type.schema);
+  const existingMods = node2.marks.filter((mark2) => mark2.type === modification2);
+  for (const mod of existingMods) {
+    if (mod.attrs["type"] === "attr" && typeof mod.attrs["attrName"] === "string") {
+      tr4.setNodeAttribute(pos, mod.attrs["attrName"], mod.attrs["previousValue"]);
+    } else if (mod.attrs["type"] === "mark") {
+      if (mod.attrs["previousValue"]) {
+        tr4.addNodeMark(0, node2.type.schema.markFromJSON(mod.attrs["previousValue"]));
+      } else {
+        tr4.removeNodeMark(pos, node2.type.schema.markFromJSON(mod.attrs["previousValue"]));
+      }
+    } else if (mod.attrs["type"] === "nodeType") {
+      tr4.setNodeMarkup(pos, node2.type.schema.nodes[mod.attrs["previousValue"]], null);
+    } else {
+      throw new Error("Unknown modification type");
+    }
+  }
+}
+function modificationIsInSet(modification2, id3, marks2) {
+  const mark2 = modification2.isInSet(marks2);
+  if (id3 === void 0) return mark2;
+  if (mark2?.attrs["id"] === id3) return mark2;
+  return void 0;
+}
+function applyModificationsToTransform(node2, tr4, dir, suggestionId, from2, to) {
+  const { modification: modification2 } = getSuggestionMarks(node2.type.schema);
+  const isModification = modificationIsInSet(modification2, suggestionId, node2.marks);
+  if (isModification) {
+    let prevLength;
+    do {
+      prevLength = tr4.steps.length;
+      tr4.removeNodeMark(0, modification2);
+    } while (tr4.steps.length > prevLength);
+    if (dir < 0) {
+      revertModifications(node2, 0, tr4);
+    }
+  }
+  node2.descendants((child, pos) => {
+    if (from2 !== void 0 && pos < from2) {
+      return true;
+    }
+    if (to !== void 0 && pos > to) {
+      return false;
+    }
+    const isModification2 = modificationIsInSet(modification2, suggestionId, child.marks);
+    if (!isModification2) {
+      return true;
+    }
+    let prevLength;
+    do {
+      prevLength = tr4.steps.length;
+      tr4.removeNodeMark(pos, modification2);
+    } while (tr4.steps.length > prevLength);
+    if (dir < 0) {
+      revertModifications(child, pos, tr4);
+    }
+    return true;
+  });
+}
+function applySuggestions(state, dispatch) {
+  const { deletion: deletion2, insertion: insertion2 } = getSuggestionMarks(state.schema);
+  const tr4 = state.tr;
+  applySuggestionsToTransform(state.doc, tr4, insertion2, deletion2);
+  applyModificationsToTransform(tr4.doc, tr4, 1);
+  tr4.setMeta(suggestChangesKey, {
+    skip: true
+  });
+  dispatch?.(tr4);
+  return true;
+}
+function revertSuggestions(state, dispatch) {
+  const { deletion: deletion2, insertion: insertion2 } = getSuggestionMarks(state.schema);
+  const tr4 = state.tr;
+  applySuggestionsToTransform(state.doc, tr4, deletion2, insertion2);
+  applyModificationsToTransform(tr4.doc, tr4, -1);
+  tr4.setMeta(suggestChangesKey, {
+    skip: true
+  });
+  dispatch?.(tr4);
+  return true;
+}
+
+// packages/report-review/src/editor-ai/util/emptyBlock.ts
+function isEmptyParagraph(block) {
+  return (block.type === "paragraph" || !block.type) && !block.content || Array.isArray(block.content) && block.content.length === 0;
+}
+
+// packages/report-review/src/editor-ai/util/trimArray.ts
+function trimArray(arr, matchFn, trimStart = true, trimEnd = true) {
+  let start2 = 0;
+  let end = arr.length;
+  if (trimStart) {
+    while (start2 < end && matchFn(arr[start2])) {
+      start2++;
+    }
+  }
+  if (trimEnd) {
+    while (end > start2 && matchFn(arr[end - 1])) {
+      end--;
+    }
+  }
+  return arr.slice(start2, end);
+}
+
+// packages/report-review/src/editor-ai/api/promptHelpers/trimEmptyBlocks.ts
+function trimEmptyBlocks(source, opts) {
+  const trimmedSource = trimArray(
+    source,
+    (block) => {
+      return isEmptyParagraph(block) && opts?.cursorBlockId !== block.id;
+    },
+    opts?.trimStart ?? false,
+    opts?.trimEnd ?? true
+  );
+  return trimmedSource;
+}
+
+// packages/report-review/src/editor-ai/api/aiRequest/builder.ts
+async function buildAIRequest(opts) {
+  const {
+    useSelection,
+    deleteEmptyCursorBlock,
+    streamToolsProvider,
+    documentStateBuilder,
+    onStart
+  } = {
+    useSelection: opts.useSelection ?? false,
+    deleteEmptyCursorBlock: opts.deleteEmptyCursorBlock ?? true,
+    streamToolsProvider: opts.streamToolsProvider ?? aiDocumentFormats.html.getStreamToolsProvider(),
+    documentStateBuilder: opts.documentStateBuilder ?? aiDocumentFormats.html.defaultDocumentStateBuilder,
+    onStart: opts.onStart ?? (() => {
+    })
+  };
+  const cursorBlock = useSelection ? void 0 : opts.editor.getTextCursorPosition().block;
+  const emptyCursorBlockToDelete = cursorBlock && deleteEmptyCursorBlock && isEmptyParagraph(cursorBlock) && trimEmptyBlocks(opts.editor.document).length > 0 ? cursorBlock.id : void 0;
+  const selectionInfo = useSelection ? opts.editor.getSelectionCutBlocks(true) : void 0;
+  const streamTools = streamToolsProvider.getStreamTools(
+    opts.editor,
+    selectionInfo ? {
+      from: selectionInfo._meta.startPos,
+      to: selectionInfo._meta.endPos
+    } : void 0,
+    opts.onBlockUpdated
+  );
+  const ret = {
+    editor: opts.editor,
+    selectedBlocks: selectionInfo?.blocks,
+    streamTools,
+    emptyCursorBlockToDelete,
+    onStart
+  };
+  return {
+    ...ret,
+    documentState: await documentStateBuilder(ret)
+  };
+}
+
+// packages/report-review/src/editor-ai/api/aiRequest/sendMessageWithAIRequest.ts
+var import_lodash2 = __toESM(require_lodash(), 1);
+
+// packages/report-review/src/editor-ai/streamTool/jsonSchema.ts
+var import_lodash = __toESM(require_lodash2(), 1);
+function streamToolToJSONSchema(tool2) {
+  const { properties: properties2, required, $defs, ...rest } = tool2.inputSchema;
+  return {
+    schema: {
+      type: "object",
+      description: tool2.description,
+      properties: {
+        type: {
+          type: "string",
+          enum: [tool2.name]
+        },
+        ...properties2
+      },
+      required: ["type", ...required ?? []],
+      additionalProperties: false,
+      ...rest
+    },
+    $defs
+  };
+}
+function createStreamToolsArraySchema(streamTools) {
+  const schemas = streamTools.map((tool2) => streamToolToJSONSchema(tool2));
+  const $defs = {};
+  for (const schema2 of schemas) {
+    for (const key in schema2.$defs) {
+      if ($defs[key] && !(0, import_lodash.default)($defs[key], schema2.$defs[key])) {
+        throw new Error(`Duplicate, but different definition for ${key}`);
+      }
+      $defs[key] = schema2.$defs[key];
+    }
+  }
+  return {
+    type: "object",
+    properties: {
+      operations: {
+        //description:
+        // "Operations to apply to the document. Put all operations in this array in ONE tool call / function call. DO NOT use multiple operation arrays with parallel tool calls.",
+        type: "array",
+        items: {
+          anyOf: schemas.map((schema2) => schema2.schema)
+        }
+      }
+    },
+    additionalProperties: false,
+    required: ["operations"],
+    $defs: Object.keys($defs).length > 0 ? $defs : void 0
+  };
+}
+function streamToolsToToolSet(streamTools) {
+  return {
+    applyDocumentOperations: {
+      inputSchema: jsonSchema(createStreamToolsArraySchema(streamTools)),
+      outputSchema: jsonSchema({ type: "object" })
+    }
+  };
+}
+
+// packages/report-review/src/editor-ai/streamTool/ChunkExecutionError.ts
+var ChunkExecutionError = class extends Error {
+  constructor(message, chunk, options) {
+    super(message, options);
+    this.chunk = chunk;
+    this.name = "ChunkExecutionError";
+    this.aborted = options?.aborted ?? false;
+  }
+  aborted;
+};
+
+// packages/report-review/src/editor-ai/streamTool/StreamToolExecutor.ts
+var StreamToolExecutor = class {
+  /**
+   * @param streamTools - The StreamTools to use to apply the StreamToolCalls
+   * @param abortSignal - Optional AbortSignal to cancel ongoing operations
+   */
+  constructor(streamTools, abortSignal) {
+    this.streamTools = streamTools;
+    this.abortSignal = abortSignal;
+    this.stream = this.createStream();
+  }
+  stream;
+  createStream() {
+    let lastParsedResult;
+    const stream2 = new TransformStream({
+      transform: async (chunk, controller) => {
+        const operation = typeof chunk === "string" ? await partialJsonToOperation(
+          chunk,
+          lastParsedResult?.isPossiblyPartial ?? false,
+          this.streamTools
+        ) : chunk;
+        if (operation) {
+          lastParsedResult = operation;
+          controller.enqueue(operation);
+        }
+      },
+      flush: (controller) => {
+        if (lastParsedResult?.isPossiblyPartial) {
+          controller.error(new Error("stream ended with a partial operation"));
+        }
+      }
+    });
+    const secondTransform = stream2.readable.pipeThrough(this.createExecutor());
+    const [internalReadable, externalReadable] = secondTransform.tee();
+    const finishPromise = internalReadable.pipeTo(new WritableStream());
+    return {
+      writable: stream2.writable,
+      // expose externalReadable to the consumer
+      readable: externalReadable,
+      finishPromise
+    };
+  }
+  createExecutor() {
+    const executors = this.streamTools.map((tool2) => tool2.executor());
+    return new TransformStream({
+      transform: async (chunk, controller) => {
+        let handled = false;
+        for (const executor of executors) {
+          try {
+            const result = await executor.execute(chunk, this.abortSignal);
+            if (result) {
+              controller.enqueue({ status: "ok", chunk });
+              handled = true;
+              break;
+            }
+          } catch (error3) {
+            controller.error(
+              new ChunkExecutionError(
+                `Tool execution failed: ${getErrorMessage(error3)}`,
+                chunk,
+                {
+                  cause: error3,
+                  aborted: this.abortSignal?.aborted ?? false
+                }
+              )
+            );
+            return;
+          }
+        }
+        if (!handled) {
+          const operationType = chunk.operation?.type || "unknown";
+          controller.error(
+            new Error(
+              `No tool could handle operation of type: ${operationType}`
+            )
+          );
+          return;
+        }
+      }
+    });
+  }
+  /**
+   * Returns a WritableStream that can be used to write StreamToolCalls to the executor.
+   *
+   * The WriteableStream accepts JSON strings or Operation objects.
+   *
+   * Make sure to call `close` on the StreamToolExecutor instead of on the writable returned here!
+   */
+  get writable() {
+    return this.stream.writable;
+  }
+  /**
+   * Returns a ReadableStream that can be used to read the results of the executor.
+   */
+  get readable() {
+    return this.stream.readable;
+  }
+  async finish() {
+    await this.stream.finishPromise;
+  }
+  async executeOperationsArray(source) {
+    const writer = this.writable.getWriter();
+    for await (const chunk of source) {
+      const parsed = await parsePartialJson(chunk);
+      if (parsed.state === "undefined-input" || parsed.state === "failed-parse") {
+        return void 0;
+      }
+      if (!parsed) {
+        return;
+      }
+      await writer.write(chunk);
+    }
+    await writer.close();
+    await this.finish();
+  }
+  /**
+   * Accepts an async iterable and writes each chunk to the internal stream.
+   *
+   * (alternative to writing to the writable stream using {@link writable})
+   */
+  async execute(source) {
+    const writer = this.writable.getWriter();
+    for await (const chunk of source) {
+      await writer.write(chunk);
+    }
+    await writer.close();
+    await this.finish();
+  }
+  /**
+   * Accepts a single chunk and processes it using the same logic.
+   *
+   * (alternative to writing to the writable stream using {@link writable})
+   */
+  async executeOne(chunk) {
+    await this.execute(
+      (async function* () {
+        yield {
+          operation: chunk,
+          isUpdateToPreviousOperation: false,
+          isPossiblyPartial: false,
+          metadata: {}
+        };
+      })()
+    );
+  }
+};
+async function partialJsonToOperation(chunk, isUpdateToPreviousOperation, streamTools) {
+  const parsed = await parsePartialJson(chunk);
+  if (parsed.state === "undefined-input" || parsed.state === "failed-parse") {
+    return void 0;
+  }
+  if (!parsed) {
+    return;
+  }
+  const func = streamTools.find((f2) => f2.name === parsed.value?.type);
+  const validated = func && func.validate(parsed.value);
+  if (validated?.ok) {
+    return {
+      operation: validated.value,
+      isPossiblyPartial: parsed.state === "repaired-parse",
+      isUpdateToPreviousOperation,
+      metadata: void 0
+    };
+  } else {
+    return;
+  }
+}
+
+// packages/report-review/src/editor-ai/streamTool/streaming/util/appendableStream.ts
+function createAppendableStream() {
+  let controller;
+  let ready = Promise.resolve();
+  let canceled = false;
+  let onCancel;
+  const cancelPromise = new Promise((_, reject) => {
+    onCancel = reject;
+  });
+  cancelPromise.catch(() => {
+  });
+  const output = new ReadableStream({
+    start(c4) {
+      controller = c4;
+    },
+    cancel(reason) {
+      canceled = true;
+      controller.error(reason);
+      onCancel?.(reason);
+    }
+  });
+  async function append2(readable) {
+    if (canceled) {
+      throw new Error("Appendable stream canceled, can't append");
+    }
+    const reader = readable.getReader();
+    ready = ready.then(async () => {
+      while (true) {
+        try {
+          const { done, value } = await Promise.race([
+            reader.read(),
+            cancelPromise
+          ]);
+          if (done || canceled) {
+            break;
+          }
+          controller.enqueue(value);
+        } catch (e6) {
+          canceled = true;
+          controller.error(e6);
+          break;
+        }
+      }
+    });
+    return ready;
+  }
+  async function finalize() {
+    await ready;
+    if (!canceled) {
+      controller.close();
+    }
+  }
+  return { output, append: append2, finalize };
+}
+
+// packages/report-review/src/editor-ai/util/stream.ts
+function asyncIterableToStream(iterable) {
+  return new ReadableStream({
+    async start(controller) {
+      try {
+        for await (const result of iterable) {
+          controller.enqueue(result);
+        }
+        controller.close();
+      } catch (error3) {
+        controller.error(error3);
+      }
+    }
+  });
+}
+function createAsyncIterableStream(source) {
+  if (source.locked) {
+    throw new Error(
+      "Stream (source) is already locked and cannot be iterated."
+    );
+  }
+  const stream2 = source.pipeThrough(new TransformStream());
+  stream2[Symbol.asyncIterator] = () => {
+    if (stream2.locked) {
+      throw new Error("Stream is already locked and cannot be iterated again.");
+    }
+    const reader = stream2.getReader();
+    return {
+      async next() {
+        const { done, value } = await reader.read();
+        return done ? { done: true, value: void 0 } : { done: false, value };
+      }
+    };
+  };
+  return stream2;
+}
+function createAsyncIterableStreamFromAsyncIterable(source) {
+  return createAsyncIterableStream(asyncIterableToStream(source));
+}
+
+// packages/report-review/src/editor-ai/streamTool/filterNewOrUpdatedOperations.ts
+async function* filterNewOrUpdatedOperations(partialObjectStream, metadata) {
+  let numOperationsAppliedCompletely = 0;
+  let first2 = true;
+  let lastOp;
+  for await (const chunk of partialObjectStream) {
+    if (!chunk.operations?.length) {
+      continue;
+    }
+    for (let i3 = numOperationsAppliedCompletely; i3 < chunk.operations.length; i3++) {
+      const operation = chunk.operations[i3];
+      lastOp = operation;
+      yield {
+        partialOperation: operation,
+        isUpdateToPreviousOperation: i3 === numOperationsAppliedCompletely && !first2,
+        isPossiblyPartial: i3 === chunk.operations.length - 1,
+        metadata
+      };
+      first2 = false;
+    }
+    numOperationsAppliedCompletely = chunk.operations.length - 1;
+  }
+  if (!lastOp) {
+    throw new Error("No operations seen");
+  }
+  yield {
+    partialOperation: lastOp,
+    isUpdateToPreviousOperation: true,
+    isPossiblyPartial: false,
+    metadata
+  };
+}
+
+// packages/report-review/src/editor-ai/streamTool/filterValidOperations.ts
+async function* filterValidOperations(operationsStream, onInvalidOperation) {
+  let forceNewOperation = false;
+  for await (const chunk of operationsStream) {
+    const operation = chunk.operation;
+    if (operation.ok) {
+      yield {
+        operation: operation.value,
+        isUpdateToPreviousOperation: forceNewOperation ? false : chunk.isUpdateToPreviousOperation,
+        isPossiblyPartial: chunk.isPossiblyPartial,
+        metadata: chunk.metadata
+      };
+      forceNewOperation = false;
+    } else {
+      forceNewOperation = forceNewOperation || !chunk.isUpdateToPreviousOperation;
+      onInvalidOperation?.({
+        ...chunk,
+        operation
+      });
+    }
+  }
+}
+
+// packages/report-review/src/editor-ai/streamTool/toValidatedOperations.ts
+async function* toValidatedOperations(partialObjectStream, streamTools) {
+  for await (const chunk of partialObjectStream) {
+    if (!chunk.partialOperation.type) {
+      yield {
+        operation: {
+          ok: false,
+          error: "The `type` property of an operation is required."
+        },
+        isUpdateToPreviousOperation: chunk.isUpdateToPreviousOperation,
+        isPossiblyPartial: chunk.isPossiblyPartial,
+        metadata: chunk.metadata
+      };
+      continue;
+    }
+    const func = streamTools.find(
+      (f2) => f2.name === chunk.partialOperation.type
+    );
+    if (!func) {
+      yield {
+        operation: {
+          ok: false,
+          error: `No matching function for ${chunk.partialOperation.type}`
+        },
+        isUpdateToPreviousOperation: chunk.isUpdateToPreviousOperation,
+        isPossiblyPartial: chunk.isPossiblyPartial,
+        metadata: chunk.metadata
+      };
+      continue;
+    }
+    const operation = func.validate(chunk.partialOperation);
+    yield {
+      operation,
+      isUpdateToPreviousOperation: chunk.isUpdateToPreviousOperation,
+      isPossiblyPartial: chunk.isPossiblyPartial,
+      metadata: chunk.metadata
+    };
+  }
+}
+
+// packages/report-review/src/editor-ai/streamTool/preprocess.ts
+async function* preprocessOperationsStreaming(operationsStream, streamTools) {
+  const validatedOperationsStream = toValidatedOperations(
+    operationsStream,
+    streamTools
+  );
+  const validOperationsStream = filterValidOperations(
+    validatedOperationsStream,
+    (chunk) => {
+      if (!chunk.isPossiblyPartial) {
+        throw new ChunkExecutionError(
+          `Invalid operation. ${getErrorMessage(chunk.operation.error)}`,
+          chunk,
+          {
+            cause: chunk.operation.error
+          }
+        );
+      }
+    }
+  );
+  yield* validOperationsStream;
+}
+
+// packages/report-review/src/editor-ai/streamTool/streaming/util/UIMessageStreamToOperationsResult.ts
+function objectStreamToOperationsResult(stream2, streamTools, chunkMetadata) {
+  return createAsyncIterableStreamFromAsyncIterable(
+    preprocessOperationsStreaming(
+      filterNewOrUpdatedOperations(
+        createAsyncIterableStream(stream2),
+        chunkMetadata
+      ),
+      streamTools
+    )
+  );
+}
+
+// packages/report-review/src/editor-ai/streamTool/streaming/util/chatHandlers.ts
+async function setupToolCallStreaming(streamTools, chat, onStart, abortSignal) {
+  const executor = new StreamToolExecutor(streamTools, abortSignal);
+  const appendableStream = createAppendableStream();
+  const pipeToPromise = appendableStream.output.pipeTo(executor.writable);
+  const toolCallStreams = /* @__PURE__ */ new Map();
+  let first2 = true;
+  const unsub = chat["~registerMessagesCallback"](() => {
+    processToolCallParts(chat, (data2) => {
+      if (!toolCallStreams.has(data2.toolCallId)) {
+        const toolCallStreamData = createToolCallStream(
+          streamTools,
+          data2.toolName,
+          data2.toolCallId
+        );
+        void appendableStream.append(toolCallStreamData.operationsStream);
+        toolCallStreams.set(data2.toolCallId, toolCallStreamData);
+        if (first2) {
+          first2 = false;
+          onStart?.();
+        }
+      }
+      return toolCallStreams.get(data2.toolCallId);
+    });
+  });
+  const statusHandler = new Promise((resolve) => {
+    const unsub2 = chat["~registerStatusCallback"](() => {
+      if (chat.status === "ready" || chat.status === "error") {
+        unsub();
+        unsub2();
+        if (chat.status !== "error") {
+          unsub3();
+        }
+        resolve();
+      }
+    });
+    const unsub3 = chat["~registerErrorCallback"](() => {
+      if (chat.error) {
+        unsub3();
+        for (const data2 of toolCallStreams.values()) {
+          if (!data2.complete) {
+            void data2.writer.abort(chat.error);
+          }
+        }
+      }
+    });
+  });
+  await statusHandler;
+  await appendableStream.finalize();
+  const results = await Promise.allSettled([executor.finish(), pipeToPromise]);
+  const result = results[0];
+  if (results[1].status === "rejected" && (results[0].status !== "rejected" || results[0].reason !== results[1].reason)) {
+    throw new Error(
+      "unexpected, pipeToPromise rejected but executor.finish() doesn't have same error!?"
+    );
+  }
+  let error3;
+  if (result.status === "rejected") {
+    if (result.reason instanceof ChunkExecutionError) {
+      error3 = result.reason;
+    } else {
+      if (!chat.error) {
+        throw new Error(
+          "Unexpected: no ChunkExecutionError but also no chat.error (network error?)"
+        );
+      }
+    }
+  }
+  let errorSeen = false;
+  const toolCalls = Array.from(
+    toolCallStreams.values().filter((data2) => data2.complete)
+  );
+  toolCalls.forEach((toolCall, index4) => {
+    const isErrorTool = toolCall.toolCallId === error3?.chunk.metadata.toolCallId;
+    if (isErrorTool) {
+      errorSeen = true;
+    }
+    if (!errorSeen) {
+      void chat.addToolOutput({
+        state: "output-available",
+        tool: toolCalls[index4].toolName,
+        toolCallId: toolCalls[index4].toolCallId,
+        output: { status: "ok" }
+      });
+    } else {
+      void chat.addToolOutput({
+        tool: toolCalls[index4].toolName,
+        toolCallId: toolCalls[index4].toolCallId,
+        state: "output-error",
+        errorText: JSON.stringify(
+          isErrorTool ? { status: "error", error: getErrorMessage(error3) } : { status: "not-executed-previous-tool-errored" }
+        )
+      });
+    }
+  });
+  return error3 ? {
+    ok: false,
+    error: error3
+  } : { ok: true, value: void 0 };
+}
+function processToolCallParts(chat, getToolCallStreamData) {
+  for (const part of chat.lastMessage?.parts ?? []) {
+    if (!isToolUIPart(part)) {
+      continue;
+    }
+    const toolName = part.type.replace("tool-", "");
+    if (toolName !== "applyDocumentOperations") {
+      continue;
+    }
+    const toolCallId = part.toolCallId;
+    const toolCallData = getToolCallStreamData({
+      toolName: part.type.replace("tool-", ""),
+      toolCallId
+    });
+    processToolCallPart(part, toolCallData);
+  }
+}
+function createToolCallStream(streamTools, toolName, toolCallId) {
+  const stream2 = new TransformStream();
+  const operationsStream = objectStreamToOperationsResult(
+    stream2.readable,
+    streamTools,
+    { toolCallId }
+  );
+  const writer = stream2.writable.getWriter();
+  return {
+    // stream,
+    writer,
+    complete: false,
+    // executor,
+    operationsStream,
+    toolName,
+    toolCallId
+  };
+}
+function processToolCallPart(part, toolCallData) {
+  if (part.state === "input-streaming") {
+    const input = part.input;
+    if (input !== void 0) {
+      void toolCallData.writer.write(input);
+    }
+  } else if (part.state === "input-available") {
+    const input = part.input;
+    if (input === void 0) {
+      throw new Error("input is undefined");
+    }
+    if (!toolCallData.complete) {
+      toolCallData.complete = true;
+      void toolCallData.writer.write(input);
+      void toolCallData.writer.close();
+    }
+  }
+}
+
+// packages/report-review/src/editor-ai/streamTool/streaming/util/toolDefinitions.ts
+async function toolSetToToolDefinitions(toolSet) {
+  const entries = await Promise.all(
+    Object.entries(toolSet).map(async ([name3, tool2]) => [
+      name3,
+      {
+        description: tool2.description,
+        inputSchema: await asSchema(tool2.inputSchema).jsonSchema,
+        outputSchema: await asSchema(tool2.outputSchema).jsonSchema
+      }
+    ])
+  );
+  return Object.fromEntries(entries);
+}
+
+// packages/report-review/src/editor-ai/api/aiRequest/sendMessageWithAIRequest.ts
+async function sendMessageWithAIRequest(chat, aiRequest, message, options, abortSignal) {
+  const sendingMessage = message ?? chat.lastMessage;
+  if (!sendingMessage) {
+    throw new Error("No message to send");
+  }
+  sendingMessage.metadata = (0, import_lodash2.default)(sendingMessage.metadata, {
+    documentState: aiRequest.documentState
+  });
+  const toolCallProcessing = setupToolCallStreaming(
+    aiRequest.streamTools,
+    chat,
+    aiRequest.onStart,
+    abortSignal
+  );
+  options = (0, import_lodash2.default)(options, {
+    metadata: {
+      source: "blocknote-ai"
+    },
+    body: {
+      toolDefinitions: await toolSetToToolDefinitions(
+        streamToolsToToolSet(aiRequest.streamTools)
+      )
+    }
+  });
+  await chat.sendMessage(message, options);
+  const result = await toolCallProcessing;
+  return result;
+}
+
+// packages/report-review/src/editor-ai/api/promptHelpers/addCursorPosition.ts
+function addCursorPosition(editor, source) {
+  const cursorPosition = editor.getTextCursorPosition();
+  const ret = [];
+  for (const block of source) {
+    const isBlockWithCursor = block.id === cursorPosition.block.id;
+    ret.push({
+      id: block.id,
+      block: block.block
+    });
+    if (isBlockWithCursor) {
+      ret.push({
+        cursor: true
+      });
+    }
+  }
+  return ret;
+}
+
+// packages/report-review/src/editor-ai/api/promptHelpers/convertBlocks.ts
+async function convertBlocks(source, mapFn) {
+  return await Promise.all(
+    source.map(async (block) => {
+      return {
+        id: block.id,
+        block: await mapFn(block)
+      };
+    })
+  );
+}
+
+// packages/report-review/src/editor-ai/api/promptHelpers/flattenBlocks.ts
+function flattenBlocks(source) {
+  return source.flatMap((block) => [
+    {
+      ...block,
+      children: []
+    },
+    ...flattenBlocks(block.children)
+  ]);
+}
+
+// packages/report-review/src/editor-ai/api/promptHelpers/suffixIds.ts
+function suffixIDs(source) {
+  return source.map((el) => {
+    if (typeof el === "object" && el && "id" in el) {
+      return {
+        ...el,
+        id: `${String(el.id)}$`
+      };
+    }
+    return el;
+  });
+}
+
+// packages/report-review/src/editor-ai/api/formats/DocumentStateBuilder.ts
+function makeDocumentStateBuilder(convertBlockFn) {
+  return async (aiRequest) => {
+    if (aiRequest.selectedBlocks) {
+      return await getDocumentStateWithSelection(
+        aiRequest.editor,
+        convertBlockFn,
+        {
+          selectedBlocks: aiRequest.selectedBlocks
+        }
+      );
+    } else {
+      return await getDocumentStateNoSelection(
+        aiRequest.editor,
+        convertBlockFn,
+        {
+          excludeBlockIds: aiRequest.emptyCursorBlockToDelete ? [aiRequest.emptyCursorBlockToDelete] : void 0
+        }
+      );
+    }
+  };
+}
+async function getDocumentStateNoSelection(editor, convertBlockFn, opts) {
+  const isEmptyDocument = trimEmptyBlocks(editor.document).length === 0;
+  const cursorBlockId = editor.getTextCursorPosition().block.id;
+  const input = trimEmptyBlocks(editor.document, {
+    cursorBlockId
+  });
+  const blockArray = await convertBlocks(
+    flattenBlocks(input),
+    async (block) => {
+      return convertBlockFn(editor, block);
+    }
+  );
+  const withCursor = addCursorPosition(editor, blockArray);
+  const filtered = withCursor.filter(
+    (b4) => "cursor" in b4 || !(opts.excludeBlockIds || []).includes(b4.id)
+  );
+  const suffixed = suffixIDs(filtered);
+  return {
+    selection: false,
+    blocks: suffixed,
+    isEmptyDocument
+  };
+}
+async function getDocumentStateWithSelection(editor, convertBlockFn, opts) {
+  const isEmptyDocument = trimEmptyBlocks(editor.document).length === 0;
+  const blockArray = await convertBlocks(
+    flattenBlocks(opts.selectedBlocks),
+    async (block) => {
+      return convertBlockFn(editor, block);
+    }
+  );
+  const suffixed = suffixIDs(blockArray);
+  return {
+    isEmptyDocument,
+    selection: true,
+    selectedBlocks: suffixed,
+    blocks: (await convertBlocks(flattenBlocks(editor.document), async (block) => {
+      return convertBlockFn(editor, block);
+    })).map(({ block }) => ({ block }))
+    // strip ids so LLM can't accidentally issue updates to ids not in selection
+  };
+}
+
+// packages/report-review/src/editor-ai/prosemirror/fragmentUtil.ts
+function getFirstChar(fragment) {
+  let index4 = void 0;
+  let found2 = false;
+  fragment.descendants((n3, pos) => {
+    if (found2) {
+      return false;
+    }
+    if (n3.isText) {
+      found2 = true;
+      index4 = pos;
+    }
+    return true;
+  });
+  return index4;
+}
+
+// packages/report-review/src/editor-ai/prosemirror/agent.ts
+function getStepsAsAgent(inputTr) {
+  const pmSchema = j(inputTr);
+  const modification2 = pmSchema.marks["modification"];
+  const agentSteps = [];
+  const tr4 = new Transform(inputTr.before);
+  for (let i3 = 0; i3 < inputTr.steps.length; i3++) {
+    const step = inputTr.steps[i3];
+    const invertMap = new Mapping(inputTr.mapping.maps.slice(0, i3)).invert();
+    if (step.structure) {
+      if (step instanceof ReplaceStep) {
+        if (step.to !== step.from + 1 || step.slice.openStart !== 0 || step.slice.openEnd !== 1 || step.slice.content.size !== 2) {
+          throw new Error(
+            "Structure change is not in expected format (ReplaceStep)"
+          );
+        }
+      } else if (step instanceof ReplaceAroundStep) {
+        if (step.insert !== 1 || step.slice.size !== 2 || step.gapTo !== step.to - 1 || step.gapFrom !== step.from + 1) {
+          throw new Error(
+            "Structure change is not in expected format (ReplaceAroundStep)"
+          );
+        }
+      } else {
+        throw new Error("Step is not a ReplaceStep or ReplaceAroundStep");
+      }
+      const from3 = invertMap.map(step.from);
+      const newNode = step.slice.content.firstChild;
+      const oldNode = tr4.doc.resolve(tr4.mapping.map(from3)).nodeAfter;
+      let marks2 = newNode.marks || [];
+      if (newNode.type !== oldNode.type) {
+        marks2 = modification2.create({
+          type: "nodeType",
+          previousValue: oldNode.type.name,
+          newValue: newNode.type.name
+        }).addToSet(marks2);
+      }
+      const attrNames = /* @__PURE__ */ new Set([
+        ...Object.keys(newNode.attrs),
+        ...Object.keys(oldNode.attrs)
+      ]);
+      for (const attr2 of attrNames) {
+        if (newNode.attrs[attr2] !== oldNode.attrs[attr2]) {
+          marks2 = modification2.create({
+            type: "attr",
+            attrName: attr2,
+            previousValue: oldNode.attrs[attr2],
+            newValue: newNode.attrs[attr2]
+          }).addToSet(marks2);
+        }
+      }
+      const stepIndex = tr4.steps.length;
+      tr4.setNodeMarkup(
+        tr4.mapping.map(from3),
+        newNode.type,
+        newNode.attrs,
+        marks2
+      );
+      agentSteps.push({
+        prosemirrorSteps: tr4.steps.slice(stepIndex),
+        selection: void 0,
+        type: "replace"
+      });
+      continue;
+    }
+    if (!(step instanceof ReplaceStep)) {
+      throw new Error("Step is not a ReplaceStep");
+    }
+    const from2 = invertMap.map(step.from);
+    const to = invertMap.map(step.to);
+    if (step.slice.openStart > 0 || step.slice.openEnd > 0) {
+      throw new Error(
+        "Slice has openStart or openEnd > 0, but structure=false"
+      );
+    }
+    agentSteps.push({
+      prosemirrorSteps: [],
+      selection: {
+        anchor: tr4.mapping.map(from2),
+        head: tr4.mapping.map(to)
+      },
+      type: "select"
+    });
+    const sliceTextContent = step.slice.content.textBetween(0, step.slice.size);
+    const alreadyHasSameText = sliceTextContent === tr4.doc.textBetween(tr4.mapping.map(from2), tr4.mapping.map(to));
+    let sliceTo;
+    if (alreadyHasSameText) {
+      sliceTo = step.slice.content.size;
+    } else if (sliceTextContent.length === 0) {
+      sliceTo = step.slice.content.size;
+    } else {
+      const firstCharIndex = getFirstChar(step.slice.content);
+      if (firstCharIndex === void 0) {
+        throw new Error("unexpected: no first character found");
+      }
+      sliceTo = firstCharIndex + 1;
+    }
+    let replaceEnd = tr4.mapping.map(to);
+    const replaceFrom = tr4.mapping.map(to);
+    let first2 = true;
+    for (let i4 = sliceTo; i4 <= step.slice.content.size; i4++) {
+      const isReplacing = first2 && from2 !== to;
+      const stepIndex = tr4.steps.length;
+      if (isReplacing) {
+        const $pos = tr4.doc.resolve(tr4.mapping.map(from2));
+        if ($pos.nodeAfter?.isBlock) {
+          tr4.addNodeMark($pos.pos, pmSchema.mark("deletion", {}));
+        }
+        tr4.addMark($pos.pos, replaceEnd, pmSchema.mark("deletion", {}));
+        replaceEnd = tr4.mapping.map(to);
+      }
+      const replacement = new Slice(step.slice.content.cut(0, i4), 0, 0);
+      tr4.replace(replaceFrom, replaceEnd, replacement).addMark(
+        replaceFrom,
+        replaceFrom + replacement.content.size,
+        pmSchema.mark("insertion", {})
+      );
+      tr4.doc.nodesBetween(
+        replaceFrom,
+        replaceFrom + replacement.content.size,
+        (node2, pos) => {
+          if (pos < replaceFrom || pos > replaceFrom + replacement.content.size) {
+            return true;
+          }
+          if (node2.isBlock) {
+            tr4.addNodeMark(pos, pmSchema.mark("insertion", {}));
+          }
+          return false;
+        }
+      );
+      replaceEnd = tr4.mapping.slice(stepIndex).map(replaceEnd);
+      const sel = TextSelection.near(
+        tr4.doc.resolve(replaceFrom + replacement.content.size),
+        -1
+      );
+      agentSteps.push({
+        prosemirrorSteps: tr4.steps.slice(stepIndex),
+        selection: {
+          anchor: sel.from,
+          head: sel.from
+        },
+        type: isReplacing ? "replace" : "insert"
+        // 3. Insert the replacement character by character
+      });
+      first2 = false;
+    }
+  }
+  return agentSteps;
+}
+async function delayAgentStep(step) {
+  const jitter = Math.random() * 0.3 + 0.85;
+  if (step.type === "select") {
+    await new Promise((resolve) => setTimeout(resolve, 100 * jitter));
+  } else if (step.type === "insert") {
+    await new Promise((resolve) => setTimeout(resolve, 10 * jitter));
+  } else if (step.type === "replace") {
+    await new Promise((resolve) => setTimeout(resolve, 200 * jitter));
+  } else {
+    throw new O(step.type);
+  }
+}
+function applyAgentStep(tr4, step) {
+  tr4.setMeta("addToHistory", false);
+  if (step.selection) {
+    tr4.setMeta("aiAgent", {
+      selection: {
+        anchor: step.selection.anchor,
+        head: step.selection.head
+      }
+    });
+  }
+  for (const pmStep of step.prosemirrorSteps) {
+    const result = tr4.maybeStep(pmStep);
+    if (result.failed) {
+      throw new Error("failed to apply step");
+    }
+  }
+  return tr4;
+}
+
+// node_modules/prosemirror-changeset/dist/index.js
+function typeID(type) {
+  let cache2 = type.schema.cached.changeSetIDs || (type.schema.cached.changeSetIDs = /* @__PURE__ */ Object.create(null));
+  let id3 = cache2[type.name];
+  if (id3 == null)
+    cache2[type.name] = id3 = Object.keys(type.schema.nodes).indexOf(type.name) + 1;
+  return id3;
+}
+var DefaultEncoder = {
+  encodeCharacter: (char) => char,
+  encodeNodeStart: (node2) => node2.type.name,
+  encodeNodeEnd: (node2) => -typeID(node2.type),
+  compareTokens: (a3, b4) => a3 === b4
+};
+function tokens(frag, encoder, start2, end, target) {
+  for (let i3 = 0, off = 0; i3 < frag.childCount; i3++) {
+    let child = frag.child(i3), endOff = off + child.nodeSize;
+    let from2 = Math.max(off, start2), to = Math.min(endOff, end);
+    if (from2 < to) {
+      if (child.isText) {
+        for (let j6 = from2; j6 < to; j6++)
+          target.push(encoder.encodeCharacter(child.text.charCodeAt(j6 - off), child.marks));
+      } else if (child.isLeaf) {
+        target.push(encoder.encodeNodeStart(child));
+      } else {
+        if (from2 == off)
+          target.push(encoder.encodeNodeStart(child));
+        tokens(child.content, encoder, Math.max(off + 1, from2) - off - 1, Math.min(endOff - 1, to) - off - 1, target);
+        if (to == endOff)
+          target.push(encoder.encodeNodeEnd(child));
+      }
+    }
+    off = endOff;
+  }
+  return target;
+}
+var MAX_DIFF_SIZE = 2500;
+function minUnchanged(sizeA, sizeB) {
+  return Math.min(15, Math.max(2, Math.floor(Math.max(sizeA, sizeB) / 10)));
+}
+function computeDiff(fragA, fragB, range2, encoder = DefaultEncoder) {
+  if (Math.max(range2.toA - range2.fromA, range2.toB, range2.fromB) > MAX_DIFF_SIZE)
+    return [range2];
+  let tokA = tokens(fragA, encoder, range2.fromA, range2.toA, []);
+  let tokB = tokens(fragB, encoder, range2.fromB, range2.toB, []);
+  return diff2(tokA, tokB, range2, encoder.compareTokens);
+}
+function diff2(tokA, tokB, range2, cmp2) {
+  let start2 = 0, endA = tokA.length, endB = tokB.length;
+  while (start2 < tokA.length && start2 < tokB.length && cmp2(tokA[start2], tokB[start2]))
+    start2++;
+  if (start2 == tokA.length && start2 == tokB.length)
+    return [];
+  while (endA > start2 && endB > start2 && cmp2(tokA[endA - 1], tokB[endB - 1]))
+    endA--, endB--;
+  if (endA == start2 || endB == start2 || endA == endB && endA == start2 + 1)
+    return [range2.slice(start2, endA, start2, endB)];
+  let lenA = endA - start2, lenB = endB - start2;
+  let max2 = Math.min(MAX_DIFF_SIZE, lenA + lenB);
+  let history3 = [];
+  let frontier = new Int16Array((max2 + 1) * 2).fill(-1);
+  for (let size4 = 0; size4 <= max2; size4++) {
+    for (let diag = -size4; diag <= size4; diag += 2) {
+      let next = frontier[diag + 1 + max2], prev = frontier[diag - 1 + max2];
+      let x3 = next < prev ? prev : next + 1, y4 = x3 + diag;
+      while (x3 < lenA && y4 < lenB && cmp2(tokA[start2 + x3], tokB[start2 + y4]))
+        x3++, y4++;
+      frontier[diag + max2] = x3;
+      if (x3 >= lenA && y4 >= lenB) {
+        let diff3 = [], minSpan = minUnchanged(endA - start2, endB - start2);
+        let fromA = -1, toA = -1, fromB = -1, toB = -1;
+        let add = (fA, tA, fB, tB) => {
+          if (fromA > -1 && fromA < tA + minSpan) {
+            fromA = fA;
+            fromB = fB;
+          } else {
+            if (fromA > -1)
+              diff3.push(range2.slice(fromA, toA, fromB, toB));
+            fromA = fA;
+            toA = tA;
+            fromB = fB;
+            toB = tB;
+          }
+        };
+        for (let i3 = size4 - 1; i3 >= 0; i3--) {
+          let next2 = frontier[diag + 1 + max2], prev2 = frontier[diag - 1 + max2];
+          if (next2 < prev2) {
+            diag--;
+            x3 = prev2 + start2;
+            y4 = x3 + diag;
+            add(x3, x3, y4, y4 + 1);
+          } else {
+            diag++;
+            x3 = next2 + start2;
+            y4 = x3 + diag;
+            add(x3, x3 + 1, y4, y4);
+          }
+          frontier = history3[i3 >> 1];
+        }
+        if (fromA > -1)
+          diff3.push(range2.slice(fromA, toA, fromB, toB));
+        return diff3.reverse();
+      }
+    }
+    if (size4 % 2 == 0)
+      history3.push(frontier.slice());
+  }
+  return [range2];
+}
+var Span = class _Span {
+  /**
+  @internal
+  */
+  constructor(length, data2) {
+    this.length = length;
+    this.data = data2;
+  }
+  /**
+  @internal
+  */
+  cut(length) {
+    return length == this.length ? this : new _Span(length, this.data);
+  }
+  /**
+  @internal
+  */
+  static slice(spans, from2, to) {
+    if (from2 == to)
+      return _Span.none;
+    if (from2 == 0 && to == _Span.len(spans))
+      return spans;
+    let result = [];
+    for (let i3 = 0, off = 0; off < to; i3++) {
+      let span = spans[i3], end = off + span.length;
+      let overlap = Math.min(to, end) - Math.max(from2, off);
+      if (overlap > 0)
+        result.push(span.cut(overlap));
+      off = end;
+    }
+    return result;
+  }
+  /**
+  @internal
+  */
+  static join(a3, b4, combine2) {
+    if (a3.length == 0)
+      return b4;
+    if (b4.length == 0)
+      return a3;
+    let combined = combine2(a3[a3.length - 1].data, b4[0].data);
+    if (combined == null)
+      return a3.concat(b4);
+    let result = a3.slice(0, a3.length - 1);
+    result.push(new _Span(a3[a3.length - 1].length + b4[0].length, combined));
+    for (let i3 = 1; i3 < b4.length; i3++)
+      result.push(b4[i3]);
+    return result;
+  }
+  /**
+  @internal
+  */
+  static len(spans) {
+    let len = 0;
+    for (let i3 = 0; i3 < spans.length; i3++)
+      len += spans[i3].length;
+    return len;
+  }
+};
+Span.none = [];
+var Change2 = class _Change {
+  /**
+  @internal
+  */
+  constructor(fromA, toA, fromB, toB, deleted2, inserted2) {
+    this.fromA = fromA;
+    this.toA = toA;
+    this.fromB = fromB;
+    this.toB = toB;
+    this.deleted = deleted2;
+    this.inserted = inserted2;
+  }
+  /**
+  @internal
+  */
+  get lenA() {
+    return this.toA - this.fromA;
+  }
+  /**
+  @internal
+  */
+  get lenB() {
+    return this.toB - this.fromB;
+  }
+  /**
+  @internal
+  */
+  slice(startA, endA, startB, endB) {
+    if (startA == 0 && startB == 0 && endA == this.toA - this.fromA && endB == this.toB - this.fromB)
+      return this;
+    return new _Change(this.fromA + startA, this.fromA + endA, this.fromB + startB, this.fromB + endB, Span.slice(this.deleted, startA, endA), Span.slice(this.inserted, startB, endB));
+  }
+  /**
+  This merges two changesets (the end document of x should be the
+  start document of y) into a single one spanning the start of x to
+  the end of y.
+  */
+  static merge(x3, y4, combine2) {
+    if (x3.length == 0)
+      return y4;
+    if (y4.length == 0)
+      return x3;
+    let result = [];
+    for (let iX = 0, iY = 0, curX = x3[0], curY = y4[0]; ; ) {
+      if (!curX && !curY) {
+        return result;
+      } else if (curX && (!curY || curX.toB < curY.fromA)) {
+        let off = iY ? y4[iY - 1].toB - y4[iY - 1].toA : 0;
+        result.push(off == 0 ? curX : new _Change(curX.fromA, curX.toA, curX.fromB + off, curX.toB + off, curX.deleted, curX.inserted));
+        curX = iX++ == x3.length ? null : x3[iX];
+      } else if (curY && (!curX || curY.toA < curX.fromB)) {
+        let off = iX ? x3[iX - 1].toB - x3[iX - 1].toA : 0;
+        result.push(off == 0 ? curY : new _Change(curY.fromA - off, curY.toA - off, curY.fromB, curY.toB, curY.deleted, curY.inserted));
+        curY = iY++ == y4.length ? null : y4[iY];
+      } else {
+        let pos = Math.min(curX.fromB, curY.fromA);
+        let fromA = Math.min(curX.fromA, curY.fromA - (iX ? x3[iX - 1].toB - x3[iX - 1].toA : 0)), toA = fromA;
+        let fromB = Math.min(curY.fromB, curX.fromB + (iY ? y4[iY - 1].toB - y4[iY - 1].toA : 0)), toB = fromB;
+        let deleted2 = Span.none, inserted2 = Span.none;
+        let enteredX = false, enteredY = false;
+        for (; ; ) {
+          let nextX = !curX ? 2e8 : pos >= curX.fromB ? curX.toB : curX.fromB;
+          let nextY = !curY ? 2e8 : pos >= curY.fromA ? curY.toA : curY.fromA;
+          let next = Math.min(nextX, nextY);
+          let inX = curX && pos >= curX.fromB, inY = curY && pos >= curY.fromA;
+          if (!inX && !inY)
+            break;
+          if (inX && pos == curX.fromB && !enteredX) {
+            deleted2 = Span.join(deleted2, curX.deleted, combine2);
+            toA += curX.lenA;
+            enteredX = true;
+          }
+          if (inX && !inY) {
+            inserted2 = Span.join(inserted2, Span.slice(curX.inserted, pos - curX.fromB, next - curX.fromB), combine2);
+            toB += next - pos;
+          }
+          if (inY && pos == curY.fromA && !enteredY) {
+            inserted2 = Span.join(inserted2, curY.inserted, combine2);
+            toB += curY.lenB;
+            enteredY = true;
+          }
+          if (inY && !inX) {
+            deleted2 = Span.join(deleted2, Span.slice(curY.deleted, pos - curY.fromA, next - curY.fromA), combine2);
+            toA += next - pos;
+          }
+          if (inX && next == curX.toB) {
+            curX = iX++ == x3.length ? null : x3[iX];
+            enteredX = false;
+          }
+          if (inY && next == curY.toA) {
+            curY = iY++ == y4.length ? null : y4[iY];
+            enteredY = false;
+          }
+          pos = next;
+        }
+        if (fromA < toA || fromB < toB)
+          result.push(new _Change(fromA, toA, fromB, toB, deleted2, inserted2));
+      }
+    }
+  }
+  /**
+  Deserialize a change from JSON format.
+  */
+  static fromJSON(json) {
+    return new _Change(json.fromA, json.toA, json.fromB, json.toB, json.deleted.map((d) => new Span(d.length, d.data)), json.inserted.map((d) => new Span(d.length, d.data)));
+  }
+  /**
+  Returns a JSON-serializeable object to represent this change.
+  */
+  toJSON() {
+    return this;
+  }
+};
+var letter;
+try {
+  letter = new RegExp("[\\p{Alphabetic}_]", "u");
+} catch (_) {
+}
+var nonASCIISingleCaseWordChar2 = /[\u00df\u0587\u0590-\u05f4\u0600-\u06ff\u3040-\u309f\u30a0-\u30ff\u3400-\u4db5\u4e00-\u9fcc\uac00-\ud7af]/;
+function isLetter(code4) {
+  if (code4 < 128)
+    return code4 >= 48 && code4 <= 57 || code4 >= 65 && code4 <= 90 || code4 >= 97 && code4 <= 122;
+  let ch = String.fromCharCode(code4);
+  if (letter)
+    return letter.test(ch);
+  return ch.toUpperCase() != ch.toLowerCase() || nonASCIISingleCaseWordChar2.test(ch);
+}
+function getText3(frag, start2, end) {
+  let out = "";
+  function convert2(frag2, start3, end2) {
+    for (let i3 = 0, off = 0; i3 < frag2.childCount; i3++) {
+      let child = frag2.child(i3), endOff = off + child.nodeSize;
+      let from2 = Math.max(off, start3), to = Math.min(endOff, end2);
+      if (from2 < to) {
+        if (child.isText) {
+          out += child.text.slice(Math.max(0, start3 - off), Math.min(child.text.length, end2 - off));
+        } else if (child.isLeaf) {
+          out += " ";
+        } else {
+          if (from2 == off)
+            out += " ";
+          convert2(child.content, Math.max(0, from2 - off - 1), Math.min(child.content.size, end2 - off));
+          if (to == endOff)
+            out += " ";
+        }
+      }
+      off = endOff;
+    }
+  }
+  convert2(frag, start2, end);
+  return out;
+}
+var MAX_SIMPLIFY_DISTANCE = 30;
+function simplifyChanges(changes, doc4) {
+  let result = [];
+  for (let i3 = 0; i3 < changes.length; i3++) {
+    let end = changes[i3].toB, start2 = i3;
+    while (i3 < changes.length - 1 && changes[i3 + 1].fromB <= end + MAX_SIMPLIFY_DISTANCE)
+      end = changes[++i3].toB;
+    simplifyAdjacentChanges(changes, start2, i3 + 1, doc4, result);
+  }
+  return result;
+}
+function simplifyAdjacentChanges(changes, from2, to, doc4, target) {
+  let start2 = Math.max(0, changes[from2].fromB - MAX_SIMPLIFY_DISTANCE);
+  let end = Math.min(doc4.content.size, changes[to - 1].toB + MAX_SIMPLIFY_DISTANCE);
+  let text7 = getText3(doc4.content, start2, end);
+  for (let i3 = from2; i3 < to; i3++) {
+    let startI = i3, last3 = changes[i3], deleted2 = last3.lenA, inserted2 = last3.lenB;
+    while (i3 < to - 1) {
+      let next = changes[i3 + 1], boundary = false;
+      let prevLetter = last3.toB == end ? false : isLetter(text7.charCodeAt(last3.toB - 1 - start2));
+      for (let pos = last3.toB; !boundary && pos < next.fromB; pos++) {
+        let nextLetter = pos == end ? false : isLetter(text7.charCodeAt(pos - start2));
+        if ((!prevLetter || !nextLetter) && pos != changes[startI].fromB)
+          boundary = true;
+        prevLetter = nextLetter;
+      }
+      if (boundary)
+        break;
+      deleted2 += next.lenA;
+      inserted2 += next.lenB;
+      last3 = next;
+      i3++;
+    }
+    if (inserted2 > 0 && deleted2 > 0 && !(inserted2 == 1 && deleted2 == 1)) {
+      let from3 = changes[startI].fromB, to2 = changes[i3].toB;
+      if (from3 < end && isLetter(text7.charCodeAt(from3 - start2)))
+        while (from3 > start2 && isLetter(text7.charCodeAt(from3 - 1 - start2)))
+          from3--;
+      if (to2 > start2 && isLetter(text7.charCodeAt(to2 - 1 - start2)))
+        while (to2 < end && isLetter(text7.charCodeAt(to2 - start2)))
+          to2++;
+      let joined = fillChange(changes.slice(startI, i3 + 1), from3, to2);
+      let last4 = target.length ? target[target.length - 1] : null;
+      if (last4 && last4.toA == joined.fromA)
+        target[target.length - 1] = new Change2(last4.fromA, joined.toA, last4.fromB, joined.toB, last4.deleted.concat(joined.deleted), last4.inserted.concat(joined.inserted));
+      else
+        target.push(joined);
+    } else {
+      for (let j6 = startI; j6 <= i3; j6++)
+        target.push(changes[j6]);
+    }
+  }
+  return changes;
+}
+function combine(a3, b4) {
+  return a3 === b4 ? a3 : null;
+}
+function fillChange(changes, fromB, toB) {
+  let fromA = changes[0].fromA - (changes[0].fromB - fromB);
+  let last3 = changes[changes.length - 1];
+  let toA = last3.toA + (toB - last3.toB);
+  let deleted2 = Span.none, inserted2 = Span.none;
+  let delData = (changes[0].deleted.length ? changes[0].deleted : changes[0].inserted)[0].data;
+  let insData = (changes[0].inserted.length ? changes[0].inserted : changes[0].deleted)[0].data;
+  for (let posA = fromA, posB = fromB, i3 = 0; ; i3++) {
+    let next = i3 == changes.length ? null : changes[i3];
+    let endA = next ? next.fromA : toA, endB = next ? next.fromB : toB;
+    if (endA > posA)
+      deleted2 = Span.join(deleted2, [new Span(endA - posA, delData)], combine);
+    if (endB > posB)
+      inserted2 = Span.join(inserted2, [new Span(endB - posB, insData)], combine);
+    if (!next)
+      break;
+    deleted2 = Span.join(deleted2, next.deleted, combine);
+    inserted2 = Span.join(inserted2, next.inserted, combine);
+    if (deleted2.length)
+      delData = deleted2[deleted2.length - 1].data;
+    if (inserted2.length)
+      insData = inserted2[inserted2.length - 1].data;
+    posA = next.toA;
+    posB = next.toB;
+  }
+  return new Change2(fromA, toA, fromB, toB, deleted2, inserted2);
+}
+var ChangeSet2 = class _ChangeSet {
+  /**
+  @internal
+  */
+  constructor(config, changes) {
+    this.config = config;
+    this.changes = changes;
+  }
+  /**
+  Computes a new changeset by adding the given step maps and
+  metadata (either as an array, per-map, or as a single value to be
+  associated with all maps) to the current set. Will not mutate the
+  old set.
+
+  Note that due to simplification that happens after each add,
+  incrementally adding steps might create a different final set
+  than adding all those changes at once, since different document
+  tokens might be matched during simplification depending on the
+  boundaries of the current changed ranges.
+  */
+  addSteps(newDoc, maps, data2) {
+    let stepChanges = [];
+    for (let i3 = 0; i3 < maps.length; i3++) {
+      let d = Array.isArray(data2) ? data2[i3] : data2;
+      let off = 0;
+      maps[i3].forEach((fromA, toA, fromB, toB) => {
+        stepChanges.push(new Change2(fromA + off, toA + off, fromB, toB, fromA == toA ? Span.none : [new Span(toA - fromA, d)], fromB == toB ? Span.none : [new Span(toB - fromB, d)]));
+        off = toB - fromB - (toA - fromA);
+      });
+    }
+    if (stepChanges.length == 0)
+      return this;
+    let newChanges = mergeAll(stepChanges, this.config.combine);
+    let changes = Change2.merge(this.changes, newChanges, this.config.combine);
+    let updated = changes;
+    for (let i3 = 0; i3 < updated.length; i3++) {
+      let change = updated[i3];
+      if (change.fromA == change.toA || change.fromB == change.toB || // Only look at changes that touch newly added changed ranges
+      !newChanges.some((r4) => r4.toB > change.fromB && r4.fromB < change.toB))
+        continue;
+      let diff3 = computeDiff(this.config.doc.content, newDoc.content, change, this.config.encoder);
+      if (diff3.length == 1 && diff3[0].fromB == 0 && diff3[0].toB == change.toB - change.fromB)
+        continue;
+      if (updated == changes)
+        updated = changes.slice();
+      if (diff3.length == 1) {
+        updated[i3] = diff3[0];
+      } else {
+        updated.splice(i3, 1, ...diff3);
+        i3 += diff3.length - 1;
+      }
+    }
+    return new _ChangeSet(this.config, updated);
+  }
+  /**
+  The starting document of the change set.
+  */
+  get startDoc() {
+    return this.config.doc;
+  }
+  /**
+  Map the span's data values in the given set through a function
+  and construct a new set with the resulting data.
+  */
+  map(f2) {
+    let mapSpan = (span) => {
+      let newData = f2(span);
+      return newData === span.data ? span : new Span(span.length, newData);
+    };
+    return new _ChangeSet(this.config, this.changes.map((ch) => {
+      return new Change2(ch.fromA, ch.toA, ch.fromB, ch.toB, ch.deleted.map(mapSpan), ch.inserted.map(mapSpan));
+    }));
+  }
+  /**
+  Compare two changesets and return the range in which they are
+  changed, if any. If the document changed between the maps, pass
+  the maps for the steps that changed it as second argument, and
+  make sure the method is called on the old set and passed the new
+  set. The returned positions will be in new document coordinates.
+  */
+  changedRange(b4, maps) {
+    if (b4 == this)
+      return null;
+    let touched = maps && touchedRange(maps);
+    let moved = touched ? touched.toB - touched.fromB - (touched.toA - touched.fromA) : 0;
+    function map4(p2) {
+      return !touched || p2 <= touched.fromA ? p2 : p2 + moved;
+    }
+    let from2 = touched ? touched.fromB : 2e8, to = touched ? touched.toB : -2e8;
+    function add(start2, end = start2) {
+      from2 = Math.min(start2, from2);
+      to = Math.max(end, to);
+    }
+    let rA = this.changes, rB = b4.changes;
+    for (let iA = 0, iB = 0; iA < rA.length && iB < rB.length; ) {
+      let rangeA = rA[iA], rangeB = rB[iB];
+      if (rangeA && rangeB && sameRanges(rangeA, rangeB, map4)) {
+        iA++;
+        iB++;
+      } else if (rangeB && (!rangeA || map4(rangeA.fromB) >= rangeB.fromB)) {
+        add(rangeB.fromB, rangeB.toB);
+        iB++;
+      } else {
+        add(map4(rangeA.fromB), map4(rangeA.toB));
+        iA++;
+      }
+    }
+    return from2 <= to ? { from: from2, to } : null;
+  }
+  /**
+  Create a changeset with the given base object and configuration.
+
+  The `combine` function is used to compare and combine metadata—it
+  should return null when metadata isn't compatible, and a combined
+  version for a merged range when it is.
+
+  When given, a token encoder determines how document tokens are
+  serialized and compared when diffing the content produced by
+  changes. The default is to just compare nodes by name and text
+  by character, ignoring marks and attributes.
+
+  To serialize a change set, you can store its document and
+  change array as JSON, and then pass the deserialized (via
+  [`Change.fromJSON`](https://prosemirror.net/docs/ref/#changes.Change^fromJSON)) set of changes
+  as fourth argument to `create` to recreate the set.
+  */
+  static create(doc4, combine2 = (a3, b4) => a3 === b4 ? a3 : null, tokenEncoder = DefaultEncoder, changes = []) {
+    return new _ChangeSet({ combine: combine2, doc: doc4, encoder: tokenEncoder }, changes);
+  }
+};
+ChangeSet2.computeDiff = computeDiff;
+function mergeAll(ranges, combine2, start2 = 0, end = ranges.length) {
+  if (end == start2 + 1)
+    return [ranges[start2]];
+  let mid = start2 + end >> 1;
+  return Change2.merge(mergeAll(ranges, combine2, start2, mid), mergeAll(ranges, combine2, mid, end), combine2);
+}
+function endRange(maps) {
+  let from2 = 2e8, to = -2e8;
+  for (let i3 = 0; i3 < maps.length; i3++) {
+    let map4 = maps[i3];
+    if (from2 != 2e8) {
+      from2 = map4.map(from2, -1);
+      to = map4.map(to, 1);
+    }
+    map4.forEach((_s, _e2, start2, end) => {
+      from2 = Math.min(from2, start2);
+      to = Math.max(to, end);
+    });
+  }
+  return from2 == 2e8 ? null : { from: from2, to };
+}
+function touchedRange(maps) {
+  let b4 = endRange(maps);
+  if (!b4)
+    return null;
+  let a3 = endRange(maps.map((m2) => m2.invert()).reverse());
+  return { fromA: a3.from, toA: a3.to, fromB: b4.from, toB: b4.to };
+}
+function sameRanges(a3, b4, map4) {
+  return map4(a3.fromB) == b4.fromB && map4(a3.toB) == b4.toB && sameSpans(a3.deleted, b4.deleted) && sameSpans(a3.inserted, b4.inserted);
+}
+function sameSpans(a3, b4) {
+  if (a3.length != b4.length)
+    return false;
+  for (let i3 = 0; i3 < a3.length; i3++)
+    if (a3[i3].length != b4[i3].length || a3[i3].data !== b4[i3].data)
+      return false;
+  return true;
+}
+
+// packages/report-review/src/editor-ai/prosemirror/changeset.ts
+function addMissingChanges(changes, originalDoc, expectedDoc) {
+  const tr4 = new Transform(originalDoc);
+  for (const change of changes) {
+    const step = new ReplaceStep(
+      tr4.mapping.map(change.fromA),
+      tr4.mapping.map(change.toA),
+      expectedDoc.slice(change.fromB, change.toB)
+    );
+    tr4.step(step);
+  }
+  const invertMap = tr4.mapping.invert();
+  let diffStart = tr4.doc.content.findDiffStart(expectedDoc.content);
+  while (diffStart !== null) {
+    const expectedNode = expectedDoc.resolve(diffStart).nodeAfter;
+    const actualNode = tr4.doc.resolve(diffStart).nodeAfter;
+    if (!expectedNode || !actualNode) {
+      throw new Error("diffNode not found");
+    }
+    const isNodeAttrChange = !expectedNode.isLeaf && expectedNode.content.eq(actualNode.content);
+    const length = isNodeAttrChange ? 1 : Math.min(expectedNode.nodeSize, actualNode.nodeSize);
+    const to = diffStart + length;
+    const fromA = invertMap.map(diffStart);
+    const toA = invertMap.map(to);
+    let insertPos = changes.length;
+    for (let i3 = 0; i3 < changes.length; i3++) {
+      if (changes[i3].fromA >= toA) {
+        insertPos = i3;
+        break;
+      }
+    }
+    changes.splice(insertPos, 0, {
+      fromA,
+      toA,
+      fromB: diffStart,
+      toB: to,
+      deleted: [],
+      inserted: [],
+      type: isNodeAttrChange ? "node-type-or-attr-update" : "mark-update"
+    });
+    tr4.step(
+      new ReplaceStep(
+        diffStart,
+        to,
+        expectedDoc.slice(diffStart, to),
+        isNodeAttrChange
+      )
+    );
+    const newDiffStart = tr4.doc.content.findDiffStart(expectedDoc.content);
+    if (newDiffStart === diffStart) {
+      throw new Error("diffStart not moving");
+    }
+    diffStart = newDiffStart;
+  }
+  return changes;
+}
+var createEncoder = (doc4, updatedDoc) => {
+  const tableCellsOld = /* @__PURE__ */ new Set();
+  const tableCellsNew = /* @__PURE__ */ new Set();
+  doc4.descendants((node2) => {
+    if (node2.type.name === "tableCell") {
+      tableCellsOld.add(JSON.stringify(node2.toJSON()));
+    }
+  });
+  updatedDoc.descendants((node2) => {
+    if (node2.type.name === "tableCell") {
+      tableCellsNew.add(JSON.stringify(node2.toJSON()));
+    }
+  });
+  const tableCells = new Set(
+    [...tableCellsOld].filter((cell) => tableCellsNew.has(cell))
+  );
+  const encoder = {
+    encodeCharacter: (char) => char,
+    encodeNodeStart: (node2) => {
+      if (node2.type.name === "tableCell") {
+        const str = JSON.stringify(node2.toJSON());
+        if (tableCells.has(str)) {
+          return str;
+        }
+        return node2.type.name;
+      }
+      return node2.type.name;
+    },
+    encodeNodeEnd: (node2) => {
+      if (node2.type.name === "tableCell") {
+        const str = JSON.stringify(node2.toJSON());
+        if (tableCells.has(str)) {
+          return str;
+        }
+        return -1;
+      }
+      return -1;
+    },
+    compareTokens: (a3, b4) => {
+      return a3 === b4;
+    }
+  };
+  return encoder;
+};
+function updateToReplaceSteps(op, doc4, dontReplaceContentAtEnd = false, updateFromPos, updateToPos) {
+  const blockPos = Zt(op.id, doc4);
+  const updatedTr = new Transform(doc4);
+  en(
+    updatedTr,
+    blockPos.posBeforeNode,
+    op.block,
+    updateFromPos,
+    updateToPos
+  );
+  let updatedDoc = updatedTr.doc;
+  let changeset = ChangeSet2.create(
+    doc4,
+    void 0,
+    createEncoder(doc4, updatedDoc)
+  );
+  changeset = changeset.addSteps(updatedDoc, updatedTr.mapping.maps, 0);
+  if (dontReplaceContentAtEnd && changeset.changes.length > 0) {
+    const lastChange = changeset.changes[changeset.changes.length - 1];
+    const lengthA = lastChange.toA - lastChange.fromA;
+    const lengthB = lastChange.toB - lastChange.fromB;
+    if (lengthA > lengthB) {
+      const endOfBlockToReAdd = doc4.slice(
+        lastChange.fromA + lengthB,
+        lastChange.toA
+      );
+      updatedTr.step(
+        new ReplaceStep(lastChange.toB, lastChange.toB, endOfBlockToReAdd)
+      );
+      updatedDoc = updatedTr.doc;
+      changeset = ChangeSet2.create(
+        changeset.startDoc,
+        void 0,
+        createEncoder(changeset.startDoc, updatedDoc)
+      );
+      changeset = changeset.addSteps(updatedDoc, updatedTr.mapping.maps, 0);
+    }
+  }
+  const steps = [];
+  const changes = simplifyChanges(
+    changeset.changes,
+    updatedDoc
+  );
+  for (let i3 = 0; i3 < changes.length; i3++) {
+    const step = changes[i3];
+    const replacement = updatedDoc.slice(step.fromB, step.toB);
+    if (replacement.openEnd === 1 && replacement.openStart === 0) {
+      step.type = "node-type-or-attr-update";
+      if (replacement.size > 2) {
+        const typeChange = {
+          fromA: step.fromA,
+          toA: step.fromA + 1,
+          fromB: step.fromB,
+          toB: step.fromB + 1,
+          deleted: [],
+          inserted: [],
+          type: "node-type-or-attr-update"
+        };
+        const contentChange = {
+          fromA: step.fromA + 1,
+          toA: step.toA,
+          fromB: step.fromB + 1,
+          toB: step.toB,
+          deleted: [],
+          inserted: []
+        };
+        changes.splice(i3, 1, typeChange, contentChange);
+        i3++;
+      }
+    }
+  }
+  addMissingChanges(changes, doc4, updatedDoc);
+  for (let i3 = 0; i3 < changes.length; i3++) {
+    const step = changes[i3];
+    const replacement = updatedDoc.slice(step.fromB, step.toB);
+    if (replacement.openEnd > 0 && replacement.size > 1) {
+      throw new Error(
+        "unexpected, openEnd > 0 and size > 1, this should have been split into two steps"
+      );
+    }
+    if (i3 === changes.length - 1 && dontReplaceContentAtEnd && step.type === "mark-update") {
+      continue;
+    }
+    steps.push(
+      new ReplaceStep(
+        step.fromA,
+        step.toA,
+        replacement,
+        step.type === "node-type-or-attr-update"
+      )
+    );
+  }
+  return steps;
+}
+
+// packages/report-review/src/editor-ai/streamTool/streamTool.ts
+function streamTool(config) {
+  return config;
+}
+
+// packages/report-review/src/editor-ai/util/AbortError.ts
+var AbortError = class extends Error {
+  constructor(message, options) {
+    super(message, options);
+    this.name = "AbortError";
+  }
+};
+
+// packages/report-review/src/editor-ai/api/formats/base-tools/util/validateBlockArray.ts
+function validateBlockArray(inputArray, validateItem) {
+  if (!inputArray || !Array.isArray(inputArray) || inputArray.length === 0) {
+    return {
+      ok: false,
+      error: "blocks is required"
+    };
+  }
+  const validatedBlocks = [];
+  for (const item of inputArray) {
+    const validationResult = validateItem(item);
+    if (!validationResult.ok) {
+      return {
+        ok: false,
+        error: `Invalid block: ${validationResult.error}`
+      };
+    }
+    validatedBlocks.push(validationResult.value);
+  }
+  return {
+    ok: true,
+    value: validatedBlocks
+  };
+}
+
+// packages/report-review/src/editor-ai/api/formats/base-tools/createAddBlocksTool.ts
+function createAddBlocksTool(config) {
+  return (editor, options) => {
+    const schema2 = typeof config.schema === "function" ? config.schema(editor) : config.schema;
+    return streamTool({
+      name: "add",
+      description: config.description,
+      inputSchema: {
+        type: "object",
+        properties: {
+          referenceId: {
+            type: "string",
+            description: "MUST be an id of a block in the document"
+          },
+          position: {
+            type: "string",
+            enum: ["before", "after"],
+            description: "`after` to add blocks AFTER (below) the block with `referenceId`, `before` to add the block BEFORE (above)"
+          },
+          blocks: {
+            items: schema2.block,
+            type: "array"
+          }
+        },
+        required: ["referenceId", "position", "blocks"],
+        $defs: schema2.$defs
+      },
+      validate: (operation) => {
+        if (operation.type !== "add") {
+          return {
+            ok: false,
+            error: "invalid operation type"
+          };
+        }
+        if (operation.position !== "before" && operation.position !== "after") {
+          return {
+            ok: false,
+            error: "invalid position"
+          };
+        }
+        if (!operation.referenceId || !operation.blocks) {
+          return {
+            ok: false,
+            error: "referenceId and blocks are required"
+          };
+        }
+        let referenceId = operation.referenceId;
+        if (options.idsSuffixed) {
+          if (!referenceId?.endsWith("$")) {
+            return {
+              ok: false,
+              error: "referenceId must end with $"
+            };
+          }
+          referenceId = referenceId.slice(0, -1);
+        }
+        const block = editor.getBlock(referenceId);
+        if (!block) {
+          return {
+            ok: false,
+            error: "referenceId not found"
+          };
+        }
+        const validatedBlocksResult = validateBlockArray(
+          operation.blocks,
+          (block2) => config.validateBlock(block2, editor)
+        );
+        if (!validatedBlocksResult.ok) {
+          return validatedBlocksResult;
+        }
+        return {
+          ok: true,
+          value: {
+            type: operation.type,
+            referenceId,
+            position: operation.position,
+            blocks: validatedBlocksResult.value
+          }
+        };
+      },
+      // Note: functionality mostly tested in jsontools.test.ts
+      // would be nicer to add a direct unit test
+      executor: () => {
+        let addedBlockIds = [];
+        const referenceIdMap = {};
+        return {
+          execute: async (chunk, abortSignal) => {
+            if (!chunk.isUpdateToPreviousOperation) {
+              addedBlockIds = [];
+            }
+            if (chunk.operation.type !== "add") {
+              return false;
+            }
+            const operation = chunk.operation;
+            const jsonToolCall = config.toJSONToolCall(editor, {
+              ...chunk,
+              operation
+            });
+            if (!jsonToolCall) {
+              return true;
+            }
+            if (chunk.isPossiblyPartial && isEmptyParagraph(
+              jsonToolCall.blocks[jsonToolCall.blocks.length - 1]
+            )) {
+              return true;
+            }
+            for (let i3 = 0; i3 < jsonToolCall.blocks.length; i3++) {
+              const block = jsonToolCall.blocks[i3];
+              const tr4 = editor.prosemirrorState.tr;
+              let agentSteps = [];
+              if (i3 < addedBlockIds.length) {
+                const tool2 = config.rebaseTool(addedBlockIds[i3], editor);
+                const steps = updateToReplaceSteps(
+                  {
+                    id: addedBlockIds[i3],
+                    block
+                  },
+                  tool2.doc,
+                  false
+                );
+                const inverted = steps.map((step) => step.map(tool2.invertMap));
+                for (const step of inverted) {
+                  tr4.step(step.map(tr4.mapping));
+                }
+                agentSteps = getStepsAsAgent(tr4);
+                agentSteps = agentSteps.filter(
+                  (step) => step.type !== "select"
+                );
+              } else {
+                const mappedReferenceId = operation.position === "after" ? referenceIdMap[operation.referenceId] : void 0;
+                const ret = bt3(
+                  tr4,
+                  [block],
+                  i3 > 0 ? addedBlockIds[i3 - 1] : mappedReferenceId || operation.referenceId,
+                  i3 > 0 ? "after" : operation.position
+                );
+                addedBlockIds.push(...ret.map((r4) => r4.id));
+                agentSteps = getStepsAsAgent(tr4);
+              }
+              for (const step of agentSteps) {
+                if (abortSignal?.aborted) {
+                  throw new AbortError("Operation was aborted");
+                }
+                if (options.withDelays) {
+                  await delayAgentStep(step);
+                }
+                editor.transact((tr5) => {
+                  applyAgentStep(tr5, step);
+                });
+                options.onBlockUpdate?.(addedBlockIds[i3]);
+              }
+            }
+            if (!chunk.isPossiblyPartial) {
+              if (operation.position === "after") {
+                referenceIdMap[operation.referenceId] = addedBlockIds[addedBlockIds.length - 1];
+              }
+            }
+            return true;
+          }
+        };
+      }
+    });
+  };
+}
+
+// packages/report-review/src/editor-ai/api/formats/base-tools/createUpdateBlockTool.ts
+function createUpdateBlockTool(config) {
+  return (editor, options) => {
+    const schema2 = typeof config.schema === "function" ? config.schema(editor) : config.schema;
+    return streamTool({
+      name: "update",
+      description: config.description,
+      inputSchema: {
+        type: "object",
+        properties: {
+          id: {
+            type: "string",
+            description: "id of block to update"
+          },
+          block: schema2.block
+        },
+        required: ["id", "block"],
+        $defs: schema2.$defs
+      },
+      validate: (operation) => {
+        if (operation.type !== "update") {
+          return {
+            ok: false,
+            error: "invalid operation type"
+          };
+        }
+        if (!operation.id) {
+          return {
+            ok: false,
+            error: "id is required"
+          };
+        }
+        let id3 = operation.id;
+        if (options.idsSuffixed) {
+          if (!id3?.endsWith("$")) {
+            return {
+              ok: false,
+              error: "id must end with $"
+            };
+          }
+          id3 = id3.slice(0, -1);
+        }
+        if (!operation.block) {
+          return {
+            ok: false,
+            error: "block is required"
+          };
+        }
+        const block = editor.getBlock(id3);
+        if (!block) {
+          return {
+            ok: false,
+            error: new Error("Block not found (update)", {
+              cause: {
+                blockId: id3
+              }
+            })
+          };
+        }
+        const ret = config.validateBlock(operation.block, editor, block.type);
+        if (!ret.ok) {
+          return ret;
+        }
+        return {
+          ok: true,
+          value: {
+            type: operation.type,
+            id: id3,
+            block: ret.value
+          }
+        };
+      },
+      // Note: functionality mostly tested in jsontools.test.ts
+      // would be nicer to add a direct unit test
+      executor: () => {
+        const STEP_SIZE = 50;
+        let minSize = STEP_SIZE;
+        const selectionPositions = options.updateSelection ? {
+          from: qr(editor, options.updateSelection.from),
+          to: qr(editor, options.updateSelection.to)
+        } : void 0;
+        return {
+          execute: async (chunk, abortSignal) => {
+            if (chunk.operation.type !== "update") {
+              return false;
+            }
+            const operation = chunk.operation;
+            if (chunk.isPossiblyPartial) {
+              const size4 = JSON.stringify(operation.block).length;
+              if (size4 < minSize) {
+                return true;
+              } else {
+                minSize = size4 + STEP_SIZE;
+              }
+            } else {
+              minSize = STEP_SIZE;
+            }
+            const tool2 = config.rebaseTool(operation.id, editor);
+            const fromPos = selectionPositions ? tool2.invertMap.invert().map(selectionPositions.from()) : void 0;
+            const toPos = selectionPositions ? tool2.invertMap.invert().map(selectionPositions.to()) : void 0;
+            const jsonToolCall = config.toJSONToolCall(editor, {
+              ...chunk,
+              operation
+            });
+            if (!jsonToolCall) {
+              return true;
+            }
+            const steps = updateToReplaceSteps(
+              jsonToolCall,
+              tool2.doc,
+              chunk.isPossiblyPartial,
+              fromPos,
+              toPos
+            );
+            if (steps.length === 1 && chunk.isPossiblyPartial) {
+              return true;
+            }
+            const inverted = steps.map((step) => step.map(tool2.invertMap));
+            const tr4 = new Transform(editor.prosemirrorState.doc);
+            for (const step of inverted) {
+              tr4.step(step.map(tr4.mapping));
+            }
+            const agentSteps = getStepsAsAgent(tr4);
+            for (const step of agentSteps) {
+              if (abortSignal?.aborted) {
+                throw new AbortError("Operation was aborted");
+              }
+              if (options.withDelays) {
+                await delayAgentStep(step);
+              }
+              editor.transact((tr5) => {
+                applyAgentStep(tr5, step);
+              });
+              options.onBlockUpdate?.(operation.id);
+            }
+            return true;
+          }
+        };
+      }
+    });
+  };
+}
+
+// packages/report-review/src/editor-ai/api/formats/base-tools/delete.ts
+var deleteBlockTool = (editor, options) => streamTool({
+  name: "delete",
+  description: "Delete a block",
+  inputSchema: {
+    type: "object",
+    properties: {
+      id: {
+        type: "string",
+        description: "id of block to delete"
+      }
+    },
+    required: ["id"]
+  },
+  validate: (operation) => {
+    if (operation.type !== "delete") {
+      return {
+        ok: false,
+        error: "invalid operation type"
+      };
+    }
+    if (!operation.id) {
+      return {
+        ok: false,
+        error: "id is required"
+      };
+    }
+    let id3 = operation.id;
+    if (options.idsSuffixed) {
+      if (!id3?.endsWith("$")) {
+        return {
+          ok: false,
+          error: "id must end with $"
+        };
+      }
+      id3 = id3.slice(0, -1);
+    }
+    const block = editor.getBlock(id3);
+    if (!block) {
+      return {
+        ok: false,
+        error: new Error("Block not found (delete)", {
+          cause: {
+            blockId: id3
+          }
+        })
+      };
+    }
+    return {
+      ok: true,
+      value: {
+        type: "delete",
+        id: id3
+      }
+    };
+  },
+  // Note: functionality mostly tested in jsontools.test.ts
+  // would be nicer to add a direct unit test
+  executor: () => {
+    return {
+      execute: async (chunk) => {
+        if (chunk.operation.type !== "delete") {
+          return false;
+        }
+        const operation = chunk.operation;
+        const tr4 = editor.prosemirrorState.tr;
+        V3(tr4, [operation.id], []);
+        const agentSteps = getStepsAsAgent(tr4);
+        for (const step of agentSteps) {
+          if (options.withDelays) {
+            await delayAgentStep(step);
+          }
+          editor.transact((tr5) => {
+            applyAgentStep(tr5, step);
+          });
+          options.onBlockUpdate?.(operation.id);
+        }
+        return true;
+      }
+    };
+  }
+});
+
+// packages/report-review/src/editor-ai/api/formats/html-blocks/tools/getPartialHTML.ts
+function getPartialHTML(html6) {
+  const lastOpenBracket = html6.lastIndexOf("<");
+  const lastCloseBracket = html6.lastIndexOf(">");
+  let htmlToProcess = html6;
+  if (lastOpenBracket > lastCloseBracket) {
+    htmlToProcess = html6.substring(0, lastOpenBracket);
+    if (!htmlToProcess.trim()) {
+      return void 0;
+    }
+  }
+  const match = htmlToProcess.match(/&[a-zA-Z0-9]*$/);
+  if (match) {
+    htmlToProcess = htmlToProcess.substring(
+      0,
+      htmlToProcess.length - match[0].length
+    );
+  }
+  const parser6 = new DOMParser();
+  const doc4 = parser6.parseFromString(
+    `<div>${htmlToProcess}</div>`,
+    "text/html"
+  );
+  const el = doc4.body.firstChild;
+  return el ? el.innerHTML : "";
+}
+
+// packages/report-review/src/editor-ai/prosemirror/rebaseTool.ts
+function getApplySuggestionsTr(editor) {
+  let applySuggestionsTr;
+  applySuggestions(editor.prosemirrorState, (tr4) => {
+    applySuggestionsTr = tr4;
+  });
+  if (!applySuggestionsTr) {
+    throw new Error("applySuggestionsTr is not set");
+  }
+  return applySuggestionsTr;
+}
+function rebaseTool(editor, projectionTr) {
+  const invertMap = projectionTr.mapping.invert();
+  return {
+    doc: projectionTr.doc,
+    /**
+     * Return a new transform that has the projection applied.
+     * You can add new operations to this transform and later rebase those on the original document with `rebaseTr`
+     */
+    tr: () => {
+      return new Transform(projectionTr.doc);
+    },
+    /**
+     * Invert map created by the projection.
+     * You can use this to map positions on the "clean" document (the projection) to positions on the original document
+     */
+    invertMap,
+    /**
+     * Return a new transaction based on the editor state with all the steps you made to `tr`.
+     * These steps are rebased on the original document.
+     */
+    rebaseTr: (tr4) => {
+      if (tr4.steps.length === 0) {
+        throw new Error("No steps to apply");
+      }
+      let rebasedTr = editor.prosemirrorState.tr;
+      for (const step of tr4.steps) {
+        const mappedStep = step.map(invertMap);
+        if (!mappedStep) {
+          throw new Error("Step is not mapped");
+        }
+        rebasedTr = rebasedTr.step(mappedStep);
+      }
+      return rebasedTr;
+    }
+  };
+}
+
+// packages/report-review/src/editor-ai/api/formats/html-blocks/tools/rebaseTool.ts
+function createHTMLRebaseTool(id3, editor) {
+  const tr4 = getApplySuggestionsTr(editor);
+  const block = $t3(tr4.doc, id3);
+  if (!block) {
+    throw new Error("block not found");
+  }
+  const html6 = editor.blocksToHTMLLossy([
+    {
+      ...block,
+      children: []
+    }
+  ]);
+  const initialMockID = window.__TEST_OPTIONS?.mockID;
+  const blocks = editor.tryParseHTMLToBlocks(html6);
+  if (window.__TEST_OPTIONS) {
+    window.__TEST_OPTIONS.mockID = initialMockID;
+  }
+  if (blocks.length !== 1) {
+    throw new Error("html diff invalid block count");
+  }
+  const htmlBlock = blocks[0];
+  htmlBlock.id = id3;
+  const steps = updateToReplaceSteps(
+    {
+      id: id3,
+      block: htmlBlock
+    },
+    tr4.doc
+  );
+  const stepMapping = new Mapping();
+  for (const step of steps) {
+    const mapped = step.map(stepMapping);
+    if (!mapped) {
+      throw new Error("html diff", {
+        cause: {
+          html: html6,
+          htmlBlock
+        }
+      });
+    }
+    tr4.step(mapped);
+    stepMapping.appendMap(mapped.getMap());
+  }
+  return rebaseTool(editor, tr4);
+}
+
+// packages/report-review/src/editor-ai/api/formats/html-blocks/tools/validate.ts
+function validateBlockFunction(block) {
+  if (typeof block !== "string") {
+    return {
+      ok: false,
+      error: "block must be a string"
+    };
+  }
+  return {
+    ok: true,
+    value: block
+  };
+}
+
+// packages/report-review/src/editor-ai/api/formats/html-blocks/tools/index.ts
+var tools = {
+  add: createAddBlocksTool({
+    description: "Insert new blocks",
+    schema: {
+      block: {
+        type: "string",
+        description: "html of block (MUST be a single, VALID HTML element)"
+      }
+    },
+    validateBlock: validateBlockFunction,
+    rebaseTool: createHTMLRebaseTool,
+    toJSONToolCall: (editor, chunk) => {
+      const initialMockID = window.__TEST_OPTIONS?.mockID;
+      const blocks = chunk.operation.blocks.flatMap((html6) => {
+        const parsedHtml = chunk.isPossiblyPartial ? getPartialHTML(html6) : html6;
+        if (!parsedHtml) {
+          return [];
+        }
+        return editor.tryParseHTMLToBlocks(parsedHtml).map((block) => {
+          delete block.id;
+          return block;
+        });
+      });
+      if (window.__TEST_OPTIONS) {
+        window.__TEST_OPTIONS.mockID = initialMockID;
+      }
+      if (blocks.length === 0) {
+        return void 0;
+      }
+      return {
+        ...chunk.operation,
+        blocks
+      };
+    }
+  }),
+  update: createUpdateBlockTool({
+    description: "Update a block",
+    schema: {
+      block: {
+        type: "string",
+        description: "html of block (MUST be a single HTML element)"
+      }
+    },
+    validateBlock: validateBlockFunction,
+    rebaseTool: createHTMLRebaseTool,
+    toJSONToolCall: (editor, chunk) => {
+      const html6 = chunk.isPossiblyPartial ? getPartialHTML(chunk.operation.block) : chunk.operation.block;
+      if (!html6) {
+        return void 0;
+      }
+      const block = editor.tryParseHTMLToBlocks(html6)[0];
+      if (window.__TEST_OPTIONS) {
+        window.__TEST_OPTIONS.mockID = void 0;
+      }
+      delete block.id;
+      return {
+        ...chunk.operation,
+        block
+      };
+    }
+  }),
+  delete: deleteBlockTool
+};
+
+// packages/report-review/src/editor-ai/api/formats/html-blocks/htmlBlocks.ts
+function getStreamTools(editor, withDelays, defaultStreamTools, selectionInfo, onBlockUpdate) {
+  if (typeof selectionInfo === "boolean") {
+    const selection = selectionInfo ? editor.getSelectionCutBlocks(true) : void 0;
+    selectionInfo = selection ? {
+      from: selection._meta.startPos,
+      to: selection._meta.endPos
+    } : void 0;
+  }
+  const mergedStreamTools = defaultStreamTools ?? {
+    add: true,
+    update: true,
+    delete: true
+  };
+  const streamTools = [
+    ...mergedStreamTools.update ? [
+      tools.update(editor, {
+        idsSuffixed: true,
+        withDelays,
+        updateSelection: selectionInfo,
+        onBlockUpdate
+      })
+    ] : [],
+    ...mergedStreamTools.add ? [tools.add(editor, { idsSuffixed: true, withDelays, onBlockUpdate })] : [],
+    ...mergedStreamTools.delete ? [tools.delete(editor, { idsSuffixed: true, withDelays, onBlockUpdate })] : []
+  ];
+  return streamTools;
+}
+var systemPrompt = `You're manipulating a text document using HTML blocks. 
+Make sure to follow the json schema provided. When referencing ids they MUST be EXACTLY the same (including the trailing $). 
+List items are 1 block with 1 list item each, so block content \`<ul><li>item1</li></ul>\` is valid, but \`<ul><li>item1</li><li>item2</li></ul>\` is invalid. We'll merge them automatically.
+For code blocks, you can use the \`data-language\` attribute on a <code> block (wrapped with <pre>) to specify the language.
+
+If the user requests updates to the document, use the "applyDocumentOperations" tool to update the document.
+---
+IF there is no selection active in the latest state, first, determine what part of the document the user is talking about. You SHOULD probably take cursor info into account if needed.
+  EXAMPLE: if user says "below" (without pointing to a specific part of the document) he / she probably indicates the block(s) after the cursor. 
+  EXAMPLE: If you want to insert content AT the cursor position (UNLESS indicated otherwise by the user), then you need \`referenceId\` to point to the block before the cursor with position \`after\` (or block below and \`before\`
+---
+ `;
+var htmlBlockLLMFormat = {
+  /**
+   * Function to get the stream tools that can apply HTML block updates to the editor
+   */
+  getStreamToolsProvider: (opts = {}) => ({
+    getStreamTools: (editor, selectionInfo, onBlockUpdate) => {
+      return getStreamTools(
+        editor,
+        opts.withDelays ?? true,
+        opts.defaultStreamTools,
+        selectionInfo,
+        onBlockUpdate
+      );
+    }
+  }),
+  systemPrompt,
+  tools,
+  /**
+   * The default DocumentStateBuilder that can take an editor and convert it to a document state that can be passed to the backend
+   */
+  defaultDocumentStateBuilder: makeDocumentStateBuilder(
+    async (editor, block) => {
+      return editor.blocksToHTMLLossy([block]);
+    }
+  )
+};
+
+// packages/report-review/src/editor-ai/api/formats/formats.ts
+var aiDocumentFormats = {
+  html: htmlBlockLLMFormat
+};
+
+// packages/report-review/src/editor-ai/plugins/AgentCursorPlugin.ts
+var defaultSelectionBuilder = (user) => {
+  return {
+    style: `background-color: ${user.color}70`,
+    class: "ProseMirror-yjs-selection"
+  };
+};
+var PLUGIN_KEY = new PluginKey(`blocknote-agent-cursor`);
+function createAgentCursorPlugin(agentCursor) {
+  return new Plugin({
+    key: PLUGIN_KEY,
+    view: (_view) => {
+      return {};
+    },
+    state: {
+      init: () => {
+        return {
+          selection: void 0
+        };
+      },
+      apply: (tr4, _oldState) => {
+        const meta2 = tr4.getMeta("aiAgent");
+        if (!meta2) {
+          return {
+            selection: void 0
+          };
+        }
+        return {
+          selection: meta2.selection
+        };
+      }
+    },
+    props: {
+      decorations: (state) => {
+        const { doc: doc4 } = state;
+        const { selection } = PLUGIN_KEY.getState(state);
+        const decs = [];
+        if (!selection) {
+          return DecorationSet.create(doc4, []);
+        }
+        decs.push(
+          Decoration2.widget(selection.head, () => renderCursor(agentCursor), {
+            key: "agent-cursor",
+            side: 10
+          })
+        );
+        const from2 = Math.min(selection.anchor, selection.head);
+        const to = Math.max(selection.anchor, selection.head);
+        decs.push(
+          Decoration2.inline(from2, to, defaultSelectionBuilder(agentCursor), {
+            inclusiveEnd: true,
+            inclusiveStart: false
+          })
+        );
+        return DecorationSet.create(doc4, decs);
+      }
+    }
+  });
+}
+var renderCursor = (user) => {
+  const cursorElement = document.createElement("span");
+  cursorElement.classList.add("bn-collaboration-cursor__base");
+  cursorElement.setAttribute("data-active", "true");
+  const caretElement = document.createElement("span");
+  caretElement.setAttribute("contentedEditable", "false");
+  caretElement.classList.add("bn-collaboration-cursor__caret");
+  caretElement.setAttribute("style", `background-color: ${user.color}`);
+  const labelElement = document.createElement("span");
+  labelElement.classList.add("bn-collaboration-cursor__label");
+  labelElement.setAttribute("style", `background-color: ${user.color}`);
+  labelElement.insertBefore(document.createTextNode(user.name), null);
+  caretElement.insertBefore(labelElement, null);
+  cursorElement.insertBefore(document.createTextNode("\u2060"), null);
+  cursorElement.insertBefore(caretElement, null);
+  cursorElement.insertBefore(document.createTextNode("\u2060"), null);
+  return cursorElement;
+};
+
+// packages/report-review/src/editor-ai/prosemirror/AttributionMarks.ts
+var SuggestionAddMark = Mark2.create({
+  name: "insertion",
+  inclusive: false,
+  excludes: "deletion modification insertion",
+  // Two groups: `BLOCK_LEVEL_SUGGESTION_GROUP` lets the mark sit on block nodes
+  // (see core's `suggestionMarks`), so a whole block (e.g. a table row) can be
+  // marked as inserted in suggestion mode; `NON_FORMATTING_MARK_GROUP` lets it
+  // annotate text inside `"plain"` blocks (e.g. code blocks) — see core's
+  // `nonFormattingMarks`.
+  group: `${Dr} ${t2}`,
+  addAttributes() {
+    return {
+      id: { default: null, validate: "number" }
+      // note: validate is supported in prosemirror but not in tiptap, so this doesn't actually work (considered not critical)
+    };
+  },
+  extendMarkSchema(extension2) {
+    if (extension2.name !== "insertion") {
+      return {};
+    }
+    return {
+      blocknoteIgnore: true,
+      inclusive: false,
+      toDOM(mark2, inline5) {
+        return [
+          "ins",
+          {
+            "data-id": String(mark2.attrs["id"]),
+            "data-inline": String(inline5),
+            ...!inline5 && { style: "display: contents" }
+            // changed to "contents" to make this work for table rows
+          },
+          0
+        ];
+      },
+      parseDOM: [
+        {
+          tag: "ins",
+          getAttrs(node2) {
+            if (!node2.dataset["id"]) {
+              return false;
+            }
+            return {
+              id: parseInt(node2.dataset["id"], 10)
+            };
+          }
+        }
+      ]
+    };
+  }
+});
+var SuggestionDeleteMark = Mark2.create({
+  name: "deletion",
+  inclusive: false,
+  excludes: "insertion modification deletion",
+  group: `${Dr} ${t2}`,
+  addAttributes() {
+    return {
+      id: { default: null, validate: "number" }
+      // note: validate is supported in prosemirror but not in tiptap
+    };
+  },
+  extendMarkSchema(extension2) {
+    if (extension2.name !== "deletion") {
+      return {};
+    }
+    return {
+      blocknoteIgnore: true,
+      inclusive: false,
+      // attrs: {
+      //   id: { validate: "number" },
+      // },
+      toDOM(mark2, inline5) {
+        return [
+          "del",
+          {
+            "data-id": String(mark2.attrs["id"]),
+            "data-inline": String(inline5),
+            ...!inline5 && { style: "display: contents" }
+            // changed to "contents" to make this work for table rows
+          },
+          0
+        ];
+      },
+      parseDOM: [
+        {
+          tag: "del",
+          getAttrs(node2) {
+            if (!node2.dataset["id"]) {
+              return false;
+            }
+            return {
+              id: parseInt(node2.dataset["id"], 10)
+            };
+          }
+        }
+      ]
+    };
+  }
+});
+var SuggestionModificationMark = Mark2.create({
+  name: "modification",
+  inclusive: false,
+  excludes: "deletion insertion",
+  group: `${Dr} ${t2}`,
+  addAttributes() {
+    return {
+      id: { default: null, validate: "number" },
+      type: { validate: "string" },
+      attrName: { default: null, validate: "string|null" },
+      previousValue: { default: null },
+      newValue: { default: null }
+    };
+  },
+  extendMarkSchema(extension2) {
+    if (extension2.name !== "modification") {
+      return {};
+    }
+    return {
+      blocknoteIgnore: true,
+      inclusive: false,
+      // attrs: {
+      //   id: { validate: "number" },
+      //   type: { validate: "string" },
+      //   attrName: { default: null, validate: "string|null" },
+      //   previousValue: { default: null },
+      //   newValue: { default: null },
+      // },
+      toDOM(mark2, inline5) {
+        return [
+          inline5 ? "span" : "div",
+          {
+            "data-type": "modification",
+            "data-id": String(mark2.attrs["id"]),
+            "data-mod-type": mark2.attrs["type"],
+            "data-mod-prev-val": JSON.stringify(mark2.attrs["previousValue"]),
+            // TODO: Try to serialize marks with toJSON?
+            "data-mod-new-val": JSON.stringify(mark2.attrs["newValue"])
+          },
+          0
+        ];
+      },
+      parseDOM: [
+        {
+          tag: "span[data-type='modification']",
+          getAttrs(node2) {
+            if (!node2.dataset["id"]) {
+              return false;
+            }
+            return {
+              id: parseInt(node2.dataset["id"], 10),
+              type: node2.dataset["modType"],
+              previousValue: node2.dataset["modPrevVal"],
+              newValue: node2.dataset["modNewVal"]
+            };
+          }
+        },
+        {
+          tag: "div[data-type='modification']",
+          getAttrs(node2) {
+            if (!node2.dataset["id"]) {
+              return false;
+            }
+            return {
+              id: parseInt(node2.dataset["id"], 10),
+              type: node2.dataset["modType"],
+              previousValue: node2.dataset["modPrevVal"]
+            };
+          }
+        }
+      ]
+    };
+  }
+});
+var AttributionMarksExtension = l(() => ({
+  key: "aiAttributionMarks",
+  tiptapExtensions: [
+    SuggestionAddMark,
+    SuggestionDeleteMark,
+    SuggestionModificationMark
+  ]
+}));
+
+// packages/report-review/src/editor-ai/AIExtension.ts
+var PLUGIN_KEY2 = new PluginKey(`blocknote-ai-plugin`);
+var AIExtension = l(
+  ({
+    editor,
+    options: editorOptions
+  }) => {
+    const options = u(editorOptions ?? {});
+    const store = u({
+      aiMenuState: "closed"
+    });
+    let chatSession;
+    let autoScroll = false;
+    const suggestChangesPlugin = suggestChanges();
+    suggestChangesPlugin.props.decorations = void 0;
+    return {
+      key: "ai",
+      options,
+      store,
+      blockNoteExtensions: [AttributionMarksExtension()],
+      mount({ signal }) {
+        let scrollInProgress = false;
+        document.addEventListener(
+          "scroll",
+          () => {
+            if (scrollInProgress) {
+              autoScroll = false;
+            }
+            scrollInProgress = true;
+          },
+          {
+            capture: true,
+            signal
+          }
+        );
+        document.addEventListener(
+          "scrollend",
+          () => {
+            scrollInProgress = false;
+          },
+          {
+            capture: true,
+            signal
+          }
+        );
+      },
+      prosemirrorPlugins: [
+        new Plugin({
+          key: PLUGIN_KEY2,
+          filterTransaction: (tr4) => {
+            const menuState = store.state.aiMenuState;
+            if (menuState !== "closed" && menuState.status === "ai-writing") {
+              if (tr4.getMeta(fixTablesKey)?.fixTables) {
+                return false;
+              }
+            }
+            return true;
+          }
+        }),
+        suggestChangesPlugin,
+        createAgentCursorPlugin(
+          editorOptions?.agentCursor || { name: "AI", color: "#8bc6ff" }
+        )
+      ],
+      /**
+       * Open the AI menu at a specific block
+       */
+      openAIMenuAtBlock(blockID) {
+        editor.getExtension(s2)?.showSelection(true, "aiMenu");
+        editor.isEditable = false;
+        store.setState({
+          aiMenuState: {
+            blockId: blockID,
+            status: "user-input"
+          }
+        });
+        const blockElement = editor.domElement?.querySelector(
+          `[data-node-type="blockContainer"][data-id="${blockID}"]`
+        );
+        blockElement?.scrollIntoView({ block: "center" });
+      },
+      /**
+       * Close the AI menu
+       */
+      closeAIMenu() {
+        store.setState({
+          aiMenuState: "closed"
+        });
+        chatSession = void 0;
+        editor.getExtension(s2)?.showSelection(false, "aiMenu");
+        editor.isEditable = true;
+        editor.focus();
+      },
+      /**
+       * Accept the changes made by the LLM
+       */
+      acceptChanges() {
+        const markedUpDocument = editor.prosemirrorState.doc;
+        editor.exec((state, dispatch) => {
+          return revertSuggestions(state, (tr4) => {
+            dispatch?.(tr4.setMeta("addToHistory", false));
+          });
+        });
+        editor.exec((state, dispatch) => {
+          const tr4 = state.tr;
+          tr4.replace(
+            0,
+            tr4.doc.content.size,
+            new Slice(Fragment.from(markedUpDocument), 0, 0)
+          );
+          const nextState = state.apply(tr4);
+          return applySuggestions(nextState, (resultTr) => {
+            dispatch?.(
+              tr4.replace(
+                0,
+                tr4.doc.content.size,
+                new Slice(Fragment.from(resultTr.doc), 0, 0)
+              )
+            );
+          });
+        });
+        editor.getExtension("yForkDoc")?.merge({ keepChanges: true });
+        this.closeAIMenu();
+      },
+      /**
+       * Reject the changes made by the LLM
+       */
+      rejectChanges() {
+        editor.exec((state, dispatch) => {
+          return revertSuggestions(state, (tr4) => {
+            dispatch?.(tr4.setMeta("addToHistory", false));
+          });
+        });
+        editor.getExtension("yForkDoc")?.merge({ keepChanges: false });
+        this.closeAIMenu();
+      },
+      /**
+       * Abort the current LLM request.
+       *
+       * This will stop the ongoing request and revert any changes made by the AI.
+       * Only valid when there is an active AI request in progress.
+       */
+      async abort(reason) {
+        const { aiMenuState } = store.state;
+        if (aiMenuState === "closed" || !chatSession) {
+          return;
+        }
+        if (aiMenuState.status !== "thinking" && aiMenuState.status !== "ai-writing") {
+          return;
+        }
+        const chat = chatSession.chat;
+        const abortController = chatSession.abortController;
+        abortController.abort(reason);
+        await chat.stop();
+      },
+      /**
+       * Retry the previous LLM call.
+       *
+       * Only valid if the current status is "error"
+       */
+      async retry() {
+        const { aiMenuState } = store.state;
+        if (aiMenuState === "closed" || aiMenuState.status !== "error" || !chatSession) {
+          throw new Error(
+            "retry() is only valid when a previous response failed"
+          );
+        }
+        if (chatSession?.chat.status === "error") {
+          return this.invokeAI({
+            ...chatSession.previousRequestOptions,
+            userPrompt: `An error occured in the previous request. Please retry to accomplish the last user prompt.`
+          });
+        } else {
+          return this.invokeAI({
+            ...chatSession.previousRequestOptions,
+            userPrompt: `An error occured while executing the previous tool call. Please retry to accomplish the last user prompt.`
+          });
+        }
+      },
+      /**
+       * Update the status of a call to an LLM
+       *
+       * @warning This method should usually only be used for advanced use-cases
+       * if you want to implement how an LLM call is executed. Usually, you should
+       * use {@link executeLLMRequest} instead which will handle the status updates for you.
+       */
+      setAIResponseStatus(status) {
+        const aiMenuState = store.state.aiMenuState;
+        if (aiMenuState === "closed") {
+          return;
+        }
+        if (status === "ai-writing") {
+          editor.getExtension(s2)?.showSelection(false, "aiMenu");
+        }
+        if (typeof status === "object") {
+          if (status.status !== "error") {
+            throw new O(status.status);
+          }
+          this.store.setState({
+            aiMenuState: {
+              status: status.status,
+              error: status.error,
+              blockId: aiMenuState.blockId
+            }
+          });
+        } else {
+          this.store.setState({
+            aiMenuState: {
+              status,
+              blockId: aiMenuState.blockId
+            }
+          });
+        }
+      },
+      /**
+       * @deprecated Use {@link invokeAI} instead
+       */
+      async callLLM(opts) {
+        return this.invokeAI(opts);
+      },
+      /**
+       * Execute a call to an LLM and apply the result to the editor
+       */
+      async invokeAI(opts) {
+        this.setAIResponseStatus("thinking");
+        editor.getExtension("yForkDoc")?.fork();
+        try {
+          const abortController = new AbortController();
+          if (!chatSession) {
+            chatSession = {
+              previousRequestOptions: opts,
+              chat: opts.chatProvider?.() || this.options.state.chatProvider?.() || new Chat({
+                sendAutomaticallyWhen: () => false,
+                transport: opts.transport || this.options.state.transport
+              }),
+              abortController
+            };
+          } else {
+            chatSession.previousRequestOptions = opts;
+            chatSession.abortController = abortController;
+          }
+          const chat = chatSession.chat;
+          const globalOpts = options.state;
+          opts = {
+            ...globalOpts,
+            ...opts
+          };
+          const aiRequest = await buildAIRequest({
+            editor,
+            useSelection: opts.useSelection,
+            deleteEmptyCursorBlock: opts.deleteEmptyCursorBlock,
+            streamToolsProvider: opts.streamToolsProvider ?? this.options.state.streamToolsProvider,
+            documentStateBuilder: opts.documentStateBuilder ?? this.options.state.documentStateBuilder,
+            onBlockUpdated: (blockId) => {
+              const aiMenuState = store.state.aiMenuState;
+              const aiMenuOpenState = aiMenuState === "closed" ? void 0 : aiMenuState;
+              if (!aiMenuOpenState || aiMenuOpenState.status !== "ai-writing") {
+                return;
+              }
+              const nodeInfo = Zt(
+                blockId,
+                editor.prosemirrorState.doc
+              );
+              if (!nodeInfo) {
+                return;
+              }
+              store.setState({
+                aiMenuState: {
+                  blockId,
+                  status: "ai-writing"
+                }
+              });
+              if (autoScroll) {
+                const blockElement = editor.prosemirrorView.domAtPos(
+                  nodeInfo.posBeforeNode + 1
+                );
+                blockElement.node.scrollIntoView({
+                  block: "center"
+                });
+              }
+            },
+            onStart: () => {
+              autoScroll = true;
+              this.setAIResponseStatus("ai-writing");
+              if (aiRequest.emptyCursorBlockToDelete && aiRequest.editor.getBlock(aiRequest.emptyCursorBlockToDelete)) {
+                aiRequest.editor.removeBlocks([
+                  aiRequest.emptyCursorBlockToDelete
+                ]);
+              }
+            }
+          });
+          const result = await sendMessageWithAIRequest(
+            chat,
+            aiRequest,
+            {
+              role: "user",
+              parts: [
+                {
+                  type: "text",
+                  text: opts.userPrompt
+                }
+              ]
+            },
+            opts.chatRequestOptions || this.options.state.chatRequestOptions,
+            chatSession.abortController.signal
+          );
+          if (result.ok && chat.status !== "error" || abortController.signal.aborted) {
+            this.setAIResponseStatus("user-reviewing");
+          } else {
+            console.warn("Error calling LLM", {
+              result,
+              chatStatus: chat.status,
+              chatError: chat.error
+            });
+            this.setAIResponseStatus({
+              status: "error",
+              error: result.ok ? chat.error : result.error
+            });
+          }
+        } catch (e6) {
+          this.setAIResponseStatus({
+            status: "error",
+            error: e6
+          });
+          console.error(
+            "Unexpected error calling LLM",
+            e6,
+            chatSession?.chat.messages
+          );
+        }
+      }
+    };
+  }
+);
+
+// packages/report-review/src/editor-ai/components/AIMenu/AIMenu.tsx
+var import_react159 = require("react");
+
+// node_modules/react-icons/lib/iconBase.mjs
+var import_react154 = __toESM(require("react"), 1);
+
+// node_modules/react-icons/lib/iconContext.mjs
 var import_react153 = __toESM(require("react"), 1);
-init_demo_content();
+var DefaultContext = {
+  color: void 0,
+  size: void 0,
+  className: void 0,
+  style: void 0,
+  attr: void 0
+};
+var IconContext = import_react153.default.createContext && /* @__PURE__ */ import_react153.default.createContext(DefaultContext);
+
+// node_modules/react-icons/lib/iconBase.mjs
+var _excluded = ["attr", "size", "title"];
+function _objectWithoutProperties(e6, t4) {
+  if (null == e6) return {};
+  var o4, r4, i3 = _objectWithoutPropertiesLoose(e6, t4);
+  if (Object.getOwnPropertySymbols) {
+    var n3 = Object.getOwnPropertySymbols(e6);
+    for (r4 = 0; r4 < n3.length; r4++) o4 = n3[r4], -1 === t4.indexOf(o4) && {}.propertyIsEnumerable.call(e6, o4) && (i3[o4] = e6[o4]);
+  }
+  return i3;
+}
+function _objectWithoutPropertiesLoose(r4, e6) {
+  if (null == r4) return {};
+  var t4 = {};
+  for (var n3 in r4) if ({}.hasOwnProperty.call(r4, n3)) {
+    if (-1 !== e6.indexOf(n3)) continue;
+    t4[n3] = r4[n3];
+  }
+  return t4;
+}
+function _extends() {
+  return _extends = Object.assign ? Object.assign.bind() : function(n3) {
+    for (var e6 = 1; e6 < arguments.length; e6++) {
+      var t4 = arguments[e6];
+      for (var r4 in t4) ({}).hasOwnProperty.call(t4, r4) && (n3[r4] = t4[r4]);
+    }
+    return n3;
+  }, _extends.apply(null, arguments);
+}
+function ownKeys(e6, r4) {
+  var t4 = Object.keys(e6);
+  if (Object.getOwnPropertySymbols) {
+    var o4 = Object.getOwnPropertySymbols(e6);
+    r4 && (o4 = o4.filter(function(r5) {
+      return Object.getOwnPropertyDescriptor(e6, r5).enumerable;
+    })), t4.push.apply(t4, o4);
+  }
+  return t4;
+}
+function _objectSpread(e6) {
+  for (var r4 = 1; r4 < arguments.length; r4++) {
+    var t4 = null != arguments[r4] ? arguments[r4] : {};
+    r4 % 2 ? ownKeys(Object(t4), true).forEach(function(r5) {
+      _defineProperty(e6, r5, t4[r5]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e6, Object.getOwnPropertyDescriptors(t4)) : ownKeys(Object(t4)).forEach(function(r5) {
+      Object.defineProperty(e6, r5, Object.getOwnPropertyDescriptor(t4, r5));
+    });
+  }
+  return e6;
+}
+function _defineProperty(e6, r4, t4) {
+  return (r4 = _toPropertyKey(r4)) in e6 ? Object.defineProperty(e6, r4, { value: t4, enumerable: true, configurable: true, writable: true }) : e6[r4] = t4, e6;
+}
+function _toPropertyKey(t4) {
+  var i3 = _toPrimitive(t4, "string");
+  return "symbol" == typeof i3 ? i3 : i3 + "";
+}
+function _toPrimitive(t4, r4) {
+  if ("object" != typeof t4 || !t4) return t4;
+  var e6 = t4[Symbol.toPrimitive];
+  if (void 0 !== e6) {
+    var i3 = e6.call(t4, r4 || "default");
+    if ("object" != typeof i3) return i3;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return ("string" === r4 ? String : Number)(t4);
+}
+function Tree2Element(tree) {
+  return tree && tree.map((node2, i3) => /* @__PURE__ */ import_react154.default.createElement(node2.tag, _objectSpread({
+    key: i3
+  }, node2.attr), Tree2Element(node2.child)));
+}
+function GenIcon(data2) {
+  return (props) => /* @__PURE__ */ import_react154.default.createElement(IconBase, _extends({
+    attr: _objectSpread({}, data2.attr)
+  }, props), Tree2Element(data2.child));
+}
+function IconBase(props) {
+  var elem = (conf) => {
+    var attr2 = props.attr, size4 = props.size, title = props.title, svgProps = _objectWithoutProperties(props, _excluded);
+    var computedSize = size4 || conf.size || "1em";
+    var className;
+    if (conf.className) className = conf.className;
+    if (props.className) className = (className ? className + " " : "") + props.className;
+    return /* @__PURE__ */ import_react154.default.createElement("svg", _extends({
+      stroke: "currentColor",
+      fill: "currentColor",
+      strokeWidth: "0"
+    }, conf.attr, attr2, svgProps, {
+      className,
+      style: _objectSpread(_objectSpread({
+        color: props.color || conf.color
+      }, conf.style), props.style),
+      height: computedSize,
+      width: computedSize,
+      xmlns: "http://www.w3.org/2000/svg"
+    }), title && /* @__PURE__ */ import_react154.default.createElement("title", null, title), props.children);
+  };
+  return IconContext !== void 0 ? /* @__PURE__ */ import_react154.default.createElement(IconContext.Consumer, null, (conf) => elem(conf)) : elem(DefaultContext);
+}
+
+// node_modules/react-icons/ri/index.mjs
+function RiSparkling2Fill(props) {
+  return GenIcon({ "tag": "svg", "attr": { "viewBox": "0 0 24 24", "fill": "currentColor" }, "child": [{ "tag": "path", "attr": { "d": "M17.0007 1.20825 18.3195 3.68108 20.7923 4.99992 18.3195 6.31876 17.0007 8.79159 15.6818 6.31876 13.209 4.99992 15.6818 3.68108 17.0007 1.20825ZM8.00065 4.33325 10.6673 9.33325 15.6673 11.9999 10.6673 14.6666 8.00065 19.6666 5.33398 14.6666.333984 11.9999 5.33398 9.33325 8.00065 4.33325ZM19.6673 16.3333 18.0007 13.2083 16.334 16.3333 13.209 17.9999 16.334 19.6666 18.0007 22.7916 19.6673 19.6666 22.7923 17.9999 19.6673 16.3333Z" }, "child": [] }] })(props);
+}
+function RiEarthLine(props) {
+  return GenIcon({ "tag": "svg", "attr": { "viewBox": "0 0 24 24", "fill": "currentColor" }, "child": [{ "tag": "path", "attr": { "d": "M6.23509 6.45329C4.85101 7.89148 4 9.84636 4 12C4 16.4183 7.58172 20 12 20C13.0808 20 14.1116 19.7857 15.0521 19.3972C15.1671 18.6467 14.9148 17.9266 14.8116 17.6746C14.582 17.115 13.8241 16.1582 12.5589 14.8308C12.2212 14.4758 12.2429 14.2035 12.3636 13.3943L12.3775 13.3029C12.4595 12.7486 12.5971 12.4209 14.4622 12.1248C15.4097 11.9746 15.6589 12.3533 16.0043 12.8777C16.0425 12.9358 16.0807 12.9928 16.1198 13.0499C16.4479 13.5297 16.691 13.6394 17.0582 13.8064C17.2227 13.881 17.428 13.9751 17.7031 14.1314C18.3551 14.504 18.3551 14.9247 18.3551 15.8472V15.9518C18.3551 16.3434 18.3168 16.6872 18.2566 16.9859C19.3478 15.6185 20 13.8854 20 12C20 8.70089 18.003 5.8682 15.1519 4.64482C14.5987 5.01813 13.8398 5.54726 13.575 5.91C13.4396 6.09538 13.2482 7.04166 12.6257 7.11976C12.4626 7.14023 12.2438 7.12589 12.012 7.11097C11.3905 7.07058 10.5402 7.01606 10.268 7.75495C10.0952 8.2232 10.0648 9.49445 10.6239 10.1543C10.7134 10.2597 10.7307 10.4547 10.6699 10.6735C10.59 10.9608 10.4286 11.1356 10.3783 11.1717C10.2819 11.1163 10.0896 10.8931 9.95938 10.7412C9.64554 10.3765 9.25405 9.92233 8.74797 9.78176C8.56395 9.73083 8.36166 9.68867 8.16548 9.64736C7.6164 9.53227 6.99443 9.40134 6.84992 9.09302C6.74442 8.8672 6.74488 8.55621 6.74529 8.22764C6.74529 7.8112 6.74529 7.34029 6.54129 6.88256C6.46246 6.70541 6.35689 6.56446 6.23509 6.45329ZM12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22Z" }, "child": [] }] })(props);
+}
+function RiLoopLeftFill(props) {
+  return GenIcon({ "tag": "svg", "attr": { "viewBox": "0 0 24 24", "fill": "currentColor" }, "child": [{ "tag": "path", "attr": { "d": "M12 4C9.4095 4 7.10606 5.23053 5.64274 7.14274L8 9.5H2V3.5L4.21863 5.71863C6.05061 3.452 8.85558 2 12 2 17.5228 2 22 6.47715 22 12H20C20 7.58172 16.4183 4 12 4ZM4 12C4 16.4183 7.58172 20 12 20 14.5905 20 16.894 18.7695 18.3573 16.8573L16 14.5 22 14.5V20.5L19.7814 18.2814C17.9494 20.548 15.1444 22 12 22 6.47715 22 2 17.5228 2 12H4Z" }, "child": [] }] })(props);
+}
+function RiCheckLine(props) {
+  return GenIcon({ "tag": "svg", "attr": { "viewBox": "0 0 24 24", "fill": "currentColor" }, "child": [{ "tag": "path", "attr": { "d": "M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z" }, "child": [] }] })(props);
+}
+function RiCheckFill(props) {
+  return GenIcon({ "tag": "svg", "attr": { "viewBox": "0 0 24 24", "fill": "currentColor" }, "child": [{ "tag": "path", "attr": { "d": "M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z" }, "child": [] }] })(props);
+}
+function RiText(props) {
+  return GenIcon({ "tag": "svg", "attr": { "viewBox": "0 0 24 24", "fill": "currentColor" }, "child": [{ "tag": "path", "attr": { "d": "M13 6V21H11V6H5V4H19V6H13Z" }, "child": [] }] })(props);
+}
+function RiTextWrap(props) {
+  return GenIcon({ "tag": "svg", "attr": { "viewBox": "0 0 24 24", "fill": "currentColor" }, "child": [{ "tag": "path", "attr": { "d": "M15 18H16.5C17.8807 18 19 16.8807 19 15.5C19 14.1193 17.8807 13 16.5 13H3V11H16.5C18.9853 11 21 13.0147 21 15.5C21 17.9853 18.9853 20 16.5 20H15V22L11 19L15 16V18ZM3 4H21V6H3V4ZM9 18V20H3V18H9Z" }, "child": [] }] })(props);
+}
+function RiListCheck3(props) {
+  return GenIcon({ "tag": "svg", "attr": { "viewBox": "0 0 24 24", "fill": "currentColor" }, "child": [{ "tag": "path", "attr": { "d": "M8.00008 6V9H5.00008V6H8.00008ZM3.00008 4V11H10.0001V4H3.00008ZM13.0001 4H21.0001V6H13.0001V4ZM13.0001 11H21.0001V13H13.0001V11ZM13.0001 18H21.0001V20H13.0001V18ZM10.7072 16.2071L9.29297 14.7929L6.00008 18.0858L4.20718 16.2929L2.79297 17.7071L6.00008 20.9142L10.7072 16.2071Z" }, "child": [] }] })(props);
+}
+function RiMagicLine(props) {
+  return GenIcon({ "tag": "svg", "attr": { "viewBox": "0 0 24 24", "fill": "currentColor" }, "child": [{ "tag": "path", "attr": { "d": "M15.1986 9.94447C14.7649 9.5337 14.4859 8.98613 14.4085 8.39384L14.0056 5.31138L11.275 6.79724C10.7503 7.08274 10.1433 7.17888 9.55608 7.06948L6.49998 6.50015L7.06931 9.55625C7.17871 10.1435 7.08257 10.7505 6.79707 11.2751L5.31121 14.0057L8.39367 14.4086C8.98596 14.4861 9.53353 14.7651 9.94431 15.1987L12.0821 17.4557L13.4178 14.6486C13.6745 14.1092 14.109 13.6747 14.6484 13.418L17.4555 12.0823L15.1986 9.94447ZM15.2238 15.5079L13.0111 20.1581C12.8687 20.4573 12.5107 20.5844 12.2115 20.442C12.1448 20.4103 12.0845 20.3665 12.0337 20.3129L8.49229 16.5741C8.39749 16.474 8.27113 16.4096 8.13445 16.3918L3.02816 15.7243C2.69958 15.6814 2.46804 15.3802 2.51099 15.0516C2.52056 14.9784 2.54359 14.9075 2.5789 14.8426L5.04031 10.3192C5.1062 10.1981 5.12839 10.058 5.10314 9.92253L4.16 4.85991C4.09931 4.53414 4.3142 4.22086 4.63997 4.16017C4.7126 4.14664 4.78711 4.14664 4.85974 4.16017L9.92237 5.10331C10.0579 5.12855 10.198 5.10637 10.319 5.04048L14.8424 2.57907C15.1335 2.42068 15.4979 2.52825 15.6562 2.81931C15.6916 2.88421 15.7146 2.95507 15.7241 3.02833L16.3916 8.13462C16.4095 8.2713 16.4739 8.39766 16.5739 8.49245L20.3127 12.0338C20.5533 12.2617 20.5636 12.6415 20.3357 12.8821C20.2849 12.9357 20.2246 12.9795 20.1579 13.0112L15.5078 15.224C15.3833 15.2832 15.283 15.3835 15.2238 15.5079ZM16.0206 17.435L17.4348 16.0208L21.6775 20.2634L20.2633 21.6776L16.0206 17.435Z" }, "child": [] }] })(props);
+}
+function RiBallPenLine(props) {
+  return GenIcon({ "tag": "svg", "attr": { "viewBox": "0 0 24 24", "fill": "currentColor" }, "child": [{ "tag": "path", "attr": { "d": "M17.8492 11.6983L17.1421 10.9912L7.24264 20.8907H3V16.648L14.3137 5.33432L19.9706 10.9912C20.3611 11.3817 20.3611 12.0149 19.9706 12.4054L12.8995 19.4765L11.4853 18.0622L17.8492 11.6983ZM15.7279 9.57696L14.3137 8.16274L5 17.4765V18.8907H6.41421L15.7279 9.57696ZM18.5563 2.50589L21.3848 5.33432C21.7753 5.72484 21.7753 6.35801 21.3848 6.74853L19.9706 8.16274L15.7279 3.9201L17.1421 2.50589C17.5327 2.11537 18.1658 2.11537 18.5563 2.50589Z" }, "child": [] }] })(props);
+}
+function RiArrowGoBackFill(props) {
+  return GenIcon({ "tag": "svg", "attr": { "viewBox": "0 0 24 24", "fill": "currentColor" }, "child": [{ "tag": "path", "attr": { "d": "M8 7V11L2 6L8 1V5H13C17.4183 5 21 8.58172 21 13C21 17.4183 17.4183 21 13 21H4V19H13C16.3137 19 19 16.3137 19 13C19 9.68629 16.3137 7 13 7H8Z" }, "child": [] }] })(props);
+}
+
+// packages/report-review/src/editor-ai/i18n/dictionary.ts
+function getAIDictionary(editor) {
+  if (!editor.dictionary.ai) {
+    throw new Error("AI dictionary not found");
+  }
+  return editor.dictionary.ai;
+}
+
+// packages/report-review/src/editor-ai/hooks/useAIDictionary.ts
+function useAIDictionary() {
+  const ctx = A3();
+  return getAIDictionary(ctx.editor);
+}
+
+// packages/report-review/src/editor-ai/components/AIMenu/PromptSuggestionMenu.tsx
+var import_react157 = require("react");
 var import_jsx_runtime121 = require("react/jsx-runtime");
+var PromptSuggestionMenu = (props) => {
+  const Components = V4();
+  const { onManualPromptSubmit, promptText, onPromptTextChange, disabled } = props;
+  const [internalPromptText, setInternalPromptText] = (0, import_react157.useState)("");
+  const promptTextToUse = promptText || internalPromptText;
+  const handleEnter = (0, import_react157.useCallback)(
+    async (event) => {
+      if (event.key === "Enter" && !event.nativeEvent.isComposing) {
+        onManualPromptSubmit(promptTextToUse);
+      }
+    },
+    [promptTextToUse, onManualPromptSubmit]
+  );
+  const handleChange = (0, import_react157.useCallback)(
+    (event) => {
+      const newValue = event.currentTarget.value;
+      if (onPromptTextChange) {
+        onPromptTextChange(newValue);
+      }
+      if (promptText === void 0) {
+        setInternalPromptText(newValue);
+      }
+    },
+    [onPromptTextChange, setInternalPromptText, promptText]
+  );
+  const items = (0, import_react157.useMemo)(() => {
+    return $r(props.items, promptTextToUse);
+  }, [promptTextToUse, props.items]);
+  const { selectedIndex, setSelectedIndex, handler } = Wr3(items, (item) => item.onItemClick());
+  const activeDescendantId = items.length > 0 && selectedIndex >= 0 && selectedIndex < items.length ? `bn-suggestion-menu-item-${selectedIndex}` : void 0;
+  const handleKeyDown3 = (0, import_react157.useCallback)(
+    (event) => {
+      if (event.key === "Enter" && !event.nativeEvent.isComposing) {
+        if (items.length > 0) {
+          handler(event);
+        } else {
+          void handleEnter(event);
+        }
+      } else {
+        handler(event);
+      }
+    },
+    [handleEnter, handler, items.length]
+  );
+  (0, import_react157.useEffect)(() => {
+    setSelectedIndex(0);
+  }, [promptTextToUse, setSelectedIndex]);
+  const inputRef = (0, import_react157.useRef)(null);
+  const hasBeenDisabled = (0, import_react157.useRef)(disabled);
+  (0, import_react157.useEffect)(() => {
+    if (inputRef.current && hasBeenDisabled.current && !disabled) {
+      inputRef.current.focus();
+    }
+    if (disabled) {
+      hasBeenDisabled.current = true;
+    }
+  }, [disabled]);
+  return /* @__PURE__ */ (0, import_jsx_runtime121.jsxs)("div", { className: "bn-combobox", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime121.jsx)(Components.Generic.Form.Root, { children: /* @__PURE__ */ (0, import_jsx_runtime121.jsx)(
+      Components.Generic.Form.TextInput,
+      {
+        ref: inputRef,
+        className: "bn-combobox-input",
+        name: "ai-prompt",
+        variant: "large",
+        icon: props.icon,
+        value: promptTextToUse || "",
+        placeholder: props.placeholder,
+        disabled: props.disabled,
+        onKeyDown: handleKeyDown3,
+        onChange: handleChange,
+        autoComplete: "off",
+        rightSection: props.rightSection,
+        "aria-activedescendant": activeDescendantId
+      }
+    ) }),
+    items.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime121.jsx)(
+      Components.SuggestionMenu.Root,
+      {
+        className: "bn-combobox-items",
+        id: "ai-suggestion-menu",
+        children: items.map((item, i3) => /* @__PURE__ */ (0, import_jsx_runtime121.jsx)(
+          Components.SuggestionMenu.Item,
+          {
+            className: A(
+              "bn-suggestion-menu-item",
+              item.size === "small" ? "bn-suggestion-menu-item-small" : ""
+            ),
+            id: `bn-suggestion-menu-item-${i3}`,
+            isSelected: i3 === selectedIndex,
+            onClick: item.onItemClick,
+            item
+          },
+          item.title
+        ))
+      }
+    )
+  ] });
+};
+
+// packages/report-review/src/editor-ai/components/AIMenu/getDefaultAIMenuItems.tsx
+var import_jsx_runtime122 = require("react/jsx-runtime");
+function getDefaultAIMenuItemsWithoutSelection(editor) {
+  const dict = getAIDictionary(editor);
+  const ai4 = editor.getExtension(AIExtension);
+  if (!ai4) {
+    return [];
+  }
+  return [
+    {
+      key: "continue_writing",
+      title: dict.ai_default_commands.continue_writing.title,
+      aliases: dict.ai_default_commands.continue_writing.aliases,
+      icon: /* @__PURE__ */ (0, import_jsx_runtime122.jsx)(RiBallPenLine, { size: 18 }),
+      onItemClick: async () => {
+        await ai4.invokeAI({
+          userPrompt: "Continue writing at the current cursor position related to the previous text. Add multiple blocks if needed. If the document looks like a template / draft, follow the template. Be extensive if needed.",
+          // By default, LLM will be able to add / update / delete blocks. For "continue writing", we only want to allow adding new blocks.
+          streamToolsProvider: aiDocumentFormats.html.getStreamToolsProvider({
+            defaultStreamTools: {
+              add: true,
+              delete: false,
+              update: false
+            }
+          })
+        });
+      },
+      size: "small"
+    },
+    {
+      key: "summarize",
+      title: dict.ai_default_commands.summarize.title,
+      aliases: dict.ai_default_commands.summarize.aliases,
+      icon: /* @__PURE__ */ (0, import_jsx_runtime122.jsx)(RiTextWrap, { size: 18 }),
+      onItemClick: async () => {
+        await ai4.invokeAI({
+          userPrompt: "Summarize",
+          // By default, LLM will be able to add / update / delete blocks. For "summarize", we only want to allow adding new blocks.
+          streamToolsProvider: aiDocumentFormats.html.getStreamToolsProvider({
+            defaultStreamTools: {
+              add: true,
+              delete: false,
+              update: false
+            }
+          })
+        });
+      },
+      size: "small"
+    },
+    {
+      key: "action_items",
+      title: dict.ai_default_commands.add_action_items.title,
+      aliases: dict.ai_default_commands.add_action_items.aliases,
+      icon: /* @__PURE__ */ (0, import_jsx_runtime122.jsx)(RiListCheck3, { size: 18 }),
+      onItemClick: async () => {
+        await ai4.invokeAI({
+          userPrompt: "Add action items",
+          // By default, LLM will be able to add / update / delete blocks. For "summarize", we only want to allow adding new blocks.
+          streamToolsProvider: aiDocumentFormats.html.getStreamToolsProvider({
+            defaultStreamTools: {
+              add: true,
+              delete: false,
+              update: false
+            }
+          })
+        });
+      },
+      size: "small"
+    },
+    {
+      key: "write_anything",
+      title: dict.ai_default_commands.write_anything.title,
+      aliases: dict.ai_default_commands.write_anything.aliases,
+      icon: /* @__PURE__ */ (0, import_jsx_runtime122.jsx)(RiBallPenLine, { size: 18 }),
+      onItemClick: (setPrompt) => {
+        setPrompt(dict.ai_default_commands.write_anything.prompt_placeholder);
+      },
+      size: "small"
+    }
+  ];
+}
+function getDefaultAIMenuItemsWithSelection(editor) {
+  const dict = getAIDictionary(editor);
+  const ai4 = editor.getExtension(AIExtension);
+  if (!ai4) {
+    return [];
+  }
+  return [
+    {
+      key: "improve_writing",
+      title: dict.ai_default_commands.improve_writing.title,
+      aliases: dict.ai_default_commands.improve_writing.aliases,
+      icon: /* @__PURE__ */ (0, import_jsx_runtime122.jsx)(RiText, { size: 18 }),
+      onItemClick: async () => {
+        await ai4.invokeAI({
+          useSelection: true,
+          userPrompt: "Improve writing",
+          // By default, LLM will be able to add / update / delete blocks. For "summarize", we only want to allow adding new blocks.
+          streamToolsProvider: aiDocumentFormats.html.getStreamToolsProvider({
+            defaultStreamTools: {
+              add: false,
+              delete: false,
+              update: true
+            }
+          })
+        });
+      },
+      size: "small"
+    },
+    {
+      key: "fix_spelling",
+      title: dict.ai_default_commands.fix_spelling.title,
+      aliases: dict.ai_default_commands.fix_spelling.aliases,
+      icon: /* @__PURE__ */ (0, import_jsx_runtime122.jsx)(RiCheckLine, { size: 18 }),
+      onItemClick: async () => {
+        await ai4.invokeAI({
+          useSelection: true,
+          userPrompt: "Fix spelling",
+          // By default, LLM will be able to add / update / delete blocks. For "summarize", we only want to allow adding new blocks.
+          streamToolsProvider: aiDocumentFormats.html.getStreamToolsProvider({
+            defaultStreamTools: {
+              add: false,
+              delete: false,
+              update: true
+            }
+          })
+        });
+      },
+      size: "small"
+    },
+    {
+      key: "translate",
+      title: dict.ai_default_commands.translate.title,
+      aliases: dict.ai_default_commands.translate.aliases,
+      icon: /* @__PURE__ */ (0, import_jsx_runtime122.jsx)(RiEarthLine, { size: 18 }),
+      onItemClick: (setPrompt) => {
+        setPrompt(dict.ai_default_commands.translate.prompt_placeholder);
+      },
+      size: "small"
+    },
+    {
+      key: "simplify",
+      title: dict.ai_default_commands.simplify.title,
+      aliases: dict.ai_default_commands.simplify.aliases,
+      icon: /* @__PURE__ */ (0, import_jsx_runtime122.jsx)(RiMagicLine, { size: 18 }),
+      onItemClick: async () => {
+        await ai4.invokeAI({
+          useSelection: true,
+          userPrompt: "Simplify",
+          // By default, LLM will be able to add / update / delete blocks. For "summarize", we only want to allow adding new blocks.
+          streamToolsProvider: aiDocumentFormats.html.getStreamToolsProvider({
+            defaultStreamTools: {
+              add: false,
+              delete: false,
+              update: true
+            }
+          })
+        });
+      },
+      size: "small"
+    }
+  ];
+}
+function getDefaultAIMenuItemsForReview(editor) {
+  const dict = getAIDictionary(editor);
+  const ai4 = editor.getExtension(AIExtension);
+  if (!ai4) {
+    return [];
+  }
+  return [
+    {
+      key: "accept",
+      title: dict.ai_menu.actions.accept.title,
+      aliases: dict.ai_menu.actions.accept.aliases,
+      icon: /* @__PURE__ */ (0, import_jsx_runtime122.jsx)(RiCheckFill, { size: 18 }),
+      onItemClick: () => {
+        ai4.acceptChanges();
+      },
+      size: "small"
+    },
+    {
+      key: "revert",
+      title: dict.ai_menu.actions.revert.title,
+      aliases: dict.ai_menu.actions.revert.aliases,
+      icon: /* @__PURE__ */ (0, import_jsx_runtime122.jsx)(RiArrowGoBackFill, { size: 18 }),
+      onItemClick: () => {
+        ai4.rejectChanges();
+      },
+      size: "small"
+    }
+  ];
+}
+function getDefaultAIMenuItemsForError(editor) {
+  const dict = getAIDictionary(editor);
+  const ai4 = editor.getExtension(AIExtension);
+  if (!ai4) {
+    return [];
+  }
+  return [
+    {
+      key: "retry",
+      title: dict.ai_menu.actions.retry.title,
+      aliases: dict.ai_menu.actions.retry.aliases,
+      icon: /* @__PURE__ */ (0, import_jsx_runtime122.jsx)(RiLoopLeftFill, { size: 18 }),
+      onItemClick: async () => {
+        await ai4.retry();
+      },
+      size: "small"
+    },
+    {
+      key: "cancel",
+      title: dict.ai_menu.actions.cancel.title,
+      aliases: dict.ai_menu.actions.cancel.aliases,
+      icon: /* @__PURE__ */ (0, import_jsx_runtime122.jsx)(RiArrowGoBackFill, { size: 18 }),
+      onItemClick: () => {
+        ai4.rejectChanges();
+      },
+      size: "small"
+    }
+  ];
+}
+function getDefaultAIMenuItems(editor, aiResponseStatus) {
+  if (aiResponseStatus === "user-input") {
+    return editor.getSelection() ? getDefaultAIMenuItemsWithSelection(editor) : getDefaultAIMenuItemsWithoutSelection(editor);
+  } else if (aiResponseStatus === "user-reviewing") {
+    return getDefaultAIMenuItemsForReview(editor);
+  } else if (aiResponseStatus === "error") {
+    return getDefaultAIMenuItemsForError(editor);
+  } else {
+    return [];
+  }
+}
+
+// packages/report-review/src/editor-ai/components/AIMenu/AIMenu.tsx
+var import_jsx_runtime123 = require("react/jsx-runtime");
+var AIMenu = (props) => {
+  const editor = j3();
+  const [prompt, setPrompt] = (0, import_react159.useState)("");
+  const dict = useAIDictionary();
+  const Components = V4();
+  const ai4 = F3(AIExtension);
+  const aiResponseStatus = I3(AIExtension, {
+    selector: (state) => state.aiMenuState !== "closed" ? state.aiMenuState.status : "closed"
+  });
+  const { items: externalItems } = props;
+  const items = (0, import_react159.useMemo)(() => {
+    let items2 = [];
+    if (externalItems) {
+      items2 = externalItems(editor, aiResponseStatus);
+    } else {
+      items2 = getDefaultAIMenuItems(editor, aiResponseStatus);
+    }
+    return items2.map((item) => {
+      return {
+        ...item,
+        onItemClick: () => {
+          item.onItemClick(setPrompt);
+        }
+      };
+    });
+  }, [externalItems, aiResponseStatus, editor]);
+  const onManualPromptSubmitDefault = (0, import_react159.useCallback)(
+    async (userPrompt) => {
+      await ai4.invokeAI({
+        userPrompt,
+        useSelection: editor.getSelection() !== void 0
+      });
+    },
+    [ai4, editor]
+  );
+  (0, import_react159.useEffect)(() => {
+    if (aiResponseStatus === "ai-writing" || aiResponseStatus === "user-reviewing" || aiResponseStatus === "error") {
+      setPrompt("");
+    }
+  }, [aiResponseStatus]);
+  const placeholder = (0, import_react159.useMemo)(() => {
+    if (aiResponseStatus === "thinking") {
+      return dict.ai_menu.status.thinking;
+    } else if (aiResponseStatus === "ai-writing") {
+      return dict.ai_menu.status.editing;
+    } else if (aiResponseStatus === "error") {
+      return dict.ai_menu.status.error;
+    }
+    return dict.ai_menu.input_placeholder;
+  }, [aiResponseStatus, dict]);
+  const rightSection = (0, import_react159.useMemo)(() => {
+    if (aiResponseStatus === "thinking" || aiResponseStatus === "ai-writing") {
+      return /* @__PURE__ */ (0, import_jsx_runtime123.jsx)(
+        Components.SuggestionMenu.Loader,
+        {
+          className: "bn-suggestion-menu-loader bn-combobox-right-section"
+        }
+      );
+    } else if (aiResponseStatus === "error") {
+      return /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("div", { className: "bn-combobox-right-section bn-combobox-error", children: /* @__PURE__ */ (0, import_jsx_runtime123.jsx)(
+        "svg",
+        {
+          xmlns: "http://www.w3.org/2000/svg",
+          height: "1em",
+          viewBox: "0 -960 960 960",
+          width: "1em",
+          fill: "currentColor",
+          children: /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("path", { d: "M480-280q17 0 28.5-11.5T520-320q0-17-11.5-28.5T480-360q-17 0-28.5 11.5T440-320q0 17 11.5 28.5T480-280Zm0-160q17 0 28.5-11.5T520-480v-160q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640v160q0 17 11.5 28.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" })
+        }
+      ) });
+    }
+    return void 0;
+  }, [Components, aiResponseStatus]);
+  return /* @__PURE__ */ (0, import_jsx_runtime123.jsx)(
+    PromptSuggestionMenu,
+    {
+      onManualPromptSubmit: props.onManualPromptSubmit || onManualPromptSubmitDefault,
+      items,
+      promptText: prompt,
+      onPromptTextChange: setPrompt,
+      placeholder,
+      disabled: aiResponseStatus === "thinking" || aiResponseStatus === "ai-writing",
+      icon: /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("div", { className: "bn-combobox-icon", children: /* @__PURE__ */ (0, import_jsx_runtime123.jsx)(RiSparkling2Fill, {}) }),
+      rightSection
+    }
+  );
+};
+
+// packages/report-review/src/editor-ai/components/AIMenu/AIMenuController.tsx
+var import_react162 = require("react");
+var import_jsx_runtime124 = require("react/jsx-runtime");
+var AIMenuController = (props) => {
+  const editor = j3();
+  const ai4 = F3(AIExtension);
+  const aiMenuState = I3(AIExtension, {
+    editor,
+    selector: (state) => state.aiMenuState
+  });
+  const blockId = aiMenuState === "closed" ? void 0 : aiMenuState.blockId;
+  const floatingUIOptions = (0, import_react162.useMemo)(
+    () => ({
+      ...props.floatingUIOptions,
+      useFloatingOptions: {
+        open: aiMenuState !== "closed",
+        placement: "bottom",
+        middleware: [
+          offset3(10),
+          flip3(),
+          size3({
+            apply({ rects, elements }) {
+              Object.assign(elements.floating.style, {
+                width: `${rects.reference.width}px`
+              });
+            }
+          })
+        ],
+        onOpenChange: (open) => {
+          if (open || aiMenuState === "closed") {
+            return;
+          }
+          if (aiMenuState.status === "user-input") {
+            ai4.closeAIMenu();
+          } else if (aiMenuState.status === "user-reviewing" || aiMenuState.status === "error") {
+            ai4.rejectChanges();
+          }
+        },
+        whileElementsMounted(reference, floating, update) {
+          return autoUpdate(reference, floating, update, {
+            animationFrame: true
+          });
+        },
+        ...props.floatingUIOptions?.useFloatingOptions
+      },
+      useDismissProps: {
+        enabled: aiMenuState === "closed" || aiMenuState.status === "user-input",
+        // We should just be able to set `referencePress: true` instead of
+        // using this listener, but this doesn't seem to trigger.
+        // (probably because we don't assign the referenceProps to the reference element)
+        outsidePress: (event) => {
+          if (event.target instanceof Element) {
+            const blockElement = event.target.closest(".bn-block");
+            if (blockElement && blockElement.getAttribute("data-id") === blockId) {
+              ai4.closeAIMenu();
+            }
+          }
+          return true;
+        },
+        ...props.floatingUIOptions?.useDismissProps
+      },
+      elementProps: {
+        style: {
+          zIndex: 100
+        },
+        ...props.floatingUIOptions?.elementProps
+      },
+      // we use the focus manager instead of `autoFocus={true}` to prevent "page-scrolls-to-top-when-opening-the-floating-element"
+      // see https://floating-ui.com/docs/floatingfocusmanager#page-scrolls-to-top-when-opening-the-floating-element
+      focusManagerProps: {
+        disabled: false,
+        // needed for https://github.com/floating-ui/floating-ui/pull/3202
+        // (related: https://github.com/mui/base-ui/issues/3950)
+        getInsideElements: () => {
+          if (!editor.domElement) {
+            return [];
+          }
+          return [editor.domElement];
+        },
+        ...props.floatingUIOptions?.focusManagerProps
+      }
+    }),
+    [ai4, aiMenuState, blockId, props.floatingUIOptions, editor.domElement]
+  );
+  const Component = props.aiMenu || AIMenu;
+  return /* @__PURE__ */ (0, import_jsx_runtime124.jsx)(ft3, { blockId, ...floatingUIOptions, children: aiMenuState !== "closed" && /* @__PURE__ */ (0, import_jsx_runtime124.jsx)(Component, {}) });
+};
+
+// packages/report-review/src/editor-ai/components/FormattingToolbar/AIToolbarButton.tsx
+var import_jsx_runtime125 = require("react/jsx-runtime");
+var AIToolbarButton = () => {
+  const dict = useAIDictionary();
+  const Components = V4();
+  const editor = j3();
+  const ai4 = F3(AIExtension);
+  const formattingToolbar = F3(Z);
+  const onClick = () => {
+    const selection = editor.getSelection();
+    if (!selection) {
+      throw new Error("No selection");
+    }
+    const position3 = selection.blocks[selection.blocks.length - 1].id;
+    ai4.openAIMenuAtBlock(position3);
+    formattingToolbar.store.setState(false);
+  };
+  if (!editor.isEditable) {
+    return null;
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime125.jsx)(
+    Components.Generic.Toolbar.Button,
+    {
+      className: "bn-button",
+      label: dict.formatting_toolbar.ai.tooltip,
+      mainTooltip: dict.formatting_toolbar.ai.tooltip,
+      icon: /* @__PURE__ */ (0, import_jsx_runtime125.jsx)(RiSparkling2Fill, {}),
+      onClick
+    }
+  );
+};
+
+// packages/report-review/src/editor-ai/components/SuggestionMenu/getAISlashMenuItems.tsx
+var import_jsx_runtime126 = require("react/jsx-runtime");
+var Icons = {
+  AI: RiSparkling2Fill
+};
+function getAISlashMenuItems(editor) {
+  const ai4 = editor.getExtension(AIExtension);
+  if (!ai4) {
+    return [];
+  }
+  const items = [
+    {
+      key: "ai",
+      onItemClick: () => {
+        const cursor = editor.getTextCursorPosition();
+        if (cursor.block.content && Array.isArray(cursor.block.content) && // isarray check not ideal
+        cursor.block.content.length === 0 && cursor.prevBlock) {
+          ai4.openAIMenuAtBlock(cursor.prevBlock.id);
+        } else {
+          ai4.openAIMenuAtBlock(cursor.block.id);
+        }
+      },
+      ...getAIDictionary(editor).slash_menu.ai,
+      icon: /* @__PURE__ */ (0, import_jsx_runtime126.jsx)(Icons.AI, {})
+    }
+  ];
+  return items;
+}
+
+// packages/report-review/src/editor-ai/i18n/locales/zh.ts
+var zh = {
+  formatting_toolbar: {
+    ai: {
+      tooltip: "\u4F7F\u7528\u4EBA\u5DE5\u667A\u80FD\u7F16\u8F91"
+    }
+  },
+  slash_menu: {
+    ai: {
+      title: "\u8BE2\u95EE\u4EBA\u5DE5\u667A\u80FD",
+      subtext: "\u4F7F\u7528\u4EBA\u5DE5\u667A\u80FD\u5199\u4F5C",
+      aliases: [
+        "ai",
+        "artificial intelligence",
+        "llm",
+        "assistant",
+        "generate"
+      ],
+      group: "\u4EBA\u5DE5\u667A\u80FD"
+    }
+  },
+  ai_default_commands: {
+    continue_writing: {
+      title: "\u7EE7\u7EED\u5199\u4F5C",
+      aliases: void 0
+    },
+    summarize: {
+      title: "\u603B\u7ED3",
+      aliases: void 0
+    },
+    add_action_items: {
+      title: "\u6DFB\u52A0\u884C\u52A8\u9879",
+      aliases: void 0
+    },
+    write_anything: {
+      title: "\u5199\u4EFB\u4F55\u5185\u5BB9\u2026",
+      aliases: void 0,
+      prompt_placeholder: "\u5199\u5173\u4E8E "
+    },
+    simplify: {
+      title: "\u7B80\u5316",
+      aliases: void 0
+    },
+    translate: {
+      title: "\u7FFB\u8BD1\u2026",
+      aliases: void 0,
+      prompt_placeholder: "\u7FFB\u8BD1\u6210 "
+    },
+    fix_spelling: {
+      title: "\u4FEE\u6B63\u62FC\u5199",
+      aliases: void 0
+    },
+    improve_writing: {
+      title: "\u6539\u8FDB\u5199\u4F5C",
+      aliases: void 0
+    }
+  },
+  ai_menu: {
+    input_placeholder: "\u5411\u4EBA\u5DE5\u667A\u80FD\u63D0\u95EE\u4EFB\u4F55\u95EE\u9898\u2026",
+    status: {
+      thinking: "\u601D\u8003\u4E2D\u2026",
+      editing: "\u7F16\u8F91\u4E2D\u2026",
+      error: "\u54CE\u5440\uFF01\u51FA\u4E86\u70B9\u95EE\u9898"
+    },
+    actions: {
+      accept: { title: "\u63A5\u53D7", aliases: void 0 },
+      retry: { title: "\u91CD\u8BD5", aliases: void 0 },
+      cancel: { title: "\u53D6\u6D88", aliases: void 0 },
+      revert: { title: "\u6062\u590D", aliases: void 0 }
+    }
+  }
+};
+
+// packages/report-review/src/report-image.jsx
+var import_react164 = __toESM(require("react"), 1);
+init_demo_content();
+var import_jsx_runtime127 = require("react/jsx-runtime");
 function ReportImage({ url, caption, readOnly: readOnly2, onChange }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime121.jsxs)("figure", { className: "rr-editable-image", contentEditable: false, children: [
-    url === DEMO_CHART_URL ? /* @__PURE__ */ (0, import_jsx_runtime121.jsx)("img", { src: DEMO_CHART_DATA, alt: caption || "\u6A21\u62DF\u5E93\u5B58\u793A\u610F\u56FE" }) : /* @__PURE__ */ (0, import_jsx_runtime121.jsxs)("div", { className: "rr-image-placeholder", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime127.jsxs)("figure", { className: "rr-editable-image", contentEditable: false, children: [
+    url === DEMO_CHART_URL ? /* @__PURE__ */ (0, import_jsx_runtime127.jsx)("img", { src: DEMO_CHART_DATA, alt: caption || "\u6A21\u62DF\u5E93\u5B58\u793A\u610F\u56FE" }) : /* @__PURE__ */ (0, import_jsx_runtime127.jsxs)("div", { className: "rr-image-placeholder", children: [
       caption || "\u56FE\u7247",
       " \xB7 \u6B64\u5730\u5740\u6682\u4E0D\u652F\u6301\u6B63\u6587\u9884\u89C8\uFF0C\u53EF\u5728 PDF \u4E2D\u6838\u5BF9\u8D44\u4EA7\u3002"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime121.jsxs)("label", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime127.jsxs)("label", { children: [
       "\u56FE\u7247\u8BF4\u660E ",
-      /* @__PURE__ */ (0, import_jsx_runtime121.jsx)("input", { "aria-label": "\u56FE\u7247\u8BF4\u660E", disabled: readOnly2, value: caption || "", onChange: (e6) => onChange({ caption: e6.target.value }) })
+      /* @__PURE__ */ (0, import_jsx_runtime127.jsx)("input", { "aria-label": "\u56FE\u7247\u8BF4\u660E", disabled: readOnly2, value: caption || "", onChange: (e6) => onChange({ caption: e6.target.value }) })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime121.jsxs)("label", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime127.jsxs)("label", { children: [
       "\u56FE\u7247\u5730\u5740 ",
-      /* @__PURE__ */ (0, import_jsx_runtime121.jsx)("input", { "aria-label": "\u56FE\u7247\u5730\u5740", disabled: readOnly2, value: url || "", placeholder: DEMO_CHART_URL, onChange: (e6) => onChange({ url: e6.target.value }) })
+      /* @__PURE__ */ (0, import_jsx_runtime127.jsx)("input", { "aria-label": "\u56FE\u7247\u5730\u5740", disabled: readOnly2, value: url || "", placeholder: DEMO_CHART_URL, onChange: (e6) => onChange({ url: e6.target.value }) })
     ] })
   ] });
 }
@@ -101300,11 +107012,470 @@ function imageMarkdown(url, caption, title = "") {
   return `![${escape(caption)}](<${destination}>${title ? ' "' + String(title).replace(/["\\]/g, "\\$&").replace(/\r?\n/g, " ") + '"' : ""})`;
 }
 
+// packages/report-review/src/ai-bridge.mjs
+var AI_CLIENT_TIMEOUT_MS = 100 * 1e3;
+function textPartId(prefix, n3) {
+  return `dsh-${prefix}-${n3}`;
+}
+function emitDiag(detail) {
+  try {
+    if (typeof window !== "undefined" && window.dispatchEvent && window.CustomEvent) window.dispatchEvent(new window.CustomEvent("dsh-ai-diag", { detail }));
+  } catch {
+  }
+}
+function mapFinishReason(kind) {
+  switch (kind) {
+    case "stop":
+      return "stop";
+    case "tool-calls":
+      return "tool-calls";
+    case "max-tokens":
+      return "length";
+    case "aborted":
+      return "aborted";
+    case "error":
+      return "error";
+    default:
+      return "stop";
+  }
+}
+function toDshBlock(part) {
+  switch (part?.type) {
+    case "text":
+      return { type: "text", text: part.text ?? "" };
+    case "reasoning":
+      return { type: "reasoning", text: part.text ?? "" };
+    // UIMessage/ModelMessage tool call part:
+    case "tool-call":
+      return { type: "tool-call", id: String(part.toolCallId), name: part.toolName, arguments: JSON.stringify(part.args ?? {}) };
+    // LanguageModelV1 (prompt) tool part:
+    case "tool":
+      return { type: "tool-call", id: String(part.toolCallId), name: part.toolName, arguments: JSON.stringify(part.args ?? {}) };
+    // UIMessage/ModelMessage tool result part:
+    case "tool-result":
+      return { type: "tool-result", toolCallId: String(part.toolCallId), isError: part.isError ?? false, content: [{ type: "text", text: JSON.stringify(part.output ?? "") }] };
+    // LanguageModelV1 tool-result part:
+    case "tool-result-part":
+      return { type: "tool-result", toolCallId: String(part.toolCallId), isError: part.isError ?? false, content: [{ type: "text", text: typeof part.output === "string" ? part.output : String(part.output ?? "") }] };
+    case "file":
+      return { type: "text", text: `[\u6587\u4EF6\u9644\u4EF6\uFF1A${part.filename ?? ""}]` };
+    default:
+      return { type: "text", text: typeof part === "string" ? part : "" };
+  }
+}
+function toDshMessage(msg, i3) {
+  const role = msg?.role === "assistant" ? "assistant" : msg?.role === "system" ? "system" : msg?.role === "tool" ? "tool" : msg?.role === "tool-result" ? "tool" : "user";
+  const raw = msg?.content;
+  let content4;
+  if (typeof raw === "string") content4 = [{ type: "text", text: raw }];
+  else if (Array.isArray(raw)) content4 = raw.map(toDshBlock);
+  else if (raw && typeof raw === "object") content4 = [{ type: "text", text: JSON.stringify(raw) }];
+  else content4 = [{ type: "text", text: "" }];
+  return { id: `m${i3}-${msg?.role ?? "user"}-${Math.random().toString(36).slice(2, 8)}`, role, content: content4, source: { kind: "plugin", plugin: "run19-report-review" } };
+}
+function extractJsonSchema(s4) {
+  if (!s4) return {};
+  if (s4.jsonSchema && typeof s4.jsonSchema === "object") return s4.jsonSchema;
+  if (s4.jsonSchema && typeof s4.jsonSchema === "function") return s4.jsonSchema();
+  if (typeof s4 === "object") return s4;
+  return {};
+}
+async function toDshTools(tools2) {
+  if (!tools2) return void 0;
+  const entries = Array.isArray(tools2) ? tools2.map((t4, i3) => [t4?.name ?? String(i3), t4]) : Object.entries(tools2);
+  const out = [];
+  for (const [key, t4] of entries) {
+    if (!t4) continue;
+    const name3 = t4.name ?? key;
+    if (!name3 || /^\d+$/.test(String(name3))) continue;
+    out.push({ name: name3, description: t4.description ?? "", parameters: extractJsonSchema(t4.inputSchema) });
+  }
+  return out.length ? out : void 0;
+}
+function createDshLlmModel(opts) {
+  const fetchFn = opts.fetchFn ?? ((path2, init) => fetch(path2, init));
+  let seq = 0;
+  const provider = opts.provider ?? "dsh";
+  const modelId = opts.model ?? "dsh";
+  const doStream = async ({ messages, prompt, input, tools: tools2, system, temperature, maxTokens, abortSignal }) => {
+    let src = prompt ?? messages ?? input ?? [];
+    let dshSystem = system ?? opts.system;
+    if (Array.isArray(src) && src[0]?.role === "system") {
+      const c4 = src[0].content;
+      const sysText = typeof c4 === "string" ? c4 : Array.isArray(c4) ? c4.map((p2) => p2?.type === "text" ? p2.text ?? "" : "").join("") : "";
+      if (!dshSystem) dshSystem = sysText;
+      src = src.slice(1);
+    }
+    const dshMessages = Array.isArray(src) ? src.map(toDshMessage) : [];
+    const dshTools = await toDshTools(tools2);
+    const requestBody = {
+      provider: opts.provider,
+      model: opts.model,
+      messages: dshMessages,
+      system: dshSystem,
+      tools: dshTools,
+      temperature: typeof temperature === "number" ? temperature : void 0,
+      maxTokens: typeof maxTokens === "number" ? maxTokens : void 0
+    };
+    try {
+      console.error("[dsh-ai] >>> request tools=", (dshTools || []).map((t4) => t4.name).join(","), "msgs=", dshMessages.length, "provider=", opts.provider ?? "(host-default)", "model=", opts.model ?? "(host-default)");
+    } catch {
+    }
+    let response;
+    let connectTimer;
+    try {
+      response = await Promise.race([
+        fetchFn("/api/run19/ai-stream", {
+          method: "POST",
+          credentials: "same-origin",
+          signal: abortSignal,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestBody)
+        }),
+        new Promise((_, reject) => {
+          connectTimer = setTimeout(() => reject(new Error("AI \u8BF7\u6C42\u8D85\u65F6\uFF08\u65E0\u6CD5\u8FDE\u63A5\u5BBF\u4E3B AI \u6D41\uFF09")), AI_CLIENT_TIMEOUT_MS);
+        })
+      ]).finally(() => clearTimeout(connectTimer));
+    } catch (e6) {
+      emitDiag({ tools: (dshTools || []).map((t4) => t4.name), toolCalls: 0, finishReason: "error", error: String(e6?.message || e6) });
+      throw e6;
+    }
+    if (!response.ok || !response.body) {
+      const msg = `DSH AI stream failed (HTTP ${response.status})`;
+      emitDiag({ tools: (dshTools || []).map((t4) => t4.name), toolCalls: 0, finishReason: "error", error: msg });
+      throw new Error(msg);
+    }
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    if (abortSignal?.aborted) return { stream: emptyStream(), request: { body: requestBody } };
+    let textId = 0;
+    let dshFinishReason = null;
+    let streamMetaProvider = null, streamMetaModel = null;
+    const toolOpen = /* @__PURE__ */ new Map();
+    const stream2 = new ReadableStream({
+      async start(ctrl) {
+        let buf = "";
+        try {
+          for (; ; ) {
+            const readPromise = reader.read();
+            let timer;
+            const rr4 = await Promise.race([
+              readPromise,
+              new Promise((_, reject) => {
+                timer = setTimeout(() => reject(new Error("AI \u8BF7\u6C42\u8D85\u65F6\uFF08\u7B49\u5F85\u5BBF\u4E3B\u6D41\u8D85\u65F6\uFF09")), AI_CLIENT_TIMEOUT_MS);
+              })
+            ]).finally(() => clearTimeout(timer));
+            if (rr4.done) break;
+            buf += decoder.decode(rr4.value, { stream: true });
+            let nl;
+            while ((nl = buf.indexOf("\n")) >= 0) {
+              const line = buf.slice(0, nl);
+              buf = buf.slice(nl + 1);
+              if (!line.trim()) continue;
+              let rec;
+              try {
+                rec = JSON.parse(line);
+              } catch {
+                continue;
+              }
+              if (rec.t === "error") {
+                ctrl.enqueue({ type: "error", error: new Error(rec.error?.message || "DSH stream error") });
+                break;
+              }
+              if (rec.t === "done") break;
+              if (rec.t === "meta") {
+                streamMetaProvider = rec.provider ?? null;
+                streamMetaModel = rec.model ?? null;
+                continue;
+              }
+              if (rec.t !== "chunk") continue;
+              const c4 = rec.chunk;
+              switch (c4?.type) {
+                case "text-delta": {
+                  const id3 = textPartId("text", textId++);
+                  ctrl.enqueue({ type: "text-start", id: id3 });
+                  ctrl.enqueue({ type: "text-delta", id: id3, delta: c4.text ?? "" });
+                  ctrl.enqueue({ type: "text-end", id: id3 });
+                  break;
+                }
+                case "reasoning-delta": {
+                  const id3 = textPartId("reasoning", textId++);
+                  ctrl.enqueue({ type: "reasoning-start", id: id3 });
+                  ctrl.enqueue({ type: "reasoning-delta", id: id3, delta: c4.text ?? "" });
+                  ctrl.enqueue({ type: "reasoning-end", id: id3 });
+                  break;
+                }
+                case "tool-call-delta": {
+                  const callId = String(c4.id ?? c4.blockId ?? "");
+                  let st4 = toolOpen.get(callId);
+                  if (!st4) {
+                    st4 = { name: c4.name, arguments: "", closed: false };
+                    toolOpen.set(callId, st4);
+                  }
+                  st4.arguments = (st4.arguments ?? "") + (c4.argumentsDelta ?? "");
+                  break;
+                }
+                case "block-end": {
+                  const b4 = c4.block;
+                  const isTool = b4?.type === "tool-call" || c4.blockType === "tool-call";
+                  if (isTool) {
+                    const callId = String(b4?.id ?? c4.blockId ?? "");
+                    const name3 = b4?.name ?? c4.blockName ?? "";
+                    let st4 = toolOpen.get(callId);
+                    if (!st4) {
+                      st4 = { name: name3, arguments: b4?.arguments ?? "", closed: false };
+                      toolOpen.set(callId, st4);
+                    }
+                    const rawArgs = b4?.arguments ?? st4.arguments ?? "";
+                    st4.closed = true;
+                    try {
+                      console.error("[dsh-ai] tool-call completed:", name3, callId, rawArgs.slice(0, 160));
+                    } catch {
+                    }
+                    ctrl.enqueue({ type: "tool-call", id: callId, toolName: name3, input: rawArgs });
+                  }
+                  break;
+                }
+                case "finish": {
+                  dshFinishReason = mapFinishReason(c4.reason?.kind);
+                  try {
+                    console.error("[dsh-ai] finish reason=", dshFinishReason);
+                  } catch {
+                  }
+                  break;
+                }
+                default:
+                  break;
+              }
+            }
+          }
+          for (const [callId, st4] of toolOpen) {
+            if (st4 && !st4.closed) {
+              st4.closed = true;
+              ctrl.enqueue({ type: "tool-call", id: callId, toolName: st4.name, input: st4.arguments ?? "" });
+            }
+          }
+          const reason = dshFinishReason && dshFinishReason !== "stop" ? dshFinishReason : toolOpen.size ? "tool-calls" : "stop";
+          try {
+            console.error("[dsh-ai] DONE: tool calls received =", toolOpen.size, "-> finishReason =", reason);
+          } catch {
+          }
+          emitDiag({ tools: (dshTools || []).map((t4) => t4.name), toolCalls: toolOpen.size, finishReason: reason, error: null, provider: streamMetaProvider, model: streamMetaModel });
+          ctrl.enqueue({ type: "finish", usage: { inputTokens: 0, outputTokens: 0 }, finishReason: reason });
+          ctrl.close();
+        } catch (e6) {
+          try {
+            reader.cancel();
+          } catch {
+          }
+          try {
+            ctrl.enqueue({ type: "error", error: e6 });
+          } catch {
+          }
+          emitDiag({ tools: (dshTools || []).map((t4) => t4.name), toolCalls: toolOpen.size, finishReason: "error", error: String(e6?.message || e6) });
+          try {
+            ctrl.close();
+          } catch {
+          }
+        }
+      },
+      cancel() {
+        try {
+          reader.cancel();
+        } catch {
+        }
+      }
+    });
+    return { stream: stream2, request: { body: requestBody } };
+  };
+  return {
+    specificationVersion: "v3",
+    provider,
+    modelId,
+    supportedUrls: {},
+    doGenerate: async () => {
+      throw new Error("DSH model: generate (non-streaming) not implemented");
+    },
+    doStream
+  };
+}
+function emptyStream() {
+  return new ReadableStream({
+    start(ctrl) {
+      ctrl.enqueue({ type: "finish", usage: { inputTokens: 0, outputTokens: 0 }, finishReason: "stop" });
+      ctrl.close();
+    }
+  });
+}
+function injectDocumentStateMessages(messages) {
+  return messages.flatMap((message) => {
+    const documentState = message?.metadata?.documentState;
+    if (message.role === "user" && documentState) {
+      const sel = documentState.selection;
+      const docParts = sel ? [
+        { type: "text", text: `This is the latest state of the selection (ignore previous selections, you MUST issue operations against this latest version of the selection):` },
+        { type: "text", text: JSON.stringify(documentState.selectedBlocks) },
+        { type: "text", text: `This is the latest state of the entire document (INCLUDING the selected text),
+you can use this to find the selected text to understand the context (but you MUST NOT issue operations against this document, you MUST issue operations against the selection):` },
+        { type: "text", text: JSON.stringify(documentState.blocks) }
+      ] : [
+        { type: "text", text: `There is no active selection. This is the latest state of the document (ignore previous documents, you MUST issue operations against this latest version of the document).
+The cursor is BETWEEN two blocks as indicated by cursor: true.
+` + (documentState.isEmptyDocument ? `Because the document is empty, YOU MUST first update the empty block before adding new blocks.` : `Prefer updating existing blocks over removing and adding (but this also depends on the user's question).`) },
+        { type: "text", text: JSON.stringify(documentState.blocks) }
+      ];
+      return [
+        { role: "assistant", id: "assistant-document-state-" + (message.id || "x"), parts: docParts },
+        message
+      ];
+    }
+    return [message];
+  });
+}
+function createNativeChat(opts) {
+  const model = createDshLlmModel(opts);
+  const state = {
+    messages: [],
+    lastMessage: null,
+    status: "ready",
+    // 'ready' | 'submitted' | 'error'
+    error: void 0,
+    abortController: new AbortController(),
+    msgsCb: [],
+    statusCb: [],
+    errCb: []
+  };
+  const fire = (arr, ...a3) => {
+    for (const cb of arr.slice()) {
+      try {
+        cb(...a3);
+      } catch {
+      }
+    }
+  };
+  const setStatus = (s4) => {
+    state.status = s4;
+    fire(state.statusCb, s4);
+  };
+  const setError = (e6) => {
+    state.error = e6;
+    setStatus("error");
+    fire(state.errCb, e6);
+  };
+  const setLastMessage = (m2) => {
+    state.lastMessage = m2;
+    state.messages = [...state.messages.slice(0, -1), m2];
+    fire(state.msgsCb, state.messages);
+  };
+  return {
+    get lastMessage() {
+      return state.lastMessage;
+    },
+    get messages() {
+      return state.messages;
+    },
+    get status() {
+      return state.status;
+    },
+    get error() {
+      return state.error;
+    },
+    "~registerMessagesCallback"(cb) {
+      state.msgsCb.push(cb);
+      return () => {
+        state.msgsCb = state.msgsCb.filter((x3) => x3 !== cb);
+      };
+    },
+    "~registerStatusCallback"(cb) {
+      state.statusCb.push(cb);
+      return () => {
+        state.statusCb = state.statusCb.filter((x3) => x3 !== cb);
+      };
+    },
+    "~registerErrorCallback"(cb) {
+      state.errCb.push(cb);
+      return () => {
+        state.errCb = state.errCb.filter((x3) => x3 !== cb);
+      };
+    },
+    async sendMessage(message, options) {
+      const toolDefinitions = options && options.body && options.body.toolDefinitions || {};
+      const tools2 = Object.entries(toolDefinitions).map(([name3, def]) => ({
+        name: name3,
+        description: def.description,
+        inputSchema: def.inputSchema
+      }));
+      const injected = injectDocumentStateMessages([message]).map(
+        (m2) => m2 && Array.isArray(m2.parts) ? { role: m2.role, id: m2.id, content: m2.parts } : m2
+      );
+      setStatus("submitted");
+      let stream2;
+      try {
+        ({ stream: stream2 } = await model.doStream({
+          prompt: injected,
+          tools: tools2,
+          system: opts.system,
+          abortSignal: state.abortController.signal
+        }));
+      } catch (e6) {
+        setError(e6);
+        return;
+      }
+      const parts = [];
+      let curText = null;
+      const reader = stream2.getReader();
+      try {
+        for (; ; ) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          if (!value) continue;
+          if (value.type === "text-delta") {
+            if (!curText) {
+              curText = { type: "text", text: "" };
+              parts.push(curText);
+              setLastMessage({ role: "assistant", parts: [...parts] });
+            }
+            curText.text += value.delta || "";
+          } else if (value.type === "tool-call") {
+            let input = value.input;
+            if (typeof input === "string") {
+              try {
+                input = JSON.parse(input);
+              } catch {
+              }
+            }
+            parts.push({ type: "tool-applyDocumentOperations", state: "input-available", toolCallId: String(value.id), input });
+            setLastMessage({ role: "assistant", parts: [...parts] });
+          } else if (value.type === "finish") {
+            break;
+          } else if (value.type === "error") {
+            setError(value.error);
+            break;
+          }
+        }
+      } catch (e6) {
+        setError(e6);
+      }
+      if (state.status !== "error") {
+        setLastMessage({ role: "assistant", parts: [...parts] });
+        setStatus("ready");
+      }
+    },
+    // Record the tool output; the edit is already applied, so no second model turn.
+    addToolOutput(part, meta2) {
+      setLastMessage({ role: "assistant", parts: state.lastMessage?.parts ?? [], ...meta2 || {} });
+    },
+    stop() {
+      state.abortController.abort();
+    }
+  };
+}
+
 // packages/report-review/src/block-editor-styles.mjs
 var block_editor_styles_default = '.m_d57069b5{--scrollarea-scrollbar-size: 12px;position:relative;overflow:hidden}.m_d57069b5:where([data-autosize]) .m_b1336c6{min-width:min-content}.m_c0783ff9{scrollbar-width:none;overscroll-behavior:var(--scrollarea-over-scroll-behavior);-ms-overflow-style:none;-webkit-overflow-scrolling:touch;width:100%;height:100%}.m_c0783ff9::-webkit-scrollbar{display:none}.m_c0783ff9:where([data-scrollbars=xy],[data-scrollbars=y]):where([data-offset-scrollbars=xy],[data-offset-scrollbars=y],[data-offset-scrollbars=present]):where([data-vertical-hidden]){padding-inline-end:0;padding-inline-start:0}.m_c0783ff9:where([data-scrollbars=xy],[data-scrollbars=y]):where([data-offset-scrollbars=xy],[data-offset-scrollbars=y],[data-offset-scrollbars=present]):not([data-vertical-hidden]){padding-inline-end:var(--scrollarea-scrollbar-size);padding-inline-start:unset}.m_c0783ff9:where([data-scrollbars=xy],[data-scrollbars=x]):where([data-offset-scrollbars=xy],[data-offset-scrollbars=x],[data-offset-scrollbars=present]):where([data-horizontal-hidden]){padding-bottom:0}.m_c0783ff9:where([data-scrollbars=xy],[data-scrollbars=x]):where([data-offset-scrollbars=xy],[data-offset-scrollbars=x],[data-offset-scrollbars=present]):not([data-horizontal-hidden]){padding-bottom:var(--scrollarea-scrollbar-size)}.m_f8f631dd{min-width:100%;display:table}.m_c44ba933{user-select:none;touch-action:none;box-sizing:border-box;transition:background-color .15s ease,opacity .15s ease;padding:calc(var(--scrollarea-scrollbar-size) / 5);display:flex;background-color:transparent;flex-direction:row}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_c44ba933:hover{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=light]) .m_c44ba933:hover>.m_d8b5e363{background-color:#00000080}:where([data-mantine-color-scheme=dark]) .m_c44ba933:hover{background-color:var(--mantine-color-dark-8)}:where([data-mantine-color-scheme=dark]) .m_c44ba933:hover>.m_d8b5e363{background-color:#ffffff80}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_c44ba933:active{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=light]) .m_c44ba933:active>.m_d8b5e363{background-color:#00000080}:where([data-mantine-color-scheme=dark]) .m_c44ba933:active{background-color:var(--mantine-color-dark-8)}:where([data-mantine-color-scheme=dark]) .m_c44ba933:active>.m_d8b5e363{background-color:#ffffff80}}.m_c44ba933:where([data-hidden],[data-state=hidden]){display:none}.m_c44ba933:where([data-orientation=vertical]){width:var(--scrollarea-scrollbar-size);top:0;bottom:var(--sa-corner-width);inset-inline-end:0}.m_c44ba933:where([data-orientation=horizontal]){height:var(--scrollarea-scrollbar-size);flex-direction:column;bottom:0;inset-inline-start:0;inset-inline-end:var(--sa-corner-width)}.m_d8b5e363{flex:1;border-radius:var(--scrollarea-scrollbar-size);position:relative;transition:background-color .15s ease;overflow:hidden;opacity:var(--thumb-opacity)}.m_d8b5e363:before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:100%;min-width:44px;min-height:44px}:where([data-mantine-color-scheme=light]) .m_d8b5e363{background-color:#0006}:where([data-mantine-color-scheme=dark]) .m_d8b5e363{background-color:#fff6}.m_21657268{position:absolute;opacity:0;transition:opacity .15s ease;display:block;inset-inline-end:0;bottom:0}:where([data-mantine-color-scheme=light]) .m_21657268{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_21657268{background-color:var(--mantine-color-dark-8)}.m_21657268:where([data-hovered]){opacity:1}.m_21657268:where([data-hidden]){display:none}.m_b1336c6{min-width:100%}.m_87cf2631{background-color:transparent;cursor:pointer;border:0;padding:0;appearance:none;font-size:var(--mantine-font-size-md);text-align:left;text-decoration:none;color:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent}:where([dir=rtl]) .m_87cf2631{text-align:right}.m_515a97f8{border:0;clip:rect(0 0 0 0);height:1px;width:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;white-space:nowrap}.m_1b7284a3{--paper-radius: var(--mantine-radius-default);outline:0;-webkit-tap-highlight-color:transparent;display:block;touch-action:manipulation;text-decoration:none;border-radius:var(--paper-radius);box-shadow:var(--paper-shadow);background-color:var(--mantine-color-body)}[data-mantine-color-scheme=light] .m_1b7284a3{--paper-border-color: var(--mantine-color-gray-3)}[data-mantine-color-scheme=dark] .m_1b7284a3{--paper-border-color: var(--mantine-color-dark-4)}.m_1b7284a3:where([data-with-border]){border:calc(.0625rem * var(--mantine-scale)) solid var(--paper-border-color)}.m_38a85659{position:absolute;border:1px solid var(--popover-border-color);padding:var(--mantine-spacing-sm) var(--mantine-spacing-md);box-shadow:var(--popover-shadow, none);border-radius:var(--popover-radius, var(--mantine-radius-default))}.m_38a85659:where([data-fixed]){position:fixed}.m_38a85659:focus{outline:none}:where([data-mantine-color-scheme=light]) .m_38a85659{--popover-border-color: var(--mantine-color-gray-2);background-color:var(--mantine-color-white)}:where([data-mantine-color-scheme=dark]) .m_38a85659{--popover-border-color: var(--mantine-color-dark-4);background-color:var(--mantine-color-dark-6)}.m_a31dc6c1{background-color:inherit;border:1px solid var(--popover-border-color);z-index:1}.m_3d7bc908{position:fixed;inset:0}.m_86a44da5{--cb-size-xs: 18px;--cb-size-sm: 22px;--cb-size-md: 28px;--cb-size-lg: 34px;--cb-size-xl: 44px;--cb-size: var(--cb-size-md);--cb-icon-size: 70%;--cb-radius: var(--mantine-radius-default);line-height:1;display:inline-flex;align-items:center;justify-content:center;position:relative;user-select:none;width:var(--cb-size);height:var(--cb-size);min-width:var(--cb-size);min-height:var(--cb-size);border-radius:var(--cb-radius)}:where([data-mantine-color-scheme=light]) .m_86a44da5{color:var(--mantine-color-gray-7)}:where([data-mantine-color-scheme=dark]) .m_86a44da5{color:var(--mantine-color-dark-1)}.m_86a44da5[data-disabled],.m_86a44da5:disabled{cursor:not-allowed;opacity:.6}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_220c80f2:where(:not([data-disabled],:disabled)):hover{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_220c80f2:where(:not([data-disabled],:disabled)):hover{background-color:var(--mantine-color-dark-6)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_220c80f2:where(:not([data-disabled],:disabled)):active{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_220c80f2:where(:not([data-disabled],:disabled)):active{background-color:var(--mantine-color-dark-6)}}.m_4081bf90{display:flex;flex-direction:row;flex-wrap:var(--group-wrap, wrap);justify-content:var(--group-justify, flex-start);align-items:var(--group-align, center);gap:var(--group-gap, var(--mantine-spacing-md))}.m_4081bf90:where([data-grow])>*{flex-grow:1;max-width:var(--group-child-width)}.m_5ae2e3c{--loader-size-xs: 18px;--loader-size-sm: 22px;--loader-size-md: 36px;--loader-size-lg: 44px;--loader-size-xl: 58px;--loader-size: var(--loader-size-md);--loader-color: var(--mantine-primary-color-filled)}@keyframes m_5d2b3b9d{0%{transform:scale(.6);opacity:0}50%,to{transform:scale(1)}}.m_7a2bd4cd{position:relative;width:var(--loader-size);height:var(--loader-size);display:flex;gap:calc(var(--loader-size) / 5)}.m_870bb79{flex:1;background:var(--loader-color);animation:m_5d2b3b9d 1.2s cubic-bezier(0,.5,.5,1) infinite;border-radius:2px}.m_870bb79:nth-of-type(1){animation-delay:-.24s}.m_870bb79:nth-of-type(2){animation-delay:-.12s}.m_870bb79:nth-of-type(3){animation-delay:0}@keyframes m_aac34a1{0%,to{transform:scale(1);opacity:1}50%{transform:scale(.6);opacity:.5}}.m_4e3f22d7{display:flex;justify-content:center;align-items:center;gap:calc(var(--loader-size) / 10);position:relative;width:var(--loader-size);height:var(--loader-size)}.m_870c4af{width:calc(var(--loader-size) / 3 - var(--loader-size) / 15);height:calc(var(--loader-size) / 3 - var(--loader-size) / 15);border-radius:50%;background:var(--loader-color);animation:m_aac34a1 .8s infinite linear}.m_870c4af:nth-child(2){animation-delay:.4s}@keyframes m_f8e89c4b{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.m_b34414df{display:inline-block;width:var(--loader-size);height:var(--loader-size)}.m_b34414df:after{content:"";display:block;width:var(--loader-size);height:var(--loader-size);border-radius:10000px;border-width:calc(var(--loader-size) / 8);border-style:solid;border-color:var(--loader-color) var(--loader-color) var(--loader-color) transparent;animation:m_f8e89c4b 1.2s linear infinite}.m_9814e45f{inset:0;position:absolute;background:var(--overlay-bg, rgba(0, 0, 0, .6));-webkit-backdrop-filter:var(--overlay-filter);backdrop-filter:var(--overlay-filter);border-radius:var(--overlay-radius, 0);z-index:var(--overlay-z-index)}.m_9814e45f:where([data-fixed]){position:fixed}.m_9814e45f:where([data-center]){display:flex;align-items:center;justify-content:center}.m_615af6c9{line-height:1;padding:0;margin:0;font-weight:400;font-size:var(--mantine-font-size-md)}.m_b5489c3c{display:flex;justify-content:space-between;align-items:center;padding:var(--mb-padding, var(--mantine-spacing-md));padding-inline-end:calc(var(--mb-padding, var(--mantine-spacing-md)) - calc(.3125rem * var(--mantine-scale)));position:sticky;top:0;background-color:var(--mantine-color-body);z-index:1000;min-height:60px;transition:padding-inline-end .1s}.m_60c222c7{position:fixed;width:100%;top:0;bottom:0;z-index:var(--mb-z-index);pointer-events:none}.m_fd1ab0aa{pointer-events:all;box-shadow:var(--mb-shadow, var(--mantine-shadow-xl))}.m_fd1ab0aa [data-mantine-scrollbar]{z-index:1001}[data-offset-scrollbars] .m_fd1ab0aa:has([data-mantine-scrollbar]) .m_b5489c3c{padding-inline-end:calc(var(--mb-padding, var(--mantine-spacing-md)) + calc(.3125rem * var(--mantine-scale)))}.m_606cb269{margin-inline-start:auto}.m_5df29311{padding:var(--mb-padding, var(--mantine-spacing-md));padding-top:var(--mb-padding, var(--mantine-spacing-md))}.m_5df29311:where(:not(:only-child)){padding-top:0}.m_6c018570{position:relative;margin-top:var(--input-margin-top, 0rem);margin-bottom:var(--input-margin-bottom, 0rem);--input-height-xs: 30px;--input-height-sm: 36px;--input-height-md: 42px;--input-height-lg: 50px;--input-height-xl: 60px;--input-padding-y-xs: 5px;--input-padding-y-sm: 6px;--input-padding-y-md: 8px;--input-padding-y-lg: 10px;--input-padding-y-xl: 13px;--input-height: var(--input-height-sm);--input-radius: var(--mantine-radius-default);--input-cursor: text;--input-text-align: left;--input-line-height: calc(var(--input-height) - calc(.125rem * var(--mantine-scale)));--input-padding: calc(var(--input-height) / 3);--input-padding-inline-start: var(--input-padding);--input-padding-inline-end: var(--input-padding);--input-placeholder-color: var(--mantine-color-placeholder);--input-color: var(--mantine-color-text);--input-disabled-bg: var(--mantine-color-disabled);--input-disabled-color: var(--mantine-color-disabled-color);--input-left-section-size: var(--input-left-section-width, calc(var(--input-height) - calc(.125rem * var(--mantine-scale))));--input-right-section-size: var( --input-right-section-width, calc(var(--input-height) - calc(.125rem * var(--mantine-scale))) );--input-size: var(--input-height);--section-y: 1px;--left-section-start: 1px;--left-section-border-radius: var(--input-radius) 0 0 var(--input-radius);--right-section-end: 1px;--right-section-border-radius: 0 var(--input-radius) var(--input-radius) 0}.m_6c018570[data-variant=unstyled]{--input-padding: 0;--input-padding-y: 0;--input-padding-inline-start: 0;--input-padding-inline-end: 0}.m_6c018570[data-pointer]{--input-cursor: pointer}.m_6c018570[data-multiline]{--input-padding-y-xs: 4.5px;--input-padding-y-sm: 5.5px;--input-padding-y-md: 7px;--input-padding-y-lg: 9.5px;--input-padding-y-xl: 13px;--input-size: auto;--input-line-height: var(--mantine-line-height)}.m_6c018570[data-with-left-section]{--input-padding-inline-start: var(--input-left-section-size)}.m_6c018570[data-with-right-section]{--input-padding-inline-end: var(--input-right-section-size)}.m_6c018570[data-size=xs] .m_6c018570[data-with-right-section]:has([data-combined-clear-section]){--input-padding-inline-end: 41px}.m_6c018570[data-size=sm] .m_6c018570[data-with-right-section]:has([data-combined-clear-section]){--input-padding-inline-end: 50px}.m_6c018570[data-size=md] .m_6c018570[data-with-right-section]:has([data-combined-clear-section]){--input-padding-inline-end: 60px}.m_6c018570[data-size=lg] .m_6c018570[data-with-right-section]:has([data-combined-clear-section]){--input-padding-inline-end: 72px}.m_6c018570[data-size=xl] .m_6c018570[data-with-right-section]:has([data-combined-clear-section]){--input-padding-inline-end: 89px}[data-mantine-color-scheme=light] .m_6c018570[data-variant=default]{--input-bd: var(--mantine-color-gray-4);--input-bg: var(--mantine-color-white);--input-bd-focus: var(--mantine-primary-color-filled)}[data-mantine-color-scheme=light] .m_6c018570[data-variant=filled]{--input-bd: transparent;--input-bg: var(--mantine-color-gray-1);--input-bd-focus: var(--mantine-primary-color-filled)}[data-mantine-color-scheme=light] .m_6c018570[data-variant=unstyled]{--input-bd: transparent;--input-bg: transparent;--input-bd-focus: transparent}[data-mantine-color-scheme=dark] .m_6c018570[data-variant=default]{--input-bd: var(--mantine-color-dark-4);--input-bg: var(--mantine-color-dark-6);--input-bd-focus: var(--mantine-primary-color-filled)}[data-mantine-color-scheme=dark] .m_6c018570[data-variant=filled]{--input-bd: transparent;--input-bg: var(--mantine-color-dark-5);--input-bd-focus: var(--mantine-primary-color-filled)}[data-mantine-color-scheme=dark] .m_6c018570[data-variant=unstyled]{--input-bd: transparent;--input-bg: transparent;--input-bd-focus: transparent}[data-mantine-color-scheme] .m_6c018570[data-error]:not([data-variant=unstyled]){--input-bd: var(--mantine-color-error)}[data-mantine-color-scheme] .m_6c018570[data-error]{--input-color: var(--mantine-color-error);--input-placeholder-color: var(--mantine-color-error);--input-section-color: var(--mantine-color-error)}:where([dir=rtl]) .m_6c018570{--input-text-align: right;--left-section-border-radius: 0 var(--input-radius) var(--input-radius) 0;--right-section-border-radius: var(--input-radius) 0 0 var(--input-radius)}.m_8fb7ebe7{-webkit-tap-highlight-color:transparent;appearance:none;resize:var(--input-resize, none);display:block;width:100%;transition:border-color .1s ease;text-align:var(--input-text-align);color:var(--input-color);border:calc(.0625rem * var(--mantine-scale)) solid var(--input-bd);background-color:var(--input-bg);font-family:var(--input-font-family, var(--mantine-font-family));height:var(--input-size);min-height:var(--input-height);line-height:var(--input-line-height);font-size:var(--_input-fz, var(--input-fz, var(--mantine-font-size-md)));border-radius:var(--input-radius);padding-inline-start:var(--input-padding-inline-start);padding-inline-end:var(--input-padding-inline-end);padding-top:var(--input-padding-y, 0rem);padding-bottom:var(--input-padding-y, 0rem);cursor:var(--input-cursor);overflow:var(--input-overflow)}.m_8fb7ebe7[data-no-overflow]{--input-overflow: hidden}.m_8fb7ebe7[data-monospace]{--input-font-family: var(--mantine-font-family-monospace);--_input-fz: calc(var(--input-fz) - calc(.125rem * var(--mantine-scale)))}.m_8fb7ebe7:focus,.m_8fb7ebe7:focus-within{outline:none;--input-bd: var(--input-bd-focus)}[data-error] .m_8fb7ebe7:focus,[data-error] .m_8fb7ebe7:focus-within{--input-bd: var(--mantine-color-error)}.m_8fb7ebe7::placeholder{color:var(--input-placeholder-color);opacity:1}.m_8fb7ebe7::-webkit-inner-spin-button,.m_8fb7ebe7::-webkit-outer-spin-button,.m_8fb7ebe7::-webkit-search-decoration,.m_8fb7ebe7::-webkit-search-cancel-button,.m_8fb7ebe7::-webkit-search-results-button,.m_8fb7ebe7::-webkit-search-results-decoration{appearance:none}.m_8fb7ebe7[type=number]{-moz-appearance:textfield}.m_8fb7ebe7:disabled,.m_8fb7ebe7[data-disabled]{cursor:not-allowed;opacity:.6;background-color:var(--input-disabled-bg);color:var(--input-disabled-color)}.m_8fb7ebe7:has(input:disabled){cursor:not-allowed;opacity:.6;background-color:var(--input-disabled-bg);color:var(--input-disabled-color)}.m_8fb7ebe7[readonly]{caret-color:transparent}.m_82577fc2{pointer-events:var(--section-pointer-events);position:absolute;z-index:1;inset-inline-start:var(--section-start);inset-inline-end:var(--section-end);bottom:var(--section-y);top:var(--section-y);display:flex;align-items:center;justify-content:center;width:var(--section-size);border-radius:var(--section-border-radius);color:var(--input-section-color, var(--mantine-color-dimmed))}.m_82577fc2[data-position=right]{--section-pointer-events: var(--input-right-section-pointer-events);--section-end: var(--right-section-end);--section-size: var(--input-right-section-size);--section-border-radius: var(--right-section-border-radius)}.m_6c018570[data-size=xs] .m_82577fc2[data-position=right]:has([data-combined-clear-section]){--section-size: 41px}.m_6c018570[data-size=sm] .m_82577fc2[data-position=right]:has([data-combined-clear-section]){--section-size: 50px}.m_6c018570[data-size=md] .m_82577fc2[data-position=right]:has([data-combined-clear-section]){--section-size: 60px}.m_6c018570[data-size=lg] .m_82577fc2[data-position=right]:has([data-combined-clear-section]){--section-size: 72px}.m_6c018570[data-size=xl] .m_82577fc2[data-position=right]:has([data-combined-clear-section]){--section-size: 89px}.m_82577fc2[data-position=left]{--section-pointer-events: var(--input-left-section-pointer-events);--section-start: var(--left-section-start);--section-size: var(--input-left-section-size);--section-border-radius: var(--left-section-border-radius)}.m_88bacfd0{color:var(--input-placeholder-color, var(--mantine-color-placeholder))}[data-error] .m_88bacfd0{--input-placeholder-color: var(--input-color, var(--mantine-color-placeholder))}.m_46b77525{line-height:var(--mantine-line-height)}.m_8fdc1311{display:inline-block;font-weight:500;overflow-wrap:break-word;cursor:default;-webkit-tap-highlight-color:transparent;font-size:var(--input-label-size, var(--mantine-font-size-sm))}.m_78a94662{color:var(--input-asterisk-color, var(--mantine-color-error))}.m_8f816625,.m_fe47ce59{word-wrap:break-word;line-height:1.2;display:block;margin:0;padding:0}.m_8f816625{color:var(--mantine-color-error);font-size:var(--input-error-size, calc(var(--mantine-font-size-sm) - calc(.125rem * var(--mantine-scale))))}.m_fe47ce59{color:var(--mantine-color-dimmed);font-size:var(--input-description-size, calc(var(--mantine-font-size-sm) - calc(.125rem * var(--mantine-scale))))}.m_8bffd616{display:flex}.m_9bdbb667{--accordion-radius: var(--mantine-radius-default)}.m_df78851f{overflow-wrap:break-word}.m_4ba554d4{padding:var(--mantine-spacing-md);padding-top:calc(var(--mantine-spacing-xs) / 2)}.m_8fa820a0{margin:0;padding:0}.m_4ba585b8{width:100%;display:flex;align-items:center;flex-direction:row-reverse;padding-inline:var(--mantine-spacing-md);opacity:1;cursor:pointer;background-color:transparent;color:var(--mantine-color-bright)}.m_4ba585b8:where([data-chevron-position=left]){flex-direction:row;padding-inline-start:0}.m_4ba585b8:where(:disabled,[data-disabled]){opacity:.4;cursor:not-allowed}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_6939a5e9:where(:not(:disabled,[data-disabled])):hover,:where([data-mantine-color-scheme=light]) .m_4271d21b:where(:not(:disabled,[data-disabled])):hover{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_6939a5e9:where(:not(:disabled,[data-disabled])):hover,:where([data-mantine-color-scheme=dark]) .m_4271d21b:where(:not(:disabled,[data-disabled])):hover{background-color:var(--mantine-color-dark-6)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_6939a5e9:where(:not(:disabled,[data-disabled])):active,:where([data-mantine-color-scheme=light]) .m_4271d21b:where(:not(:disabled,[data-disabled])):active{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_6939a5e9:where(:not(:disabled,[data-disabled])):active,:where([data-mantine-color-scheme=dark]) .m_4271d21b:where(:not(:disabled,[data-disabled])):active{background-color:var(--mantine-color-dark-6)}}.m_df3ffa0f{color:inherit;font-weight:400;flex:1;overflow:hidden;text-overflow:ellipsis;padding-top:var(--mantine-spacing-sm);padding-bottom:var(--mantine-spacing-sm)}.m_3f35ae96{display:flex;align-items:center;justify-content:flex-start;transition:transform var(--accordion-transition-duration, .2s) ease;width:var(--accordion-chevron-size, calc(.9375rem * var(--mantine-scale)));min-width:var(--accordion-chevron-size, calc(.9375rem * var(--mantine-scale)));transform:rotate(0)}.m_3f35ae96:where([data-rotate]){transform:rotate(180deg)}.m_3f35ae96:where([data-position=left]){margin-inline-end:var(--mantine-spacing-md);margin-inline-start:var(--mantine-spacing-md)}.m_9bd771fe{display:flex;align-items:center;justify-content:center;margin-inline-end:var(--mantine-spacing-sm)}.m_9bd771fe:where([data-chevron-position=left]){margin-inline-end:0;margin-inline-start:var(--mantine-spacing-lg)}:where([data-mantine-color-scheme=light]) .m_9bd7b098{--item-border-color: var(--mantine-color-gray-3);--item-filled-color: var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_9bd7b098{--item-border-color: var(--mantine-color-dark-4);--item-filled-color: var(--mantine-color-dark-6)}.m_fe19b709{border-bottom:1px solid var(--item-border-color)}.m_1f921b3b{border:1px solid var(--item-border-color);transition:background-color .15s ease}.m_1f921b3b:where([data-active]){background-color:var(--item-filled-color)}.m_1f921b3b:first-of-type{border-start-start-radius:var(--accordion-radius);border-start-end-radius:var(--accordion-radius)}.m_1f921b3b:first-of-type>[data-accordion-control]{border-start-start-radius:var(--accordion-radius);border-start-end-radius:var(--accordion-radius)}.m_1f921b3b:last-of-type{border-end-start-radius:var(--accordion-radius);border-end-end-radius:var(--accordion-radius)}.m_1f921b3b:last-of-type>[data-accordion-control]{border-end-start-radius:var(--accordion-radius);border-end-end-radius:var(--accordion-radius)}.m_1f921b3b+.m_1f921b3b{border-top:0}.m_2cdf939a{border-radius:var(--accordion-radius)}.m_2cdf939a:where([data-active]){background-color:var(--item-filled-color)}.m_9f59b069{background-color:var(--item-filled-color);border-radius:var(--accordion-radius);border:1px solid transparent;transition:background-color .15s ease}.m_9f59b069[data-active]{border-color:var(--item-border-color)}:where([data-mantine-color-scheme=light]) .m_9f59b069[data-active]{background-color:var(--mantine-color-white)}:where([data-mantine-color-scheme=dark]) .m_9f59b069[data-active]{background-color:var(--mantine-color-dark-7)}.m_9f59b069+.m_9f59b069{margin-top:var(--mantine-spacing-md)}.m_8d3f4000{--ai-size-xs: 18px;--ai-size-sm: 22px;--ai-size-md: 28px;--ai-size-lg: 34px;--ai-size-xl: 44px;--ai-size-input-xs: 30px;--ai-size-input-sm: 36px;--ai-size-input-md: 42px;--ai-size-input-lg: 50px;--ai-size-input-xl: 60px;--ai-size: var(--ai-size-md);--ai-color: var(--mantine-color-white);line-height:1;display:inline-flex;align-items:center;justify-content:center;position:relative;user-select:none;overflow:hidden;width:var(--ai-size);height:var(--ai-size);min-width:var(--ai-size);min-height:var(--ai-size);border-radius:var(--ai-radius, var(--mantine-radius-default));background:var(--ai-bg, var(--mantine-primary-color-filled));color:var(--ai-color, var(--mantine-color-white));border:var(--ai-bd, calc(.0625rem * var(--mantine-scale)) solid transparent);cursor:pointer}@media(hover:hover){.m_8d3f4000:hover:where(:not([data-loading],:disabled,[data-disabled])){background-color:var(--ai-hover, var(--mantine-primary-color-filled-hover));color:var(--ai-hover-color, var(--ai-color))}}@media(hover:none){.m_8d3f4000:active:where(:not([data-loading],:disabled,[data-disabled])){background-color:var(--ai-hover, var(--mantine-primary-color-filled-hover));color:var(--ai-hover-color, var(--ai-color))}}.m_8d3f4000[data-loading]{cursor:not-allowed}.m_8d3f4000[data-loading] .m_8d3afb97{opacity:0;transform:translateY(100%)}.m_8d3f4000:where(:disabled:not([data-loading]),[data-disabled]:not([data-loading])){cursor:not-allowed;border:1px solid transparent;color:var(--mantine-color-disabled-color);background:var(--mantine-color-disabled)}.m_8d3f4000:where(:disabled:not([data-loading]),[data-disabled]:not([data-loading])):active{transform:none}.m_302b9fb1{inset:-1px;position:absolute;border-radius:var(--ai-radius, var(--mantine-radius-default));display:flex;align-items:center;justify-content:center}:where([data-mantine-color-scheme=light]) .m_302b9fb1{background-color:#ffffff26}:where([data-mantine-color-scheme=dark]) .m_302b9fb1{background-color:#00000026}.m_1a0f1b21{--ai-border-width: 1px;display:flex}.m_1a0f1b21 :where(*):focus{position:relative;z-index:1}.m_1a0f1b21[data-orientation=horizontal]{flex-direction:row}.m_1a0f1b21[data-orientation=horizontal] .m_8d3f4000:not(:only-child):first-child,.m_1a0f1b21[data-orientation=horizontal] .m_437b6484:not(:only-child):first-child{border-end-end-radius:0;border-start-end-radius:0;border-inline-end-width:calc(var(--ai-border-width) / 2)}.m_1a0f1b21[data-orientation=horizontal] .m_8d3f4000:not(:only-child):last-child,.m_1a0f1b21[data-orientation=horizontal] .m_437b6484:not(:only-child):last-child{border-end-start-radius:0;border-start-start-radius:0;border-inline-start-width:calc(var(--ai-border-width) / 2)}.m_1a0f1b21[data-orientation=horizontal] .m_8d3f4000:not(:only-child):not(:first-child):not(:last-child),.m_1a0f1b21[data-orientation=horizontal] .m_437b6484:not(:only-child):not(:first-child):not(:last-child){border-radius:0;border-inline-width:calc(var(--ai-border-width) / 2)}.m_1a0f1b21[data-orientation=vertical]{flex-direction:column}.m_1a0f1b21[data-orientation=vertical] .m_8d3f4000:not(:only-child):first-child,.m_1a0f1b21[data-orientation=vertical] .m_437b6484:not(:only-child):first-child{border-end-start-radius:0;border-end-end-radius:0;border-bottom-width:calc(var(--ai-border-width) / 2)}.m_1a0f1b21[data-orientation=vertical] .m_8d3f4000:not(:only-child):last-child,.m_1a0f1b21[data-orientation=vertical] .m_437b6484:not(:only-child):last-child{border-start-start-radius:0;border-start-end-radius:0;border-top-width:calc(var(--ai-border-width) / 2)}.m_1a0f1b21[data-orientation=vertical] .m_8d3f4000:not(:only-child):not(:first-child):not(:last-child),.m_1a0f1b21[data-orientation=vertical] .m_437b6484:not(:only-child):not(:first-child):not(:last-child){border-radius:0;border-bottom-width:calc(var(--ai-border-width) / 2);border-top-width:calc(var(--ai-border-width) / 2)}.m_8d3afb97{display:flex;align-items:center;justify-content:center;transition:transform .15s ease,opacity .1s ease;width:100%;height:100%}.m_437b6484{--section-height-xs: 18px;--section-height-sm: 22px;--section-height-md: 28px;--section-height-lg: 34px;--section-height-xl: 44px;--section-height-input-xs: 30px;--section-height-input-sm: 36px;--section-height-input-md: 42px;--section-height-input-lg: 50px;--section-height-input-xl: 60px;--section-padding-x-xs: 6px;--section-padding-x-sm: 8px;--section-padding-x-md: 10px;--section-padding-x-lg: 12px;--section-padding-x-xl: 16px;--section-height: var(--section-height-sm);--section-padding-x: var(--section-padding-x-sm);--section-color: var(--mantine-color-white);font-weight:600;width:auto;border-radius:var(--section-radius, var(--mantine-radius-default));font-size:var(--section-fz, var(--mantine-font-size-sm));background:var(--section-bg, var(--mantine-primary-color-filled));border:var(--section-bd, calc(.0625rem * var(--mantine-scale)) solid transparent);color:var(--section-color, var(--mantine-color-white));height:var(--section-height, var(--section-height-sm));padding-inline:var(--section-padding-x, var(--section-padding-x-sm));vertical-align:middle;line-height:1;display:inline-flex;align-items:center;justify-content:center}.m_7f854edf{position:fixed;z-index:var(--affix-z-index);inset-inline-start:var(--affix-left);inset-inline-end:var(--affix-right);top:var(--affix-top);bottom:var(--affix-bottom)}.m_66836ed3{--alert-radius: var(--mantine-radius-default);--alert-bg: var(--mantine-primary-color-light);--alert-bd: 1px solid transparent;--alert-color: var(--mantine-primary-color-light-color);padding:var(--mantine-spacing-md) var(--mantine-spacing-md);border-radius:var(--alert-radius);position:relative;overflow:hidden;background-color:var(--alert-bg);border:var(--alert-bd);color:var(--alert-color)}.m_a5d60502{display:flex}.m_667c2793{flex:1;display:flex;flex-direction:column;gap:var(--mantine-spacing-xs)}.m_6a03f287{display:flex;align-items:center;justify-content:space-between;font-size:var(--mantine-font-size-sm);font-weight:700}.m_6a03f287:where([data-with-close-button]){padding-inline-end:var(--mantine-spacing-md)}.m_698f4f23{display:block;overflow:hidden;text-overflow:ellipsis}.m_667f2a6a{line-height:1;width:20px;height:20px;display:flex;align-items:center;justify-content:flex-start;margin-inline-end:var(--mantine-spacing-md);margin-top:1px}.m_7fa78076{text-overflow:ellipsis;overflow:hidden;font-size:var(--mantine-font-size-sm)}:where([data-mantine-color-scheme=light]) .m_7fa78076{color:var(--mantine-color-black)}:where([data-mantine-color-scheme=dark]) .m_7fa78076{color:var(--mantine-color-white)}.m_7fa78076:where([data-variant=filled]){color:var(--alert-color)}.m_7fa78076:where([data-variant=white]){color:var(--mantine-color-black)}.m_87f54839{width:20px;height:20px;color:var(--alert-color)}.m_849cf0da{color:var(--mantine-color-anchor);text-decoration:none;appearance:none;border:none;display:inline;padding:0;margin:0;background-color:transparent;cursor:pointer}@media(hover:hover){.m_849cf0da:where([data-underline=hover]):hover{text-decoration:underline}}@media(hover:none){.m_849cf0da:where([data-underline=hover]):active{text-decoration:underline}}.m_849cf0da:where([data-underline=not-hover]){text-decoration:underline}@media(hover:hover){.m_849cf0da:where([data-underline=not-hover]):hover{text-decoration:none}}@media(hover:none){.m_849cf0da:where([data-underline=not-hover]):active{text-decoration:none}}.m_849cf0da:where([data-underline=always]){text-decoration:underline}.m_849cf0da:where([data-variant=gradient]),.m_849cf0da:where([data-variant=gradient]):hover{text-decoration:none}.m_849cf0da:where([data-line-clamp]){display:-webkit-box}.m_71ac47fc{--ar-ratio: 1;max-width:100%}.m_71ac47fc>:where(*:not(style)){aspect-ratio:var(--ar-ratio);width:100%}.m_71ac47fc>:where(img,video){object-fit:cover}.m_89ab340[data-resizing]{--app-shell-transition-duration: 0ms !important}.m_89ab340[data-disabled]{--app-shell-header-offset: 0rem !important;--app-shell-navbar-offset: 0rem !important;--app-shell-aside-offset: 0rem !important;--app-shell-footer-offset: 0rem !important}.m_89ab340[data-mode=static]{display:grid;grid-template-columns:var(--app-shell-navbar-width, 0) 1fr var(--app-shell-aside-width, 0);grid-template-rows:auto 1fr auto;position:relative;height:100%;overflow:auto}[data-mantine-color-scheme=light] .m_89ab340{--app-shell-border-color: var(--mantine-color-gray-3)}[data-mantine-color-scheme=dark] .m_89ab340{--app-shell-border-color: var(--mantine-color-dark-4)}.m_45252eee,.m_9cdde9a,.m_3b16f56b,.m_8983817,.m_3840c879{transition-duration:var(--app-shell-transition-duration);transition-timing-function:var(--app-shell-transition-timing-function)}.m_45252eee,.m_9cdde9a{position:fixed;display:flex;flex-direction:column;top:var(--app-shell-header-offset, 0rem);height:calc(100dvh - var(--app-shell-header-offset, 0rem) - var(--app-shell-footer-offset, 0rem));background-color:var(--mantine-color-body);transition-property:transform,top,height}:where([data-mode=static]) .m_45252eee,:where([data-mode=static]) .m_9cdde9a{position:var(--app-shell-navbar-position, fixed);grid-row:var(--app-shell-navbar-grid-row, auto);height:100%}:where([data-layout=alt]) .m_45252eee,:where([data-layout=alt]) .m_9cdde9a{top:0rem;height:100dvh}:where([data-mode=static][data-layout=alt]) .m_45252eee,:where([data-mode=static][data-layout=alt]) .m_9cdde9a{grid-row:1 / -1;height:100%}.m_45252eee{inset-inline-start:0;width:var(--app-shell-navbar-width);transition-property:transform,top,height;transform:var(--app-shell-navbar-transform);z-index:var(--app-shell-navbar-z-index)}:where([data-mode=static]) .m_45252eee{grid-column:var(--app-shell-navbar-grid-column, auto);display:var(--app-shell-navbar-display, flex)}:where([dir=rtl]) .m_45252eee{transform:var(--app-shell-navbar-transform-rtl)}.m_45252eee:where([data-with-border]){border-inline-end:1px solid var(--app-shell-border-color)}.m_9cdde9a{inset-inline-end:0;width:var(--app-shell-aside-width);transform:var(--app-shell-aside-transform);z-index:var(--app-shell-aside-z-index)}:where([data-mode=static]) .m_9cdde9a{position:var(--app-shell-aside-position, fixed);grid-column:var(--app-shell-aside-grid-column, auto);grid-row:var(--app-shell-aside-grid-row, auto);display:var(--app-shell-aside-display, flex)}:where([dir=rtl]) .m_9cdde9a{transform:var(--app-shell-aside-transform-rtl)}.m_9cdde9a:where([data-with-border]){border-inline-start:1px solid var(--app-shell-border-color)}:where([data-mode=static][data-layout=alt]) .m_9cdde9a{grid-row:1 / -1}:where([data-scroll-locked]) .m_9cdde9a{visibility:var(--app-shell-aside-scroll-locked-visibility)}.m_8983817{padding-inline-start:calc(var(--app-shell-navbar-offset, 0rem) + var(--app-shell-padding));padding-inline-end:calc(var(--app-shell-aside-offset, 0rem) + var(--app-shell-padding));padding-top:calc(var(--app-shell-header-offset, 0rem) + var(--app-shell-padding));padding-bottom:calc(var(--app-shell-footer-offset, 0rem) + var(--app-shell-padding));min-height:100dvh;transition-property:padding}:where([data-mode=static]) .m_8983817{padding-inline-start:var(--app-shell-padding);padding-inline-end:var(--app-shell-padding);padding-top:var(--app-shell-padding);padding-bottom:var(--app-shell-padding);min-height:auto;grid-column:var(--app-shell-main-column-start, 1) / var(--app-shell-main-column-end, -1);grid-row:var(--app-shell-main-grid-row, 2)}.m_3b16f56b,.m_3840c879{position:fixed;inset-inline:0;transition-property:transform,margin-inline-start,margin-inline-end;background-color:var(--mantine-color-body)}:where([data-mode=static]) .m_3b16f56b,:where([data-mode=static]) .m_3840c879{position:var(--app-shell-header-position, fixed);grid-column:var(--app-shell-header-grid-column, auto)}:where([data-layout=alt]) .m_3b16f56b,:where([data-layout=alt]) .m_3840c879{margin-inline-start:var(--app-shell-navbar-offset, 0rem);margin-inline-end:var(--app-shell-aside-offset, 0rem)}:where([data-mode=static][data-layout=alt]) .m_3b16f56b,:where([data-mode=static][data-layout=alt]) .m_3840c879{grid-column:var(--app-shell-main-column-start, 1) / var(--app-shell-main-column-end, -1);margin-inline-start:0rem;margin-inline-end:0rem}.m_3b16f56b{top:0;height:var(--app-shell-header-height);background-color:var(--mantine-color-body);transform:var(--app-shell-header-transform);z-index:var(--app-shell-header-z-index)}:where([data-mode=static]) .m_3b16f56b{grid-row:var(--app-shell-header-grid-row, auto)}.m_3b16f56b:where([data-with-border]){border-bottom:1px solid var(--app-shell-border-color)}.m_3840c879{bottom:0;height:calc(var(--app-shell-footer-height) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);transform:var(--app-shell-footer-transform);z-index:var(--app-shell-footer-z-index)}:where([data-mode=static]) .m_3840c879{position:var(--app-shell-footer-position, fixed);grid-column:var(--app-shell-footer-grid-column, auto);grid-row:var(--app-shell-footer-grid-row, auto)}:where([data-mode=static][data-layout=alt]) .m_3840c879{grid-column:var(--app-shell-main-column-start, 1) / var(--app-shell-main-column-end, -1)}.m_3840c879:where([data-with-border]){border-top:1px solid var(--app-shell-border-color)}.m_6dcfc7c7{flex-grow:0}.m_6dcfc7c7:where([data-grow]){flex-grow:1}.m_11def92b{--ag-spacing: var(--mantine-spacing-sm);--ag-offset: calc(var(--ag-spacing) * -1);display:flex;padding-inline-start:var(--ag-spacing)}.m_f85678b6{--avatar-size-xs: 16px;--avatar-size-sm: 26px;--avatar-size-md: 38px;--avatar-size-lg: 56px;--avatar-size-xl: 84px;--avatar-size: var(--avatar-size-md);--avatar-radius: 1000px;--avatar-bg: var(--mantine-color-gray-light);--avatar-bd: 1px solid transparent;--avatar-color: var(--mantine-color-gray-light-color);--avatar-placeholder-fz: calc(var(--avatar-size) / 2.5);-webkit-tap-highlight-color:transparent;position:relative;display:block;user-select:none;overflow:hidden;border-radius:var(--avatar-radius);text-decoration:none;padding:0;width:var(--avatar-size);height:var(--avatar-size);min-width:var(--avatar-size)}.m_f85678b6:where([data-within-group]){margin-inline-start:var(--ag-offset);border:2px solid var(--mantine-color-body);background:var(--mantine-color-body)}.m_11f8ac07{object-fit:cover;width:100%;height:100%;display:block}.m_104cd71f{font-weight:700;display:flex;align-items:center;justify-content:center;width:100%;height:100%;user-select:none;border-radius:var(--avatar-radius);font-size:var(--avatar-placeholder-fz);background:var(--avatar-bg);border:var(--avatar-bd);color:var(--avatar-color)}.m_104cd71f>[data-avatar-placeholder-icon]{width:70%;height:70%}.m_347db0ec{--badge-height-xs: 16px;--badge-height-sm: 18px;--badge-height-md: 20px;--badge-height-lg: 26px;--badge-height-xl: 32px;--badge-fz-xs: 9px;--badge-fz-sm: 10px;--badge-fz-md: 11px;--badge-fz-lg: 13px;--badge-fz-xl: 16px;--badge-padding-x-xs: 6px;--badge-padding-x-sm: 8px;--badge-padding-x-md: 10px;--badge-padding-x-lg: 12px;--badge-padding-x-xl: 16px;--badge-height: var(--badge-height-md);--badge-fz: var(--badge-fz-md);--badge-padding-x: var(--badge-padding-x-md);--badge-radius: 1000px;--badge-lh: calc(var(--badge-height) - calc(.125rem * var(--mantine-scale)));--badge-color: var(--mantine-color-white);--badge-bg: var(--mantine-primary-color-filled);--badge-border-width: 1px;--badge-bd: var(--badge-border-width) solid transparent;-webkit-tap-highlight-color:transparent;font-size:var(--badge-fz);border-radius:var(--badge-radius);height:var(--badge-height);line-height:var(--badge-lh);text-decoration:none;padding:0 var(--badge-padding-x);display:inline-grid;align-items:center;justify-content:center;width:fit-content;text-transform:uppercase;font-weight:700;letter-spacing:.25px;cursor:default;text-overflow:ellipsis;overflow:hidden;color:var(--badge-color);background:var(--badge-bg);border:var(--badge-bd)}.m_347db0ec:where([data-with-left-section],[data-variant=dot]){grid-template-columns:auto 1fr}.m_347db0ec:where([data-with-right-section]){grid-template-columns:1fr auto}.m_347db0ec:where([data-with-left-section][data-with-right-section],[data-variant=dot][data-with-right-section]){grid-template-columns:auto 1fr auto}.m_347db0ec:where([data-block]){display:flex;width:100%}.m_347db0ec:where([data-circle]){padding-inline:2px;display:flex;width:var(--badge-height)}.m_fbd81e3d{--badge-dot-size: calc(var(--badge-height) / 3.4)}:where([data-mantine-color-scheme=light]) .m_fbd81e3d{background-color:var(--mantine-color-white);border-color:var(--mantine-color-gray-4);color:var(--mantine-color-black)}:where([data-mantine-color-scheme=dark]) .m_fbd81e3d{background-color:var(--mantine-color-dark-5);border-color:var(--mantine-color-dark-5);color:var(--mantine-color-white)}.m_fbd81e3d:before{content:"";display:block;width:var(--badge-dot-size);height:var(--badge-dot-size);border-radius:var(--badge-dot-size);background-color:var(--badge-dot-color);margin-inline-end:var(--badge-dot-size)}.m_5add502a{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;cursor:inherit}.m_91fdda9b{--badge-section-margin: calc(var(--mantine-spacing-xs) / 2);display:inline-flex;justify-content:center;align-items:center;max-height:calc(var(--badge-height) - var(--badge-border-width) * 2)}.m_91fdda9b:where([data-position=left]){margin-inline-end:var(--badge-section-margin)}.m_91fdda9b:where([data-position=right]){margin-inline-start:var(--badge-section-margin)}.m_2ce0de02{background-size:cover;background-position:center;display:block;width:100%;border:0;text-decoration:none;border-radius:var(--bi-radius, 0)}.m_ddec01c0{--blockquote-border: 3px solid var(--bq-bd);position:relative;margin:0;border-inline-start:var(--blockquote-border);border-start-end-radius:var(--bq-radius);border-end-end-radius:var(--bq-radius);padding:var(--mantine-spacing-xl) calc(2.375rem * var(--mantine-scale))}:where([data-mantine-color-scheme=light]) .m_ddec01c0{background-color:var(--bq-bg-light)}:where([data-mantine-color-scheme=dark]) .m_ddec01c0{background-color:var(--bq-bg-dark)}.m_dde7bd57{--blockquote-icon-offset: calc(var(--bq-icon-size) / -2);position:absolute;color:var(--bq-bd);background-color:var(--mantine-color-body);display:flex;align-items:center;justify-content:center;top:var(--blockquote-icon-offset);inset-inline-start:var(--blockquote-icon-offset);width:var(--bq-icon-size);height:var(--bq-icon-size);border-radius:var(--bq-icon-size)}.m_dde51a35{display:block;margin-top:var(--mantine-spacing-md);opacity:.6;font-size:85%}.m_8b3717df{display:flex;align-items:center;flex-wrap:wrap}.m_f678d540{line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent}.m_3b8f2208{margin-inline:var(--bc-separator-margin, var(--mantine-spacing-xs));line-height:1;display:flex;align-items:center;justify-content:center}:where([data-mantine-color-scheme=light]) .m_3b8f2208{color:var(--mantine-color-gray-7)}:where([data-mantine-color-scheme=dark]) .m_3b8f2208{color:var(--mantine-color-dark-2)}.m_77c9d27d{--button-height-xs: 30px;--button-height-sm: 36px;--button-height-md: 42px;--button-height-lg: 50px;--button-height-xl: 60px;--button-height-compact-xs: 22px;--button-height-compact-sm: 26px;--button-height-compact-md: 30px;--button-height-compact-lg: 34px;--button-height-compact-xl: 40px;--button-padding-x-xs: 14px;--button-padding-x-sm: 18px;--button-padding-x-md: 22px;--button-padding-x-lg: 26px;--button-padding-x-xl: 32px;--button-padding-x-compact-xs: 7px;--button-padding-x-compact-sm: 8px;--button-padding-x-compact-md: 10px;--button-padding-x-compact-lg: 12px;--button-padding-x-compact-xl: 14px;--button-height: var(--button-height-sm);--button-padding-x: var(--button-padding-x-sm);--button-color: var(--mantine-color-white);user-select:none;font-weight:600;position:relative;line-height:1;text-align:center;overflow:hidden;width:auto;cursor:pointer;display:inline-block;border-radius:var(--button-radius, var(--mantine-radius-default));font-size:var(--button-fz, var(--mantine-font-size-sm));background:var(--button-bg, var(--mantine-primary-color-filled));border:var(--button-bd, calc(.0625rem * var(--mantine-scale)) solid transparent);color:var(--button-color, var(--mantine-color-white));height:var(--button-height, var(--button-height-sm));padding-inline:var(--button-padding-x, var(--button-padding-x-sm));vertical-align:middle}.m_77c9d27d:where([data-block]){display:block;width:100%}.m_77c9d27d:where([data-with-left-section]){padding-inline-start:calc(var(--button-padding-x) / 1.5)}.m_77c9d27d:where([data-with-right-section]){padding-inline-end:calc(var(--button-padding-x) / 1.5)}.m_77c9d27d:where(:disabled:not([data-loading]),[data-disabled]:not([data-loading])){cursor:not-allowed;border:1px solid transparent;transform:none;color:var(--mantine-color-disabled-color);background:var(--mantine-color-disabled)}.m_77c9d27d:before{content:"";pointer-events:none;position:absolute;inset:-1px;border-radius:var(--button-radius, var(--mantine-radius-default));transform:translateY(-100%);opacity:0;filter:blur(12px);transition:transform .15s ease,opacity .1s ease}:where([data-mantine-color-scheme=light]) .m_77c9d27d:before{background-color:#ffffff26}:where([data-mantine-color-scheme=dark]) .m_77c9d27d:before{background-color:#00000026}.m_77c9d27d:where([data-loading]){cursor:not-allowed;transform:none}.m_77c9d27d:where([data-loading]):before{transform:translateY(0);opacity:1}.m_77c9d27d:where([data-loading]) .m_80f1301b{opacity:0;transform:translateY(100%)}@media(hover:hover){.m_77c9d27d:hover:where(:not([data-loading],:disabled,[data-disabled])){background-color:var(--button-hover, var(--mantine-primary-color-filled-hover));color:var(--button-hover-color, var(--button-color))}}@media(hover:none){.m_77c9d27d:active:where(:not([data-loading],:disabled,[data-disabled])){background-color:var(--button-hover, var(--mantine-primary-color-filled-hover));color:var(--button-hover-color, var(--button-color))}}.m_80f1301b{display:flex;align-items:center;justify-content:var(--button-justify, center);height:100%;overflow:visible;transition:transform .15s ease,opacity .1s ease}.m_811560b9{white-space:nowrap;height:100%;overflow:hidden;display:flex;align-items:center;opacity:1}.m_811560b9:where([data-loading]){opacity:.2}.m_a74036a{display:flex;align-items:center}.m_a74036a:where([data-position=left]){margin-inline-end:var(--mantine-spacing-xs)}.m_a74036a:where([data-position=right]){margin-inline-start:var(--mantine-spacing-xs)}.m_a25b86ee{position:absolute;left:50%;top:50%}.m_80d6d844{--button-border-width: 1px;display:flex}.m_80d6d844 :where(.m_77c9d27d):focus{position:relative;z-index:1}.m_80d6d844[data-orientation=horizontal]{flex-direction:row}.m_80d6d844[data-orientation=horizontal] .m_77c9d27d:not(:only-child):first-child,.m_80d6d844[data-orientation=horizontal] .m_70be2a01:not(:only-child):first-child{border-end-end-radius:0;border-start-end-radius:0;border-inline-end-width:calc(var(--button-border-width) / 2)}.m_80d6d844[data-orientation=horizontal] .m_77c9d27d:not(:only-child):last-child,.m_80d6d844[data-orientation=horizontal] .m_70be2a01:not(:only-child):last-child{border-end-start-radius:0;border-start-start-radius:0;border-inline-start-width:calc(var(--button-border-width) / 2)}.m_80d6d844[data-orientation=horizontal] .m_77c9d27d:not(:only-child):not(:first-child):not(:last-child),.m_80d6d844[data-orientation=horizontal] .m_70be2a01:not(:only-child):not(:first-child):not(:last-child){border-radius:0;border-inline-width:calc(var(--button-border-width) / 2)}.m_80d6d844[data-orientation=vertical]{flex-direction:column}.m_80d6d844[data-orientation=vertical] .m_77c9d27d:not(:only-child):first-child,.m_80d6d844[data-orientation=vertical] .m_70be2a01:not(:only-child):first-child{border-end-start-radius:0;border-end-end-radius:0;border-bottom-width:calc(var(--button-border-width) / 2)}.m_80d6d844[data-orientation=vertical] .m_77c9d27d:not(:only-child):last-child,.m_80d6d844[data-orientation=vertical] .m_70be2a01:not(:only-child):last-child{border-start-start-radius:0;border-start-end-radius:0;border-top-width:calc(var(--button-border-width) / 2)}.m_80d6d844[data-orientation=vertical] .m_77c9d27d:not(:only-child):not(:first-child):not(:last-child),.m_80d6d844[data-orientation=vertical] .m_70be2a01:not(:only-child):not(:first-child):not(:last-child){border-radius:0;border-bottom-width:calc(var(--button-border-width) / 2);border-top-width:calc(var(--button-border-width) / 2)}.m_70be2a01{--section-height-xs: 30px;--section-height-sm: 36px;--section-height-md: 42px;--section-height-lg: 50px;--section-height-xl: 60px;--section-height-compact-xs: 22px;--section-height-compact-sm: 26px;--section-height-compact-md: 30px;--section-height-compact-lg: 34px;--section-height-compact-xl: 40px;--section-padding-x-xs: 14px;--section-padding-x-sm: 18px;--section-padding-x-md: 22px;--section-padding-x-lg: 26px;--section-padding-x-xl: 32px;--section-padding-x-compact-xs: 7px;--section-padding-x-compact-sm: 8px;--section-padding-x-compact-md: 10px;--section-padding-x-compact-lg: 12px;--section-padding-x-compact-xl: 14px;--section-height: var(--section-height-sm);--section-padding-x: var(--section-padding-x-sm);--section-color: var(--mantine-color-white);font-weight:600;width:auto;border-radius:var(--section-radius, var(--mantine-radius-default));font-size:var(--section-fz, var(--mantine-font-size-sm));background:var(--section-bg, var(--mantine-primary-color-filled));border:var(--section-bd, calc(.0625rem * var(--mantine-scale)) solid transparent);color:var(--section-color, var(--mantine-color-white));height:var(--section-height, var(--section-height-sm));padding-inline:var(--section-padding-x, var(--section-padding-x-sm));vertical-align:middle;line-height:1;display:inline-flex;align-items:center;justify-content:center}.m_fea6bf1a{--burger-size-xs: 12px;--burger-size-sm: 18px;--burger-size-md: 24px;--burger-size-lg: 34px;--burger-size-xl: 42px;--burger-size: var(--burger-size-md);--burger-line-size: calc(var(--burger-size) / 12);width:calc(var(--burger-size) + var(--mantine-spacing-xs));height:calc(var(--burger-size) + var(--mantine-spacing-xs));padding:calc(var(--mantine-spacing-xs) / 2);cursor:pointer}:where([data-mantine-color-scheme=light]) .m_fea6bf1a{--burger-color: var(--mantine-color-black)}:where([data-mantine-color-scheme=dark]) .m_fea6bf1a{--burger-color: var(--mantine-color-white)}.m_d4fb9cad{position:relative;user-select:none}.m_d4fb9cad,.m_d4fb9cad:before,.m_d4fb9cad:after{display:block;width:var(--burger-size);height:var(--burger-line-size);background-color:var(--burger-color);outline:1px solid transparent;transition-property:background-color,transform;transition-duration:var(--burger-transition-duration, .3s);transition-timing-function:var(--burger-transition-timing-function, ease)}.m_d4fb9cad:before,.m_d4fb9cad:after{position:absolute;content:"";inset-inline-start:0}.m_d4fb9cad:before{top:calc(var(--burger-size) / -3)}.m_d4fb9cad:after{top:calc(var(--burger-size) / 3)}.m_d4fb9cad[data-opened]{background-color:transparent}.m_d4fb9cad[data-opened]:before{transform:translateY(calc(var(--burger-size) / 3)) rotate(45deg)}.m_d4fb9cad[data-opened]:after{transform:translateY(calc(var(--burger-size) / -3)) rotate(-45deg)}.m_e615b15f{--card-padding: var(--mantine-spacing-md);position:relative;overflow:hidden;display:flex;flex-direction:column;padding:var(--card-padding);color:var(--mantine-color-text)}:where([data-mantine-color-scheme=light]) .m_e615b15f{background-color:var(--mantine-color-white)}:where([data-mantine-color-scheme=dark]) .m_e615b15f{background-color:var(--mantine-color-dark-6)}.m_599a2148{display:block;margin-inline:calc(var(--card-padding) * -1)}.m_599a2148:where(:first-child){margin-top:calc(var(--card-padding) * -1);border-top:none!important}.m_599a2148:where(:last-child){margin-bottom:calc(var(--card-padding) * -1);border-bottom:none!important}.m_599a2148:where([data-inherit-padding]){padding-inline:var(--card-padding)}.m_599a2148:where([data-with-border]){border-top:1px solid;border-bottom:1px solid}:where([data-mantine-color-scheme=light]) .m_599a2148{border-color:var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_599a2148{border-color:var(--mantine-color-dark-4)}.m_599a2148+.m_599a2148{border-top:none!important}.m_4451eb3a{display:flex;align-items:center;justify-content:center}.m_4451eb3a:where([data-inline]){display:inline-flex}.m_bf2d988c{--checkbox-size-xs: 16px;--checkbox-size-sm: 20px;--checkbox-size-md: 24px;--checkbox-size-lg: 30px;--checkbox-size-xl: 36px;--checkbox-size: var(--checkbox-size-sm);--checkbox-color: var(--mantine-primary-color-filled)}.m_bf2d988c:where([data-variant=filled]){--checkbox-icon-color: var(--mantine-color-white)}.m_bf2d988c:where([data-variant=outline]){--checkbox-icon-color: var(--checkbox-color)}.m_26062bec{position:relative;width:var(--checkbox-size);height:var(--checkbox-size);order:1}.m_26062bec:where([data-label-position=left]){order:2}.m_26063560{appearance:none;border:1px solid transparent;width:var(--checkbox-size);height:var(--checkbox-size);border-radius:var(--checkbox-radius, var(--mantine-radius-default));padding:0;display:block;margin:0;transition:border-color .1s ease,background-color .1s ease;cursor:var(--mantine-cursor-type);-webkit-tap-highlight-color:transparent}:where([data-mantine-color-scheme=light]) .m_26063560{background-color:var(--mantine-color-white);border-color:var(--mantine-color-gray-4)}:where([data-mantine-color-scheme=dark]) .m_26063560{background-color:var(--mantine-color-dark-6);border-color:var(--mantine-color-dark-4)}.m_26063560:where([data-error]){border-color:var(--mantine-color-error)}.m_26063560[data-indeterminate],.m_26063560:checked{background-color:var(--checkbox-color);border-color:var(--checkbox-color)}.m_26063560[data-indeterminate]+.m_bf295423,.m_26063560:checked+.m_bf295423{opacity:1;transform:none}.m_26063560:disabled{cursor:not-allowed;border-color:var(--mantine-color-disabled-border);background-color:var(--mantine-color-disabled)}.m_26063560:disabled+.m_bf295423{color:var(--mantine-color-disabled-color)}.m_215c4542+.m_bf295423{color:var(--checkbox-color)}.m_215c4542[data-indeterminate]:not(:disabled),.m_215c4542:checked:not(:disabled){background-color:transparent;border-color:var(--checkbox-color)}.m_215c4542[data-indeterminate]:not(:disabled)+.m_bf295423,.m_215c4542:checked:not(:disabled)+.m_bf295423{color:var(--checkbox-icon-color);opacity:1;transform:none}.m_bf295423{position:absolute;inset:0;width:60%;margin:auto;color:var(--checkbox-icon-color);pointer-events:none;transform:translateY(calc(.3125rem * var(--mantine-scale))) scale(.5);opacity:0;transition:transform .1s ease,opacity .1s ease}.m_f59ffda3{--chip-size-xs: 23px;--chip-size-sm: 28px;--chip-size-md: 32px;--chip-size-lg: 36px;--chip-size-xl: 40px;--chip-icon-size-xs: 9px;--chip-icon-size-sm: 12px;--chip-icon-size-md: 14px;--chip-icon-size-lg: 16px;--chip-icon-size-xl: 18px;--chip-padding-xs: 16px;--chip-padding-sm: 20px;--chip-padding-md: 24px;--chip-padding-lg: 28px;--chip-padding-xl: 32px;--chip-checked-padding-xs: 8.2px;--chip-checked-padding-sm: 10px;--chip-checked-padding-md: 11.7px;--chip-checked-padding-lg: 13.5px;--chip-checked-padding-xl: 15.7px;--chip-spacing-xs: 10px;--chip-spacing-sm: 12px;--chip-spacing-md: 16px;--chip-spacing-lg: 20px;--chip-spacing-xl: 22px;--chip-size: var(--chip-size-sm);--chip-icon-size: var(--chip-icon-size-sm);--chip-padding: var(--chip-padding-sm);--chip-spacing: var(--chip-spacing-sm);--chip-checked-padding: var(--chip-checked-padding-sm);--chip-bg: var(--mantine-primary-color-filled);--chip-hover: var(--mantine-primary-color-filled-hover);--chip-color: var(--mantine-color-white);--chip-bd: 1px solid transparent}.m_be049a53{display:inline-flex;align-items:center;user-select:none;border-radius:var(--chip-radius, 1000rem);height:var(--chip-size);font-size:var(--chip-fz, var(--mantine-font-size-sm));line-height:calc(var(--chip-size) - calc(.125rem * var(--mantine-scale)));padding-inline:var(--chip-padding);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;border:1px solid transparent;color:var(--mantine-color-text)}.m_be049a53:where([data-checked]){padding-inline:var(--chip-checked-padding)}.m_be049a53:where([data-disabled]){cursor:not-allowed;background-color:var(--mantine-color-disabled);color:var(--mantine-color-disabled-color)}:where([data-mantine-color-scheme=light]) .m_3904c1af:not([data-disabled]){background-color:var(--mantine-color-white);border:1px solid var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_3904c1af:not([data-disabled]){background-color:var(--mantine-color-dark-6);border:1px solid var(--mantine-color-dark-4)}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_3904c1af:not([data-disabled]):hover{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_3904c1af:not([data-disabled]):hover{background-color:var(--mantine-color-dark-5)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_3904c1af:not([data-disabled]):active{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_3904c1af:not([data-disabled]):active{background-color:var(--mantine-color-dark-5)}}.m_3904c1af:not([data-disabled]):where([data-checked]){--chip-icon-color: var(--chip-color);border:var(--chip-bd)}@media(hover:hover){.m_3904c1af:not([data-disabled]):where([data-checked]):hover{background-color:var(--chip-hover)}}@media(hover:none){.m_3904c1af:not([data-disabled]):where([data-checked]):active{background-color:var(--chip-hover)}}.m_fa109255:not([data-disabled]),.m_f7e165c3:not([data-disabled]){border:1px solid transparent;color:var(--mantine-color-text)}:where([data-mantine-color-scheme=light]) .m_fa109255:not([data-disabled]),:where([data-mantine-color-scheme=light]) .m_f7e165c3:not([data-disabled]){background-color:var(--mantine-color-gray-1)}:where([data-mantine-color-scheme=dark]) .m_fa109255:not([data-disabled]),:where([data-mantine-color-scheme=dark]) .m_f7e165c3:not([data-disabled]){background-color:var(--mantine-color-dark-5)}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_fa109255:not([data-disabled]):hover,:where([data-mantine-color-scheme=light]) .m_f7e165c3:not([data-disabled]):hover{background-color:var(--mantine-color-gray-2)}:where([data-mantine-color-scheme=dark]) .m_fa109255:not([data-disabled]):hover,:where([data-mantine-color-scheme=dark]) .m_f7e165c3:not([data-disabled]):hover{background-color:var(--mantine-color-dark-4)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_fa109255:not([data-disabled]):active,:where([data-mantine-color-scheme=light]) .m_f7e165c3:not([data-disabled]):active{background-color:var(--mantine-color-gray-2)}:where([data-mantine-color-scheme=dark]) .m_fa109255:not([data-disabled]):active,:where([data-mantine-color-scheme=dark]) .m_f7e165c3:not([data-disabled]):active{background-color:var(--mantine-color-dark-4)}}.m_fa109255:not([data-disabled]):where([data-checked]),.m_f7e165c3:not([data-disabled]):where([data-checked]){--chip-icon-color: var(--chip-color);color:var(--chip-color);background-color:var(--chip-bg)}@media(hover:hover){.m_fa109255:not([data-disabled]):where([data-checked]):hover,.m_f7e165c3:not([data-disabled]):where([data-checked]):hover{background-color:var(--chip-hover)}}@media(hover:none){.m_fa109255:not([data-disabled]):where([data-checked]):active,.m_f7e165c3:not([data-disabled]):where([data-checked]):active{background-color:var(--chip-hover)}}.m_9ac86df9{width:calc(var(--chip-icon-size) + (var(--chip-spacing) / 1.5));max-width:calc(var(--chip-icon-size) + (var(--chip-spacing) / 1.5));height:var(--chip-icon-size);display:flex;align-items:center;overflow:hidden}.m_d6d72580{width:var(--chip-icon-size);height:var(--chip-icon-size);display:block;color:var(--chip-icon-color, inherit)}.m_bde07329{width:0;height:0;padding:0;opacity:0;margin:0}.m_bde07329:focus-visible+.m_be049a53{outline:2px solid var(--mantine-primary-color-filled);outline-offset:2px}.m_b183c0a2{font-family:var(--mantine-font-family-monospace);line-height:var(--mantine-line-height);padding:2px calc(var(--mantine-spacing-xs) / 2);border-radius:var(--mantine-radius-sm);font-size:var(--mantine-font-size-xs);margin:0;overflow:auto}:where([data-mantine-color-scheme=light]) .m_b183c0a2{background-color:var(--code-bg, var(--mantine-color-gray-0))}:where([data-mantine-color-scheme=dark]) .m_b183c0a2{background-color:var(--code-bg, var(--mantine-color-dark-6))}.m_b183c0a2[data-block]{padding:var(--mantine-spacing-xs)}.m_b077c2bc{--ci-eye-dropper-icon-size-xs: 14px;--ci-eye-dropper-icon-size-sm: 16px;--ci-eye-dropper-icon-size-md: 18px;--ci-eye-dropper-icon-size-lg: 20px;--ci-eye-dropper-icon-size-xl: 22px;--ci-eye-dropper-icon-size: var(--ci-eye-dropper-icon-size-sm)}.m_66a028b5{--ci-button-size-xs: 22px;--ci-button-size-sm: 26px;--ci-button-size-md: 28px;--ci-button-size-lg: 32px;--ci-button-size-xl: 40px;--ci-button-size: var(--ci-button-size-sm);width:var(--ci-button-size);height:var(--ci-button-size);min-width:var(--ci-button-size);min-height:var(--ci-button-size)}.m_c5ccdcab{--ci-preview-size-xs: 16px;--ci-preview-size-sm: 18px;--ci-preview-size-md: 22px;--ci-preview-size-lg: 28px;--ci-preview-size-xl: 36px;--ci-preview-size: var(--ci-preview-size-sm)}.m_5ece2cd7{padding:8px}.m_fee9c77{--cp-width-xs: 180px;--cp-width-sm: 200px;--cp-width-md: 240px;--cp-width-lg: 280px;--cp-width-xl: 320px;--cp-preview-size-xs: 26px;--cp-preview-size-sm: 34px;--cp-preview-size-md: 42px;--cp-preview-size-lg: 50px;--cp-preview-size-xl: 54px;--cp-thumb-size-xs: 8px;--cp-thumb-size-sm: 12px;--cp-thumb-size-md: 16px;--cp-thumb-size-lg: 20px;--cp-thumb-size-xl: 22px;--cp-saturation-height-xs: 100px;--cp-saturation-height-sm: 110px;--cp-saturation-height-md: 120px;--cp-saturation-height-lg: 140px;--cp-saturation-height-xl: 160px;--cp-preview-size: var(--cp-preview-size-sm);--cp-thumb-size: var(--cp-thumb-size-sm);--cp-saturation-height: var(--cp-saturation-height-sm);--cp-width: var(--cp-width-sm);--cp-body-spacing: var(--mantine-spacing-sm);width:var(--cp-width);padding:1px}.m_fee9c77:where([data-full-width]){width:100%}.m_9dddfbac{width:var(--cp-preview-size);height:var(--cp-preview-size)}.m_bffecc3e{display:flex;padding-top:calc(var(--cp-body-spacing) / 2)}.m_3283bb96{flex:1}.m_3283bb96:not(:only-child){margin-inline-end:var(--mantine-spacing-xs)}.m_40d572ba{overflow:hidden;position:absolute;box-shadow:0 0 1px #0009;border:2px solid var(--mantine-color-white);width:var(--cp-thumb-size);height:var(--cp-thumb-size);border-radius:var(--cp-thumb-size);left:calc(var(--thumb-x-offset) - var(--cp-thumb-size) / 2);top:calc(var(--thumb-y-offset) - var(--cp-thumb-size) / 2)}.m_d8ee6fd8{height:unset!important;width:unset!important;min-width:0!important;min-height:0!important;margin:2px;cursor:pointer;padding-bottom:calc(var(--cp-swatch-size) - calc(.25rem * var(--mantine-scale)));flex:0 0 calc(var(--cp-swatch-size) - calc(.25rem * var(--mantine-scale)))}.m_5711e686{margin-top:5px;margin-inline:-2px;display:flex;flex-wrap:wrap}.m_5711e686:only-child{margin-top:0}.m_202a296e{--cp-thumb-size-xs: 8px;--cp-thumb-size-sm: 12px;--cp-thumb-size-md: 16px;--cp-thumb-size-lg: 20px;--cp-thumb-size-xl: 22px;-webkit-tap-highlight-color:transparent;position:relative;height:var(--cp-saturation-height);border-radius:var(--mantine-radius-sm);margin:calc(var(--cp-thumb-size) / 2)}.m_202a296e:where([data-focus-ring=auto]):focus:focus-visible .m_40d572ba{outline:2px solid var(--mantine-color-blue-filled)}.m_202a296e:where([data-focus-ring=always]):focus .m_40d572ba{outline:2px solid var(--mantine-color-blue-filled)}.m_11b3db02{position:absolute;border-radius:var(--mantine-radius-sm);inset:calc(var(--cp-thumb-size) * -1 / 2 - calc(.0625rem * var(--mantine-scale)))}.m_d856d47d{--cp-thumb-size-xs: 8px;--cp-thumb-size-sm: 12px;--cp-thumb-size-md: 16px;--cp-thumb-size-lg: 20px;--cp-thumb-size-xl: 22px;--cp-thumb-size: var(--cp-thumb-size, calc(.75rem * var(--mantine-scale)));position:relative;height:calc(var(--cp-thumb-size) + calc(.125rem * var(--mantine-scale)));margin-inline:calc(var(--cp-thumb-size) / 2);outline:none}.m_d856d47d+.m_d856d47d{margin-top:6px}.m_d856d47d:where([data-focus-ring=auto]):focus:focus-visible .m_40d572ba{outline:2px solid var(--mantine-color-blue-filled)}.m_d856d47d:where([data-focus-ring=always]):focus .m_40d572ba{outline:2px solid var(--mantine-color-blue-filled)}:where([data-mantine-color-scheme=light]) .m_d856d47d{--slider-checkers: var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_d856d47d{--slider-checkers: var(--mantine-color-dark-4)}.m_8f327113{position:absolute;top:0;bottom:0;inset-inline:calc(var(--cp-thumb-size) * -1 / 2 - calc(.0625rem * var(--mantine-scale)));border-radius:10000rem}.m_de3d2490{--cs-size: 28px;--cs-radius: 1000px;-webkit-tap-highlight-color:transparent;border:none;appearance:none;display:block;line-height:1;position:relative;width:var(--cs-size);height:var(--cs-size);min-width:var(--cs-size);min-height:var(--cs-size);border-radius:var(--cs-radius);color:inherit;text-decoration:none}[data-mantine-color-scheme=light] .m_de3d2490{--alpha-overlay-color: var(--mantine-color-gray-3);--alpha-overlay-bg: var(--mantine-color-white)}[data-mantine-color-scheme=dark] .m_de3d2490{--alpha-overlay-color: var(--mantine-color-dark-4);--alpha-overlay-bg: var(--mantine-color-dark-7)}.m_862f3d1b{position:absolute;inset:0;border-radius:var(--cs-radius)}.m_98ae7f22{position:absolute;inset:0;border-radius:var(--cs-radius);z-index:1;box-shadow:#0000001a 0 0 0 calc(.0625rem * var(--mantine-scale)) inset,#00000026 0 0 calc(.25rem * var(--mantine-scale)) inset}.m_95709ac0{position:absolute;inset:0;border-radius:var(--cs-radius);background-size:8px 8px;background-position:0 0,0 4px,4px -4px,-4px 0;background-image:linear-gradient(45deg,var(--alpha-overlay-color) 25%,transparent 25%),linear-gradient(-45deg,var(--alpha-overlay-color) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,var(--alpha-overlay-color) 75%),linear-gradient(-45deg,var(--alpha-overlay-bg) 75%,var(--alpha-overlay-color) 75%)}.m_93e74e3{position:absolute;inset:0;border-radius:var(--cs-radius);z-index:2;display:flex;align-items:center;justify-content:center}.m_88b62a41{--combobox-padding: 4px;padding:var(--combobox-padding)}.m_88b62a41:has([data-mantine-scrollbar]) .m_985517d8{max-width:calc(100% + var(--combobox-padding))}.m_88b62a41[data-composed]{padding-inline-end:0}.m_88b62a41[data-hidden]{display:none}.m_88b62a41,.m_b2821a6e{--combobox-option-padding-xs: 4px 8px;--combobox-option-padding-sm: 6px 10px;--combobox-option-padding-md: 8px 12px;--combobox-option-padding-lg: 10px 16px;--combobox-option-padding-xl: 14px 20px;--combobox-option-padding: var(--combobox-option-padding-sm)}.m_92253aa5{padding:var(--combobox-option-padding);font-size:var(--combobox-option-fz, var(--mantine-font-size-sm));border-radius:var(--mantine-radius-default);background-color:transparent;color:inherit;cursor:pointer;overflow-wrap:break-word}.m_92253aa5:where([data-combobox-selected]){background-color:var(--mantine-primary-color-filled);color:var(--mantine-color-white)}.m_92253aa5:where([data-combobox-disabled]){cursor:not-allowed;opacity:.35}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_92253aa5:hover:where(:not([data-combobox-selected],[data-combobox-disabled])){background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_92253aa5:hover:where(:not([data-combobox-selected],[data-combobox-disabled])){background-color:var(--mantine-color-dark-7)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_92253aa5:active:where(:not([data-combobox-selected],[data-combobox-disabled])){background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_92253aa5:active:where(:not([data-combobox-selected],[data-combobox-disabled])){background-color:var(--mantine-color-dark-7)}}.m_985517d8{margin-inline:calc(var(--combobox-padding) * -1);margin-top:calc(var(--combobox-padding) * -1);width:calc(100% + var(--combobox-padding) * 2);border-top-width:0;border-inline-width:0;border-end-start-radius:0;border-end-end-radius:0;margin-bottom:var(--combobox-padding);position:relative}:where([data-mantine-color-scheme=light]) .m_985517d8,:where([data-mantine-color-scheme=light]) .m_985517d8:focus{border-color:var(--mantine-color-gray-2)}:where([data-mantine-color-scheme=dark]) .m_985517d8,:where([data-mantine-color-scheme=dark]) .m_985517d8:focus{border-color:var(--mantine-color-dark-4)}:where([data-mantine-color-scheme=light]) .m_985517d8{background-color:var(--mantine-color-white)}:where([data-mantine-color-scheme=dark]) .m_985517d8{background-color:var(--mantine-color-dark-7)}.m_2530cd1d{font-size:var(--combobox-option-fz, var(--mantine-font-size-sm));text-align:center;padding:var(--combobox-option-padding);color:var(--mantine-color-dimmed)}.m_858f94bd,.m_82b967cb{font-size:var(--combobox-option-fz, var(--mantine-font-size-sm));border:0 solid transparent;margin-inline:calc(var(--combobox-padding) * -1);padding:var(--combobox-option-padding)}:where([data-mantine-color-scheme=light]) .m_858f94bd,:where([data-mantine-color-scheme=light]) .m_82b967cb{border-color:var(--mantine-color-gray-2)}:where([data-mantine-color-scheme=dark]) .m_858f94bd,:where([data-mantine-color-scheme=dark]) .m_82b967cb{border-color:var(--mantine-color-dark-4)}.m_82b967cb{border-top-width:1px;margin-top:var(--combobox-padding);margin-bottom:calc(var(--combobox-padding) * -1)}.m_858f94bd{border-bottom-width:1px;margin-bottom:var(--combobox-padding);margin-top:calc(var(--combobox-padding) * -1)}.m_254f3e4f:has(.m_2bb2e9e5:only-child){display:none}.m_2bb2e9e5{color:var(--mantine-color-dimmed);font-size:calc(var(--combobox-option-fz, var(--mantine-font-size-sm)) * .85);padding:var(--combobox-option-padding);font-weight:500;position:relative;display:flex;align-items:center}.m_2bb2e9e5:after{content:"";flex:1;inset-inline:0;height:1px;margin-inline-start:var(--mantine-spacing-xs)}:where([data-mantine-color-scheme=light]) .m_2bb2e9e5:after{background-color:var(--mantine-color-gray-2)}:where([data-mantine-color-scheme=dark]) .m_2bb2e9e5:after{background-color:var(--mantine-color-dark-4)}.m_2bb2e9e5:only-child{display:none}.m_2943220b{--combobox-chevron-size-xs: 14px;--combobox-chevron-size-sm: 18px;--combobox-chevron-size-md: 20px;--combobox-chevron-size-lg: 24px;--combobox-chevron-size-xl: 28px;--combobox-chevron-size: var(--combobox-chevron-size-sm)}:where([data-mantine-color-scheme=light]) .m_2943220b{--_combobox-chevron-color: var(--combobox-chevron-color, var(--mantine-color-gray-6))}:where([data-mantine-color-scheme=dark]) .m_2943220b{--_combobox-chevron-color: var(--combobox-chevron-color, var(--mantine-color-dark-3))}.m_2943220b{width:var(--combobox-chevron-size);height:var(--combobox-chevron-size);color:var(--_combobox-chevron-color)}.m_2943220b:where([data-error]){color:var(--combobox-chevron-color, var(--mantine-color-error))}.m_390b5f4{display:flex;align-items:center;gap:8px}.m_390b5f4:where([data-reverse]){justify-content:space-between}.m_8ee53fc2{opacity:.4;width:.8em;min-width:.8em;height:.8em}:where([data-combobox-selected]) .m_8ee53fc2{opacity:1}.m_a530ee0a{width:.8em;min-width:.8em;height:.8em}.m_7485cace{--container-size-xs: 540px;--container-size-sm: 720px;--container-size-md: 960px;--container-size-lg: 1140px;--container-size-xl: 1320px;--container-size: var(--container-size-md)}.m_7485cace:where([data-strategy=block]){max-width:var(--container-size);padding-inline:var(--mantine-spacing-md);margin-inline:auto}.m_7485cace:where([data-strategy=block]):where([data-fluid]){max-width:100%}.m_7485cace:where([data-strategy=grid]){display:grid;grid-template-columns:1fr min(100%,var(--container-size)) 1fr;margin-inline:auto}.m_7485cace:where([data-strategy=grid])>*{grid-column:2}.m_7485cace:where([data-strategy=grid])>[data-breakout]{grid-column:1 / -1}.m_7485cace:where([data-strategy=grid])>[data-breakout]>[data-container]{max-width:var(--container-size);margin-inline:auto}.m_e2125a27{--dialog-size-xs: 160px;--dialog-size-sm: 200px;--dialog-size-md: 340px;--dialog-size-lg: 400px;--dialog-size-xl: 500px;--dialog-size: var(--dialog-size-md);position:relative;width:var(--dialog-size);max-width:calc(100vw - var(--mantine-spacing-xl) * 2);min-height:50px}.m_5abab665{position:absolute;top:calc(var(--mantine-spacing-md) / 2);inset-inline-end:calc(var(--mantine-spacing-md) / 2)}.m_3eebeb36{--divider-size-xs: 1px;--divider-size-sm: 2px;--divider-size-md: 3px;--divider-size-lg: 4px;--divider-size-xl: 5px;--divider-size: var(--divider-size-xs)}:where([data-mantine-color-scheme=light]) .m_3eebeb36{--divider-color: var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_3eebeb36{--divider-color: var(--mantine-color-dark-4)}.m_3eebeb36:where([data-orientation=horizontal]){border-top:var(--divider-size) var(--divider-border-style, solid) var(--divider-color)}.m_3eebeb36:where([data-orientation=vertical]){border-inline-start:var(--divider-size) var(--divider-border-style, solid) var(--divider-color);height:auto;align-self:stretch}.m_3eebeb36:where([data-with-label]){border:0}.m_9e365f20{display:flex;align-items:center;font-size:var(--mantine-font-size-xs);color:var(--mantine-color-dimmed);white-space:nowrap}.m_9e365f20:where([data-position=left]):before{display:none}.m_9e365f20:where([data-position=right]):after{display:none}.m_9e365f20:before{content:"";flex:1;height:1px;border-top:var(--divider-size) var(--divider-border-style, solid) var(--divider-color);margin-inline-end:var(--mantine-spacing-xs)}.m_9e365f20:after{content:"";flex:1;height:1px;border-top:var(--divider-size) var(--divider-border-style, solid) var(--divider-color);margin-inline-start:var(--mantine-spacing-xs)}.m_f11b401e{--drawer-size-xs: 320px;--drawer-size-sm: 380px;--drawer-size-md: 440px;--drawer-size-lg: 620px;--drawer-size-xl: 780px;--drawer-size: var(--drawer-size-md);--drawer-offset: 0rem}.m_5a7c2c9{z-index:1000}.m_b8a05bbd{flex:var(--drawer-flex, 0 0 var(--drawer-size));height:var(--drawer-height, calc(100% - var(--drawer-offset) * 2));margin:var(--drawer-offset);max-width:calc(100% - var(--drawer-offset) * 2);max-height:calc(100% - var(--drawer-offset) * 2);overflow-y:auto}.m_b8a05bbd[data-hidden]{opacity:0!important;pointer-events:none}.m_31cd769a{display:flex;justify-content:var(--drawer-justify, flex-start);align-items:var(--drawer-align, flex-start)}.m_e9408a47{padding:var(--mantine-spacing-lg);padding-top:var(--mantine-spacing-xs);border-radius:var(--fieldset-radius, var(--mantine-radius-default));min-inline-size:auto}.m_84c9523a{border:1px solid}:where([data-mantine-color-scheme=light]) .m_84c9523a{border-color:var(--mantine-color-gray-3);background-color:var(--mantine-color-white)}:where([data-mantine-color-scheme=dark]) .m_84c9523a{border-color:var(--mantine-color-dark-4);background-color:var(--mantine-color-dark-7)}.m_ef274e49{border:1px solid}:where([data-mantine-color-scheme=light]) .m_ef274e49{border-color:var(--mantine-color-gray-3);background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_ef274e49{border-color:var(--mantine-color-dark-4);background-color:var(--mantine-color-dark-6)}.m_eda993d3{padding:0;border:0;border-radius:0}.m_90794832{font-size:var(--mantine-font-size-sm)}.m_74ca27fe{padding:0;margin-bottom:var(--mantine-spacing-sm)}.m_8478a6da{container:mantine-grid / inline-size}.m_410352e9{--grid-overflow: visible;--grid-margin: calc(var(--grid-gutter) / -2);--grid-col-padding: calc(var(--grid-gutter) / 2);overflow:var(--grid-overflow)}.m_dee7bd2f{width:calc(100% + var(--grid-gutter));display:flex;flex-wrap:wrap;justify-content:var(--grid-justify);align-items:var(--grid-align);margin:var(--grid-margin)}.m_96bdd299{--col-flex-grow: 0;--col-offset: 0rem;flex-shrink:0;order:var(--col-order);flex-basis:var(--col-flex-basis);width:var(--col-width);max-width:var(--col-max-width);flex-grow:var(--col-flex-grow);margin-inline-start:var(--col-offset);padding:var(--grid-col-padding)}.m_9e117634{display:block;object-fit:var(--image-object-fit, cover);width:100%;border-radius:var(--image-radius, 0)}@keyframes m_885901b1{0%{opacity:.6;transform:scale(0)}to{opacity:0;transform:scale(2.8)}}.m_e5262200{--indicator-size: 10px;--indicator-color: var(--mantine-primary-color-filled);position:relative;display:block}.m_e5262200:where([data-inline]){display:inline-block}.m_760d1fb1{position:absolute;top:var(--indicator-top);left:var(--indicator-left);right:var(--indicator-right);bottom:var(--indicator-bottom);transform:translate(var(--indicator-translate-x),var(--indicator-translate-y));min-width:var(--indicator-size);height:var(--indicator-size);border-radius:var(--indicator-radius, 1000rem);z-index:var(--indicator-z-index, 200);display:flex;align-items:center;justify-content:center;font-size:var(--mantine-font-size-xs);background-color:var(--indicator-color);color:var(--indicator-text-color, var(--mantine-color-white));white-space:nowrap}.m_760d1fb1:before{content:"";position:absolute;inset:0;background-color:var(--indicator-color);border-radius:var(--indicator-radius, 1000rem);z-index:-1}.m_760d1fb1:where([data-with-label]){padding-inline:calc(var(--mantine-spacing-xs) / 2)}.m_760d1fb1:where([data-with-border]){border:2px solid var(--mantine-color-body)}.m_760d1fb1[data-processing]:before{animation:m_885901b1 1s linear infinite}.m_5f75b09e{--label-lh-xs: 16px;--label-lh-sm: 20px;--label-lh-md: 24px;--label-lh-lg: 30px;--label-lh-xl: 36px;--label-lh: var(--label-lh-sm)}.m_5f75b09e[data-label-position=left]{--label-order: 1;--label-offset-end: var(--mantine-spacing-sm);--label-offset-start: 0}.m_5f75b09e[data-label-position=right]{--label-order: 2;--label-offset-end: 0;--label-offset-start: var(--mantine-spacing-sm)}.m_5f6e695e{-webkit-tap-highlight-color:transparent;display:flex}.m_d3ea56bb{--label-cursor: var(--mantine-cursor-type);-webkit-tap-highlight-color:transparent;display:inline-flex;flex-direction:column;font-size:var(--label-fz, var(--mantine-font-size-sm));line-height:var(--label-lh);cursor:var(--label-cursor);order:var(--label-order)}fieldset:disabled .m_d3ea56bb,.m_d3ea56bb[data-disabled]{--label-cursor: not-allowed}.m_8ee546b8{cursor:var(--label-cursor);color:inherit;padding-inline-start:var(--label-offset-start);padding-inline-end:var(--label-offset-end)}fieldset:disabled .m_8ee546b8,.m_8ee546b8:where([data-disabled]){color:var(--mantine-color-disabled-color)}.m_328f68c0{margin-top:calc(var(--mantine-spacing-xs) / 2);padding-inline-start:var(--label-offset-start);padding-inline-end:var(--label-offset-end);cursor:default}.m_8e8a99cc{margin-top:calc(var(--mantine-spacing-xs) / 2);padding-inline-start:var(--label-offset-start);padding-inline-end:var(--label-offset-end)}.m_dc6f14e2{--kbd-fz-xs: 10px;--kbd-fz-sm: 12px;--kbd-fz-md: 14px;--kbd-fz-lg: 16px;--kbd-fz-xl: 20px;--kbd-fz: var(--kbd-fz-sm);font-family:var(--mantine-font-family-monospace);line-height:var(--mantine-line-height);font-weight:700;font-size:var(--kbd-fz);border-radius:var(--mantine-radius-sm);border:1px solid;border-bottom-width:3px;unicode-bidi:embed;text-align:center;padding:.12em .45em}:where([data-mantine-color-scheme=light]) .m_dc6f14e2{border-color:var(--mantine-color-gray-3);color:var(--mantine-color-gray-7);background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_dc6f14e2{border-color:var(--mantine-color-dark-4);color:var(--mantine-color-dark-0);background-color:var(--mantine-color-dark-6)}.m_abbac491{--list-fz: var(--mantine-font-size-md);--list-lh: var(--mantine-line-height-md);--list-marker-gap: var(--mantine-spacing-lg);list-style-position:outside;font-size:var(--list-fz);line-height:var(--list-lh);margin:0;padding:0;padding-inline-start:var(--list-marker-gap)}.m_abbac491[data-type=none]{--list-marker-gap: 0}.m_abbac491:where([data-with-padding]){padding-inline-start:calc(var(--list-marker-gap) + var(--mantine-spacing-md))}.m_abb6bec2{white-space:normal;line-height:var(--list-lh)}.m_abb6bec2:where([data-with-icon]){list-style:none}.m_abb6bec2:where([data-with-icon]) .m_75cd9f71{--li-direction: row;--li-align: center}.m_abb6bec2:where(:not(:first-of-type)){margin-top:var(--list-spacing, 0)}.m_abb6bec2:where([data-centered]){line-height:1}.m_75cd9f71{display:inline-flex;flex-direction:var(--li-direction, column);align-items:var(--li-align, flex-start);white-space:normal}.m_60f83e5b{display:inline-block;vertical-align:middle;margin-inline-end:var(--mantine-spacing-sm)}.m_6e45937b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;z-index:var(--lo-z-index)}.m_e8eb006c{position:relative;z-index:calc(var(--lo-z-index) + 1)}.m_df587f17{z-index:var(--lo-z-index)}.m_bcb3f3c2{color:var(--mantine-color-black)}:where([data-mantine-color-scheme=light]) .m_bcb3f3c2{background-color:var(--mark-bg-light)}:where([data-mantine-color-scheme=dark]) .m_bcb3f3c2{background-color:var(--mark-bg-dark)}.m_dc9b7c9f{padding:4px}.m_9bfac126{color:var(--mantine-color-dimmed);font-weight:500;font-size:var(--mantine-font-size-xs);padding:calc(var(--mantine-spacing-xs) / 2) var(--mantine-spacing-sm);cursor:default}.m_efdf90cb{margin-top:4px;margin-bottom:4px;border-top:1px solid}:where([data-mantine-color-scheme=light]) .m_efdf90cb{border-color:var(--mantine-color-gray-2)}:where([data-mantine-color-scheme=dark]) .m_efdf90cb{border-color:var(--mantine-color-dark-4)}.m_99ac2aa1{font-size:var(--mantine-font-size-sm);width:100%;padding:calc(var(--mantine-spacing-xs) / 1.5) var(--mantine-spacing-sm);border-radius:var(--popover-radius, var(--mantine-radius-default));color:var(--menu-item-color, var(--mantine-color-text));display:flex;align-items:center;user-select:none}.m_99ac2aa1:where([data-disabled],:disabled){color:var(--mantine-color-disabled-color);opacity:.6;cursor:not-allowed}:where([data-mantine-color-scheme=light]) .m_99ac2aa1:where(:hover,:focus):where(:not(:disabled,[data-disabled])){background-color:var(--menu-item-hover, var(--mantine-color-gray-1))}:where([data-mantine-color-scheme=dark]) .m_99ac2aa1:where(:hover,:focus):where(:not(:disabled,[data-disabled])){background-color:var(--menu-item-hover, var(--mantine-color-dark-4))}.m_99ac2aa1:where([data-sub-menu-item]){padding-inline-end:5px}.m_5476e0d3{flex:1}.m_8b75e504{display:flex;justify-content:center;align-items:center}.m_8b75e504:where([data-position=left]){margin-inline-end:var(--mantine-spacing-xs)}.m_8b75e504:where([data-position=right]){margin-inline-start:var(--mantine-spacing-xs)}.m_b85b0bed{transform:rotate(-90deg)}:where([dir=rtl]) .m_b85b0bed{transform:rotate(90deg)}.m_9df02822{--modal-size-xs: 320px;--modal-size-sm: 380px;--modal-size-md: 440px;--modal-size-lg: 620px;--modal-size-xl: 780px;--modal-size: var(--modal-size-md);--modal-y-offset: 5dvh;--modal-x-offset: 5vw}.m_9df02822[data-full-screen]{--modal-border-radius: 0 !important}.m_9df02822[data-full-screen] .m_54c44539{--modal-content-flex: 0 0 100%;--modal-content-max-height: auto;--modal-content-height: 100dvh}.m_9df02822[data-full-screen] .m_1f958f16{--modal-inner-y-offset: 0;--modal-inner-x-offset: 0}.m_9df02822[data-centered] .m_1f958f16{--modal-inner-align: center}.m_d0e2b9cd{border-start-start-radius:var(--modal-radius, var(--mantine-radius-default));border-start-end-radius:var(--modal-radius, var(--mantine-radius-default))}.m_54c44539{flex:var(--modal-content-flex, 0 0 var(--modal-size));max-width:100%;max-height:var(--modal-content-max-height, calc(100dvh - var(--modal-y-offset) * 2));height:var(--modal-content-height, auto);overflow-y:auto}.m_54c44539[data-full-screen]{border-radius:0}.m_54c44539[data-hidden]{opacity:0!important;pointer-events:none}.m_1f958f16{display:flex;justify-content:center;align-items:var(--modal-inner-align, flex-start);padding-top:var(--modal-inner-y-offset, var(--modal-y-offset));padding-bottom:var(--modal-inner-y-offset, var(--modal-y-offset));padding-inline:var(--modal-inner-x-offset, var(--modal-x-offset))}.m_f0824112{--nl-bg: var(--mantine-primary-color-light);--nl-hover: var(--mantine-primary-color-light-hover);--nl-color: var(--mantine-primary-color-light-color);display:flex;align-items:center;width:100%;padding:8px var(--mantine-spacing-sm);user-select:none}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_f0824112:hover{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_f0824112:hover{background-color:var(--mantine-color-dark-6)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_f0824112:active{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_f0824112:active{background-color:var(--mantine-color-dark-6)}}.m_f0824112:where([data-disabled]){opacity:.4;pointer-events:none}.m_f0824112:where([data-active],[aria-current=page]){background-color:var(--nl-bg);color:var(--nl-color)}@media(hover:hover){.m_f0824112:where([data-active],[aria-current=page]):hover{background-color:var(--nl-hover)}}@media(hover:none){.m_f0824112:where([data-active],[aria-current=page]):active{background-color:var(--nl-hover)}}.m_f0824112:where([data-active],[aria-current=page]) .m_57492dcc{--description-opacity: .9;--description-color: var(--nl-color)}.m_690090b5{display:flex;align-items:center;justify-content:center;transition:transform .15s ease}.m_690090b5>svg{display:block}.m_690090b5:where([data-position=left]){margin-inline-end:var(--mantine-spacing-sm)}.m_690090b5:where([data-position=right]){margin-inline-start:var(--mantine-spacing-sm)}.m_690090b5:where([data-rotate]){transform:rotate(90deg)}.m_1f6ac4c4{font-size:var(--mantine-font-size-sm)}.m_f07af9d2{flex:1;overflow:hidden;text-overflow:ellipsis}.m_f07af9d2:where([data-no-wrap]){white-space:nowrap}.m_57492dcc{display:block;font-size:var(--mantine-font-size-xs);opacity:var(--description-opacity, 1);color:var(--description-color, var(--mantine-color-dimmed));overflow:hidden;text-overflow:ellipsis}:where([data-no-wrap]) .m_57492dcc{white-space:nowrap}.m_e17b862f{padding-inline-start:var(--nl-offset, var(--mantine-spacing-lg))}.m_1fd8a00b{transform:rotate(-90deg)}.m_a513464{--notification-radius: var(--mantine-radius-default);--notification-color: var(--mantine-primary-color-filled);overflow:hidden;box-sizing:border-box;position:relative;display:flex;align-items:center;padding-inline-start:22px;padding-inline-end:var(--mantine-spacing-xs);padding-top:var(--mantine-spacing-xs);padding-bottom:var(--mantine-spacing-xs);border-radius:var(--notification-radius);box-shadow:var(--mantine-shadow-lg)}.m_a513464:before{content:"";display:block;position:absolute;width:6px;top:var(--notification-radius);bottom:var(--notification-radius);inset-inline-start:4px;border-radius:var(--notification-radius);background-color:var(--notification-color)}:where([data-mantine-color-scheme=light]) .m_a513464{background-color:var(--mantine-color-white)}:where([data-mantine-color-scheme=dark]) .m_a513464{background-color:var(--mantine-color-dark-6)}.m_a513464:where([data-with-icon]):before{display:none}:where([data-mantine-color-scheme=light]) .m_a513464:where([data-with-border]){border:1px solid var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_a513464:where([data-with-border]){border:1px solid var(--mantine-color-dark-4)}.m_a4ceffb{box-sizing:border-box;margin-inline-end:var(--mantine-spacing-md);width:28px;height:28px;border-radius:28px;display:flex;align-items:center;justify-content:center;background-color:var(--notification-color);color:var(--mantine-color-white)}.m_b0920b15{margin-inline-end:var(--mantine-spacing-md)}.m_a49ed24{flex:1;overflow:hidden;margin-inline-end:var(--mantine-spacing-xs)}.m_3feedf16{margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;font-size:var(--mantine-font-size-sm);line-height:var(--mantine-line-height-sm);font-weight:500}:where([data-mantine-color-scheme=light]) .m_3feedf16{color:var(--mantine-color-gray-9)}:where([data-mantine-color-scheme=dark]) .m_3feedf16{color:var(--mantine-color-white)}.m_3d733a3a{font-size:var(--mantine-font-size-sm);line-height:var(--mantine-line-height-sm);overflow:hidden;text-overflow:ellipsis}:where([data-mantine-color-scheme=light]) .m_3d733a3a{color:var(--mantine-color-black)}:where([data-mantine-color-scheme=dark]) .m_3d733a3a{color:var(--mantine-color-dark-0)}:where([data-mantine-color-scheme=light]) .m_3d733a3a:where([data-with-title]){color:var(--mantine-color-gray-6)}:where([data-mantine-color-scheme=dark]) .m_3d733a3a:where([data-with-title]){color:var(--mantine-color-dark-2)}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_919a4d88:hover{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_919a4d88:hover{background-color:var(--mantine-color-dark-8)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_919a4d88:active{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_919a4d88:active{background-color:var(--mantine-color-dark-8)}}.m_e2f5cd4e{--ni-right-section-width-xs: 17px;--ni-right-section-width-sm: 24px;--ni-right-section-width-md: 27px;--ni-right-section-width-lg: 31px;--ni-right-section-width-xl: 34px}.m_95e17d22{--ni-chevron-size-xs: 10px;--ni-chevron-size-sm: 14px;--ni-chevron-size-md: 16px;--ni-chevron-size-lg: 18px;--ni-chevron-size-xl: 20px;--ni-chevron-size: var(--ni-chevron-size-sm);display:flex;flex-direction:column;width:100%;height:calc(var(--input-height) - calc(.125rem * var(--mantine-scale)));max-width:calc(var(--ni-chevron-size) * 1.7);margin-inline-start:auto}.m_80b4b171{--control-border: 1px solid var(--input-bd);--control-radius: calc(var(--input-radius) - calc(.0625rem * var(--mantine-scale)));flex:0 0 50%;width:100%;padding:0;height:calc(var(--input-height) / 2 - calc(.0625rem * var(--mantine-scale)));border-inline-start:var(--control-border);display:flex;align-items:center;justify-content:center;color:var(--mantine-color-text);background-color:transparent;cursor:pointer}.m_80b4b171:where(:disabled){background-color:transparent;cursor:not-allowed;opacity:.6;color:var(--mantine-color-disabled-color)}.m_e2f5cd4e[data-error] :where(.m_80b4b171){color:var(--mantine-color-error)}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_80b4b171:hover{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_80b4b171:hover{background-color:var(--mantine-color-dark-4)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_80b4b171:active{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_80b4b171:active{background-color:var(--mantine-color-dark-4)}}.m_80b4b171:where(:first-of-type){border-radius:0;border-start-end-radius:var(--control-radius)}.m_80b4b171:last-of-type{border-radius:0;border-end-end-radius:var(--control-radius)}.m_4addd315{--pagination-control-size-xs: 22px;--pagination-control-size-sm: 26px;--pagination-control-size-md: 32px;--pagination-control-size-lg: 38px;--pagination-control-size-xl: 44px;--pagination-control-size: var(--pagination-control-size-md);--pagination-control-fz: var(--mantine-font-size-md);--pagination-active-bg: var(--mantine-primary-color-filled)}.m_326d024a{display:flex;align-items:center;justify-content:center;border:1px solid;cursor:pointer;color:var(--mantine-color-text);height:var(--pagination-control-size);min-width:var(--pagination-control-size);font-size:var(--pagination-control-fz);line-height:1;border-radius:var(--pagination-control-radius, var(--mantine-radius-default))}.m_326d024a:where([data-with-padding]){padding:calc(var(--pagination-control-size) / 4)}.m_326d024a:where(:disabled,[data-disabled]){cursor:not-allowed;opacity:.4}:where([data-mantine-color-scheme=light]) .m_326d024a{border-color:var(--mantine-color-gray-4);background-color:var(--mantine-color-white)}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_326d024a:hover:where(:not(:disabled,[data-disabled])){background-color:var(--mantine-color-gray-0)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_326d024a:active:where(:not(:disabled,[data-disabled])){background-color:var(--mantine-color-gray-0)}}:where([data-mantine-color-scheme=dark]) .m_326d024a{border-color:var(--mantine-color-dark-4);background-color:var(--mantine-color-dark-6)}@media(hover:hover){:where([data-mantine-color-scheme=dark]) .m_326d024a:hover:where(:not(:disabled,[data-disabled])){background-color:var(--mantine-color-dark-5)}}@media(hover:none){:where([data-mantine-color-scheme=dark]) .m_326d024a:active:where(:not(:disabled,[data-disabled])){background-color:var(--mantine-color-dark-5)}}.m_326d024a:where([data-active]){background-color:var(--pagination-active-bg);border-color:var(--pagination-active-bg);color:var(--pagination-active-color, var(--mantine-color-white))}@media(hover:hover){.m_326d024a:where([data-active]):hover{background-color:var(--pagination-active-bg)}}@media(hover:none){.m_326d024a:where([data-active]):active{background-color:var(--pagination-active-bg)}}.m_4ad7767d{height:var(--pagination-control-size);min-width:var(--pagination-control-size);display:flex;align-items:center;justify-content:center;pointer-events:none}.m_7cda1cd6{--pill-fz-xs: 10px;--pill-fz-sm: 12px;--pill-fz-md: 14px;--pill-fz-lg: 16px;--pill-fz-xl: 18px;--pill-height-xs: 18px;--pill-height-sm: 22px;--pill-height-md: 25px;--pill-height-lg: 28px;--pill-height-xl: 32px;--pill-fz: var(--pill-fz-sm);--pill-height: var(--pill-height-sm);font-size:var(--pill-fz);flex:0;height:var(--pill-height);padding-inline:.8em;display:inline-flex;align-items:center;border-radius:var(--pill-radius, 1000rem);line-height:1;white-space:nowrap;user-select:none;-webkit-user-select:none;max-width:100%}:where([data-mantine-color-scheme=dark]) .m_7cda1cd6{background-color:var(--mantine-color-dark-7);color:var(--mantine-color-dark-0)}:where([data-mantine-color-scheme=light]) .m_7cda1cd6{color:var(--mantine-color-black)}.m_7cda1cd6:where([data-with-remove]:not(:has(button:disabled))){padding-inline-end:0}.m_7cda1cd6:where([data-disabled],:has(button:disabled)){cursor:not-allowed}:where([data-mantine-color-scheme=light]) .m_44da308b{background-color:var(--mantine-color-gray-1)}:where([data-mantine-color-scheme=light]) .m_44da308b:where([data-disabled],:has(button:disabled)){background-color:var(--mantine-color-disabled)}:where([data-mantine-color-scheme=light]) .m_e3a01f8{background-color:var(--mantine-color-white)}:where([data-mantine-color-scheme=light]) .m_e3a01f8:where([data-disabled],:has(button:disabled)){background-color:var(--mantine-color-disabled)}.m_1e0e6180{cursor:inherit;overflow:hidden;height:100%;line-height:var(--pill-height);text-overflow:ellipsis}.m_ae386778{color:inherit;font-size:inherit;height:100%;min-height:unset;min-width:2em;width:unset;border-radius:0;padding-inline-start:.1em;padding-inline-end:.3em;flex:0;border-end-end-radius:var(--pill-radius, 50%);border-start-end-radius:var(--pill-radius, 50%)}.m_7cda1cd6[data-disabled]>.m_ae386778,.m_ae386778:disabled{display:none;background-color:transparent;width:.8em;min-width:.8em;padding:0;cursor:not-allowed}.m_7cda1cd6[data-disabled]>.m_ae386778>svg,.m_ae386778:disabled>svg{display:none}.m_ae386778>svg{pointer-events:none}.m_1dcfd90b{--pg-gap-xs: 6px;--pg-gap-sm: 8px;--pg-gap-md: 10px;--pg-gap-lg: 12px;--pg-gap-xl: 12px;--pg-gap: var(--pg-gap-sm);display:flex;align-items:center;gap:var(--pg-gap);flex-wrap:wrap}.m_f61ca620{--psi-button-size-xs: 22px;--psi-button-size-sm: 26px;--psi-button-size-md: 28px;--psi-button-size-lg: 32px;--psi-button-size-xl: 40px;--psi-icon-size-xs: 12px;--psi-icon-size-sm: 15px;--psi-icon-size-md: 17px;--psi-icon-size-lg: 19px;--psi-icon-size-xl: 21px;--psi-button-size: var(--psi-button-size-sm);--psi-icon-size: var(--psi-icon-size-sm)}.m_ccf8da4c{position:relative;overflow:hidden}.m_f2d85dd2{font-family:var(--mantine-font-family);background-color:transparent;border:0;padding-inline-end:var(--input-padding-inline-end);padding-inline-start:var(--input-padding-inline-start);position:absolute;inset:0;outline:0;font-size:inherit;line-height:var(--mantine-line-height);height:100%;width:100%;color:inherit}.m_ccf8da4c[data-disabled] .m_f2d85dd2,.m_f2d85dd2:disabled{cursor:not-allowed}.m_f2d85dd2::placeholder{color:var(--input-placeholder-color);opacity:1}.m_f2d85dd2::-ms-reveal{display:none}.m_b1072d44{width:var(--psi-button-size);height:var(--psi-button-size);min-width:var(--psi-button-size);min-height:var(--psi-button-size)}.m_b1072d44:disabled{display:none}.m_45c4369d{background-color:transparent;appearance:none;min-width:100px;flex:1;border:0;font-size:inherit;height:1.6em;color:inherit;padding:0}.m_45c4369d::placeholder{color:var(--input-placeholder-color);opacity:1}.m_45c4369d:where([data-type=hidden],[data-type=auto]){height:1px;width:1px;top:0;left:0;pointer-events:none;position:absolute;opacity:0}.m_45c4369d:focus{outline:none}.m_45c4369d:where([data-type=auto]:focus){height:1.6em;visibility:visible;opacity:1;position:static}.m_45c4369d:where([data-pointer]:not([data-disabled],:disabled)){cursor:pointer}.m_45c4369d:where([data-disabled],:disabled){cursor:not-allowed}.m_f1cb205a{--pin-input-size-xs: 30px;--pin-input-size-sm: 36px;--pin-input-size-md: 42px;--pin-input-size-lg: 50px;--pin-input-size-xl: 60px;--pin-input-size: var(--pin-input-size-sm)}.m_cb288ead{width:var(--pin-input-size);height:var(--pin-input-size)}@keyframes m_81a374bd{0%{background-position:0 0}to{background-position:40px 0}}@keyframes m_e0fb7a86{0%{background-position:0 0}to{background-position:0 40px}}.m_db6d6462{--progress-radius: var(--mantine-radius-default);--progress-size: var(--progress-size-md);--progress-size-xs: 3px;--progress-size-sm: 5px;--progress-size-md: 8px;--progress-size-lg: 12px;--progress-size-xl: 16px;position:relative;height:var(--progress-size);border-radius:var(--progress-radius);overflow:hidden;display:flex}:where([data-mantine-color-scheme=light]) .m_db6d6462{background-color:var(--mantine-color-gray-2)}:where([data-mantine-color-scheme=dark]) .m_db6d6462{background-color:var(--mantine-color-dark-4)}.m_db6d6462:where([data-orientation=vertical]){height:auto;width:var(--progress-size);flex-direction:column-reverse}.m_2242eb65{background-color:var(--progress-section-color);height:100%;width:var(--progress-section-size);display:flex;align-items:center;justify-content:center;overflow:hidden;background-size:20px 20px;transition:width var(--progress-transition-duration, .1s) ease}.m_2242eb65:where([data-striped]){background-image:linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)}.m_2242eb65:where([data-animated]){animation:m_81a374bd 1s linear infinite}.m_2242eb65:where(:last-of-type){border-radius:0;border-start-end-radius:var(--progress-radius);border-end-end-radius:var(--progress-radius)}.m_2242eb65:where(:first-of-type){border-radius:0;border-start-start-radius:var(--progress-radius);border-end-start-radius:var(--progress-radius)}.m_db6d6462:where([data-orientation=vertical]) .m_2242eb65{width:100%;height:var(--progress-section-size);transition:height var(--progress-transition-duration, .1s) ease}.m_db6d6462:where([data-orientation=vertical]) .m_2242eb65:where([data-striped]){background-image:linear-gradient(135deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)}.m_db6d6462:where([data-orientation=vertical]) .m_2242eb65:where([data-animated]){animation:m_e0fb7a86 1s linear infinite}.m_db6d6462:where([data-orientation=vertical]) .m_2242eb65:where(:last-of-type){border-radius:0;border-start-start-radius:var(--progress-radius);border-start-end-radius:var(--progress-radius)}.m_db6d6462:where([data-orientation=vertical]) .m_2242eb65:where(:first-of-type){border-radius:0;border-end-start-radius:var(--progress-radius);border-end-end-radius:var(--progress-radius)}.m_91e40b74{color:var(--progress-label-color, var(--mantine-color-white));font-weight:700;user-select:none;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:min(calc(var(--progress-size) * .65),calc(1.125rem * var(--mantine-scale)));line-height:1;padding-inline:4px}.m_db6d6462:where([data-orientation=vertical]) .m_91e40b74{writing-mode:vertical-rl}.m_f3f1af94{--radio-size-xs: 16px;--radio-size-sm: 20px;--radio-size-md: 24px;--radio-size-lg: 30px;--radio-size-xl: 36px;--radio-size: var(--radio-size-sm);--radio-icon-size-xs: 6px;--radio-icon-size-sm: 8px;--radio-icon-size-md: 10px;--radio-icon-size-lg: 14px;--radio-icon-size-xl: 16px;--radio-icon-size: var(--radio-icon-size-sm);--radio-icon-color: var(--mantine-color-white)}.m_89c4f5e4{position:relative;width:var(--radio-size);height:var(--radio-size);order:1}.m_89c4f5e4:where([data-label-position=left]){order:2}.m_f3ed6b2b{color:var(--radio-icon-color);opacity:var(--radio-icon-opacity, 0);transform:var(--radio-icon-transform, scale(.2) translateY(calc(.625rem * var(--mantine-scale))));transition:opacity .1s ease,transform .2s ease;pointer-events:none;width:var(--radio-icon-size);height:var(--radio-icon-size);position:absolute;top:calc(50% - var(--radio-icon-size) / 2);left:calc(50% - var(--radio-icon-size) / 2)}.m_8a3dbb89{border:1px solid;position:relative;appearance:none;width:var(--radio-size);height:var(--radio-size);border-radius:var(--radio-radius, var(--radio-size));margin:0;display:flex;align-items:center;justify-content:center;transition-property:background-color,border-color;transition-timing-function:ease;transition-duration:.1s;cursor:var(--mantine-cursor-type);-webkit-tap-highlight-color:transparent}:where([data-mantine-color-scheme=light]) .m_8a3dbb89{background-color:var(--mantine-color-white);border-color:var(--mantine-color-gray-4)}:where([data-mantine-color-scheme=dark]) .m_8a3dbb89{background-color:var(--mantine-color-dark-6);border-color:var(--mantine-color-dark-4)}.m_8a3dbb89:checked{background-color:var(--radio-color, var(--mantine-primary-color-filled));border-color:var(--radio-color, var(--mantine-primary-color-filled))}.m_8a3dbb89:checked+.m_f3ed6b2b{--radio-icon-opacity: 1;--radio-icon-transform: scale(1)}.m_8a3dbb89:disabled{cursor:not-allowed;background-color:var(--mantine-color-disabled);border-color:var(--mantine-color-disabled-border)}.m_8a3dbb89:disabled+.m_f3ed6b2b{--radio-icon-color: var(--mantine-color-disabled-color)}.m_8a3dbb89:where([data-error]){border-color:var(--mantine-color-error)}.m_1bfe9d39+.m_f3ed6b2b{--radio-icon-color: var(--radio-color)}.m_1bfe9d39:checked:not(:disabled){background-color:transparent;border-color:var(--radio-color)}.m_1bfe9d39:checked:not(:disabled)+.m_f3ed6b2b{--radio-icon-color: var(--radio-color);--radio-icon-opacity: 1;--radio-icon-transform: none}.m_f8d312f2{--rating-size-xs: 14px;--rating-size-sm: 18px;--rating-size-md: 20px;--rating-size-lg: 28px;--rating-size-xl: 32px;display:flex;width:max-content}.m_f8d312f2:where(:has(input:disabled)){pointer-events:none}.m_61734bb7{position:relative;transition:transform .1s ease}.m_61734bb7:where([data-active]){z-index:1;transform:scale(1.1)}.m_5662a89a{width:var(--rating-size);height:var(--rating-size);display:block}:where([data-mantine-color-scheme=light]) .m_5662a89a{fill:var(--mantine-color-gray-3);stroke:var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_5662a89a{fill:var(--mantine-color-dark-3);stroke:var(--mantine-color-dark-3)}.m_5662a89a:where([data-filled]){fill:var(--rating-color);stroke:var(--rating-color)}.m_211007ba{height:0;width:0;position:absolute;overflow:hidden;white-space:nowrap;opacity:0;-webkit-tap-highlight-color:transparent}.m_211007ba:focus-visible+label{outline:2px solid var(--mantine-primary-color-filled);outline-offset:2px}.m_21342ee4{display:block;cursor:pointer;position:absolute;top:0;left:0;z-index:var(--rating-item-z-index, 0);-webkit-tap-highlight-color:transparent}.m_21342ee4:where([data-read-only]){cursor:default}.m_21342ee4:where(:last-of-type){position:relative}.m_fae05d6a{clip-path:var(--rating-symbol-clip-path)}.m_b32e4812{position:relative;width:var(--rp-size);height:var(--rp-size);min-width:var(--rp-size);min-height:var(--rp-size);--rp-transition-duration: 0ms}.m_d43b5134{width:var(--rp-size);height:var(--rp-size);min-width:var(--rp-size);min-height:var(--rp-size);transform:rotate(-90deg)}.m_b1ca1fbf{stroke:var(--curve-color, var(--rp-curve-root-color));transition:stroke-dashoffset var(--rp-transition-duration) ease,stroke-dasharray var(--rp-transition-duration) ease,stroke var(--rp-transition-duration)}[data-mantine-color-scheme=light] .m_b1ca1fbf{--rp-curve-root-color: var(--mantine-color-gray-2)}[data-mantine-color-scheme=dark] .m_b1ca1fbf{--rp-curve-root-color: var(--mantine-color-dark-4)}.m_b23f9dc4{position:absolute;top:50%;transform:translateY(-50%);inset-inline:var(--rp-label-offset)}.m_cf365364{--sc-padding-xs: 2px 6px;--sc-padding-sm: 3px 10px;--sc-padding-md: 4px 14px;--sc-padding-lg: 7px 16px;--sc-padding-xl: 10px 20px;--sc-transition-duration: .2s;--sc-padding: var(--sc-padding-sm);--sc-transition-timing-function: ease;--sc-font-size: var(--mantine-font-size-sm);position:relative;display:inline-flex;flex-direction:row;width:auto;border-radius:var(--sc-radius, var(--mantine-radius-default));overflow:hidden;padding:4px}.m_cf365364:where([data-full-width]){display:flex}.m_cf365364:where([data-orientation=vertical]){display:flex;flex-direction:column;width:max-content}.m_cf365364:where([data-orientation=vertical]):where([data-full-width]){width:auto}:where([data-mantine-color-scheme=light]) .m_cf365364{background-color:var(--mantine-color-gray-1)}:where([data-mantine-color-scheme=dark]) .m_cf365364{background-color:var(--mantine-color-dark-8)}.m_9e182ccd{position:absolute;display:block;z-index:1;border-radius:var(--sc-radius, var(--mantine-radius-default))}:where([data-mantine-color-scheme=light]) .m_9e182ccd{box-shadow:var(--sc-shadow, none);background-color:var(--sc-color, var(--mantine-color-white))}:where([data-mantine-color-scheme=dark]) .m_9e182ccd{box-shadow:none;background-color:var(--sc-color, var(--mantine-color-dark-5))}.m_1738fcb2{-webkit-tap-highlight-color:transparent;font-weight:500;display:block;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;user-select:none;border-radius:var(--sc-radius, var(--mantine-radius-default));font-size:var(--sc-font-size);padding:var(--sc-padding);transition:color var(--sc-transition-duration) var(--sc-transition-timing-function);cursor:pointer;outline:var(--segmented-control-outline, none)}:where([data-mantine-color-scheme=light]) .m_1738fcb2{color:var(--mantine-color-gray-7)}:where([data-mantine-color-scheme=dark]) .m_1738fcb2{color:var(--mantine-color-dark-1)}.m_1738fcb2:where([data-read-only]){cursor:default}fieldset:disabled .m_1738fcb2,.m_1738fcb2:where([data-disabled]){cursor:not-allowed;color:var(--mantine-color-disabled-color)}:where([data-mantine-color-scheme=light]) .m_1738fcb2:where([data-active]){color:var(--sc-label-color, var(--mantine-color-black))}:where([data-mantine-color-scheme=dark]) .m_1738fcb2:where([data-active]){color:var(--sc-label-color, var(--mantine-color-white))}.m_cf365364:where([data-initialized]) .m_1738fcb2:where([data-active]):before{display:none}.m_1738fcb2:where([data-active]):before{content:"";inset:0;z-index:0;position:absolute;border-radius:var(--sc-radius, var(--mantine-radius-default))}:where([data-mantine-color-scheme=light]) .m_1738fcb2:where([data-active]):before{box-shadow:var(--sc-shadow, none);background-color:var(--sc-color, var(--mantine-color-white))}:where([data-mantine-color-scheme=dark]) .m_1738fcb2:where([data-active]):before{box-shadow:none;background-color:var(--sc-color, var(--mantine-color-dark-5))}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_1738fcb2:where(:not([data-disabled],[data-active],[data-read-only])):hover{color:var(--mantine-color-black)}:where([data-mantine-color-scheme=dark]) .m_1738fcb2:where(:not([data-disabled],[data-active],[data-read-only])):hover{color:var(--mantine-color-white)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_1738fcb2:where(:not([data-disabled],[data-active],[data-read-only])):active{color:var(--mantine-color-black)}:where([data-mantine-color-scheme=dark]) .m_1738fcb2:where(:not([data-disabled],[data-active],[data-read-only])):active{color:var(--mantine-color-white)}}@media(hover:hover){fieldset:disabled .m_1738fcb2:hover{color:var(--mantine-color-disabled-color)!important}}@media(hover:none){fieldset:disabled .m_1738fcb2:active{color:var(--mantine-color-disabled-color)!important}}.m_1714d588{height:0;width:0;position:absolute;overflow:hidden;white-space:nowrap;opacity:0}.m_1714d588[data-focus-ring=auto]:focus:focus-visible+.m_1738fcb2{--segmented-control-outline: 2px solid var(--mantine-primary-color-filled)}.m_1714d588[data-focus-ring=always]:focus+.m_1738fcb2{--segmented-control-outline: 2px solid var(--mantine-primary-color-filled)}.m_69686b9b{position:relative;flex:1;z-index:2;transition:border-color var(--sc-transition-duration) var(--sc-transition-timing-function)}.m_cf365364[data-with-items-borders] :where(.m_69686b9b):before{content:"";position:absolute;top:0;bottom:0;inset-inline-start:0;background-color:var(--separator-color);width:1px;transition:background-color var(--sc-transition-duration) var(--sc-transition-timing-function)}.m_69686b9b[data-orientation=vertical]:before{top:0;inset-inline:0;bottom:auto;height:1px;width:auto}:where([data-mantine-color-scheme=light]) .m_69686b9b{--separator-color: var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_69686b9b{--separator-color: var(--mantine-color-dark-4)}.m_69686b9b:first-of-type:before{--separator-color: transparent}[data-mantine-color-scheme] .m_69686b9b[data-active]:before,[data-mantine-color-scheme] .m_69686b9b[data-active]+.m_69686b9b:before{--separator-color: transparent}.m_78882f40{position:relative;z-index:2}.m_925c2d2c{container:simple-grid / inline-size}.m_2415a157{display:grid;grid-template-columns:repeat(var(--sg-cols),minmax(0,1fr));gap:var(--sg-spacing-y) var(--sg-spacing-x)}@keyframes m_299c329c{0%,to{opacity:.4}50%{opacity:1}}.m_18320242{height:var(--skeleton-height, auto);width:var(--skeleton-width, 100%);border-radius:var(--skeleton-radius, var(--mantine-radius-default));position:relative;transform:translateZ(0);-webkit-transform:translateZ(0)}.m_18320242:where([data-animate]):after{animation:m_299c329c 1.5s linear infinite}.m_18320242:where([data-visible]){overflow:hidden}.m_18320242:where([data-visible]):before{position:absolute;content:"";inset:0;z-index:10;background-color:var(--mantine-color-body)}.m_18320242:where([data-visible]):after{position:absolute;content:"";inset:0;z-index:11}:where([data-mantine-color-scheme=light]) .m_18320242:where([data-visible]):after{background-color:var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_18320242:where([data-visible]):after{background-color:var(--mantine-color-dark-4)}.m_dd36362e{--slider-size-xs: 4px;--slider-size-sm: 6px;--slider-size-md: 8px;--slider-size-lg: 10px;--slider-size-xl: 12px;--slider-size: var(--slider-size-md);--slider-radius: 1000px;--slider-color: var(--mantine-primary-color-filled);--slider-track-disabled-bg: var(--mantine-color-disabled);-webkit-tap-highlight-color:transparent;outline:none;height:calc(var(--slider-size) * 2);padding-inline:var(--slider-size);display:flex;flex-direction:column;align-items:center;touch-action:none;position:relative}[data-mantine-color-scheme=light] .m_dd36362e{--slider-track-bg: var(--mantine-color-gray-2)}[data-mantine-color-scheme=dark] .m_dd36362e{--slider-track-bg: var(--mantine-color-dark-4)}.m_c9357328{position:absolute;top:-36px;font-size:var(--mantine-font-size-xs);color:var(--mantine-color-white);padding:calc(var(--mantine-spacing-xs) / 2);border-radius:var(--mantine-radius-sm);white-space:nowrap;pointer-events:none;user-select:none;touch-action:none}:where([data-mantine-color-scheme=light]) .m_c9357328{background-color:var(--mantine-color-gray-9)}:where([data-mantine-color-scheme=dark]) .m_c9357328{background-color:var(--mantine-color-dark-4)}.m_c9a9a60a{position:absolute;display:flex;height:var(--slider-thumb-size);width:var(--slider-thumb-size);border:4px solid;transform:translate(-50%,-50%);top:50%;cursor:pointer;border-radius:var(--slider-radius);align-items:center;justify-content:center;transition:box-shadow .1s ease,transform .1s ease;z-index:3;user-select:none;touch-action:none;outline-offset:2px;left:var(--slider-thumb-offset)}:where([dir=rtl]) .m_c9a9a60a{left:auto;right:calc(var(--slider-thumb-offset) - var(--slider-thumb-size))}fieldset:disabled .m_c9a9a60a,.m_c9a9a60a:where([data-disabled]){display:none}.m_c9a9a60a:where([data-dragging]){transform:translate(-50%,-50%) scale(1.05);box-shadow:var(--mantine-shadow-sm)}:where([data-mantine-color-scheme=light]) .m_c9a9a60a{color:var(--slider-color);border-color:var(--slider-color);background-color:var(--mantine-color-white)}:where([data-mantine-color-scheme=dark]) .m_c9a9a60a{color:var(--mantine-color-white);border-color:var(--mantine-color-white);background-color:var(--slider-color)}.m_a8645c2{display:flex;align-items:center;width:100%;height:calc(var(--slider-size) * 2);cursor:pointer}fieldset:disabled .m_a8645c2,.m_a8645c2:where([data-disabled]){cursor:not-allowed}.m_c9ade57f{position:relative;width:100%;height:var(--slider-size)}.m_c9ade57f:where([data-inverted]:not([data-disabled])){--track-bg: var(--slider-color)}fieldset:disabled .m_c9ade57f:where([data-inverted]),.m_c9ade57f:where([data-inverted][data-disabled]){--track-bg: var(--slider-track-disabled-bg)}.m_c9ade57f:before{content:"";position:absolute;top:0;bottom:0;border-radius:var(--slider-radius);inset-inline:calc(var(--slider-size) * -1);background-color:var(--track-bg, var(--slider-track-bg));z-index:0}.m_38aeed47{position:absolute;z-index:1;top:0;bottom:0;background-color:var(--slider-color);border-radius:var(--slider-radius);width:var(--slider-bar-width);inset-inline-start:var(--slider-bar-offset)}.m_38aeed47:where([data-inverted]){background-color:var(--slider-track-bg)}fieldset:disabled .m_38aeed47:where(:not([data-inverted])),.m_38aeed47:where([data-disabled]:not([data-inverted])){background-color:var(--mantine-color-disabled-color)}.m_b7b0423a{position:absolute;inset-inline-start:calc(var(--mark-offset) - var(--slider-size) / 2);top:0;z-index:2;height:0;pointer-events:none}.m_dd33bc19{border:2px solid;height:var(--slider-size);width:var(--slider-size);border-radius:1000px;background-color:var(--mantine-color-white);pointer-events:none}:where([data-mantine-color-scheme=light]) .m_dd33bc19{border-color:var(--mantine-color-gray-2)}:where([data-mantine-color-scheme=dark]) .m_dd33bc19{border-color:var(--mantine-color-dark-4)}.m_dd33bc19:where([data-filled]){border-color:var(--slider-color)}.m_dd33bc19:where([data-filled]):where([data-disabled]){border-color:var(--mantine-color-disabled-border)}.m_68c77a5b{transform:translate(calc(-50% + var(--slider-size) / 2),calc(var(--mantine-spacing-xs) / 2));font-size:var(--mantine-font-size-sm);white-space:nowrap;cursor:pointer;user-select:none}:where([data-mantine-color-scheme=light]) .m_68c77a5b{color:var(--mantine-color-gray-6)}:where([data-mantine-color-scheme=dark]) .m_68c77a5b{color:var(--mantine-color-dark-2)}.m_559cce2d{position:relative}.m_559cce2d:where([data-has-spoiler]){margin-bottom:24px}.m_b912df4e{display:flex;flex-direction:column;overflow:hidden;transition:max-height var(--spoiler-transition-duration, .2s) ease}.m_b9131032{position:absolute;inset-inline-start:0;top:100%;height:24px}.m_6d731127{display:flex;flex-direction:column;align-items:var(--stack-align, stretch);justify-content:var(--stack-justify, flex-start);gap:var(--stack-gap, var(--mantine-spacing-md))}.m_cbb4ea7e{--stepper-icon-size-xs: 34px;--stepper-icon-size-sm: 36px;--stepper-icon-size-md: 42px;--stepper-icon-size-lg: 48px;--stepper-icon-size-xl: 52px;--stepper-icon-size: var(--stepper-icon-size-md);--stepper-color: var(--mantine-primary-color-filled);--stepper-content-padding: var(--mantine-spacing-md);--stepper-spacing: var(--mantine-spacing-md);--stepper-radius: 1000px;--stepper-fz: var(--mantine-font-size-md);--stepper-outline-thickness: 2px}[data-mantine-color-scheme=light] .m_cbb4ea7e{--stepper-outline-color: var(--mantine-color-gray-2)}[data-mantine-color-scheme=dark] .m_cbb4ea7e{--stepper-outline-color: var(--mantine-color-dark-5)}.m_aaf89d0b{display:flex;flex-wrap:nowrap;align-items:center}.m_aaf89d0b:where([data-wrap]){flex-wrap:wrap;gap:var(--mantine-spacing-md) 0}.m_aaf89d0b:where([data-orientation=vertical]){flex-direction:column}.m_aaf89d0b:where([data-orientation=vertical]):where([data-icon-position=left]){align-items:flex-start}.m_aaf89d0b:where([data-orientation=vertical]):where([data-icon-position=right]){align-items:flex-end}.m_aaf89d0b:where([data-orientation=horizontal]){flex-direction:row}.m_2a371ac9{transition:background-color .15s ease;flex:1;height:var(--stepper-outline-thickness);margin-inline:var(--mantine-spacing-md);background-color:var(--stepper-outline-color)}.m_2a371ac9:where([data-active]){background-color:var(--stepper-color)}.m_78da155d{padding-top:var(--stepper-content-padding)}.m_cbb57068{--step-color: var(--stepper-color);display:flex;cursor:default}.m_cbb57068:where([data-allow-click]){cursor:pointer}.m_cbb57068:where([data-icon-position=left]){flex-direction:row}.m_cbb57068:where([data-icon-position=right]){flex-direction:row-reverse}.m_f56b1e2c{align-items:center}.m_833edb7e{--separator-spacing: calc(var(--mantine-spacing-xs) / 2);justify-content:flex-start;min-height:calc(var(--stepper-icon-size) + var(--mantine-spacing-xl) + var(--separator-spacing));margin-top:var(--separator-spacing);overflow:hidden}.m_833edb7e:where(:first-of-type){margin-top:0}.m_833edb7e:where(:last-of-type){min-height:auto}.m_833edb7e:where(:last-of-type) .m_6496b3f3{display:none}.m_818e70b{position:relative}.m_6496b3f3{top:calc(var(--stepper-icon-size) + var(--separator-spacing));inset-inline-start:calc(var(--stepper-icon-size) / 2);height:100vh;position:absolute;border-inline-start:var(--stepper-outline-thickness) solid var(--stepper-outline-color)}.m_6496b3f3:where([data-active]){border-color:var(--stepper-color)}.m_1959ad01{height:var(--stepper-icon-size);width:var(--stepper-icon-size);min-height:var(--stepper-icon-size);min-width:var(--stepper-icon-size);border-radius:var(--stepper-radius);font-size:var(--stepper-fz);display:flex;align-items:center;justify-content:center;position:relative;font-weight:700;transition:background-color .15s ease,border-color .15s ease;border:var(--stepper-outline-thickness) solid var(--stepper-outline-color);background-color:var(--stepper-outline-color)}:where([data-mantine-color-scheme=light]) .m_1959ad01{color:var(--mantine-color-gray-7)}:where([data-mantine-color-scheme=dark]) .m_1959ad01{color:var(--mantine-color-dark-1)}.m_1959ad01:where([data-progress]){border-color:var(--step-color)}.m_1959ad01:where([data-completed]){color:var(--stepper-icon-color, var(--mantine-color-white));background-color:var(--step-color);border-color:var(--step-color)}.m_a79331dc{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--stepper-icon-color, var(--mantine-color-white))}.m_1956aa2a{display:flex;flex-direction:column}.m_1956aa2a:where([data-icon-position=left]){margin-inline-start:var(--mantine-spacing-sm)}.m_1956aa2a:where([data-icon-position=right]){text-align:right;margin-inline-end:var(--mantine-spacing-sm)}:where([dir=rtl]) .m_1956aa2a:where([data-icon-position=right]){text-align:left}.m_12051f6c{font-weight:500;font-size:var(--stepper-fz);line-height:1}.m_164eea74{margin-top:calc(var(--stepper-spacing) / 3);margin-bottom:calc(var(--stepper-spacing) / 3);font-size:calc(var(--stepper-fz) - calc(.125rem * var(--mantine-scale)));line-height:1;color:var(--mantine-color-dimmed)}.m_5f93f3bb{--switch-height-xs: 16px;--switch-height-sm: 20px;--switch-height-md: 24px;--switch-height-lg: 30px;--switch-height-xl: 36px;--switch-width-xs: 32px;--switch-width-sm: 38px;--switch-width-md: 46px;--switch-width-lg: 56px;--switch-width-xl: 72px;--switch-thumb-size-xs: 12px;--switch-thumb-size-sm: 14px;--switch-thumb-size-md: 18px;--switch-thumb-size-lg: 22px;--switch-thumb-size-xl: 28px;--switch-label-font-size-xs: 5px;--switch-label-font-size-sm: 6px;--switch-label-font-size-md: 7px;--switch-label-font-size-lg: 9px;--switch-label-font-size-xl: 11px;--switch-track-label-padding-xs: 2px;--switch-track-label-padding-sm: 2.5px;--switch-track-label-padding-md: 3px;--switch-track-label-padding-lg: 3px;--switch-track-label-padding-xl: 3.5px;--switch-height: var(--switch-height-sm);--switch-width: var(--switch-width-sm);--switch-thumb-size: var(--switch-thumb-size-sm);--switch-label-font-size: var(--switch-label-font-size-sm);--switch-track-label-padding: var(--switch-track-label-padding-sm);--switch-radius: 1000px;--switch-color: var(--mantine-primary-color-filled);--switch-disabled-color: var(--mantine-color-disabled);position:relative}.m_926b4011{height:100%;width:100%;opacity:0;margin:0;padding:0;position:absolute;overflow:hidden;white-space:nowrap}.m_9307d992{-webkit-tap-highlight-color:transparent;cursor:var(--switch-cursor, var(--mantine-cursor-type));overflow:hidden;position:relative;border-radius:var(--switch-radius);background-color:var(--switch-bg);height:var(--switch-height);min-width:var(--switch-width);margin:0;transition:background-color .15s ease,border-color .15s ease;appearance:none;display:flex;align-items:center;font-size:var(--switch-label-font-size);font-weight:600;order:var(--switch-order, 1);user-select:none;z-index:0;line-height:0;color:var(--switch-text-color)}.m_9307d992:where([data-without-labels]){width:var(--switch-width)}.m_926b4011:focus-visible+.m_9307d992{outline:2px solid var(--mantine-primary-color-filled);outline-offset:2px}.m_926b4011:checked+.m_9307d992{--switch-bg: var(--switch-color);--switch-text-color: var(--mantine-color-white)}.m_926b4011:disabled+.m_9307d992,.m_926b4011[data-disabled]+.m_9307d992{--switch-bg: var(--switch-disabled-color);--switch-cursor: not-allowed}[data-mantine-color-scheme=light] .m_9307d992{--switch-bg: var(--mantine-color-gray-3);--switch-text-color: var(--mantine-color-gray-6)}[data-mantine-color-scheme=dark] .m_9307d992{--switch-bg: var(--mantine-color-dark-5);--switch-text-color: var(--mantine-color-dark-1)}.m_9307d992[data-label-position=left]{--switch-order: 2}.m_93039a1d{position:absolute;z-index:1;border-radius:var(--switch-radius);display:flex;background-color:var(--switch-thumb-bg, var(--mantine-color-white));height:var(--switch-thumb-size);width:var(--switch-thumb-size);inset-inline-start:var(--switch-thumb-start, var(--switch-track-label-padding));transition:inset-inline-start .15s ease}.m_93039a1d:where([data-with-thumb-indicator]):before{content:"";width:40%;height:40%;background-color:var(--switch-bg);position:absolute;border-radius:var(--switch-radius);top:50%;left:50%;transform:translate(-50%,-50%)}.m_93039a1d>*{margin:auto}.m_926b4011:checked+*>.m_93039a1d{--switch-thumb-start: calc(100% - var(--switch-thumb-size) - var(--switch-track-label-padding))}.m_926b4011:disabled+*>.m_93039a1d,.m_926b4011[data-disabled]+*>.m_93039a1d{--switch-thumb-bg: var(--switch-thumb-bg-disabled)}[data-mantine-color-scheme=light] .m_93039a1d{--switch-thumb-bg-disabled: var(--mantine-color-gray-0)}[data-mantine-color-scheme=dark] .m_93039a1d{--switch-thumb-bg-disabled: var(--mantine-color-dark-3)}.m_8277e082{height:100%;display:grid;place-content:center;min-width:calc(var(--switch-width) - var(--switch-thumb-size));padding-inline:var(--switch-track-label-padding);margin-inline-start:calc(var(--switch-thumb-size) + var(--switch-track-label-padding));transition:margin .15s ease}.m_926b4011:checked+*>.m_8277e082{margin-inline-end:calc(var(--switch-thumb-size) + var(--switch-track-label-padding));margin-inline-start:0}.m_b23fa0ef{width:100%;border-collapse:collapse;border-spacing:0;line-height:var(--mantine-line-height);font-size:var(--mantine-font-size-sm);table-layout:var(--table-layout, auto);caption-side:var(--table-caption-side, bottom);border:none}:where([data-mantine-color-scheme=light]) .m_b23fa0ef{--table-hover-color: var(--mantine-color-gray-1);--table-striped-color: var(--mantine-color-gray-0);--table-border-color: var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_b23fa0ef{--table-hover-color: var(--mantine-color-dark-5);--table-striped-color: var(--mantine-color-dark-6);--table-border-color: var(--mantine-color-dark-4)}.m_b23fa0ef:where([data-with-table-border]){border:calc(.0625rem * var(--mantine-scale)) solid var(--table-border-color)}.m_b23fa0ef:where([data-tabular-nums]){font-variant-numeric:tabular-nums}.m_b23fa0ef:where([data-variant=vertical]) :where(.m_4e7aa4f3){font-weight:500}:where([data-mantine-color-scheme=light]) .m_b23fa0ef:where([data-variant=vertical]) :where(.m_4e7aa4f3){background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_b23fa0ef:where([data-variant=vertical]) :where(.m_4e7aa4f3){background-color:var(--mantine-color-dark-6)}.m_4e7aa4f3{text-align:left}:where([dir=rtl]) .m_4e7aa4f3{text-align:right}.m_4e7aa4fd{border-bottom:none;background-color:transparent}@media(hover:hover){.m_4e7aa4fd:hover:where([data-hover]){background-color:var(--tr-hover-bg)}}@media(hover:none){.m_4e7aa4fd:active:where([data-hover]){background-color:var(--tr-hover-bg)}}.m_4e7aa4fd:where([data-with-row-border]){border-bottom:calc(.0625rem * var(--mantine-scale)) solid var(--table-border-color)}.m_4e7aa4ef,.m_4e7aa4f3{padding:var(--table-vertical-spacing) var(--table-horizontal-spacing, var(--mantine-spacing-xs))}.m_4e7aa4ef:where([data-with-column-border]:not(:first-child)),.m_4e7aa4f3:where([data-with-column-border]:not(:first-child)){border-inline-start:calc(.0625rem * var(--mantine-scale)) solid var(--table-border-color)}.m_4e7aa4ef:where([data-with-column-border]:not(:last-child)),.m_4e7aa4f3:where([data-with-column-border]:not(:last-child)){border-inline-end:calc(.0625rem * var(--mantine-scale)) solid var(--table-border-color)}.m_b2404537>:where(tr):where([data-with-row-border]:last-of-type){border-bottom:none}.m_b2404537>:where(tr):where([data-striped=odd]:nth-of-type(odd)){background-color:var(--table-striped-color)}.m_b2404537>:where(tr):where([data-striped=even]:nth-of-type(2n)){background-color:var(--table-striped-color)}.m_b2404537>:where(tr)[data-hover]{--tr-hover-bg: var(--table-highlight-on-hover-color, var(--table-hover-color))}.m_b242d975{top:var(--table-sticky-header-offset, 0);z-index:3}.m_b242d975:where([data-sticky]){position:sticky}.m_b242d975:where([data-sticky]) :where(.m_4e7aa4f3){position:sticky;top:var(--table-sticky-header-offset, 0);background-color:var(--mantine-color-body)}:where([data-with-table-border]) .m_b242d975[data-sticky]{position:sticky;top:var(--table-sticky-header-offset, 0);z-index:4;border-top:none}:where([data-with-table-border]) .m_b242d975[data-sticky]:before{content:"";display:block;position:absolute;left:0;top:-.5px;width:100%;height:1px;background-color:var(--table-border-color);z-index:5}:where([data-with-table-border]) .m_b242d975[data-sticky] .m_4e7aa4f3:first-child{border-top:none}.m_9e5a3ac7{color:var(--mantine-color-dimmed)}.m_9e5a3ac7:where([data-side=top]){margin-bottom:var(--mantine-spacing-xs)}.m_9e5a3ac7:where([data-side=bottom]){margin-top:var(--mantine-spacing-xs)}.m_a100c15{overflow-x:var(--table-overflow)}.m_62259741{min-width:var(--table-min-width);max-height:var(--table-max-height)}[data-mantine-color-scheme=light] .m_89d60db1{--tab-border-color: var(--mantine-color-gray-3)}[data-mantine-color-scheme=dark] .m_89d60db1{--tab-border-color: var(--mantine-color-dark-4)}.m_89d60db1{display:var(--tabs-display);flex-direction:var(--tabs-flex-direction);--tabs-list-direction: row;--tabs-panel-grow: unset;--tabs-display: block;--tabs-flex-direction: row;--tabs-list-border-width: 0;--tabs-list-border-size: 0 0 var(--tabs-list-border-width) 0;--tabs-list-gap: unset;--tabs-list-line-bottom: 0;--tabs-list-line-top: unset;--tabs-list-line-start: 0;--tabs-list-line-end: 0;--tab-radius: var(--tabs-radius) var(--tabs-radius) 0 0;--tab-border-width: 0 0 var(--tabs-list-border-width) 0}.m_89d60db1[data-inverted]{--tabs-list-line-bottom: unset;--tabs-list-line-top: 0;--tab-radius: 0 0 var(--tabs-radius) var(--tabs-radius);--tab-border-width: var(--tabs-list-border-width) 0 0 0}.m_89d60db1[data-inverted] .m_576c9d4:before{top:0;bottom:unset}.m_89d60db1[data-orientation=vertical]{--tabs-list-line-start: unset;--tabs-list-line-end: 0;--tabs-list-line-top: 0;--tabs-list-line-bottom: 0;--tabs-list-border-size: 0 var(--tabs-list-border-width) 0 0;--tab-border-width: 0 var(--tabs-list-border-width) 0 0;--tab-radius: var(--tabs-radius) 0 0 var(--tabs-radius);--tabs-list-direction: column;--tabs-panel-grow: 1;--tabs-display: flex}[dir=rtl] .m_89d60db1[data-orientation=vertical]{--tabs-list-border-size: 0 0 0 var(--tabs-list-border-width);--tab-border-width: 0 0 0 var(--tabs-list-border-width);--tab-radius: 0 var(--tabs-radius) var(--tabs-radius) 0}.m_89d60db1[data-orientation=vertical][data-placement=right]{--tabs-flex-direction: row-reverse;--tabs-list-line-start: 0;--tabs-list-line-end: unset;--tabs-list-border-size: 0 0 0 var(--tabs-list-border-width);--tab-border-width: 0 0 0 var(--tabs-list-border-width);--tab-radius: 0 var(--tabs-radius) var(--tabs-radius) 0}[dir=rtl] .m_89d60db1[data-orientation=vertical][data-placement=right]{--tabs-list-border-size: 0 var(--tabs-list-border-width) 0 0;--tab-border-width: 0 var(--tabs-list-border-width) 0 0;--tab-radius: var(--tabs-radius) 0 0 var(--tabs-radius)}.m_89d60db1[data-variant=default]{--tabs-list-border-width: 2px}[data-mantine-color-scheme=light] .m_89d60db1[data-variant=default]{--tab-hover-color: var(--mantine-color-gray-0)}[data-mantine-color-scheme=dark] .m_89d60db1[data-variant=default]{--tab-hover-color: var(--mantine-color-dark-6)}.m_89d60db1[data-variant=outline]{--tabs-list-border-width: 1px}.m_89d60db1[data-variant=pills]{--tabs-list-gap: calc(var(--mantine-spacing-sm) / 2)}[data-mantine-color-scheme=light] .m_89d60db1[data-variant=pills]{--tab-hover-color: var(--mantine-color-gray-0)}[data-mantine-color-scheme=dark] .m_89d60db1[data-variant=pills]{--tab-hover-color: var(--mantine-color-dark-6)}.m_89d33d6d{display:flex;flex-wrap:wrap;justify-content:var(--tabs-justify, flex-start);flex-direction:var(--tabs-list-direction);gap:var(--tabs-list-gap)}.m_89d33d6d:where([data-grow]) .m_4ec4dce6{flex:1}.m_b0c91715{flex-grow:var(--tabs-panel-grow)}.m_4ec4dce6{position:relative;padding:var(--mantine-spacing-xs) var(--mantine-spacing-md);font-size:var(--mantine-font-size-sm);white-space:nowrap;z-index:0;display:flex;align-items:center;line-height:1;user-select:none}.m_4ec4dce6:where(:disabled,[data-disabled]){opacity:.5;cursor:not-allowed}.m_4ec4dce6:focus{z-index:1}.m_fc420b1f{display:flex;align-items:center;justify-content:center}.m_fc420b1f:where([data-position=left]:not(:only-child)){margin-inline-end:var(--mantine-spacing-xs)}.m_fc420b1f:where([data-position=right]:not(:only-child)){margin-inline-start:var(--mantine-spacing-xs)}.m_42bbd1ae{flex:1;text-align:center}.m_576c9d4{position:relative}.m_576c9d4:before{content:"";position:absolute;border:1px solid var(--tab-border-color);bottom:var(--tabs-list-line-bottom);inset-inline-start:var(--tabs-list-line-start);inset-inline-end:var(--tabs-list-line-end);top:var(--tabs-list-line-top)}.m_539e827b{border-radius:var(--tab-radius);border-width:var(--tab-border-width);border-style:solid;border-color:transparent;background-color:transparent}.m_539e827b:where([data-active]){border-color:var(--tabs-color)}@media(hover:hover){.m_539e827b:hover{background-color:var(--tab-hover-color)}.m_539e827b:hover:where(:not([data-active])){border-color:var(--tab-border-color)}}@media(hover:none){.m_539e827b:active{background-color:var(--tab-hover-color)}.m_539e827b:active:where(:not([data-active])){border-color:var(--tab-border-color)}}@media(hover:hover){.m_539e827b:disabled:hover,.m_539e827b[data-disabled]:hover{background-color:transparent}}@media(hover:none){.m_539e827b:disabled:active,.m_539e827b[data-disabled]:active{background-color:transparent}}.m_6772fbd5{position:relative}.m_6772fbd5:before{content:"";position:absolute;border-color:var(--tab-border-color);border-width:var(--tabs-list-border-size);border-style:solid;bottom:var(--tabs-list-line-bottom);inset-inline-start:var(--tabs-list-line-start);inset-inline-end:var(--tabs-list-line-end);top:var(--tabs-list-line-top)}.m_b59ab47c{border-top:1px solid transparent;border-bottom:1px solid transparent;border-right:1px solid transparent;border-left:1px solid transparent;border-top-color:var(--tab-border-top-color);border-bottom-color:var(--tab-border-bottom-color);border-radius:var(--tab-radius);position:relative;--tab-border-bottom-color: transparent;--tab-border-top-color: transparent;--tab-border-inline-end-color: transparent;--tab-border-inline-start-color: transparent}.m_b59ab47c:where([data-active]):before{content:"";position:absolute;background-color:var(--tab-border-color);bottom:var(--tab-before-bottom, calc(-.0625rem * var(--mantine-scale)));left:var(--tab-before-left, calc(-.0625rem * var(--mantine-scale)));right:var(--tab-before-right, auto);top:var(--tab-before-top, auto);width:1px;height:1px}.m_b59ab47c:where([data-active]):after{content:"";position:absolute;background-color:var(--tab-border-color);bottom:var(--tab-after-bottom, calc(-.0625rem * var(--mantine-scale)));right:var(--tab-after-right, calc(-.0625rem * var(--mantine-scale)));left:var(--tab-after-left, auto);top:var(--tab-after-top, auto);width:1px;height:1px}.m_b59ab47c:where([data-active]){border-top-color:var(--tab-border-top-color);border-bottom-color:var(--tab-border-bottom-color);border-inline-start-color:var(--tab-border-inline-start-color);border-inline-end-color:var(--tab-border-inline-end-color);--tab-border-top-color: var(--tab-border-color);--tab-border-inline-start-color: var(--tab-border-color);--tab-border-inline-end-color: var(--tab-border-color);--tab-border-bottom-color: var(--mantine-color-body)}.m_b59ab47c:where([data-active])[data-inverted]{--tab-border-bottom-color: var(--tab-border-color);--tab-border-top-color: var(--mantine-color-body);--tab-before-bottom: auto;--tab-before-top: -1px;--tab-after-bottom: auto;--tab-after-top: -1px}.m_b59ab47c:where([data-active])[data-orientation=vertical][data-placement=left]{--tab-border-inline-end-color: var(--mantine-color-body);--tab-border-inline-start-color: var(--tab-border-color);--tab-border-bottom-color: var(--tab-border-color);--tab-before-right: -1px;--tab-before-left: auto;--tab-before-bottom: auto;--tab-before-top: -1px;--tab-after-left: auto;--tab-after-right: -1px}[dir=rtl] .m_b59ab47c:where([data-active])[data-orientation=vertical][data-placement=left]{--tab-before-right: auto;--tab-before-left: -1px;--tab-after-left: -1px;--tab-after-right: auto}.m_b59ab47c:where([data-active])[data-orientation=vertical][data-placement=right]{--tab-border-inline-start-color: var(--mantine-color-body);--tab-border-inline-end-color: var(--tab-border-color);--tab-border-bottom-color: var(--tab-border-color);--tab-before-left: -1px;--tab-before-right: auto;--tab-before-bottom: auto;--tab-before-top: -1px;--tab-after-right: auto;--tab-after-left: -1px}[dir=rtl] .m_b59ab47c:where([data-active])[data-orientation=vertical][data-placement=right]{--tab-before-left: auto;--tab-before-right: -1px;--tab-after-right: -1px;--tab-after-left: auto}.m_c3381914{border-radius:var(--tabs-radius);background-color:var(--tab-bg);color:var(--tab-color);--tab-bg: transparent;--tab-color: inherit}@media(hover:hover){.m_c3381914:not([data-disabled]):hover{--tab-bg: var(--tab-hover-color)}}@media(hover:none){.m_c3381914:not([data-disabled]):active{--tab-bg: var(--tab-hover-color)}}.m_c3381914[data-active][data-active]{--tab-bg: var(--tabs-color);--tab-color: var(--tabs-text-color, var(--mantine-color-white))}@media(hover:hover){.m_c3381914[data-active][data-active]:hover{--tab-bg: var(--tabs-color)}}@media(hover:none){.m_c3381914[data-active][data-active]:active{--tab-bg: var(--tabs-color)}}.m_b6d8b162{-webkit-tap-highlight-color:transparent;text-decoration:none;font-size:var(--text-fz, var(--mantine-font-size-md));line-height:var(--text-lh, var(--mantine-line-height-md));font-weight:400;margin:0;padding:0;color:var(--text-color)}.m_b6d8b162:where([data-truncate]){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.m_b6d8b162:where([data-truncate=start]){direction:rtl;text-align:right}:where([dir=rtl]) .m_b6d8b162:where([data-truncate=start]){direction:ltr;text-align:left}.m_b6d8b162:where([data-variant=gradient]){background-image:var(--text-gradient);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}.m_b6d8b162:where([data-line-clamp]){overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:var(--text-line-clamp);-webkit-box-orient:vertical}.m_b6d8b162:where([data-inherit]){line-height:inherit;font-weight:inherit;font-size:inherit}.m_b6d8b162:where([data-inline]){line-height:1}.m_7341320d{--ti-size-xs: 18px;--ti-size-sm: 22px;--ti-size-md: 28px;--ti-size-lg: 34px;--ti-size-xl: 44px;--ti-size: var(--ti-size-md);line-height:1;display:inline-flex;align-items:center;justify-content:center;position:relative;user-select:none;width:var(--ti-size);height:var(--ti-size);min-width:var(--ti-size);min-height:var(--ti-size);border-radius:var(--ti-radius, var(--mantine-radius-default));background:var(--ti-bg, var(--mantine-primary-color-filled));color:var(--ti-color, var(--mantine-color-white));border:var(--ti-bd, 1px solid transparent)}.m_43657ece{--offset: calc(var(--tl-bullet-size) / 2 + var(--tl-line-width) / 2);--tl-bullet-size: 20px;--tl-line-width: 4px;--tl-radius: 1000px;--tl-color: var(--mantine-primary-color-filled)}.m_43657ece:where([data-align=left]){padding-inline-start:var(--offset)}.m_43657ece:where([data-align=right]){padding-inline-end:var(--offset)}.m_2ebe8099{font-weight:500;line-height:1;margin-bottom:calc(var(--mantine-spacing-xs) / 2)}.m_436178ff{--item-border: var(--tl-line-width) var(--tli-border-style, solid) var(--item-border-color);position:relative;color:var(--mantine-color-text)}.m_436178ff:before{content:"";pointer-events:none;position:absolute;top:0;left:var(--timeline-line-left, 0);right:var(--timeline-line-right, 0);bottom:calc(var(--mantine-spacing-xl) * -1);border-inline-start:var(--item-border);display:var(--timeline-line-display, none)}.m_43657ece[data-align=left] .m_436178ff:before{--timeline-line-left: calc(var(--tl-line-width) * -1);--timeline-line-right: auto}[dir=rtl] .m_43657ece[data-align=left] .m_436178ff:before{--timeline-line-left: auto;--timeline-line-right: calc(var(--tl-line-width) * -1)}.m_43657ece[data-align=right] .m_436178ff:before{--timeline-line-left: auto;--timeline-line-right: calc(var(--tl-line-width) * -1)}[dir=rtl] .m_43657ece[data-align=right] .m_436178ff:before{--timeline-line-left: calc(var(--tl-line-width) * -1);--timeline-line-right: auto}.m_43657ece:where([data-align=left]) .m_436178ff{padding-inline-start:var(--offset);text-align:left}.m_43657ece:where([data-align=right]) .m_436178ff{padding-inline-end:var(--offset);text-align:right}:where([data-mantine-color-scheme=light]) .m_436178ff{--item-border-color: var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_436178ff{--item-border-color: var(--mantine-color-dark-4)}.m_436178ff:where([data-line-active]):before{border-color:var(--tli-color, var(--tl-color))}.m_436178ff:where(:not(:last-of-type)){--timeline-line-display: block}.m_436178ff:where(:not(:first-of-type)){margin-top:var(--mantine-spacing-xl)}.m_8affcee1{width:var(--tl-bullet-size);height:var(--tl-bullet-size);border-radius:var(--tli-radius, var(--tl-radius));border:var(--tl-line-width) solid;background-color:var(--mantine-color-body);position:absolute;top:0;display:flex;align-items:center;justify-content:center;color:var(--mantine-color-text)}:where([data-mantine-color-scheme=light]) .m_8affcee1{border-color:var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_8affcee1{border-color:var(--mantine-color-dark-4)}.m_43657ece:where([data-align=left]) .m_8affcee1{left:calc((var(--tl-bullet-size) / 2 + var(--tl-line-width) / 2) * -1);right:auto}:where([dir=rtl]) .m_43657ece:where([data-align=left]) .m_8affcee1{left:auto;right:calc((var(--tl-bullet-size) / 2 + var(--tl-line-width) / 2) * -1)}.m_43657ece:where([data-align=right]) .m_8affcee1{left:auto;right:calc((var(--tl-bullet-size) / 2 + var(--tl-line-width) / 2) * -1)}:where([dir=rtl]) .m_43657ece:where([data-align=right]) .m_8affcee1{left:calc((var(--tl-bullet-size) / 2 + var(--tl-line-width) / 2) * -1);right:auto}.m_8affcee1:where([data-with-child]){border-width:var(--tl-line-width)}:where([data-mantine-color-scheme=light]) .m_8affcee1:where([data-with-child]){background-color:var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_8affcee1:where([data-with-child]){background-color:var(--mantine-color-dark-4)}.m_8affcee1:where([data-active]){border-color:var(--tli-color, var(--tl-color));background-color:var(--mantine-color-white);color:var(--tl-icon-color, var(--mantine-color-white))}.m_8affcee1:where([data-active]):where([data-with-child]){background-color:var(--tli-color, var(--tl-color));color:var(--tl-icon-color, var(--mantine-color-white))}.m_43657ece:where([data-align=left]) .m_540e8f41{padding-inline-start:var(--offset);text-align:left}:where([dir=rtl]) .m_43657ece:where([data-align=left]) .m_540e8f41{text-align:right}.m_43657ece:where([data-align=right]) .m_540e8f41{padding-inline-end:var(--offset);text-align:right}:where([dir=rtl]) .m_43657ece:where([data-align=right]) .m_540e8f41{text-align:left}.m_8a5d1357{margin:0;font-weight:var(--title-fw);font-size:var(--title-fz);line-height:var(--title-lh);font-family:var(--mantine-font-family-headings);text-wrap:var(--title-text-wrap, var(--mantine-heading-text-wrap))}.m_8a5d1357:where([data-line-clamp]){overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:var(--title-line-clamp);-webkit-box-orient:vertical}.m_1b3c8819{--tooltip-radius: var(--mantine-radius-default);position:absolute;padding:calc(var(--mantine-spacing-xs) / 2) var(--mantine-spacing-xs);pointer-events:none;font-size:var(--mantine-font-size-sm);white-space:nowrap;border-radius:var(--tooltip-radius)}:where([data-mantine-color-scheme=light]) .m_1b3c8819{background-color:var(--tooltip-bg, var(--mantine-color-gray-9));color:var(--tooltip-color, var(--mantine-color-white))}:where([data-mantine-color-scheme=dark]) .m_1b3c8819{background-color:var(--tooltip-bg, var(--mantine-color-gray-2));color:var(--tooltip-color, var(--mantine-color-black))}.m_1b3c8819:where([data-multiline]){white-space:normal}.m_1b3c8819:where([data-fixed]){position:fixed}.m_f898399f{background-color:inherit;border:0;z-index:1}.m_d08caa0 :first-child{margin-top:0}.m_d08caa0 :last-child{margin-bottom:0}.m_d08caa0 :where(h1,h2,h3,h4,h5,h6){margin-bottom:var(--mantine-spacing-xs);text-wrap:var(--mantine-heading-text-wrap);font-family:var(--mantine-font-family-headings)}.m_d08caa0 :where(h1){margin-top:calc(1.5 * var(--mantine-spacing-xl));font-size:var(--mantine-h1-font-size);line-height:var(--mantine-h1-line-height);font-weight:var(--mantine-h1-font-weight)}.m_d08caa0 :where(h2){margin-top:var(--mantine-spacing-xl);font-size:var(--mantine-h2-font-size);line-height:var(--mantine-h2-line-height);font-weight:var(--mantine-h2-font-weight)}.m_d08caa0 :where(h3){margin-top:calc(.8 * var(--mantine-spacing-xl));font-size:var(--mantine-h3-font-size);line-height:var(--mantine-h3-line-height);font-weight:var(--mantine-h3-font-weight)}.m_d08caa0 :where(h4){margin-top:calc(.8 * var(--mantine-spacing-xl));font-size:var(--mantine-h4-font-size);line-height:var(--mantine-h4-line-height);font-weight:var(--mantine-h4-font-weight)}.m_d08caa0 :where(h5){margin-top:calc(.5 * var(--mantine-spacing-xl));font-size:var(--mantine-h5-font-size);line-height:var(--mantine-h5-line-height);font-weight:var(--mantine-h5-font-weight)}.m_d08caa0 :where(h6){margin-top:calc(.5 * var(--mantine-spacing-xl));font-size:var(--mantine-h6-font-size);line-height:var(--mantine-h6-line-height);font-weight:var(--mantine-h6-font-weight)}.m_d08caa0 :where(img){max-width:100%;margin-bottom:var(--mantine-spacing-xs)}.m_d08caa0 :where(p){margin-top:0;margin-bottom:var(--mantine-spacing-lg)}:where([data-mantine-color-scheme=light]) .m_d08caa0 :where(mark){background-color:var(--mantine-color-yellow-2);color:inherit}:where([data-mantine-color-scheme=dark]) .m_d08caa0 :where(mark){background-color:var(--mantine-color-yellow-5);color:var(--mantine-color-black)}.m_d08caa0 :where(a){color:var(--mantine-color-anchor);text-decoration:none}@media(hover:hover){.m_d08caa0 :where(a):hover{text-decoration:underline}}@media(hover:none){.m_d08caa0 :where(a):active{text-decoration:underline}}.m_d08caa0 :where(hr){margin-top:var(--mantine-spacing-md);margin-bottom:var(--mantine-spacing-md);border:0;border-top:1px solid}:where([data-mantine-color-scheme=light]) .m_d08caa0 :where(hr){border-color:var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_d08caa0 :where(hr){border-color:var(--mantine-color-dark-3)}.m_d08caa0 :where(pre){padding:var(--mantine-spacing-xs);line-height:var(--mantine-line-height);margin:0;margin-top:var(--mantine-spacing-md);margin-bottom:var(--mantine-spacing-md);overflow-x:auto;font-family:var(--mantine-font-family-monospace);font-size:var(--mantine-font-size-xs);border-radius:var(--mantine-radius-sm)}:where([data-mantine-color-scheme=light]) .m_d08caa0 :where(pre){background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_d08caa0 :where(pre){background-color:var(--mantine-color-dark-8)}.m_d08caa0 :where(pre) :where(code){background-color:transparent;padding:0;border-radius:0;color:inherit;border:0}.m_d08caa0 :where(kbd){--kbd-fz: 12px;--kbd-padding: 3px 5px;font-family:var(--mantine-font-family-monospace);line-height:var(--mantine-line-height);font-weight:700;padding:var(--kbd-padding);font-size:var(--kbd-fz);border-radius:var(--mantine-radius-sm);border:1px solid;border-bottom-width:3px}:where([data-mantine-color-scheme=light]) .m_d08caa0 :where(kbd){border-color:var(--mantine-color-gray-3);color:var(--mantine-color-gray-7);background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_d08caa0 :where(kbd){border-color:var(--mantine-color-dark-3);color:var(--mantine-color-dark-0);background-color:var(--mantine-color-dark-5)}.m_d08caa0 :where(code){line-height:var(--mantine-line-height);padding:1px 5px;border-radius:var(--mantine-radius-sm);font-family:var(--mantine-font-family-monospace);font-size:var(--mantine-font-size-xs)}:where([data-mantine-color-scheme=light]) .m_d08caa0 :where(code){background-color:var(--mantine-color-gray-0);color:var(--mantine-color-black)}:where([data-mantine-color-scheme=dark]) .m_d08caa0 :where(code){background-color:var(--mantine-color-dark-5);color:var(--mantine-color-white)}.m_d08caa0 :where(ul,ol):not([data-type=taskList]){margin-bottom:var(--mantine-spacing-md);padding-inline-start:var(--mantine-spacing-xl);list-style-position:outside}.m_d08caa0 :where(table){width:100%;border-collapse:collapse;caption-side:bottom;margin-bottom:var(--mantine-spacing-md)}:where([data-mantine-color-scheme=light]) .m_d08caa0 :where(table){--table-border-color: var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_d08caa0 :where(table){--table-border-color: var(--mantine-color-dark-4)}.m_d08caa0 :where(table) :where(caption){margin-top:var(--mantine-spacing-xs);font-size:var(--mantine-font-size-sm);color:var(--mantine-color-dimmed)}.m_d08caa0 :where(table) :where(th){text-align:left;font-weight:700;font-size:var(--mantine-font-size-sm);padding:var(--mantine-spacing-xs) var(--mantine-spacing-sm)}.m_d08caa0 :where(table) :where(thead th){border-bottom:1px solid;border-color:var(--table-border-color)}.m_d08caa0 :where(table) :where(tfoot th){border-top:1px solid;border-color:var(--table-border-color)}.m_d08caa0 :where(table) :where(td){padding:var(--mantine-spacing-xs) var(--mantine-spacing-sm);border-bottom:1px solid;border-color:var(--table-border-color);font-size:var(--mantine-font-size-sm)}.m_d08caa0 :where(table) :where(tr:last-of-type td){border-bottom:0}.m_d08caa0 :where(blockquote){font-size:var(--mantine-font-size-lg);line-height:var(--mantine-line-height);margin:var(--mantine-spacing-md) 0;border-radius:var(--mantine-radius-sm);padding:var(--mantine-spacing-md) var(--mantine-spacing-lg)}:where([data-mantine-color-scheme=light]) .m_d08caa0 :where(blockquote){background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_d08caa0 :where(blockquote){background-color:var(--mantine-color-dark-8)}.bn-mantine{color-scheme:var(--mantine-color-scheme)}.bn-mantine *,.bn-mantine *:before,.bn-mantine *:after{box-sizing:border-box}.bn-mantine button,.bn-mantine select{text-transform:none}.bn-mantine{-webkit-font-smoothing:var(--mantine-webkit-font-smoothing);-moz-osx-font-smoothing:var(--mantine-moz-font-smoothing)}@media screen and (max-device-width:500px){.bn-mantine{-webkit-text-size-adjust:100%}}.bn-mantine{--mantine-z-index-app: 100;--mantine-z-index-modal: 200;--mantine-z-index-popover: 300;--mantine-z-index-overlay: 400;--mantine-z-index-max: 9999;--mantine-scale: 1;--mantine-cursor-type: default;--mantine-webkit-font-smoothing: antialiased;--mantine-moz-font-smoothing: grayscale;--mantine-color-white: #fff;--mantine-color-black: #000;--mantine-line-height: 1.55;--mantine-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;--mantine-font-family-monospace: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;--mantine-font-family-headings: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;--mantine-heading-font-weight: 700;--mantine-heading-text-wrap: wrap;--mantine-radius-default: calc(.25rem * var(--mantine-scale));--mantine-primary-color-filled: var(--mantine-color-blue-filled);--mantine-primary-color-filled-hover: var(--mantine-color-blue-filled-hover);--mantine-primary-color-light: var(--mantine-color-blue-light);--mantine-primary-color-light-hover: var(--mantine-color-blue-light-hover);--mantine-primary-color-light-color: var(--mantine-color-blue-light-color);--mantine-breakpoint-xs: 36em;--mantine-breakpoint-sm: 48em;--mantine-breakpoint-md: 62em;--mantine-breakpoint-lg: 75em;--mantine-breakpoint-xl: 88em;--mantine-spacing-xs: calc(.625rem * var(--mantine-scale));--mantine-spacing-sm: calc(.75rem * var(--mantine-scale));--mantine-spacing-md: calc(1rem * var(--mantine-scale));--mantine-spacing-lg: calc(1.25rem * var(--mantine-scale));--mantine-spacing-xl: calc(2rem * var(--mantine-scale));--mantine-font-size-xs: calc(.75rem * var(--mantine-scale));--mantine-font-size-sm: calc(.875rem * var(--mantine-scale));--mantine-font-size-md: calc(1rem * var(--mantine-scale));--mantine-font-size-lg: calc(1.125rem * var(--mantine-scale));--mantine-font-size-xl: calc(1.25rem * var(--mantine-scale));--mantine-line-height-xs: 1.4;--mantine-line-height-sm: 1.45;--mantine-line-height-md: 1.55;--mantine-line-height-lg: 1.6;--mantine-line-height-xl: 1.65;--mantine-shadow-xs: 0 calc(.0625rem * var(--mantine-scale)) calc(.1875rem * var(--mantine-scale)) rgba(0, 0, 0, .05), 0 calc(.0625rem * var(--mantine-scale)) calc(.125rem * var(--mantine-scale)) rgba(0, 0, 0, .1);--mantine-shadow-sm: 0 calc(.0625rem * var(--mantine-scale)) calc(.1875rem * var(--mantine-scale)) rgba(0, 0, 0, .05), rgba(0, 0, 0, .05) 0 calc(.625rem * var(--mantine-scale)) calc(.9375rem * var(--mantine-scale)) calc(-.3125rem * var(--mantine-scale)), rgba(0, 0, 0, .04) 0 calc(.4375rem * var(--mantine-scale)) calc(.4375rem * var(--mantine-scale)) calc(-.3125rem * var(--mantine-scale));--mantine-shadow-md: 0 calc(.0625rem * var(--mantine-scale)) calc(.1875rem * var(--mantine-scale)) rgba(0, 0, 0, .05), rgba(0, 0, 0, .05) 0 calc(1.25rem * var(--mantine-scale)) calc(1.5625rem * var(--mantine-scale)) calc(-.3125rem * var(--mantine-scale)), rgba(0, 0, 0, .04) 0 calc(.625rem * var(--mantine-scale)) calc(.625rem * var(--mantine-scale)) calc(-.3125rem * var(--mantine-scale));--mantine-shadow-lg: 0 calc(.0625rem * var(--mantine-scale)) calc(.1875rem * var(--mantine-scale)) rgba(0, 0, 0, .05), rgba(0, 0, 0, .05) 0 calc(1.75rem * var(--mantine-scale)) calc(1.4375rem * var(--mantine-scale)) calc(-.4375rem * var(--mantine-scale)), rgba(0, 0, 0, .04) 0 calc(.75rem * var(--mantine-scale)) calc(.75rem * var(--mantine-scale)) calc(-.4375rem * var(--mantine-scale));--mantine-shadow-xl: 0 calc(.0625rem * var(--mantine-scale)) calc(.1875rem * var(--mantine-scale)) rgba(0, 0, 0, .05), rgba(0, 0, 0, .05) 0 calc(2.25rem * var(--mantine-scale)) calc(1.75rem * var(--mantine-scale)) calc(-.4375rem * var(--mantine-scale)), rgba(0, 0, 0, .04) 0 calc(1.0625rem * var(--mantine-scale)) calc(1.0625rem * var(--mantine-scale)) calc(-.4375rem * var(--mantine-scale));--mantine-radius-xs: calc(.125rem * var(--mantine-scale));--mantine-radius-sm: calc(.25rem * var(--mantine-scale));--mantine-radius-md: calc(.5rem * var(--mantine-scale));--mantine-radius-lg: calc(1rem * var(--mantine-scale));--mantine-radius-xl: calc(2rem * var(--mantine-scale));--mantine-primary-color-0: var(--mantine-color-blue-0);--mantine-primary-color-1: var(--mantine-color-blue-1);--mantine-primary-color-2: var(--mantine-color-blue-2);--mantine-primary-color-3: var(--mantine-color-blue-3);--mantine-primary-color-4: var(--mantine-color-blue-4);--mantine-primary-color-5: var(--mantine-color-blue-5);--mantine-primary-color-6: var(--mantine-color-blue-6);--mantine-primary-color-7: var(--mantine-color-blue-7);--mantine-primary-color-8: var(--mantine-color-blue-8);--mantine-primary-color-9: var(--mantine-color-blue-9);--mantine-color-dark-0: #c9c9c9;--mantine-color-dark-1: #b8b8b8;--mantine-color-dark-2: #828282;--mantine-color-dark-3: #696969;--mantine-color-dark-4: #424242;--mantine-color-dark-5: #3b3b3b;--mantine-color-dark-6: #2e2e2e;--mantine-color-dark-7: #242424;--mantine-color-dark-8: #1f1f1f;--mantine-color-dark-9: #141414;--mantine-color-gray-0: #f8f9fa;--mantine-color-gray-1: #f1f3f5;--mantine-color-gray-2: #e9ecef;--mantine-color-gray-3: #dee2e6;--mantine-color-gray-4: #ced4da;--mantine-color-gray-5: #adb5bd;--mantine-color-gray-6: #868e96;--mantine-color-gray-7: #495057;--mantine-color-gray-8: #343a40;--mantine-color-gray-9: #212529;--mantine-color-red-0: #fff5f5;--mantine-color-red-1: #ffe3e3;--mantine-color-red-2: #ffc9c9;--mantine-color-red-3: #ffa8a8;--mantine-color-red-4: #ff8787;--mantine-color-red-5: #ff6b6b;--mantine-color-red-6: #fa5252;--mantine-color-red-7: #f03e3e;--mantine-color-red-8: #e03131;--mantine-color-red-9: #c92a2a;--mantine-color-pink-0: #fff0f6;--mantine-color-pink-1: #ffdeeb;--mantine-color-pink-2: #fcc2d7;--mantine-color-pink-3: #faa2c1;--mantine-color-pink-4: #f783ac;--mantine-color-pink-5: #f06595;--mantine-color-pink-6: #e64980;--mantine-color-pink-7: #d6336c;--mantine-color-pink-8: #c2255c;--mantine-color-pink-9: #a61e4d;--mantine-color-grape-0: #f8f0fc;--mantine-color-grape-1: #f3d9fa;--mantine-color-grape-2: #eebefa;--mantine-color-grape-3: #e599f7;--mantine-color-grape-4: #da77f2;--mantine-color-grape-5: #cc5de8;--mantine-color-grape-6: #be4bdb;--mantine-color-grape-7: #ae3ec9;--mantine-color-grape-8: #9c36b5;--mantine-color-grape-9: #862e9c;--mantine-color-violet-0: #f3f0ff;--mantine-color-violet-1: #e5dbff;--mantine-color-violet-2: #d0bfff;--mantine-color-violet-3: #b197fc;--mantine-color-violet-4: #9775fa;--mantine-color-violet-5: #845ef7;--mantine-color-violet-6: #7950f2;--mantine-color-violet-7: #7048e8;--mantine-color-violet-8: #6741d9;--mantine-color-violet-9: #5f3dc4;--mantine-color-indigo-0: #edf2ff;--mantine-color-indigo-1: #dbe4ff;--mantine-color-indigo-2: #bac8ff;--mantine-color-indigo-3: #91a7ff;--mantine-color-indigo-4: #748ffc;--mantine-color-indigo-5: #5c7cfa;--mantine-color-indigo-6: #4c6ef5;--mantine-color-indigo-7: #4263eb;--mantine-color-indigo-8: #3b5bdb;--mantine-color-indigo-9: #364fc7;--mantine-color-blue-0: #e7f5ff;--mantine-color-blue-1: #d0ebff;--mantine-color-blue-2: #a5d8ff;--mantine-color-blue-3: #74c0fc;--mantine-color-blue-4: #4dabf7;--mantine-color-blue-5: #339af0;--mantine-color-blue-6: #228be6;--mantine-color-blue-7: #1c7ed6;--mantine-color-blue-8: #1971c2;--mantine-color-blue-9: #1864ab;--mantine-color-cyan-0: #e3fafc;--mantine-color-cyan-1: #c5f6fa;--mantine-color-cyan-2: #99e9f2;--mantine-color-cyan-3: #66d9e8;--mantine-color-cyan-4: #3bc9db;--mantine-color-cyan-5: #22b8cf;--mantine-color-cyan-6: #15aabf;--mantine-color-cyan-7: #1098ad;--mantine-color-cyan-8: #0c8599;--mantine-color-cyan-9: #0b7285;--mantine-color-teal-0: #e6fcf5;--mantine-color-teal-1: #c3fae8;--mantine-color-teal-2: #96f2d7;--mantine-color-teal-3: #63e6be;--mantine-color-teal-4: #38d9a9;--mantine-color-teal-5: #20c997;--mantine-color-teal-6: #12b886;--mantine-color-teal-7: #0ca678;--mantine-color-teal-8: #099268;--mantine-color-teal-9: #087f5b;--mantine-color-green-0: #ebfbee;--mantine-color-green-1: #d3f9d8;--mantine-color-green-2: #b2f2bb;--mantine-color-green-3: #8ce99a;--mantine-color-green-4: #69db7c;--mantine-color-green-5: #51cf66;--mantine-color-green-6: #40c057;--mantine-color-green-7: #37b24d;--mantine-color-green-8: #2f9e44;--mantine-color-green-9: #2b8a3e;--mantine-color-lime-0: #f4fce3;--mantine-color-lime-1: #e9fac8;--mantine-color-lime-2: #d8f5a2;--mantine-color-lime-3: #c0eb75;--mantine-color-lime-4: #a9e34b;--mantine-color-lime-5: #94d82d;--mantine-color-lime-6: #82c91e;--mantine-color-lime-7: #74b816;--mantine-color-lime-8: #66a80f;--mantine-color-lime-9: #5c940d;--mantine-color-yellow-0: #fff9db;--mantine-color-yellow-1: #fff3bf;--mantine-color-yellow-2: #ffec99;--mantine-color-yellow-3: #ffe066;--mantine-color-yellow-4: #ffd43b;--mantine-color-yellow-5: #fcc419;--mantine-color-yellow-6: #fab005;--mantine-color-yellow-7: #f59f00;--mantine-color-yellow-8: #f08c00;--mantine-color-yellow-9: #e67700;--mantine-color-orange-0: #fff4e6;--mantine-color-orange-1: #ffe8cc;--mantine-color-orange-2: #ffd8a8;--mantine-color-orange-3: #ffc078;--mantine-color-orange-4: #ffa94d;--mantine-color-orange-5: #ff922b;--mantine-color-orange-6: #fd7e14;--mantine-color-orange-7: #f76707;--mantine-color-orange-8: #e8590c;--mantine-color-orange-9: #d9480f;--mantine-h1-font-size: calc(2.125rem * var(--mantine-scale));--mantine-h1-line-height: 1.3;--mantine-h1-font-weight: 700;--mantine-h2-font-size: calc(1.625rem * var(--mantine-scale));--mantine-h2-line-height: 1.35;--mantine-h2-font-weight: 700;--mantine-h3-font-size: calc(1.375rem * var(--mantine-scale));--mantine-h3-line-height: 1.4;--mantine-h3-font-weight: 700;--mantine-h4-font-size: calc(1.125rem * var(--mantine-scale));--mantine-h4-line-height: 1.45;--mantine-h4-font-weight: 700;--mantine-h5-font-size: calc(1rem * var(--mantine-scale));--mantine-h5-line-height: 1.5;--mantine-h5-font-weight: 700;--mantine-h6-font-size: calc(.875rem * var(--mantine-scale));--mantine-h6-line-height: 1.5;--mantine-h6-font-weight: 700}.bn-mantine[data-mantine-color-scheme=dark]{--mantine-color-scheme: dark;--mantine-primary-color-contrast: var(--mantine-color-white);--mantine-color-bright: var(--mantine-color-white);--mantine-color-text: var(--mantine-color-dark-0);--mantine-color-body: var(--mantine-color-dark-7);--mantine-color-error: var(--mantine-color-red-8);--mantine-color-placeholder: var(--mantine-color-dark-3);--mantine-color-anchor: var(--mantine-color-blue-4);--mantine-color-default: var(--mantine-color-dark-6);--mantine-color-default-hover: var(--mantine-color-dark-5);--mantine-color-default-color: var(--mantine-color-white);--mantine-color-default-border: var(--mantine-color-dark-4);--mantine-color-dimmed: var(--mantine-color-dark-2);--mantine-color-disabled: var(--mantine-color-dark-6);--mantine-color-disabled-color: var(--mantine-color-dark-3);--mantine-color-disabled-border: var(--mantine-color-dark-4);--mantine-color-dark-text: var(--mantine-color-dark-4);--mantine-color-dark-filled: var(--mantine-color-dark-8);--mantine-color-dark-filled-hover: var(--mantine-color-dark-9);--mantine-color-dark-light: rgba(46, 46, 46, .15);--mantine-color-dark-light-hover: rgba(46, 46, 46, .2);--mantine-color-dark-light-color: var(--mantine-color-dark-3);--mantine-color-dark-outline: var(--mantine-color-dark-4);--mantine-color-dark-outline-hover: rgba(66, 66, 66, .05);--mantine-color-gray-text: var(--mantine-color-gray-4);--mantine-color-gray-filled: var(--mantine-color-gray-8);--mantine-color-gray-filled-hover: var(--mantine-color-gray-9);--mantine-color-gray-light: rgba(134, 142, 150, .15);--mantine-color-gray-light-hover: rgba(134, 142, 150, .2);--mantine-color-gray-light-color: var(--mantine-color-gray-3);--mantine-color-gray-outline: var(--mantine-color-gray-4);--mantine-color-gray-outline-hover: rgba(206, 212, 218, .05);--mantine-color-red-text: var(--mantine-color-red-4);--mantine-color-red-filled: var(--mantine-color-red-8);--mantine-color-red-filled-hover: var(--mantine-color-red-9);--mantine-color-red-light: rgba(250, 82, 82, .15);--mantine-color-red-light-hover: rgba(250, 82, 82, .2);--mantine-color-red-light-color: var(--mantine-color-red-3);--mantine-color-red-outline: var(--mantine-color-red-4);--mantine-color-red-outline-hover: rgba(255, 135, 135, .05);--mantine-color-pink-text: var(--mantine-color-pink-4);--mantine-color-pink-filled: var(--mantine-color-pink-8);--mantine-color-pink-filled-hover: var(--mantine-color-pink-9);--mantine-color-pink-light: rgba(230, 73, 128, .15);--mantine-color-pink-light-hover: rgba(230, 73, 128, .2);--mantine-color-pink-light-color: var(--mantine-color-pink-3);--mantine-color-pink-outline: var(--mantine-color-pink-4);--mantine-color-pink-outline-hover: rgba(247, 131, 172, .05);--mantine-color-grape-text: var(--mantine-color-grape-4);--mantine-color-grape-filled: var(--mantine-color-grape-8);--mantine-color-grape-filled-hover: var(--mantine-color-grape-9);--mantine-color-grape-light: rgba(190, 75, 219, .15);--mantine-color-grape-light-hover: rgba(190, 75, 219, .2);--mantine-color-grape-light-color: var(--mantine-color-grape-3);--mantine-color-grape-outline: var(--mantine-color-grape-4);--mantine-color-grape-outline-hover: rgba(218, 119, 242, .05);--mantine-color-violet-text: var(--mantine-color-violet-4);--mantine-color-violet-filled: var(--mantine-color-violet-8);--mantine-color-violet-filled-hover: var(--mantine-color-violet-9);--mantine-color-violet-light: rgba(121, 80, 242, .15);--mantine-color-violet-light-hover: rgba(121, 80, 242, .2);--mantine-color-violet-light-color: var(--mantine-color-violet-3);--mantine-color-violet-outline: var(--mantine-color-violet-4);--mantine-color-violet-outline-hover: rgba(151, 117, 250, .05);--mantine-color-indigo-text: var(--mantine-color-indigo-4);--mantine-color-indigo-filled: var(--mantine-color-indigo-8);--mantine-color-indigo-filled-hover: var(--mantine-color-indigo-9);--mantine-color-indigo-light: rgba(76, 110, 245, .15);--mantine-color-indigo-light-hover: rgba(76, 110, 245, .2);--mantine-color-indigo-light-color: var(--mantine-color-indigo-3);--mantine-color-indigo-outline: var(--mantine-color-indigo-4);--mantine-color-indigo-outline-hover: rgba(116, 143, 252, .05);--mantine-color-blue-text: var(--mantine-color-blue-4);--mantine-color-blue-filled: var(--mantine-color-blue-8);--mantine-color-blue-filled-hover: var(--mantine-color-blue-9);--mantine-color-blue-light: rgba(34, 139, 230, .15);--mantine-color-blue-light-hover: rgba(34, 139, 230, .2);--mantine-color-blue-light-color: var(--mantine-color-blue-3);--mantine-color-blue-outline: var(--mantine-color-blue-4);--mantine-color-blue-outline-hover: rgba(77, 171, 247, .05);--mantine-color-cyan-text: var(--mantine-color-cyan-4);--mantine-color-cyan-filled: var(--mantine-color-cyan-8);--mantine-color-cyan-filled-hover: var(--mantine-color-cyan-9);--mantine-color-cyan-light: rgba(21, 170, 191, .15);--mantine-color-cyan-light-hover: rgba(21, 170, 191, .2);--mantine-color-cyan-light-color: var(--mantine-color-cyan-3);--mantine-color-cyan-outline: var(--mantine-color-cyan-4);--mantine-color-cyan-outline-hover: rgba(59, 201, 219, .05);--mantine-color-teal-text: var(--mantine-color-teal-4);--mantine-color-teal-filled: var(--mantine-color-teal-8);--mantine-color-teal-filled-hover: var(--mantine-color-teal-9);--mantine-color-teal-light: rgba(18, 184, 134, .15);--mantine-color-teal-light-hover: rgba(18, 184, 134, .2);--mantine-color-teal-light-color: var(--mantine-color-teal-3);--mantine-color-teal-outline: var(--mantine-color-teal-4);--mantine-color-teal-outline-hover: rgba(56, 217, 169, .05);--mantine-color-green-text: var(--mantine-color-green-4);--mantine-color-green-filled: var(--mantine-color-green-8);--mantine-color-green-filled-hover: var(--mantine-color-green-9);--mantine-color-green-light: rgba(64, 192, 87, .15);--mantine-color-green-light-hover: rgba(64, 192, 87, .2);--mantine-color-green-light-color: var(--mantine-color-green-3);--mantine-color-green-outline: var(--mantine-color-green-4);--mantine-color-green-outline-hover: rgba(105, 219, 124, .05);--mantine-color-lime-text: var(--mantine-color-lime-4);--mantine-color-lime-filled: var(--mantine-color-lime-8);--mantine-color-lime-filled-hover: var(--mantine-color-lime-9);--mantine-color-lime-light: rgba(130, 201, 30, .15);--mantine-color-lime-light-hover: rgba(130, 201, 30, .2);--mantine-color-lime-light-color: var(--mantine-color-lime-3);--mantine-color-lime-outline: var(--mantine-color-lime-4);--mantine-color-lime-outline-hover: rgba(169, 227, 75, .05);--mantine-color-yellow-text: var(--mantine-color-yellow-4);--mantine-color-yellow-filled: var(--mantine-color-yellow-8);--mantine-color-yellow-filled-hover: var(--mantine-color-yellow-9);--mantine-color-yellow-light: rgba(250, 176, 5, .15);--mantine-color-yellow-light-hover: rgba(250, 176, 5, .2);--mantine-color-yellow-light-color: var(--mantine-color-yellow-3);--mantine-color-yellow-outline: var(--mantine-color-yellow-4);--mantine-color-yellow-outline-hover: rgba(255, 212, 59, .05);--mantine-color-orange-text: var(--mantine-color-orange-4);--mantine-color-orange-filled: var(--mantine-color-orange-8);--mantine-color-orange-filled-hover: var(--mantine-color-orange-9);--mantine-color-orange-light: rgba(253, 126, 20, .15);--mantine-color-orange-light-hover: rgba(253, 126, 20, .2);--mantine-color-orange-light-color: var(--mantine-color-orange-3);--mantine-color-orange-outline: var(--mantine-color-orange-4);--mantine-color-orange-outline-hover: rgba(255, 169, 77, .05)}.bn-mantine[data-mantine-color-scheme=light]{--mantine-color-scheme: light;--mantine-primary-color-contrast: var(--mantine-color-white);--mantine-color-bright: var(--mantine-color-black);--mantine-color-text: #000;--mantine-color-body: #fff;--mantine-color-error: var(--mantine-color-red-6);--mantine-color-placeholder: var(--mantine-color-gray-5);--mantine-color-anchor: var(--mantine-color-blue-6);--mantine-color-default: var(--mantine-color-white);--mantine-color-default-hover: var(--mantine-color-gray-0);--mantine-color-default-color: var(--mantine-color-black);--mantine-color-default-border: var(--mantine-color-gray-4);--mantine-color-dimmed: var(--mantine-color-gray-6);--mantine-color-disabled: var(--mantine-color-gray-2);--mantine-color-disabled-color: var(--mantine-color-gray-5);--mantine-color-disabled-border: var(--mantine-color-gray-3);--mantine-color-dark-text: var(--mantine-color-dark-filled);--mantine-color-dark-filled: var(--mantine-color-dark-6);--mantine-color-dark-filled-hover: var(--mantine-color-dark-7);--mantine-color-dark-light: rgba(46, 46, 46, .1);--mantine-color-dark-light-hover: rgba(46, 46, 46, .12);--mantine-color-dark-light-color: var(--mantine-color-dark-6);--mantine-color-dark-outline: var(--mantine-color-dark-6);--mantine-color-dark-outline-hover: rgba(46, 46, 46, .05);--mantine-color-gray-text: var(--mantine-color-gray-filled);--mantine-color-gray-filled: var(--mantine-color-gray-6);--mantine-color-gray-filled-hover: var(--mantine-color-gray-7);--mantine-color-gray-light: rgba(134, 142, 150, .1);--mantine-color-gray-light-hover: rgba(134, 142, 150, .12);--mantine-color-gray-light-color: var(--mantine-color-gray-6);--mantine-color-gray-outline: var(--mantine-color-gray-6);--mantine-color-gray-outline-hover: rgba(134, 142, 150, .05);--mantine-color-red-text: var(--mantine-color-red-filled);--mantine-color-red-filled: var(--mantine-color-red-6);--mantine-color-red-filled-hover: var(--mantine-color-red-7);--mantine-color-red-light: rgba(250, 82, 82, .1);--mantine-color-red-light-hover: rgba(250, 82, 82, .12);--mantine-color-red-light-color: var(--mantine-color-red-6);--mantine-color-red-outline: var(--mantine-color-red-6);--mantine-color-red-outline-hover: rgba(250, 82, 82, .05);--mantine-color-pink-text: var(--mantine-color-pink-filled);--mantine-color-pink-filled: var(--mantine-color-pink-6);--mantine-color-pink-filled-hover: var(--mantine-color-pink-7);--mantine-color-pink-light: rgba(230, 73, 128, .1);--mantine-color-pink-light-hover: rgba(230, 73, 128, .12);--mantine-color-pink-light-color: var(--mantine-color-pink-6);--mantine-color-pink-outline: var(--mantine-color-pink-6);--mantine-color-pink-outline-hover: rgba(230, 73, 128, .05);--mantine-color-grape-text: var(--mantine-color-grape-filled);--mantine-color-grape-filled: var(--mantine-color-grape-6);--mantine-color-grape-filled-hover: var(--mantine-color-grape-7);--mantine-color-grape-light: rgba(190, 75, 219, .1);--mantine-color-grape-light-hover: rgba(190, 75, 219, .12);--mantine-color-grape-light-color: var(--mantine-color-grape-6);--mantine-color-grape-outline: var(--mantine-color-grape-6);--mantine-color-grape-outline-hover: rgba(190, 75, 219, .05);--mantine-color-violet-text: var(--mantine-color-violet-filled);--mantine-color-violet-filled: var(--mantine-color-violet-6);--mantine-color-violet-filled-hover: var(--mantine-color-violet-7);--mantine-color-violet-light: rgba(121, 80, 242, .1);--mantine-color-violet-light-hover: rgba(121, 80, 242, .12);--mantine-color-violet-light-color: var(--mantine-color-violet-6);--mantine-color-violet-outline: var(--mantine-color-violet-6);--mantine-color-violet-outline-hover: rgba(121, 80, 242, .05);--mantine-color-indigo-text: var(--mantine-color-indigo-filled);--mantine-color-indigo-filled: var(--mantine-color-indigo-6);--mantine-color-indigo-filled-hover: var(--mantine-color-indigo-7);--mantine-color-indigo-light: rgba(76, 110, 245, .1);--mantine-color-indigo-light-hover: rgba(76, 110, 245, .12);--mantine-color-indigo-light-color: var(--mantine-color-indigo-6);--mantine-color-indigo-outline: var(--mantine-color-indigo-6);--mantine-color-indigo-outline-hover: rgba(76, 110, 245, .05);--mantine-color-blue-text: var(--mantine-color-blue-filled);--mantine-color-blue-filled: var(--mantine-color-blue-6);--mantine-color-blue-filled-hover: var(--mantine-color-blue-7);--mantine-color-blue-light: rgba(34, 139, 230, .1);--mantine-color-blue-light-hover: rgba(34, 139, 230, .12);--mantine-color-blue-light-color: var(--mantine-color-blue-6);--mantine-color-blue-outline: var(--mantine-color-blue-6);--mantine-color-blue-outline-hover: rgba(34, 139, 230, .05);--mantine-color-cyan-text: var(--mantine-color-cyan-filled);--mantine-color-cyan-filled: var(--mantine-color-cyan-6);--mantine-color-cyan-filled-hover: var(--mantine-color-cyan-7);--mantine-color-cyan-light: rgba(21, 170, 191, .1);--mantine-color-cyan-light-hover: rgba(21, 170, 191, .12);--mantine-color-cyan-light-color: var(--mantine-color-cyan-6);--mantine-color-cyan-outline: var(--mantine-color-cyan-6);--mantine-color-cyan-outline-hover: rgba(21, 170, 191, .05);--mantine-color-teal-text: var(--mantine-color-teal-filled);--mantine-color-teal-filled: var(--mantine-color-teal-6);--mantine-color-teal-filled-hover: var(--mantine-color-teal-7);--mantine-color-teal-light: rgba(18, 184, 134, .1);--mantine-color-teal-light-hover: rgba(18, 184, 134, .12);--mantine-color-teal-light-color: var(--mantine-color-teal-6);--mantine-color-teal-outline: var(--mantine-color-teal-6);--mantine-color-teal-outline-hover: rgba(18, 184, 134, .05);--mantine-color-green-text: var(--mantine-color-green-filled);--mantine-color-green-filled: var(--mantine-color-green-6);--mantine-color-green-filled-hover: var(--mantine-color-green-7);--mantine-color-green-light: rgba(64, 192, 87, .1);--mantine-color-green-light-hover: rgba(64, 192, 87, .12);--mantine-color-green-light-color: var(--mantine-color-green-6);--mantine-color-green-outline: var(--mantine-color-green-6);--mantine-color-green-outline-hover: rgba(64, 192, 87, .05);--mantine-color-lime-text: var(--mantine-color-lime-filled);--mantine-color-lime-filled: var(--mantine-color-lime-6);--mantine-color-lime-filled-hover: var(--mantine-color-lime-7);--mantine-color-lime-light: rgba(130, 201, 30, .1);--mantine-color-lime-light-hover: rgba(130, 201, 30, .12);--mantine-color-lime-light-color: var(--mantine-color-lime-6);--mantine-color-lime-outline: var(--mantine-color-lime-6);--mantine-color-lime-outline-hover: rgba(130, 201, 30, .05);--mantine-color-yellow-text: var(--mantine-color-yellow-filled);--mantine-color-yellow-filled: var(--mantine-color-yellow-6);--mantine-color-yellow-filled-hover: var(--mantine-color-yellow-7);--mantine-color-yellow-light: rgba(250, 176, 5, .1);--mantine-color-yellow-light-hover: rgba(250, 176, 5, .12);--mantine-color-yellow-light-color: var(--mantine-color-yellow-6);--mantine-color-yellow-outline: var(--mantine-color-yellow-6);--mantine-color-yellow-outline-hover: rgba(250, 176, 5, .05);--mantine-color-orange-text: var(--mantine-color-orange-filled);--mantine-color-orange-filled: var(--mantine-color-orange-6);--mantine-color-orange-filled-hover: var(--mantine-color-orange-7);--mantine-color-orange-light: rgba(253, 126, 20, .1);--mantine-color-orange-light-hover: rgba(253, 126, 20, .12);--mantine-color-orange-light-color: var(--mantine-color-orange-6);--mantine-color-orange-outline: var(--mantine-color-orange-6);--mantine-color-orange-outline-hover: rgba(253, 126, 20, .05)}.bn-block-outer{line-height:1.5;transition:margin .2s}.bn-block{flex-direction:column;display:flex}.bn-block-content{width:100%;padding:3px 0;transition:font-size .2s;display:flex}.bn-block-content.ProseMirror-selectednode>*,.ProseMirror-selectednode>.bn-block-content>*,.bn-block-content .ProseMirror-selectednode,.bn-inline-content .ProseMirror-selectednode{position:relative}.bn-block-content.ProseMirror-selectednode>:after,.ProseMirror-selectednode>.bn-block-content>:after,.bn-block-content .ProseMirror-selectednode:after,.bn-inline-content .ProseMirror-selectednode:after{content:"";pointer-events:none;background-color:#64a0ff14;border-radius:4px;position:absolute;inset:0;box-shadow:inset 0 0 0 4px #64a0ff4d}.bn-block-content:before{content:"";height:0;margin-right:0;transition:all .2s;overflow:visible}.bn-inline-content{white-space:pre-wrap}.bn-trailing-block{cursor:text;-webkit-user-select:none;user-select:none;height:30px}.bn-block-group .bn-block-group{margin-left:24px}.bn-block-group .bn-block-group>.bn-block-outer{position:relative}.bn-block-group .bn-block-group>.bn-block-outer:not([data-prev-depth-changed]):before{content:" ";height:100%;transition:all .2s .1s;display:inline;position:absolute;left:-20px}.bn-block-group .bn-block-group>.bn-block-outer[data-prev-depth-change="-2"]:before{height:0}.bn-inline-content code{font-family:monospace}[data-prev-depth-change="1"]{--x:1}[data-prev-depth-change="2"]{--x:2}[data-prev-depth-change="3"]{--x:3}[data-prev-depth-change="4"]{--x:4}[data-prev-depth-change="5"]{--x:5}[data-prev-depth-change="-1"]{--x:-1}[data-prev-depth-change="-2"]{--x:-2}[data-prev-depth-change="-3"]{--x:-3}[data-prev-depth-change="-4"]{--x:-4}[data-prev-depth-change="-5"]{--x:-5}.bn-block-outer[data-prev-depth-change]{margin-left:calc(10px * var(--x))}.bn-block-outer[data-prev-depth-change] .bn-block-outer[data-prev-depth-change]{margin-left:0}[data-content-type=heading]{--level:3em;padding-top:18px}[data-content-type=heading][data-level="2"]{--level:2em}[data-content-type=heading][data-level="3"]{--level:1.3em}[data-content-type=heading][data-level="4"]{--level:1em}[data-content-type=heading][data-level="5"]{--level:.9em}[data-content-type=heading][data-level="6"]{--level:.8em}[data-prev-level="1"]{--prev-level:3em}[data-prev-level="2"]{--prev-level:2em}[data-prev-level="3"]{--prev-level:1.3em}[data-prev-level="4"]{--prev-level:1em}[data-prev-level="5"]{--prev-level:.9em}[data-prev-level="6"]{--prev-level:.8em}.bn-block-outer[data-prev-type=heading]>.bn-block>.bn-block-content{font-size:var(--prev-level);font-weight:700}.bn-block-outer:not([data-prev-type])>.bn-block>.bn-block-content[data-content-type=heading],.bn-block-outer:not([data-prev-type])>.bn-block>div[data-type=modification]>div[data-type=modification]>.bn-block-content[data-content-type=heading],.bn-block-outer:not([data-prev-type])>.bn-block>:is(ins,del)>.bn-suggestion-node>.bn-block-content[data-content-type=heading]{font-size:var(--level);font-weight:700}[data-content-type=quote] blockquote{color:#7d797a;border-left:2px solid #7d797a;margin:0;padding-left:1em}[data-content-type=divider] hr{border:none;border-top:1px solid #7d797a;flex:1;margin:.5em 0}.bn-block-content:before{content:"";margin-right:0}.bn-block-content[data-content-type=numberedListItem]:before{justify-content:center;min-width:24px;padding-right:4px;display:flex}[data-content-type=numberedListItem]{--index:attr(data-index)}[data-prev-type=numberedListItem]{--prev-index:attr(data-prev-index)}.bn-block-outer[data-prev-type=numberedListItem]:not([data-prev-index=none])>.bn-block>.bn-block-content:before{content:var(--prev-index) "."}.bn-block-outer:not([data-prev-type])>.bn-block>.bn-block-content[data-content-type=numberedListItem]:before,.bn-block-outer:not([data-prev-type])>.bn-block>div[data-type=modification]>.bn-block-content[data-content-type=numberedListItem]:before,.bn-block-outer:not([data-prev-type])>.bn-block>:is(ins,del)>.bn-suggestion-node>.bn-block-content[data-content-type=numberedListItem]:before{content:var(--index) "."}.bn-block-content[data-content-type=bulletListItem]:before{justify-content:center;min-width:24px;padding-right:4px;display:flex}.bn-block-content[data-content-type=checkListItem]>div:has(>input){height:24px}.bn-block-content[data-content-type=checkListItem]>div>input{cursor:pointer;margin-left:4px;margin-right:8px;width:12px;height:24px;margin-block:0}.bn-block-content[data-content-type=checkListItem][data-checked=true] .bn-inline-content{text-decoration:line-through}.bn-block-content[data-text-alignment=center]{justify-content:center}.bn-block-content[data-text-alignment=right]{justify-content:flex-end}:is(.bn-block:has(>.bn-block-content>div>.bn-toggle-wrapper[data-show-children=false])>.bn-block-group,.bn-block:has(>.react-renderer>.bn-block-content>div>.bn-toggle-wrapper[data-show-children=false])>.bn-block-group){display:none}.bn-toggle-wrapper{align-items:center;display:flex}.bn-toggle-button{color:var(--bn-colors-editor-text);padding:3px}.bn-toggle-button>svg{width:18px;height:18px}.bn-toggle-wrapper[data-show-children=true] .bn-toggle-button{transform:rotate(90deg)}.bn-toggle-add-block-button{color:var(--bn-colors-side-menu);width:fit-content;margin-left:22px;padding-inline:2px;font-size:16px;font-weight:400}.bn-toggle-button,.bn-toggle-add-block-button{border-radius:var(--bn-border-radius-small);cursor:pointer;-webkit-user-select:none;user-select:none;background:0 0;border:none;display:flex}.bn-toggle-button:hover,.bn-toggle-add-block-button:hover{background-color:var(--bn-colors-hovered-background)}.bn-block-outer[data-prev-type=bulletListItem]>.bn-block>.bn-block-content:before,.bn-block-outer:not([data-prev-type])>.bn-block>.bn-block-content[data-content-type=bulletListItem]:before,.bn-block-outer:not([data-prev-type])>.bn-block>div[data-type=modification]>.bn-block-content[data-content-type=bulletListItem]:before,.bn-block-outer:not([data-prev-type])>.bn-block>:is(ins,del)>.bn-suggestion-node .bn-block-content[data-content-type=bulletListItem]:before{content:"\\2022"}[data-content-type=bulletListItem]~.bn-block-group>.bn-block-outer[data-prev-type=bulletListItem]>.bn-block>.bn-block-content:before,[data-content-type=bulletListItem]~.bn-block-group>.bn-block-outer:not([data-prev-type])>.bn-block>.bn-block-content[data-content-type=bulletListItem]:before,[data-content-type=bulletListItem]~.bn-block-group>.bn-block-outer:not([data-prev-type])>.bn-block>div[data-type=modification]>.bn-block-content[data-content-type=bulletListItem]:before{content:"\\25e6"}[data-content-type=bulletListItem]~.bn-block-group [data-content-type=bulletListItem]~.bn-block-group>.bn-block-outer[data-prev-type=bulletListItem]>.bn-block>.bn-block-content:before,[data-content-type=bulletListItem]~.bn-block-group [data-content-type=bulletListItem]~.bn-block-group>.bn-block-outer:not([data-prev-type])>.bn-block>.bn-block-content[data-content-type=bulletListItem]:before,[data-content-type=bulletListItem]~.bn-block-group [data-content-type=bulletListItem]~.bn-block-group>.bn-block-outer:not([data-prev-type])>.bn-block>div[data-type=modification]>.bn-block-content[data-content-type=bulletListItem]:before{content:"\\25aa\\fe0e"}.bn-block-content[data-content-type=codeBlock]{color:#fff;background-color:#161616;border-radius:8px;position:relative}.bn-block-content[data-content-type=codeBlock]>pre{white-space:pre;tab-size:2;width:100%;margin:0;padding:24px;overflow-x:auto}.bn-block-content[data-content-type=codeBlock]>div{outline:none!important}.bn-block-content[data-content-type=codeBlock]>div>select{appearance:none;-webkit-user-select:none;user-select:none;cursor:pointer;color:#fff;opacity:0;background-color:#0000;border:none;font-size:.8em;transition:opacity .3s 1s;position:absolute;top:8px;left:18px;outline:none!important}.bn-block-content[data-content-type=codeBlock]>div>select>option{color:#000}.bn-block-content[data-content-type=codeBlock]:hover>div>select,.bn-block-content[data-content-type=codeBlock]>div>select:focus{opacity:.5;transition-delay:.1s}.bn-block-content[data-content-type=codeBlock]:has(.bn-preview-with-source-popup){color:inherit;background-color:#0000}.shiki{color:var(--shiki-dark)}.bn-source-block-popup .shiki{color:var(--shiki-light)}.bn-root[data-color-scheme=dark] .bn-source-block-popup .shiki{color:var(--shiki-dark)}.bn-preview-with-source-popup{position:relative}.bn-block-content .bn-preview-with-source-popup{width:100%;padding:12px;display:flex}.bn-inline-content-section .bn-preview-with-source-popup{width:fit-content;padding:0;display:inline-block}.bn-preview-container{anchor-name:--bn-source-popup-anchor;cursor:pointer}.bn-block-content .bn-preview-container{width:100%;overflow:auto}.bn-inline-content-section .bn-preview-container{width:fit-content;overflow:visible}.bn-block-content .bn-preview-container .katex-html:has(>.tag){box-sizing:border-box;width:max-content;min-width:100%;padding-right:2.5em}.bn-source-block-popup{box-shadow:none;color:#0000;z-index:0;background-color:#0000;border:none;border-radius:0;width:0;height:0;margin-top:4px;position:absolute;top:100%;left:0;overflow:clip}.bn-preview-with-source-popup[data-open=true] .bn-source-block-popup{background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);color:var(--bn-colors-menu-text);height:unset;z-index:1}.bn-block-content .bn-preview-with-source-popup[data-open=true] .bn-source-block-popup{width:100%}.bn-inline-content-section .bn-preview-with-source-popup[data-open=true] .bn-source-block-popup{width:300px}.bn-code-block-source-popup-body{align-items:flex-end;display:flex}.bn-code-block-source-popup-body>pre{tab-size:2;white-space:pre;flex:1;align-self:center;width:0;max-height:200px;margin:0;padding:16px;position:relative;overflow:auto}.bn-code-block-source-popup-input-empty:before{color:currentColor;content:attr(data-placeholder);opacity:.5;pointer-events:none;text-overflow:ellipsis;white-space:nowrap;position:absolute;top:16px;left:16px;right:16px;overflow:hidden}.bn-code-block-source-error{border-top:var(--bn-border);color:var(--bn-colors-highlights-red-text);padding:8px 16px;font-family:monospace;font-size:.8em;white-space:pre-wrap!important}.bn-code-block-source-popup-ok-button-wrapper{justify-content:flex-end;align-items:flex-end;padding:14px 16px}.bn-code-block-source-popup-ok-button{appearance:none;border-radius:var(--bn-border-radius-small);color:#fff;cursor:pointer;background-color:#2563eb;border:none;align-items:center;gap:4px;padding:4px 8px;font-size:.8em;font-weight:500;display:flex}.bn-code-block-source-popup-ok-button-icon{width:1.2em;height:1.2em}.bn-code-block-source-popup-ok-button:hover{background-color:#1d4ed8}.bn-preview-with-source-popup:has(.bn-preview-placeholder){padding:0}.bn-preview-placeholder{color:#5f5b5c;background-color:#f2f1ee;border-radius:4px;align-items:center;display:flex}.bn-block-content .bn-preview-placeholder{gap:10px;padding:12px}.bn-inline-content-section .bn-preview-placeholder{gap:4px;padding:0 4px}.bn-preview-placeholder:where(.dark,.dark *){color:#bebebe;background-color:#464646}.bn-editor[contenteditable=true] .bn-preview-placeholder:not(.bn-preview-placeholder-error):hover{background-color:#e1e1e1}.bn-editor[contenteditable=true] .bn-preview-placeholder:not(.bn-preview-placeholder-error):hover:where(.dark,.dark *){background-color:#5a5a5a}.bn-preview-placeholder-error{background-color:var(--bn-colors-highlights-red-background);color:var(--bn-colors-highlights-red-text)}.bn-preview-placeholder-icon{align-items:center;display:flex}.bn-block-content .bn-preview-placeholder-icon{width:24px;height:24px}.bn-inline-content-section .bn-preview-placeholder-icon{width:14px;height:14px}.bn-preview-placeholder-icon>svg{width:100%;height:100%}.bn-preview-placeholder-text{margin:0}.bn-block-content .bn-preview-placeholder-text{font-size:.9rem}.bn-inline-content-section .bn-preview-placeholder-text{font-size:.7rem}.bn-suppress-source-popup-caret .bn-inline-content-section .bn-preview-with-source-popup:not([data-open=true]) .bn-source-block-popup{visibility:hidden}.bn-block-content[data-content-type=pageBreak]>div{border-top:2px dotted #7d797a;width:100%;height:0;margin-block:11px}@media print{.bn-block-content[data-content-type=pageBreak]>div{page-break-after:always}}[data-file-block] .bn-file-block-content-wrapper{cursor:pointer;-webkit-user-select:none;user-select:none;flex-direction:column;margin:0;display:flex}:is([data-file-block] .bn-file-block-content-wrapper:has(.bn-add-file-button),[data-file-block] .bn-file-block-content-wrapper:has(.bn-file-name-with-icon)){width:100%}[data-file-block] .bn-add-file-button{color:#7d797a;background-color:#f2f1ee;border-radius:4px;align-items:center;gap:10px;padding:12px;display:flex}[data-file-block] .bn-add-file-button:where(.dark,.dark *){color:#bebebe;background-color:#464646}.bn-editor[contenteditable=true] [data-file-block] .bn-add-file-button:hover,[data-file-block] .bn-file-name-with-icon:hover,.ProseMirror-selectednode .bn-file-name-with-icon{background-color:#e1e1e1}.bn-editor[contenteditable=true] [data-file-block] .bn-add-file-button:hover:where(.dark,.dark *),[data-file-block] .bn-file-name-with-icon:hover:where(.dark,.dark *),.ProseMirror-selectednode .bn-file-name-with-icon:where(.dark,.dark *){background-color:#5a5a5a}[data-file-block] .bn-add-file-button-icon,[data-file-block] .bn-file-icon{width:24px;height:24px}[data-file-block] .bn-add-file-button-text{font-size:.9rem}[data-file-block] .bn-file-name-with-icon{border-radius:4px;gap:4px;padding:4px;display:flex}[data-file-block] .bn-file-caption{word-break:break-word;padding-block:4px;font-size:.8em}[data-file-block] .bn-file-caption:empty{padding-block:0}[data-file-block] .bn-resize-handle{cursor:ew-resize;background-color:#000;border:1px solid #fff;border-radius:4px;width:8px;height:30px;position:absolute}[data-file-block] .bn-visual-media-wrapper{align-items:center;max-width:100%;display:flex;position:relative}[data-file-block] .bn-visual-media{border-radius:4px;width:100%}[data-content-type=audio]>.bn-file-block-content-wrapper,.bn-audio{width:100%}.bn-block-content:has(.ProseMirror-trailingBreak:only-child):after{pointer-events:none;max-width:100%;margin-inline:-2px;font-style:italic}.bn-block:has(>.bn-block-content[data-text-color=gray]){color:#9b9a97}.bn-block:has(>.bn-block-content[data-text-color=brown]){color:#64473a}.bn-block:has(>.bn-block-content[data-text-color=red]){color:#e03e3e}.bn-block:has(>.bn-block-content[data-text-color=orange]){color:#d9730d}.bn-block:has(>.bn-block-content[data-text-color=yellow]){color:#dfab01}.bn-block:has(>.bn-block-content[data-text-color=green]){color:#4d6461}.bn-block:has(>.bn-block-content[data-text-color=blue]){color:#0b6e99}.bn-block:has(>.bn-block-content[data-text-color=purple]){color:#6940a5}.bn-block:has(>.bn-block-content[data-text-color=pink]){color:#ad1a72}.bn-block:has(>.bn-block-content[data-background-color=gray]){background-color:#ebeced}.bn-block:has(>.bn-block-content[data-background-color=brown]){background-color:#e9e5e3}.bn-block:has(>.bn-block-content[data-background-color=red]){background-color:#fbe4e4}.bn-block:has(>.bn-block-content[data-background-color=orange]){background-color:#f6e9d9}.bn-block:has(>.bn-block-content[data-background-color=yellow]){background-color:#fbf3db}.bn-block:has(>.bn-block-content[data-background-color=green]){background-color:#ddedea}.bn-block:has(>.bn-block-content[data-background-color=blue]){background-color:#ddebf1}.bn-block:has(>.bn-block-content[data-background-color=purple]){background-color:#eae4f2}.bn-block:has(>.bn-block-content[data-background-color=pink]){background-color:#f4dfeb}[data-text-alignment=left]{text-align:left!important;justify-content:flex-start!important}[data-text-alignment=center]{text-align:center!important;justify-content:center!important}[data-text-alignment=right]{text-align:right!important;justify-content:flex-end!important}[data-text-alignment=justify]{text-align:justify!important;justify-content:flex-start!important}.bn-block-column-list{flex-direction:row;display:flex}.bn-block-column{flex-direction:column;flex:1;padding:12px 15px 12px 25px;display:flex;overflow-x:auto}.bn-editor[contenteditable=true] .bn-column-list-hovered>.bn-block-column:not(:last-child){transition:box-shadow .2s .2s;box-shadow:4px 0 #eee}.bn-editor[contenteditable=true] .bn-column-list-hovered>.bn-block-column:not(:last-child):where(.dark,.dark *){box-shadow:4px 0 #464646}.bn-editor[contenteditable=true] .bn-column-list-hovered>.bn-block-column.bn-column-resize-border{cursor:col-resize;transition:box-shadow .2s;box-shadow:4px 0 #ccc}.bn-editor[contenteditable=true] .bn-column-list-hovered>.bn-block-column.bn-column-resize-border:where(.dark,.dark *){box-shadow:4px 0 #6e6e6e}.bn-editor[contenteditable=true] .bn-block-column.bn-column-resize-border+.bn-block-column{cursor:col-resize}.bn-block-column>.bn-trailing-block{flex-grow:1;height:auto}.bn-block-column:first-child{padding-left:0}.bn-block-column:last-child{padding-right:0}.bn-thread-mark:not([data-orphan=true]){background:#ffc80026}.bn-thread-mark .bn-thread-mark-selected{background:#ffc80040}div[data-type=modification]{display:inline}.bn-root ins,.bn-root del{background-color:color-mix(in srgb,var(--user-color-light) 50%,white);color:var(--user-color-dark);border-radius:4px;text-decoration:none;position:relative}.dark.bn-root ins,.dark.bn-root del{background-color:color-mix(in srgb,var(--user-color-dark) 50%,black);color:var(--user-color-light)}.bn-suggestion-mark{background-color:color-mix(in srgb,var(--user-color-light) 50%,white);color:var(--user-color-dark);border-radius:4px}.dark.bn-root .bn-suggestion-mark{background-color:color-mix(in srgb,var(--user-color-dark) 50%,black);color:#fff}.bn-suggestion-node>*{background-color:color-mix(in srgb,var(--user-color-light) 50%,white);border-radius:4px}.dark.bn-root .bn-suggestion-node>*{background-color:color-mix(in srgb,var(--user-color-dark) 50%,black)}.bn-suggestion-node--delete>:first-child:before{content:var(--deleted-label,"Deleted");text-transform:uppercase;letter-spacing:.04em;vertical-align:middle;color:var(--bn-colors-editor-text);margin-right:6px;padding:0 4px;font-size:11px;font-weight:700;line-height:1.4;display:inline-block}.bn-suggestion-node:has(.bn-block-content)>*{background-color:#0000}.dark.bn-root .bn-suggestion-node:has(.bn-block-content)>*{background-color:#0000}.bn-suggestion-node--delete:has(.bn-block-content)>:first-child:before{content:none}.bn-suggestion-node--delete .bn-block-content .bn-inline-content{color:var(--user-color-dark);text-decoration:line-through}.dark.bn-root .bn-suggestion-node--delete .bn-block-content .bn-inline-content{color:var(--user-color-light)}.bn-suggestion-node--delete :is(td,th) p{color:var(--user-color-dark);text-decoration:line-through}.dark.bn-root .bn-suggestion-node--delete :is(td,th) p{color:var(--user-color-light)}.bn-suggestion-node--delete>:is(table,tr,td,th):first-child:before{content:none}.bn-suggestion-node .bn-block-content:not(:has(.bn-inline-content)){background-color:color-mix(in srgb,var(--user-color-light) 50%,white);border-radius:16px;padding:12px}.dark.bn-root .bn-suggestion-node .bn-block-content:not(:has(.bn-inline-content)){background-color:color-mix(in srgb,var(--user-color-dark) 50%,black)}.bn-suggestion-node .bn-block-content:not(:has(.bn-inline-content)):has(>.bn-file-block-content-wrapper){width:fit-content}.bn-suggestion-node--delete .bn-block-content:not(:has(.bn-inline-content)){padding:48px 24px 24px;position:relative}.bn-suggestion-node--delete .bn-block-content:not(:has(.bn-inline-content)):before{content:var(--deleted-label,"Deleted");color:var(--bn-colors-editor-text);font-size:18px;font-weight:500;line-height:1.2;position:absolute;top:16px;left:24px}[data-type=modification] .bn-suggestion-mark,[data-type=modification] .bn-suggestion-node>*{color:inherit;-webkit-text-decoration:underline dotted;text-decoration:underline dotted;-webkit-text-decoration-color:var(--user-color-dark);text-decoration-color:var(--user-color-dark);text-underline-offset:2px;background-color:#0000;text-decoration-thickness:2px}.dark.bn-root [data-type=modification] .bn-suggestion-mark,.dark.bn-root [data-type=modification] .bn-suggestion-node>*{color:inherit;-webkit-text-decoration-color:var(--user-color-light);text-decoration-color:var(--user-color-light);background-color:#0000}[data-type=modification] .bn-suggestion-mark:hover,[data-type=modification] .bn-suggestion-node:hover>*{background-color:color-mix(in srgb,var(--user-color-light) 50%,white);border-radius:4px}.dark.bn-root [data-type=modification] .bn-suggestion-mark:hover,.dark.bn-root [data-type=modification] .bn-suggestion-node:hover>*{background-color:color-mix(in srgb,var(--user-color-dark) 50%,black)}.bn-suggestion-mark--delete{color:var(--user-color-dark);background-color:#0000;text-decoration:line-through}.dark.bn-root .bn-suggestion-mark--delete{color:var(--user-color-light);background-color:#0000}.bn-suggestion-tooltip{color:#fff;white-space:nowrap;pointer-events:none;background-color:#232323;border:1px solid #ffffff1a;border-radius:4px;width:max-content;max-width:calc(100vw - 8px);padding:0 4px;font-size:12px;font-weight:700}.bn-root del{color:var(--user-color-dark);background-color:#0000;text-decoration:line-through}.dark.bn-root del{color:var(--user-color-light);background-color:#0000}.bn-root del:hover{text-decoration-line:overline}.ProseMirror .tableWrapper{overflow-x:auto}.ProseMirror table{border-collapse:collapse;table-layout:fixed;width:100%;overflow:hidden}.ProseMirror td,.ProseMirror th{vertical-align:top;box-sizing:border-box;position:relative}.ProseMirror td:not([data-colwidth]):not(.column-resize-dragging),.ProseMirror th:not([data-colwidth]):not(.column-resize-dragging){min-width:var(--default-cell-min-width)}.ProseMirror .column-resize-handle{z-index:20;pointer-events:none;background-color:#adf;width:4px;position:absolute;top:0;bottom:0;right:-2px}.ProseMirror.resize-cursor{cursor:ew-resize;cursor:col-resize}.ProseMirror .selectedCell:after{z-index:2;content:"";pointer-events:none;background:#c8c8ff66;position:absolute;inset:0}.bn-editor{font-synthesis:style weight;--N800:#172b4d;--N40:#dfe1e6;outline:none;padding-inline:54px}.bn-comment-editor{width:100%;padding:0}.bn-comment-editor .bn-editor{padding:0}.bn-default-styles p,.bn-default-styles h1,.bn-default-styles h2,.bn-default-styles h3,.bn-default-styles h4,.bn-default-styles h5,.bn-default-styles h6,.bn-default-styles li{font-size:inherit;margin:0;padding:0;min-width:2px!important}.bn-default-styles{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:Inter,SF Pro Display,-apple-system,BlinkMacSystemFont,Open Sans,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;font-size:16px;font-weight:400}.bn-table-drop-cursor{z-index:20;pointer-events:none;background-color:#adf;position:absolute}.bn-drag-preview{opacity:.001;pointer-events:none;padding:10px;position:absolute;top:0;left:0}.bn-editor .bn-collaboration-cursor__base{position:relative}.bn-editor .bn-collaboration-cursor__base .bn-collaboration-cursor__caret{width:2px;position:absolute;top:1px;bottom:-2px;left:-1px}.bn-editor .bn-collaboration-cursor__base .bn-collaboration-cursor__label{pointer-events:none;white-space:nowrap;-webkit-user-select:none;user-select:none;color:#0000;border-radius:0 1.5px 1.5px 0;max-width:4px;max-height:5px;padding:0;font-size:12px;font-style:normal;font-weight:600;line-height:normal;transition:all .2s;position:absolute;top:-1px;left:0;overflow:hidden}.bn-editor .bn-collaboration-cursor__base[data-active] .bn-collaboration-cursor__label{color:#0d0d0d;border-radius:3px 3px 3px 0;max-width:20rem;max-height:1.1rem;padding:.1rem .3rem;transition:all .2s;top:-17px;left:0}.bn-editor [data-content-type=table] .tableWrapper{--bn-table-widget-size:22px;--bn-table-handle-size: 9px ;padding:var(--bn-table-handle-size) var(--bn-table-widget-size) var(--bn-table-widget-size) var(--bn-table-handle-size);width:100%;position:relative;overflow-y:hidden}.bn-editor [data-content-type=table] table{word-break:break-word;width:auto!important}.bn-editor [data-content-type=table] th,.bn-editor [data-content-type=table] td{border:1px solid #ddd;padding:5px 10px}.bn-editor [data-content-type=table] th{text-align:left;font-weight:700}.bn-editor [data-content-type=table] th>p,.bn-editor [data-content-type=table] td>p{min-height:1.5rem}.ProseMirror td,.ProseMirror th{min-width:auto!important}.ProseMirror td:not([colwidth]):not(.column-resize-dragging),.ProseMirror th:not([colwidth]):not(.column-resize-dragging){min-width:var(--default-cell-min-width)!important}.prosemirror-dropcursor-block{transition-property:top,bottom;transition-duration:.15s;transition-timing-function:cubic-bezier(.4,0,.2,1)}.prosemirror-dropcursor-vertical{transition-property:left,right}[data-show-selection]{background-color:highlight;padding:2px 0}.bn-root{--bn-colors-editor-text:#3f3f3f;--bn-colors-editor-background:#fff;--bn-colors-menu-text:#3f3f3f;--bn-colors-menu-background:#fff;--bn-colors-tooltip-text:#3f3f3f;--bn-colors-tooltip-background:#efefef;--bn-colors-hovered-text:#3f3f3f;--bn-colors-hovered-background:#efefef;--bn-colors-selected-text:#fff;--bn-colors-selected-background:#3f3f3f;--bn-colors-disabled-text:#afafaf;--bn-colors-disabled-background:#efefef;--bn-colors-shadow:#cfcfcf;--bn-colors-border:#efefef;--bn-colors-side-menu:#cfcfcf;--bn-colors-highlights-gray-text:#9b9a97;--bn-colors-highlights-gray-background:#ebeced;--bn-colors-highlights-brown-text:#64473a;--bn-colors-highlights-brown-background:#e9e5e3;--bn-colors-highlights-red-text:#e03e3e;--bn-colors-highlights-red-background:#fbe4e4;--bn-colors-highlights-orange-text:#d9730d;--bn-colors-highlights-orange-background:#f6e9d9;--bn-colors-highlights-yellow-text:#dfab01;--bn-colors-highlights-yellow-background:#fbf3db;--bn-colors-highlights-green-text:#4d6461;--bn-colors-highlights-green-background:#ddedea;--bn-colors-highlights-blue-text:#0b6e99;--bn-colors-highlights-blue-background:#ddebf1;--bn-colors-highlights-purple-text:#6940a5;--bn-colors-highlights-purple-background:#eae4f2;--bn-colors-highlights-pink-text:#ad1a72;--bn-colors-highlights-pink-background:#f4dfeb;--bn-font-family:"Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Open Sans", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;--bn-border-radius:6px;--bn-shadow-medium:0 4px 12px var(--bn-colors-shadow);--bn-shadow-light:0 2px 6px var(--bn-colors-border);--bn-border:1px solid var(--bn-colors-border);--bn-border-radius-small:max(var(--bn-border-radius) - 2px, 1px);--bn-border-radius-medium:var(--bn-border-radius);--bn-border-radius-large:max(var(--bn-border-radius) + 2px, 1px)}.bn-root[data-color-scheme=dark]{--bn-colors-editor-text:#cfcfcf;--bn-colors-editor-background:#1f1f1f;--bn-colors-menu-text:#cfcfcf;--bn-colors-menu-background:#1f1f1f;--bn-colors-tooltip-text:#cfcfcf;--bn-colors-tooltip-background:#161616;--bn-colors-hovered-text:#cfcfcf;--bn-colors-hovered-background:#161616;--bn-colors-selected-text:#cfcfcf;--bn-colors-selected-background:#0f0f0f;--bn-colors-disabled-text:#3f3f3f;--bn-colors-disabled-background:#161616;--bn-colors-shadow:#0f0f0f;--bn-colors-border:#161616;--bn-colors-side-menu:#7f7f7f;--bn-colors-highlights-gray-text:#bebdb8;--bn-colors-highlights-gray-background:#9b9a97;--bn-colors-highlights-brown-text:#8e6552;--bn-colors-highlights-brown-background:#64473a;--bn-colors-highlights-red-text:#ec4040;--bn-colors-highlights-red-background:#be3434;--bn-colors-highlights-orange-text:#e3790d;--bn-colors-highlights-orange-background:#b7600a;--bn-colors-highlights-yellow-text:#dfab01;--bn-colors-highlights-yellow-background:#b58b00;--bn-colors-highlights-green-text:#6b8b87;--bn-colors-highlights-green-background:#4d6461;--bn-colors-highlights-blue-text:#0e87bc;--bn-colors-highlights-blue-background:#0b6e99;--bn-colors-highlights-purple-text:#8552d7;--bn-colors-highlights-purple-background:#6940a5;--bn-colors-highlights-pink-text:#da208f;--bn-colors-highlights-pink-background:#ad1a72}.bn-root{font-family:var(--bn-font-family)}.bn-editor{background-color:var(--bn-colors-editor-background);border-radius:var(--bn-border-radius-large);color:var(--bn-colors-editor-text)}.bn-react-node-view-renderer{flex-direction:column;width:100%;display:flex}.bn-block-group .bn-block:not(:has(.bn-toggle-wrapper)) .bn-block-group .bn-block-outer:not([data-prev-depth-changed]):before{border-left:1px solid var(--bn-colors-side-menu)}.bn-block-content:has(.ProseMirror-trailingBreak:only-child):after{color:var(--bn-colors-side-menu)}.bn-root .bn-color-icon{border:var(--bn-border);border-radius:var(--bn-border-radius-small);justify-content:center;align-items:center;display:flex}.bn-error-text{color:red;font-size:12px}[data-style-type=textColor][data-value=gray],[data-text-color=gray]{color:var(--bn-colors-highlights-gray-text)}.bn-block:has(>.bn-block-content[data-text-color=gray]){color:var(--bn-colors-highlights-gray-text)}[data-style-type=textColor][data-value=brown],[data-text-color=brown]{color:var(--bn-colors-highlights-brown-text)}.bn-block:has(>.bn-block-content[data-text-color=brown]){color:var(--bn-colors-highlights-brown-text)}[data-style-type=textColor][data-value=red],[data-text-color=red]{color:var(--bn-colors-highlights-red-text)}.bn-block:has(>.bn-block-content[data-text-color=red]){color:var(--bn-colors-highlights-red-text)}[data-style-type=textColor][data-value=orange],[data-text-color=orange]{color:var(--bn-colors-highlights-orange-text)}.bn-block:has(>.bn-block-content[data-text-color=orange]){color:var(--bn-colors-highlights-orange-text)}[data-style-type=textColor][data-value=yellow],[data-text-color=yellow]{color:var(--bn-colors-highlights-yellow-text)}.bn-block:has(>.bn-block-content[data-text-color=yellow]){color:var(--bn-colors-highlights-yellow-text)}[data-style-type=textColor][data-value=green],[data-text-color=green]{color:var(--bn-colors-highlights-green-text)}.bn-block:has(>.bn-block-content[data-text-color=green]){color:var(--bn-colors-highlights-green-text)}[data-style-type=textColor][data-value=blue],[data-text-color=blue]{color:var(--bn-colors-highlights-blue-text)}.bn-block:has(>.bn-block-content[data-text-color=blue]){color:var(--bn-colors-highlights-blue-text)}[data-style-type=textColor][data-value=purple],[data-text-color=purple]{color:var(--bn-colors-highlights-purple-text)}.bn-block:has(>.bn-block-content[data-text-color=purple]){color:var(--bn-colors-highlights-purple-text)}[data-style-type=textColor][data-value=pink],[data-text-color=pink]{color:var(--bn-colors-highlights-pink-text)}.bn-block:has(>.bn-block-content[data-text-color=pink]){color:var(--bn-colors-highlights-pink-text)}[data-style-type=backgroundColor][data-value=gray],[data-background-color=gray]{background-color:var(--bn-colors-highlights-gray-background)}.bn-block:has(>.bn-block-content[data-background-color=gray]){background-color:var(--bn-colors-highlights-gray-background)}[data-style-type=backgroundColor][data-value=brown],[data-background-color=brown]{background-color:var(--bn-colors-highlights-brown-background)}.bn-block:has(>.bn-block-content[data-background-color=brown]){background-color:var(--bn-colors-highlights-brown-background)}[data-style-type=backgroundColor][data-value=red],[data-background-color=red]{background-color:var(--bn-colors-highlights-red-background)}.bn-block:has(>.bn-block-content[data-background-color=red]){background-color:var(--bn-colors-highlights-red-background)}[data-style-type=backgroundColor][data-value=orange],[data-background-color=orange]{background-color:var(--bn-colors-highlights-orange-background)}.bn-block:has(>.bn-block-content[data-background-color=orange]){background-color:var(--bn-colors-highlights-orange-background)}[data-style-type=backgroundColor][data-value=yellow],[data-background-color=yellow]{background-color:var(--bn-colors-highlights-yellow-background)}.bn-block:has(>.bn-block-content[data-background-color=yellow]){background-color:var(--bn-colors-highlights-yellow-background)}[data-style-type=backgroundColor][data-value=green],[data-background-color=green]{background-color:var(--bn-colors-highlights-green-background)}.bn-block:has(>.bn-block-content[data-background-color=green]){background-color:var(--bn-colors-highlights-green-background)}[data-style-type=backgroundColor][data-value=blue],[data-background-color=blue]{background-color:var(--bn-colors-highlights-blue-background)}.bn-block:has(>.bn-block-content[data-background-color=blue]){background-color:var(--bn-colors-highlights-blue-background)}[data-style-type=backgroundColor][data-value=purple],[data-background-color=purple]{background-color:var(--bn-colors-highlights-purple-background)}.bn-block:has(>.bn-block-content[data-background-color=purple]){background-color:var(--bn-colors-highlights-purple-background)}[data-style-type=backgroundColor][data-value=pink],[data-background-color=pink]{background-color:var(--bn-colors-highlights-pink-background)}.bn-block:has(>.bn-block-content[data-background-color=pink]){background-color:var(--bn-colors-highlights-pink-background)}.bn-root{--bn-ui-base-z-index:0}.bn-side-menu{height:30px}.bn-threads-sidebar{border-radius:var(--bn-border-radius-medium);flex-direction:column;gap:10px;display:flex;overflow:auto}.bn-thread-expand-prompt .mantine-Text-root,.bn-thread .bn-header-text{color:var(--bn-colors-menu-text)}.bn-threads-sidebar .bn-thread .bn-editor{background-color:#0000}.bn-threads-sidebar .bn-thread.selected{background-color:#f5f9fd;border:2px solid #c2dcf8}.dark .bn-threads-sidebar .bn-thread.selected{background-color:#20242a;border:2px solid #23405b}.bn-versioning-sidebar{flex:1;padding-inline:16px;overflow:auto}.bn-versioning-sidebar-header{justify-content:space-between;align-items:center;padding-block:16px 8px;display:flex}.bn-versioning-sidebar-header-title{align-items:center;gap:6px;display:flex}.bn-versioning-sidebar-title{color:var(--bn-colors-menu-text);margin:0;font-size:18px;font-weight:700}.bn-versioning-sidebar-header-actions{align-items:center;gap:4px;display:flex}.bn-versioning-sidebar-tabs{border-bottom:1px solid var(--bn-colors-border);gap:4px;margin-bottom:8px;display:flex}.bn-versioning-sidebar-tab{color:var(--bn-colors-menu-text);cursor:pointer;opacity:.6;background:0 0;border:none;border-bottom:2px solid #0000;margin-bottom:-1px;padding:8px 4px;font-size:13px;font-weight:500}.bn-versioning-sidebar-tab:hover{opacity:.85}.bn-versioning-sidebar-tab[aria-selected=true]{border-bottom-color:var(--bn-colors-menu-text);opacity:1}.bn-snapshot{background-color:var(--bn-colors-menu-background);color:var(--bn-colors-menu-text);cursor:pointer;border:1px solid #0000;border-radius:8px;flex-direction:column;gap:6px;width:100%;margin-bottom:4px;padding:12px 14px;transition:background-color .12s,border-color .12s;display:flex;position:relative;overflow:visible}.bn-snapshot:hover{background-color:var(--bn-colors-hovered-background)}.bn-snapshot-name{color:inherit;background:0 0;border:none;width:100%;padding:0;font-size:14px;font-weight:700}.bn-snapshot-name:focus{outline:none}.bn-snapshot-body{flex-direction:column;gap:2px;font-size:13px;display:flex}.bn-snapshot-date{color:var(--bn-colors-menu-text);font-size:13px;line-height:1.3}.bn-snapshot-original-date,.bn-snapshot-secondary-label{color:#6b7280;font-size:13px;line-height:1.3}.dark .bn-snapshot-original-date,.dark .bn-snapshot-secondary-label{color:#9ca3af}.bn-snapshot .bn-snapshot-menu{opacity:0;transition:opacity .12s;position:absolute;top:8px;right:8px}.bn-snapshot:hover .bn-snapshot-menu,.bn-snapshot:focus-within .bn-snapshot-menu{opacity:1}.bn-versioning-sidebar .bn-snapshot-menu .bn-action-toolbar{background-color:#0000;border:none;border-radius:0;padding:0}.bn-versioning-sidebar .bn-snapshot .bn-snapshot-menu-trigger,.bn-versioning-sidebar .bn-snapshot .bn-snapshot-menu-trigger:hover,.bn-versioning-sidebar .bn-snapshot .bn-snapshot-menu-trigger[data-selected]{background-color:#0000;border:none;min-width:0;height:auto;padding:2px}.bn-versioning-sidebar .bn-snapshot .bn-snapshot-menu-trigger:hover{opacity:.6}.bn-versioning-sidebar .bn-snapshot.selected{color:#fff;background-color:#3e5de7}.bn-versioning-sidebar .bn-snapshot.selected .bn-snapshot-name{color:#fff}.bn-versioning-sidebar .bn-snapshot.selected .bn-snapshot-date,.bn-versioning-sidebar .bn-snapshot.selected .bn-snapshot-original-date,.bn-versioning-sidebar .bn-snapshot.selected .bn-snapshot-secondary-label{color:#fffc}.bn-versioning-sidebar .bn-snapshot.selected .bn-snapshot-menu-trigger{color:#fff}.bn-versioning-sidebar .bn-snapshot.comparing{background-color:color-mix(in srgb,#3e5de7 8%,var(--bn-colors-editor-background))}.bn-snapshot-comparing-to{color:#3e5de7;align-items:center;gap:4px;font-size:13px;font-weight:600;display:flex}.bn-mobile-formatting-toolbar{bottom:var(--bn-mobile-keyboard-offset,0px);z-index:calc(var(--bn-ui-base-z-index) + 40);touch-action:pan-x;-webkit-overflow-scrolling:touch;padding-bottom:env(safe-area-inset-bottom,0);transition:bottom .15s ease-out;display:flex;position:fixed;left:0;right:0;overflow-x:auto}.bn-root em-emoji-picker{max-height:100%}.bn-mantine .mantine-active:active{transform:none}.bn-mantine .mantine-Badge-root{background-color:var(--bn-colors-tooltip-background);color:var(--bn-colors-tooltip-text)}.bn-mantine .mantine-FileInput-input{align-items:center;background-color:var(--bn-colors-menu-background);border:none;border-radius:4px;color:var(--bn-colors-menu-text);display:flex;flex-direction:row;font-family:var(--bn-font-family);justify-content:center}.bn-mantine .mantine-FileInput-input:hover{background-color:var(--bn-colors-hovered-background)}.bn-mantine .mantine-FileInput-wrapper{border:solid var(--bn-colors-border) 1px;border-radius:4px}.bn-mantine .mantine-InputPlaceholder-placeholder{color:var(--bn-colors-menu-text);font-family:var(--bn-font-family);font-weight:600}.bn-mantine .mantine-Menu-dropdown,.bn-mantine .bn-menu-dropdown{background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);box-sizing:border-box;color:var(--bn-colors-menu-text);padding:2px;overflow:auto}.bn-mantine .mantine-Menu-label{background-color:var(--bn-colors-menu-background);color:var(--bn-colors-menu-text)}.bn-mantine .mantine-Menu-item{background-color:var(--bn-colors-menu-background);border:none;border-radius:var(--bn-border-radius-small);color:var(--bn-colors-menu-text)}.bn-mantine .mantine-Menu-item[aria-selected=true],.bn-mantine .mantine-Menu-item:hover{background-color:var(--bn-colors-hovered-background);border:none;color:var(--bn-colors-hovered-text)}.bn-mantine .bn-panel-popover,.bn-mantine .bn-emoji-picker-popover{background-color:transparent;border:none;border-radius:0;box-shadow:none;display:flex;padding:0}.bn-mantine .mantine-Tabs-root{width:100%;background-color:var(--bn-colors-menu-background)}.bn-mantine .mantine-Tabs-list:before{border-color:var(--bn-colors-hovered-background)}.bn-mantine .mantine-Tabs-tab{color:var(--bn-colors-menu-text);border-color:var(--bn-colors-hovered-background)}.bn-mantine .mantine-Tabs-tab:hover{background-color:var(--bn-colors-hovered-background);border-color:var(--bn-colors-hovered-background);color:var(--bn-colors-hovered-text)}.bn-mantine .mantine-Tabs-tab[data-active],.bn-mantine .mantine-Tabs-tab[data-active]:hover{border-color:var(--bn-colors-menu-text);color:var(--bn-colors-menu-text)}.bn-mantine .mantine-Tabs-panel{padding:8px}.bn-mantine .mantine-TextInput-input{background-color:var(--bn-colors-menu-background);border:solid var(--bn-colors-border) 1px;border-radius:4px;color:var(--bn-colors-menu-text);font-family:var(--bn-font-family);height:32px}.bn-mantine .bn-mt-input-large .mantine-TextInput-input{border:none;font-size:14px;height:52px}.bn-mantine .mantine-Tooltip-tooltip{background-color:transparent;border:none;border-radius:0;box-shadow:none;padding:0}.bn-mantine .mantine-Tooltip-tooltip p:last-child{white-space:pre-wrap}.bn-mantine .mantine-Tooltip-tooltip p:first-child{white-space:unset}.bn-mantine .bn-select{overflow:auto}.bn-mantine .mantine-Button-root[aria-controls*=dropdown]{min-width:fit-content}.bn-mantine .bn-toolbar{background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);flex-wrap:nowrap;gap:2px;padding:2px;width:fit-content;overflow-x:auto;max-width:100vw}.bn-mantine .bn-toolbar:empty{display:none}.bn-toolbar .mantine-Button-root,.bn-toolbar .mantine-ActionIcon-root{background-color:var(--bn-colors-menu-background);border:none;border-radius:var(--bn-border-radius-small);color:var(--bn-colors-menu-text)}.bn-toolbar .mantine-Button-root:hover,.bn-toolbar .mantine-ActionIcon-root:hover{background-color:var(--bn-colors-hovered-background);border:none;color:var(--bn-colors-hovered-text)}.bn-toolbar .mantine-Button-root[data-selected],.bn-toolbar .mantine-ActionIcon-root[data-selected]{background-color:var(--bn-colors-selected-background);border:none;color:var(--bn-colors-selected-text)}.bn-toolbar .mantine-Button-root[data-disabled],.bn-toolbar .mantine-ActionIcon-root[data-disabled]{background-color:var(--bn-colors-disabled-background);border:none;color:var(--bn-colors-disabled-text)}.bn-toolbar .mantine-Menu-item{font-size:12px;height:30px}.bn-toolbar .mantine-Menu-item:hover{background-color:var(--bn-colors-hovered-background)}.bn-mantine .bn-form-popover{background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);color:var(--bn-colors-menu-text);gap:4px;min-width:145px;padding:2px}.bn-form-popover .mantine-TextInput-root,.bn-form-popover .mantine-FileInput-root{width:300px}.bn-form-popover .mantine-TextInput-wrapper,.bn-form-popover .mantine-FileInput-wrapper{padding:0;border-radius:4px}.bn-form-popover .mantine-TextInput-wrapper:hover{background-color:var(--bn-colors-hovered-background)}.bn-form-popover .mantine-TextInput-input,.bn-form-popover .mantine-FileInput-input{border:none;font-size:12px}.bn-form-popover .mantine-FileInput-input:hover{background-color:var(--bn-colors-hovered-background)}.bn-form-popover .mantine-FileInput-section[data-position=left],.bn-form-popover .mantine-FileInput-placeholder{color:var(--bn-colors-menu-text)}.bn-mantine .bn-suggestion-menu{max-height:100%;position:relative;box-shadow:var(--mantine-shadow-md);border:calc(.0625rem * var(--mantine-scale)) solid var(--mantine-color-gray-2);border-radius:var(--mantine-radius-default);padding:4px}.bn-mantine .bn-suggestion-menu-label{color:var(--mantine-color-dimmed);font-weight:500;font-size:var(--mantine-font-size-xs);padding:calc(var(--mantine-spacing-xs) / 2) var(--mantine-spacing-sm);cursor:default}.bn-mantine .bn-suggestion-menu-item{font-size:var(--mantine-font-size-sm);width:100%;padding:calc(var(--mantine-spacing-xs) / 1.5) var(--mantine-spacing-sm);border-radius:var(--popover-radius, var(--mantine-radius-default));color:var(--menu-item-color, var(--mantine-color-text));display:flex;align-items:center;user-select:none;&:where([data-disabled],:disabled){color:var(--mantine-color-dimmed);opacity:.6;pointer-events:none}}.bn-mt-suggestion-menu-item-body{flex:1}.bn-mt-suggestion-menu-item-section{display:flex;justify-content:center;align-items:center;&:where([data-position=left]){margin-inline-end:var(--mantine-spacing-xs)}&:where([data-position=right]){margin-inline-start:var(--mantine-spacing-xs)}}.bn-mantine .bn-suggestion-menu{background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);box-sizing:border-box;color:var(--bn-colors-menu-text);height:fit-content;max-height:inherit;max-width:350px;overflow-y:auto;padding:2px}.bn-mantine .bn-suggestion-menu-item{cursor:pointer;flex-shrink:0}.bn-mantine .bn-suggestion-menu-item:not(.bn-suggestion-menu-item-small){min-height:52px}.bn-mantine .bn-suggestion-menu-item-small{padding:calc(var(--mantine-spacing-xs) / 2) var(--mantine-spacing-sm)}.bn-mantine .bn-suggestion-menu-item[aria-selected=true],.bn-mantine .bn-suggestion-menu-item:hover{background-color:var(--bn-colors-hovered-background)}.bn-mt-suggestion-menu-item-section{color:var(--bn-colors-tooltip-text)}.bn-mt-suggestion-menu-item-section[data-position=left]{background-color:var(--bn-colors-tooltip-background);border-radius:var(--bn-border-radius-small);padding:8px}.bn-suggestion-menu-item-small .bn-mt-suggestion-menu-item-section[data-position=left]{background-color:transparent;padding:0}.bn-suggestion-menu-item-small .bn-mt-suggestion-menu-item-section[data-position=left] svg{height:14px;width:14px}.bn-mt-suggestion-menu-item-body{align-items:stretch;display:flex;flex:1;min-width:0;flex-direction:column;justify-content:flex-start;padding-right:16px}.bn-mt-suggestion-menu-item-title{color:var(--bn-colors-menu-text);line-height:20px;font-weight:500;font-size:14px;margin:0;padding:0;overflow-wrap:anywhere}.bn-suggestion-menu-item-small .bn-mt-suggestion-menu-item-title{font-size:12px}.bn-mt-suggestion-menu-item-subtitle{color:var(--bn-colors-menu-text);line-height:16px;font-size:10px;margin:0;padding:0;overflow-wrap:anywhere}.bn-suggestion-menu-item-small .bn-mt-suggestion-menu-item-subtitle{display:none}.bn-mantine .bn-suggestion-menu-label{color:var(--bn-colors-hovered-text)}.bn-mantine .bn-suggestion-menu-loader{height:20px;width:100%}.bn-mantine .bn-suggestion-menu-loader span{background-color:var(--bn-colors-side-menu)}.bn-mantine .bn-grid-suggestion-menu{background:var(--bn-colors-menu-background);border-radius:var(--bn-border-radius-large);box-shadow:var(--bn-shadow-medium);display:grid;gap:7px;height:fit-content;justify-items:center;max-height:inherit;overflow-y:auto;padding:20px}.bn-mantine .bn-grid-suggestion-menu-item{align-items:center;border-radius:var(--bn-border-radius-large);cursor:pointer;display:flex;font-size:20px;height:32px;justify-content:center;margin:2px;padding:6px;width:32px}.bn-mantine .bn-grid-suggestion-menu-item[aria-selected=true],.bn-mantine .bn-grid-suggestion-menu-item:hover{background-color:var(--bn-colors-hovered-background)}.bn-mantine .bn-grid-suggestion-menu-empty-item,.bn-mantine .bn-grid-suggestion-menu-loader{align-items:center;color:var(--bn-colors-menu-text);display:flex;font-size:14px;font-weight:500;height:32px;justify-content:center}.bn-mantine .bn-grid-suggestion-menu-loader span{background-color:var(--bn-colors-side-menu)}.bn-mantine .bn-side-menu{background-color:transparent;overflow:visible}.bn-side-menu .mantine-Menu-item,.bn-table-handle-menu .mantine-Menu-item{font-size:12px;height:30px}.bn-side-menu .mantine-UnstyledButton-root:not(.mantine-Menu-item){background-color:transparent}.bn-side-menu .mantine-UnstyledButton-root:hover{background-color:var(--bn-colors-hovered-background)}.bn-side-menu .mantine-UnstyledButton-root:not(.mantine-Menu-item) svg{background-color:transparent;color:var(--bn-colors-side-menu);height:22px;width:22px}.bn-mantine .bn-side-menu>[draggable=true]{display:flex}.bn-side-menu .mantine-Menu-dropdown{min-width:100px;padding:2px;position:absolute}.bn-mantine .bn-panel{background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);padding:2px;width:500px;max-width:100vw}.bn-mantine .bn-panel .bn-tab-panel{align-items:center;display:flex;flex-direction:column;gap:8px;width:100%}.bn-panel .mantine-TextInput-root,.bn-panel .mantine-FileInput-root{width:100%}.bn-panel .mantine-Button-root{background-color:var(--bn-colors-menu-background);border:solid var(--bn-colors-border) 1px;border-radius:var(--bn-border-radius-small);color:var(--bn-colors-menu-text);height:32px;width:60%}.bn-panel .mantine-Button-root:hover{background-color:var(--bn-colors-hovered-background)}.bn-panel .mantine-Text-root{text-align:center}.bn-mantine .bn-table-handle,.bn-mantine .bn-extend-button,.bn-mantine .bn-table-cell-handle{align-items:center;background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-small);box-shadow:var(--bn-shadow-light);color:var(--bn-colors-side-menu);cursor:grab;display:flex;height:fit-content;justify-content:center;overflow:visible;padding:0}.bn-mantine .bn-table-cell-handle{padding:0 4px}.bn-mantine .bn-table-handle svg{margin-inline:-4px}.bn-mantine .bn-table-handle-not-draggable{cursor:pointer}.bn-mantine .bn-table-handle:hover,.bn-mantine .bn-table-handle-dragging,.bn-mantine .bn-extend-button:hover,.bn-mantine .bn-extend-button-editing,.bn-mantine .bn-table-cell-handle:hover{background-color:var(--bn-colors-hovered-background)}.bn-mantine .bn-extend-button-add-remove-columns{height:100%;width:18px;margin-left:4px;cursor:col-resize}.bn-mantine .bn-extend-button-add-remove-rows{height:18px;width:100%;margin-top:4px;cursor:row-resize}.bn-mantine .bn-drag-handle-menu,.bn-mantine .bn-table-handle-menu{overflow:visible}.bn-mantine .bn-tooltip{background-color:var(--bn-colors-tooltip-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);color:var(--bn-colors-tooltip-text);padding:4px 10px;text-align:center}.bn-mantine .bn-tick-space{padding:0;width:20px}.bn-mantine .bn-thread{background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);color:var(--bn-colors-menu-text);display:flex;flex-direction:column;gap:16px;min-width:350px;overflow:visible}.bn-mantine .bn-threads-sidebar .bn-thread{box-shadow:none}.bn-mantine .bn-thread-comments,.bn-mantine .bn-thread-composer{display:flex;flex-direction:column;margin:0;padding:0}.bn-mantine .bn-thread-comments{gap:1rem}.bn-mantine .bn-thread-comment{align-items:flex-start;flex-direction:column;gap:.25rem}.bn-mantine .bn-thread-comment>.mantine-Group-root{gap:12px}.bn-mantine .bn-thread-comment p{color:var(--bn-colors-menu-text)}.bn-mantine .bn-thread .bn-header-text,.bn-mantine .bn-thread-comment .bn-resolved-text{font-size:.8rem;font-style:italic}.bn-mantine .bn-comment-actions-wrapper{width:100%;display:flex;justify-content:flex-end}.bn-mantine .bn-action-toolbar{align-self:flex-end;background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);gap:0;padding:2px}.bn-action-toolbar .mantine-Button-root,.bn-action-toolbar .mantine-ActionIcon-root{background-color:var(--bn-colors-menu-background);border:none;border-radius:var(--bn-border-radius-small);color:var(--bn-colors-menu-text)}.bn-action-toolbar .mantine-Button-root:hover,.bn-action-toolbar .mantine-ActionIcon-root:hover{background-color:var(--bn-colors-hovered-background);border:none;color:var(--bn-colors-hovered-text)}.bn-action-toolbar .mantine-Button-root[data-selected],.bn-action-toolbar .mantine-ActionIcon-root[data-selected]{background-color:var(--bn-colors-selected-background);border:none;color:var(--bn-colors-selected-text)}.bn-action-toolbar .mantine-Button-root[data-disabled],.bn-action-toolbar .mantine-ActionIcon-root[data-disabled]{background-color:var(--bn-colors-disabled-background);border:none;color:var(--bn-colors-disabled-text)}.bn-mantine .bn-action-toolbar .mantine-Menu-itemLabel{font-size:12px}.bn-mantine .bn-badge-group{display:flex;gap:4px;justify-content:flex-start;width:100%}.bn-mantine .bn-badge{flex-grow:0}.bn-mantine .bn-badge .mantine-Chip-label{padding:0 8px}.bn-mantine .bn-badge .mantine-Chip-label:not([data-checked=true]){background-color:var(--bn-colors-menu-background);border:var(--bn-border);color:var(--bn-colors-menu-text)}.bn-mantine .bn-badge .mantine-Chip-label:hover{border:1px solid var(--mantine-primary-color-filled-hover);color:var(--mantine-primary-color-filled-hover)}.bn-mantine .bn-badge .mantine-Chip-label>span:not(.mantine-Chip-iconWrapper){display:inline-flex;gap:4px}.bn-mantine .bn-badge .mantine-Chip-label>span:not(.mantine-Chip-iconWrapper)>span{align-items:center;display:inline-flex;justify-content:center}.bn-mantine .bn-combobox-input,.bn-mantine .bn-combobox-items:not(:empty){background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);color:var(--bn-colors-menu-text);gap:4px;min-width:145px;padding:2px}.bn-mantine .bn-combobox-input .bn-combobox-icon,.bn-mantine .bn-combobox-input .bn-combobox-right-section{align-items:center;display:flex;justify-content:center}.bn-mantine .bn-combobox-input .bn-combobox-error{color:var(--bn-colors-highlights-red-background)}.bn-mantine .bn-badge .mantine-Chip-iconWrapper{display:none}\n';
 
 // packages/report-review/src/preview.jsx
-var import_react155 = __toESM(require("react"), 1);
+var import_react166 = __toESM(require("react"), 1);
 
 // node_modules/devlop/lib/default.js
 function ok() {
@@ -101365,7 +107536,7 @@ Schema3.prototype.property = {};
 Schema3.prototype.space = void 0;
 
 // node_modules/property-information/lib/util/merge.js
-function merge(definitions, space5) {
+function merge2(definitions, space5) {
   const property = {};
   const normal = {};
   for (const definition3 of definitions) {
@@ -102588,8 +108759,8 @@ function camelcase($0) {
 }
 
 // node_modules/property-information/index.js
-var html3 = merge([aria, html2, xlink, xmlns, xml], "html");
-var svg2 = merge([aria, svg, xlink, xmlns, xml], "svg");
+var html3 = merge2([aria, html2, xlink, xmlns, xml], "html");
+var svg2 = merge2([aria, svg, xlink, xmlns, xml], "svg");
 
 // node_modules/space-separated-tokens/index.js
 function stringify2(values4) {
@@ -102941,11 +109112,11 @@ function addChildren(props, children) {
     }
   }
 }
-function productionCreate(_, jsx89, jsxs31) {
+function productionCreate(_, jsx95, jsxs32) {
   return create2;
   function create2(_2, type, props, key) {
     const isStaticChildren = Array.isArray(props.children);
-    const fn5 = isStaticChildren ? jsxs31 : jsx89;
+    const fn5 = isStaticChildren ? jsxs32 : jsx95;
     return key ? fn5(type, props, key) : fn5(type, props);
   }
 }
@@ -103190,8 +109361,8 @@ var urlAttributes = {
 };
 
 // node_modules/react-markdown/lib/index.js
-var import_jsx_runtime122 = require("react/jsx-runtime");
-var import_react154 = require("react");
+var import_jsx_runtime128 = require("react/jsx-runtime");
+var import_react165 = require("react");
 
 // node_modules/mdast-util-to-string/lib/index.js
 var emptyOptions2 = {};
@@ -110880,11 +117051,11 @@ function post(tree, options) {
   }
   visit(tree, transform);
   return toJsxRuntime(tree, {
-    Fragment: import_jsx_runtime122.Fragment,
+    Fragment: import_jsx_runtime128.Fragment,
     components: components2,
     ignoreInvalidStyle: true,
-    jsx: import_jsx_runtime122.jsx,
-    jsxs: import_jsx_runtime122.jsxs,
+    jsx: import_jsx_runtime128.jsx,
+    jsxs: import_jsx_runtime128.jsxs,
     passKeys: true,
     passNode: true
   });
@@ -114005,7 +120176,7 @@ function remarkGfm(options) {
 
 // packages/report-review/src/preview.jsx
 init_demo_content();
-var import_jsx_runtime123 = require("react/jsx-runtime");
+var import_jsx_runtime129 = require("react/jsx-runtime");
 var plugins = [remarkGfm];
 function sourceLines() {
   return (tree) => {
@@ -114018,19 +120189,19 @@ function sourceLines() {
 }
 var htmlPlugins = [sourceLines];
 var components = {
-  a: ({ node: node2, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("a", { ...props, target: "_blank", rel: "noopener noreferrer" }),
+  a: ({ node: node2, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime129.jsx)("a", { ...props, target: "_blank", rel: "noopener noreferrer" }),
   // Reading a draft must not automatically contact external image servers.
-  img: ({ alt, src }) => src === DEMO_CHART_URL ? /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("img", { src: DEMO_CHART_DATA, alt: alt || "\u6A21\u62DF\u5E93\u5B58\u793A\u610F\u56FE", style: { maxWidth: "100%" } }) : /* @__PURE__ */ (0, import_jsx_runtime123.jsxs)("span", { className: "rr-image-placeholder", children: [
+  img: ({ alt, src }) => src === DEMO_CHART_URL ? /* @__PURE__ */ (0, import_jsx_runtime129.jsx)("img", { src: DEMO_CHART_DATA, alt: alt || "\u6A21\u62DF\u5E93\u5B58\u793A\u610F\u56FE", style: { maxWidth: "100%" } }) : /* @__PURE__ */ (0, import_jsx_runtime129.jsxs)("span", { className: "rr-image-placeholder", children: [
     "\u56FE\u7247\uFF1A",
     alt || "\u672A\u547D\u540D\u56FE\u7247",
     "\uFF08\u8BF7\u5728 PDF \u4E2D\u67E5\u770B\uFF09"
   ] })
 };
 function MarkdownPreview({ text: text7, scrollRef }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("article", { ref: scrollRef, className: "rr-markdown-body", children: /* @__PURE__ */ (0, import_jsx_runtime123.jsx)(Markdown, { remarkPlugins: plugins, rehypePlugins: htmlPlugins, components, skipHtml: true, children: text7 }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime129.jsx)("article", { ref: scrollRef, className: "rr-markdown-body", children: /* @__PURE__ */ (0, import_jsx_runtime129.jsx)(Markdown, { remarkPlugins: plugins, rehypePlugins: htmlPlugins, components, skipHtml: true, children: text7 }) });
 }
 function usePreviewScroll(editorRef, previewRef, active, text7, readOnly2) {
-  (0, import_react155.useEffect)(() => {
+  (0, import_react166.useEffect)(() => {
     const view = editorRef.current, preview = previewRef.current;
     if (!active || !view || !preview) return;
     const source = view.scrollDOM;
@@ -114088,8 +120259,8 @@ function usePreviewScroll(editorRef, previewRef, active, text7, readOnly2) {
   }, [active, text7, readOnly2]);
 }
 function TemplateSelect({ value, templates, disabled, onChange }) {
-  const id3 = (0, import_react155.useId)(), root4 = (0, import_react155.useRef)(null), trigger = (0, import_react155.useRef)(null);
-  const [open, setOpen] = (0, import_react155.useState)(false), [active, setActive2] = (0, import_react155.useState)(0);
+  const id3 = (0, import_react166.useId)(), root4 = (0, import_react166.useRef)(null), trigger = (0, import_react166.useRef)(null);
+  const [open, setOpen] = (0, import_react166.useState)(false), [active, setActive2] = (0, import_react166.useState)(0);
   const options = [{ id: "", name: "\u9ED8\u8BA4\u6A21\u677F", content: "\u4F7F\u7528\u5185\u7F6E\u5468\u62A5\u5206\u6790\u7ED3\u6784" }, ...templates];
   const selected = Math.max(0, options.findIndex((option) => option.id === value));
   function choose(index4) {
@@ -114122,25 +120293,25 @@ function TemplateSelect({ value, templates, disabled, onChange }) {
       }
     } else if (event.key === "Tab") setOpen(false);
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime123.jsxs)("div", { className: "rr-template-select", ref: root4, onBlur: (event) => {
+  return /* @__PURE__ */ (0, import_jsx_runtime129.jsxs)("div", { className: "rr-template-select", ref: root4, onBlur: (event) => {
     if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime123.jsxs)("button", { type: "button", ref: trigger, className: "rr-select-trigger", role: "combobox", "aria-label": "\u9009\u62E9\u6A21\u677F", "aria-haspopup": "listbox", "aria-expanded": open && !disabled, "aria-controls": id3, "aria-activedescendant": open && !disabled ? `${id3}-${active}` : void 0, disabled, onKeyDown: keyDown, onClick: () => {
+    /* @__PURE__ */ (0, import_jsx_runtime129.jsxs)("button", { type: "button", ref: trigger, className: "rr-select-trigger", role: "combobox", "aria-label": "\u9009\u62E9\u6A21\u677F", "aria-haspopup": "listbox", "aria-expanded": open && !disabled, "aria-controls": id3, "aria-activedescendant": open && !disabled ? `${id3}-${active}` : void 0, disabled, onKeyDown: keyDown, onClick: () => {
       setOpen(!open);
       setActive2(selected);
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime123.jsxs)("span", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("small", { children: "\u5206\u6790\u6A21\u677F" }),
-        /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("strong", { children: options[selected].name })
+      /* @__PURE__ */ (0, import_jsx_runtime129.jsxs)("span", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime129.jsx)("small", { children: "\u5206\u6790\u6A21\u677F" }),
+        /* @__PURE__ */ (0, import_jsx_runtime129.jsx)("strong", { children: options[selected].name })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("span", { "aria-hidden": "true", children: "\u2304" })
+      /* @__PURE__ */ (0, import_jsx_runtime129.jsx)("span", { "aria-hidden": "true", children: "\u2304" })
     ] }),
-    open && !disabled && /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("div", { id: id3, role: "listbox", "aria-label": "\u5206\u6790\u6A21\u677F", className: "rr-select-menu", children: options.map((option, index4) => /* @__PURE__ */ (0, import_jsx_runtime123.jsxs)("div", { id: `${id3}-${index4}`, role: "option", "aria-selected": value === option.id, "data-active": active === index4, className: "rr-select-option", onMouseDown: (event) => event.preventDefault(), onMouseMove: () => setActive2(index4), onClick: () => choose(index4), children: [
-      /* @__PURE__ */ (0, import_jsx_runtime123.jsxs)("strong", { children: [
+    open && !disabled && /* @__PURE__ */ (0, import_jsx_runtime129.jsx)("div", { id: id3, role: "listbox", "aria-label": "\u5206\u6790\u6A21\u677F", className: "rr-select-menu", children: options.map((option, index4) => /* @__PURE__ */ (0, import_jsx_runtime129.jsxs)("div", { id: `${id3}-${index4}`, role: "option", "aria-selected": value === option.id, "data-active": active === index4, className: "rr-select-option", onMouseDown: (event) => event.preventDefault(), onMouseMove: () => setActive2(index4), onClick: () => choose(index4), children: [
+      /* @__PURE__ */ (0, import_jsx_runtime129.jsxs)("strong", { children: [
         option.name,
-        /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("span", { "aria-hidden": "true", children: value === option.id ? " \u2713" : "" })
+        /* @__PURE__ */ (0, import_jsx_runtime129.jsx)("span", { "aria-hidden": "true", children: value === option.id ? " \u2713" : "" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("small", { children: option.content?.replace(/[#*\n]/g, " ").slice(0, 90) || "\u81EA\u5B9A\u4E49\u5206\u6790\u8981\u6C42" })
+      /* @__PURE__ */ (0, import_jsx_runtime129.jsx)("small", { children: option.content?.replace(/[#*\n]/g, " ").slice(0, 90) || "\u81EA\u5B9A\u4E49\u5206\u6790\u8981\u6C42" })
     ] }, option.id)) })
   ] });
 }
@@ -114232,69 +120403,94 @@ function saveBlockMarkdown(editor, state) {
 }
 
 // packages/report-review/src/block-editor.jsx
-var import_jsx_runtime124 = require("react/jsx-runtime");
+var import_jsx_runtime130 = require("react/jsx-runtime");
 var sourceBlock = Ai2({ type: "source", propSchema: { raw: { default: "" } }, content: "none" }, {
-  render: ({ block }) => /* @__PURE__ */ (0, import_jsx_runtime124.jsxs)("div", { className: "rr-preserved-block", contentEditable: false, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime124.jsx)("span", { className: "rr-muted", children: "\u6B64\u7247\u6BB5\u6682\u672A\u5F00\u653E\u53EF\u89C6\u5316\u7F16\u8F91 \xB7 \u53EF\u5207\u6362 CodeMirror \u4FEE\u6539" }),
-    /* @__PURE__ */ (0, import_jsx_runtime124.jsx)(MarkdownPreview, { text: block.props.raw })
+  render: ({ block }) => /* @__PURE__ */ (0, import_jsx_runtime130.jsxs)("div", { className: "rr-preserved-block", contentEditable: false, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime130.jsx)("span", { className: "rr-muted", children: "\u6B64\u7247\u6BB5\u6682\u672A\u5F00\u653E\u53EF\u89C6\u5316\u7F16\u8F91 \xB7 \u53EF\u5207\u6362 CodeMirror \u4FEE\u6539" }),
+    /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(MarkdownPreview, { text: block.props.raw })
   ] })
 })();
 var imageBlock = Ai2({ type: "image", propSchema: { url: { default: "" }, caption: { default: "" }, title: { default: "" } }, content: "none" }, {
-  render: ({ block, editor }) => /* @__PURE__ */ (0, import_jsx_runtime124.jsx)(ReportImage, { url: block.props.url, caption: block.props.caption, readOnly: !editor.isEditable, onChange: (props) => editor.updateBlock(block, { props }) })
+  render: ({ block, editor }) => /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(ReportImage, { url: block.props.url, caption: block.props.caption, readOnly: !editor.isEditable, onChange: (props) => editor.updateBlock(block, { props }) })
 })();
 var schema = li.create({
   blockSpecs: Object.fromEntries(["paragraph", "heading", "bulletListItem", "numberedListItem", "checkListItem", "quote", "codeBlock", "divider", "table"].map((key) => [key, ni[key]]).concat([["source", sourceBlock], ["image", imageBlock]])),
   styleSpecs: Object.fromEntries(["bold", "italic", "strike", "code"].map((key) => [key, ai[key]]))
 });
+function aiFetch(path2, init) {
+  const base2 = globalThis.location?.origin && globalThis.location.origin !== "null" ? globalThis.location.origin : "http://dsh.internal";
+  const send = globalThis.__DSH_TRANSPORT__?.fetch || globalThis.fetch;
+  return send(base2 + path2, init);
+}
+function getSlashMenuItemsWithAI(editor) {
+  return [...Yr3(editor), ...getAISlashMenuItems(editor)];
+}
 function ReportFormattingToolbar() {
-  return /* @__PURE__ */ (0, import_jsx_runtime124.jsxs)(lr3, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime124.jsx)(Pn3, { basicTextStyle: "bold" }),
-    /* @__PURE__ */ (0, import_jsx_runtime124.jsx)(Pn3, { basicTextStyle: "italic" }),
-    /* @__PURE__ */ (0, import_jsx_runtime124.jsx)(Pn3, { basicTextStyle: "strike" }),
-    /* @__PURE__ */ (0, import_jsx_runtime124.jsx)(Pn3, { basicTextStyle: "code" }),
-    /* @__PURE__ */ (0, import_jsx_runtime124.jsx)(Un3, {})
+  return /* @__PURE__ */ (0, import_jsx_runtime130.jsxs)(lr3, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(Pn3, { basicTextStyle: "bold" }),
+    /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(Pn3, { basicTextStyle: "italic" }),
+    /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(Pn3, { basicTextStyle: "strike" }),
+    /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(Pn3, { basicTextStyle: "code" }),
+    /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(Un3, {}),
+    /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(AIToolbarButton, {})
   ] });
 }
 function ReportDragMenu() {
-  return /* @__PURE__ */ (0, import_jsx_runtime124.jsx)(Dr3, { children: /* @__PURE__ */ (0, import_jsx_runtime124.jsx)(wr3, { children: "\u5220\u9664\u533A\u5757" }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(Dr3, { children: /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(wr3, { children: "\u5220\u9664\u533A\u5757" }) });
 }
 function ReportSideMenu(props) {
-  return /* @__PURE__ */ (0, import_jsx_runtime124.jsx)(kr3, { ...props, dragHandleMenu: ReportDragMenu });
+  return /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(kr3, { ...props, dragHandleMenu: ReportDragMenu });
 }
 var floatingOptions = { useFloatingOptions: { strategy: "fixed", transform: false } };
 function BlockEditor({ value, onChange, readOnly: readOnly2, onSource }) {
-  const root4 = (0, import_react156.useRef)(null);
-  const [portal, setPortal] = (0, import_react156.useState)(null);
-  (0, import_react156.useEffect)(() => {
+  const root4 = (0, import_react167.useRef)(null);
+  const [portal, setPortal] = (0, import_react167.useState)(null);
+  (0, import_react167.useEffect)(() => {
     setPortal(root4.current?.closest("dialog") || root4.current);
   }, []);
-  const portalElements = (0, import_react156.useMemo)(() => ({ default: portal }), [portal]);
-  const callbacks = (0, import_react156.useRef)({ onChange, readOnly: readOnly2 });
+  const portalElements = (0, import_react167.useMemo)(() => ({ default: portal }), [portal]);
+  const callbacks = (0, import_react167.useRef)({ onChange, readOnly: readOnly2 });
   callbacks.current = { onChange, readOnly: readOnly2 };
-  const last3 = (0, import_react156.useRef)(value);
-  const [failed, setFailed] = (0, import_react156.useState)(false);
-  const session = (0, import_react156.useMemo)(() => {
+  const last3 = (0, import_react167.useRef)(value);
+  const [failed, setFailed] = (0, import_react167.useState)(false);
+  const [aiDiag, setAiDiag] = (0, import_react167.useState)(null);
+  (0, import_react167.useEffect)(() => {
+    const on5 = (e6) => setAiDiag(e6.detail);
+    window.addEventListener("dsh-ai-diag", on5);
+    return () => window.removeEventListener("dsh-ai-diag", on5);
+  }, []);
+  const session = (0, import_react167.useMemo)(() => {
     try {
       const parser6 = Wi.create({ schema, dictionary: b2 });
       const state = loadBlockMarkdown(parser6, value);
-      const editor = Wi.create({ schema, dictionary: b2, initialContent: state.blocks });
+      const editor = Wi.create({ schema, dictionary: { ...b2, ai: zh }, initialContent: state.blocks, extensions: [AIExtension({ chatProvider: () => createNativeChat({ fetchFn: aiFetch }) })] });
       state.snapshot = fingerprint(editor.document);
       return { editor, state };
     } catch {
       return null;
     }
   }, []);
-  (0, import_react156.useEffect)(() => {
+  (0, import_react167.useEffect)(() => {
     if (value !== last3.current) setFailed(true);
   }, [value]);
-  if (!session || failed) return /* @__PURE__ */ (0, import_jsx_runtime124.jsxs)("div", { className: "rr-editor-fallback", role: "status", children: [
+  if (!session || failed) return /* @__PURE__ */ (0, import_jsx_runtime130.jsxs)("div", { className: "rr-editor-fallback", role: "status", children: [
     "\u6B64\u6587\u6863\u6682\u65F6\u65E0\u6CD5\u4F7F\u7528\u53EF\u89C6\u5316\u7F16\u8F91\uFF0C\u8BF7\u5728\u6E90\u7801\u4E2D\u7EE7\u7EED\u3002",
-    /* @__PURE__ */ (0, import_jsx_runtime124.jsx)("button", { className: "rr-button", onClick: onSource, children: "\u6253\u5F00 Markdown \u6E90\u7801" })
+    /* @__PURE__ */ (0, import_jsx_runtime130.jsx)("button", { className: "rr-button", onClick: onSource, children: "\u6253\u5F00 Markdown \u6E90\u7801" })
   ] });
-  return /* @__PURE__ */ (0, import_jsx_runtime124.jsxs)("div", { className: "rr-block-editor", ref: root4, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime124.jsx)("style", { children: block_editor_styles_default }),
-    /* @__PURE__ */ (0, import_jsx_runtime124.jsx)("div", { className: "rr-block-hint", children: readOnly2 ? "\u5F53\u524D\u53EA\u8BFB \xB7 \u5DF2\u786E\u8BA4\u7A3F\u9700\u5F00\u542F\u4FEE\u8BA2\u540E\u7F16\u8F91" : "\u76F4\u63A5\u70B9\u51FB\u6B63\u6587\u7F16\u8F91 \xB7 \u8F93\u5165 / \u63D2\u5165\u533A\u5757 \xB7 \u9009\u4E2D\u6587\u5B57\u8BBE\u7F6E\u683C\u5F0F" }),
-    portal && /* @__PURE__ */ (0, import_jsx_runtime124.jsxs)(mt5, { editor: session.editor, portalElements, editable: !readOnly2, formattingToolbar: false, sideMenu: false, slashMenu: false, filePanel: false, tableHandles: true, onChange: () => {
+  return /* @__PURE__ */ (0, import_jsx_runtime130.jsxs)("div", { className: "rr-block-editor", ref: root4, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime130.jsx)("style", { children: block_editor_styles_default }),
+    /* @__PURE__ */ (0, import_jsx_runtime130.jsx)("style", { children: style_default }),
+    /* @__PURE__ */ (0, import_jsx_runtime130.jsx)("div", { className: "rr-block-hint", children: readOnly2 ? "\u5F53\u524D\u53EA\u8BFB \xB7 \u5DF2\u786E\u8BA4\u7A3F\u9700\u5F00\u542F\u4FEE\u8BA2\u540E\u7F16\u8F91" : "\u76F4\u63A5\u70B9\u51FB\u6B63\u6587\u7F16\u8F91 \xB7 \u8F93\u5165 / \u63D2\u5165\u533A\u5757 \xB7 \u9009\u4E2D\u6587\u5B57\u8BBE\u7F6E\u683C\u5F0F" }),
+    aiDiag && /* @__PURE__ */ (0, import_jsx_runtime130.jsxs)("div", { className: "rr-ai-diag", children: [
+      "AI\uFF1A\u5DE5\u5177 ",
+      aiDiag.tools?.join(", ") || "(\u65E0)",
+      " \xB7 \u8C03\u7528 ",
+      aiDiag.toolCalls ?? 0,
+      " \u6B21 \xB7 ",
+      aiDiag.toolCalls > 0 ? "\u5DF2\u751F\u6210\u64CD\u4F5C" : "\u6A21\u578B\u672A\u8C03\u7528\u5DE5\u5177",
+      aiDiag.error ? ` \xB7 \u9519\u8BEF\uFF1A${aiDiag.error}` : ""
+    ] }),
+    portal && /* @__PURE__ */ (0, import_jsx_runtime130.jsxs)(mt5, { editor: session.editor, portalElements, editable: !readOnly2, formattingToolbar: false, sideMenu: false, slashMenu: false, filePanel: false, tableHandles: true, onChange: () => {
       if (callbacks.current.readOnly) return;
       try {
         const next = saveBlockMarkdown(session.editor, session.state);
@@ -114306,9 +120502,10 @@ function BlockEditor({ value, onChange, readOnly: readOnly2, onSource }) {
         setFailed(true);
       }
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime124.jsx)(dr3, { formattingToolbar: ReportFormattingToolbar, floatingUIOptions: floatingOptions }),
-      /* @__PURE__ */ (0, import_jsx_runtime124.jsx)(jr3, { sideMenu: ReportSideMenu, floatingUIOptions: floatingOptions }),
-      /* @__PURE__ */ (0, import_jsx_runtime124.jsx)(Xr3, { triggerCharacter: "/", floatingUIOptions: floatingOptions })
+      /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(dr3, { formattingToolbar: ReportFormattingToolbar, floatingUIOptions: floatingOptions }),
+      /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(jr3, { sideMenu: ReportSideMenu, floatingUIOptions: floatingOptions }),
+      /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(AIMenuController, {}),
+      /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(Xr3, { triggerCharacter: "/", getItems: async (q6) => $r(getSlashMenuItemsWithAI(session.editor), q6), floatingUIOptions: floatingOptions })
     ] })
   ] });
 }
@@ -114576,7 +120773,7 @@ function createDemoApi(storage, key = DEMO_STORAGE_KEY) {
 }
 
 // packages/report-review/src/client.jsx
-var import_jsx_runtime125 = require("react/jsx-runtime");
+var import_jsx_runtime131 = require("react/jsx-runtime");
 function safePdfUrl(value, origin = window.location.origin) {
   if (!value) return null;
   try {
@@ -114672,39 +120869,39 @@ var recordText = (value) => typeof value === "string" && value.length <= 160 && 
 function PublicationRecords({ value, busy, onRead }) {
   const records = Array.isArray(value?.records) ? value.records : [];
   const notices = safeWarnings(value?.warnings);
-  return /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)(import_jsx_runtime125.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("h3", { children: "\u53D1\u5E03\u8BB0\u5F55 / \u53EA\u8BFB\u6838\u5BF9\u7ED3\u679C" }),
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { children: "\u6838\u5BF9\u53EA\u8BFB\u53D6\u8FDC\u7AEF\u72B6\u6001\u5E76\u66F4\u65B0\u672C\u5730\u6838\u5BF9\u8BB0\u5F55\uFF0C\u4E0D\u4E0A\u4F20\u3001\u4E0D\u91CD\u89E3\u6790\u3001\u4E0D\u5220\u9664\uFF0C\u4E5F\u4E0D\u4F1A\u91CD\u8BD5\u53D1\u5E03\u3002\u89E3\u6790\u5C31\u7EEA\u4E0D\u7B49\u4E8E\u68C0\u7D22\u5DF2\u6838\u9A8C\u3002" }),
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => onRead("publicationStatus"), children: "\u5237\u65B0\u53D1\u5E03\u8BB0\u5F55" }),
+  return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h3", { children: "\u53D1\u5E03\u8BB0\u5F55 / \u53EA\u8BFB\u6838\u5BF9\u7ED3\u679C" }),
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u6838\u5BF9\u53EA\u8BFB\u53D6\u8FDC\u7AEF\u72B6\u6001\u5E76\u66F4\u65B0\u672C\u5730\u6838\u5BF9\u8BB0\u5F55\uFF0C\u4E0D\u4E0A\u4F20\u3001\u4E0D\u91CD\u89E3\u6790\u3001\u4E0D\u5220\u9664\uFF0C\u4E5F\u4E0D\u4F1A\u91CD\u8BD5\u53D1\u5E03\u3002\u89E3\u6790\u5C31\u7EEA\u4E0D\u7B49\u4E8E\u68C0\u7D22\u5DF2\u6838\u9A8C\u3002" }),
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => onRead("publicationStatus"), children: "\u5237\u65B0\u53D1\u5E03\u8BB0\u5F55" }),
     " ",
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => onRead("reconcile"), children: "\u53EA\u8BFB\u6838\u5BF9" }),
-    notices.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("ul", { children: notices.map((w4) => /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("li", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => onRead("reconcile"), children: "\u53EA\u8BFB\u6838\u5BF9" }),
+    notices.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("ul", { children: notices.map((w4) => /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("li", { children: [
       w4.code,
       "\uFF1A",
       w4.message
     ] }, w4.code)) }),
-    !records.length && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { children: "\u6682\u65E0\u53D1\u5E03\u8BB0\u5F55\uFF1B\u4E0D\u4F1A\u81EA\u52A8\u521B\u5EFA\u53D1\u5E03\u4EFB\u52A1\u3002" }),
-    records.map((r4, index4) => /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("article", { className: "rr-record", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("strong", { children: [
+    !records.length && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u6682\u65E0\u53D1\u5E03\u8BB0\u5F55\uFF1B\u4E0D\u4F1A\u81EA\u52A8\u521B\u5EFA\u53D1\u5E03\u4EFB\u52A1\u3002" }),
+    records.map((r4, index4) => /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("article", { className: "rr-record", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("strong", { children: [
         recordText(r4.versionId),
         " \xB7 \u8BA1\u5212 ",
         recordText(r4.planId)
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { children: publicationStateText(r4) }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("dl", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("dt", { children: "\u4E0A\u4F20\u9636\u6BB5" }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("dd", { children: recordText(r4.phase || r4.status) }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("dt", { children: "\u8FDC\u7AEF\u8D44\u6599 ID" }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("dd", { children: recordText(r4.remoteId) }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("dt", { children: "\u89E3\u6790\u72B6\u6001" }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("dd", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: publicationStateText(r4) }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("dl", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dt", { children: "\u4E0A\u4F20\u9636\u6BB5" }),
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dd", { children: recordText(r4.phase || r4.status) }),
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dt", { children: "\u8FDC\u7AEF\u8D44\u6599 ID" }),
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dd", { children: recordText(r4.remoteId) }),
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dt", { children: "\u89E3\u6790\u72B6\u6001" }),
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("dd", { children: [
           recordText(r4.parseStatus),
           r4.parseReady === true ? "\uFF08\u89E3\u6790\u5C31\u7EEA\uFF09" : ""
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("dt", { children: "\u68C0\u7D22\u6838\u9A8C" }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("dd", { children: "\u672A\u6838\u9A8C\uFF1B\u4E0D\u6807\u8BB0\u53D1\u5E03\u5B8C\u6210" }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("dt", { children: "\u6700\u8FD1\u53EA\u8BFB\u6838\u5BF9\u65F6\u95F4" }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("dd", { children: recordText(r4.checkedAt) })
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dt", { children: "\u68C0\u7D22\u6838\u9A8C" }),
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dd", { children: "\u672A\u6838\u9A8C\uFF1B\u4E0D\u6807\u8BB0\u53D1\u5E03\u5B8C\u6210" }),
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dt", { children: "\u6700\u8FD1\u53EA\u8BFB\u6838\u5BF9\u65F6\u95F4" }),
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dd", { children: recordText(r4.checkedAt) })
       ] })
     ] }, `${recordText(r4.planId)}-${index4}`))
   ] });
@@ -114717,15 +120914,15 @@ var testErrorText = (code4) => ({
   plaintext_non_loopback: "\u660E\u6587 http \u53EA\u5141\u8BB8\u672C\u673A\u56DE\u73AF\u5730\u5740\uFF0C\u8FDC\u7AEF\u8BF7\u4F7F\u7528 https"
 })[code4] || code4;
 function SettingsPanel({ request, onClose, onIdentity }) {
-  const [view, setView] = (0, import_react158.useState)(null);
-  const [form, setForm] = (0, import_react158.useState)({ baseUrl: "", kbId: "", tenantId: "", readKey: "", writeKey: "" });
-  const [state, setState] = (0, import_react158.useState)({ busy: true, note: "", error: "" });
-  const [test, setTest] = (0, import_react158.useState)(null);
+  const [view, setView] = (0, import_react169.useState)(null);
+  const [form, setForm] = (0, import_react169.useState)({ baseUrl: "", kbId: "", tenantId: "", readKey: "", writeKey: "" });
+  const [state, setState] = (0, import_react169.useState)({ busy: true, note: "", error: "" });
+  const [test, setTest] = (0, import_react169.useState)(null);
   const adopt = (v) => {
     setView(v);
     setForm((f2) => ({ ...f2, baseUrl: v?.baseUrl || "", kbId: v?.kbId || "", tenantId: v?.tenantId || "", readKey: "", writeKey: "" }));
   };
-  (0, import_react158.useEffect)(() => {
+  (0, import_react169.useEffect)(() => {
     let cancelled = false;
     request("settingsGet").then((v) => {
       if (!cancelled) {
@@ -114766,47 +120963,47 @@ function SettingsPanel({ request, onClose, onIdentity }) {
     }
   };
   const field = (key, value) => setForm((f2) => ({ ...f2, [key]: value }));
-  return /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("section", { className: "rr-settings", role: "dialog", "aria-label": "\u8FDE\u63A5\u8BBE\u7F6E", children: /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-settings-card", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-section-heading", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("h2", { children: "\u8FDE\u63A5\u8BBE\u7F6E" }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-badge", children: view?.connectorActive ? "\u914D\u7F6E\u5B8C\u6574\uFF08\u672A\u5B9E\u6D4B\uFF09" : "\u914D\u7F6E\u4E0D\u5B8C\u6574" })
+  return /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("section", { className: "rr-settings", role: "dialog", "aria-label": "\u8FDE\u63A5\u8BBE\u7F6E", children: /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-settings-card", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-section-heading", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h2", { children: "\u8FDE\u63A5\u8BBE\u7F6E" }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-badge", children: view?.connectorActive ? "\u914D\u7F6E\u5B8C\u6574\uFF08\u672A\u5B9E\u6D4B\uFF09" : "\u914D\u7F6E\u4E0D\u5B8C\u6574" })
     ] }),
-    view?.managedByHost && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-muted", children: "\u90E8\u5206\u914D\u7F6E\u7531\u73AF\u5883\u53D8\u91CF / Profile \u7BA1\u7406\uFF0C\u6B64\u5904\u4FEE\u6539\u4EC5\u8865\u5145\u672A\u88AB\u5176\u8986\u76D6\u7684\u9879\u3002" }),
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
+    view?.managedByHost && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-muted", children: "\u90E8\u5206\u914D\u7F6E\u7531\u73AF\u5883\u53D8\u91CF / Profile \u7BA1\u7406\uFF0C\u6B64\u5904\u4FEE\u6539\u4EC5\u8865\u5145\u672A\u88AB\u5176\u8986\u76D6\u7684\u9879\u3002" }),
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("label", { children: [
       "WeKnora \u5730\u5740",
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { "aria-label": "WeKnora \u5730\u5740", placeholder: "https://weknora.example.internal \u6216 http://127.0.0.1:8080", value: form.baseUrl, disabled: state.busy, onChange: (e6) => field("baseUrl", e6.target.value) })
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { "aria-label": "WeKnora \u5730\u5740", placeholder: "https://weknora.example.internal \u6216 http://127.0.0.1:8080", value: form.baseUrl, disabled: state.busy, onChange: (e6) => field("baseUrl", e6.target.value) })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("label", { children: [
       "\u77E5\u8BC6\u5E93 ID",
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { "aria-label": "\u77E5\u8BC6\u5E93 ID", placeholder: "\u68C0\u7D22\u4E0E\u53D1\u5E03\u4F7F\u7528\u7684\u77E5\u8BC6\u5E93 ID", value: form.kbId, disabled: state.busy, onChange: (e6) => field("kbId", e6.target.value) })
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { "aria-label": "\u77E5\u8BC6\u5E93 ID", placeholder: "\u68C0\u7D22\u4E0E\u53D1\u5E03\u4F7F\u7528\u7684\u77E5\u8BC6\u5E93 ID", value: form.kbId, disabled: state.busy, onChange: (e6) => field("kbId", e6.target.value) })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("label", { children: [
       "\u79DF\u6237 ID",
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-muted", children: "\uFF08\u53EF\u9009\uFF09" }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { "aria-label": "\u79DF\u6237 ID", placeholder: "WeKnora \u591A\u79DF\u6237 ID\uFF0C\u5355\u79DF\u6237\u53EF\u7559\u7A7A", value: form.tenantId, disabled: state.busy, onChange: (e6) => field("tenantId", e6.target.value) })
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-muted", children: "\uFF08\u53EF\u9009\uFF09" }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { "aria-label": "\u79DF\u6237 ID", placeholder: "WeKnora \u591A\u79DF\u6237 ID\uFF0C\u5355\u79DF\u6237\u53EF\u7559\u7A7A", value: form.tenantId, disabled: state.busy, onChange: (e6) => field("tenantId", e6.target.value) })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("label", { children: [
       "\u8BFB\u53D6\u5BC6\u94A5",
-      view?.readKeySet && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-muted", children: "\uFF08\u5DF2\u4FDD\u5B58\uFF0C\u7559\u7A7A\u4FDD\u6301\u4E0D\u53D8\uFF09" }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { "aria-label": "\u8BFB\u53D6\u5BC6\u94A5", type: "password", autoComplete: "off", placeholder: view?.readKeySet ? "\u2022\u2022\u2022\u2022\u2022\u2022\uFF08\u7559\u7A7A\u4E0D\u4FEE\u6539\uFF09" : "\u7528\u4E8E\u68C0\u7D22\u7684 API Key", value: form.readKey, disabled: state.busy, onChange: (e6) => field("readKey", e6.target.value) })
+      view?.readKeySet && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-muted", children: "\uFF08\u5DF2\u4FDD\u5B58\uFF0C\u7559\u7A7A\u4FDD\u6301\u4E0D\u53D8\uFF09" }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { "aria-label": "\u8BFB\u53D6\u5BC6\u94A5", type: "password", autoComplete: "off", placeholder: view?.readKeySet ? "\u2022\u2022\u2022\u2022\u2022\u2022\uFF08\u7559\u7A7A\u4E0D\u4FEE\u6539\uFF09" : "\u7528\u4E8E\u68C0\u7D22\u7684 API Key", value: form.readKey, disabled: state.busy, onChange: (e6) => field("readKey", e6.target.value) })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("label", { children: [
       "\u53D1\u5E03\u5BC6\u94A5",
-      view?.writeKeySet && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-muted", children: "\uFF08\u5DF2\u4FDD\u5B58\uFF0C\u7559\u7A7A\u4FDD\u6301\u4E0D\u53D8\uFF09" }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { "aria-label": "\u53D1\u5E03\u5BC6\u94A5", type: "password", autoComplete: "off", placeholder: view?.writeKeySet ? "\u2022\u2022\u2022\u2022\u2022\u2022\uFF08\u7559\u7A7A\u4E0D\u4FEE\u6539\uFF09" : "\u7528\u4E8E\u53D1\u5E03\u7684 API Key\uFF0C\u53EF\u7559\u7A7A\uFF08\u53EA\u8BFB\uFF09", value: form.writeKey, disabled: state.busy, onChange: (e6) => field("writeKey", e6.target.value) })
+      view?.writeKeySet && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-muted", children: "\uFF08\u5DF2\u4FDD\u5B58\uFF0C\u7559\u7A7A\u4FDD\u6301\u4E0D\u53D8\uFF09" }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { "aria-label": "\u53D1\u5E03\u5BC6\u94A5", type: "password", autoComplete: "off", placeholder: view?.writeKeySet ? "\u2022\u2022\u2022\u2022\u2022\u2022\uFF08\u7559\u7A7A\u4E0D\u4FEE\u6539\uFF09" : "\u7528\u4E8E\u53D1\u5E03\u7684 API Key\uFF0C\u53EF\u7559\u7A7A\uFF08\u53EA\u8BFB\uFF09", value: form.writeKey, disabled: state.busy, onChange: (e6) => field("writeKey", e6.target.value) })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-muted", children: "\u5BC6\u94A5\u4FDD\u5B58\u4E3A\u672C\u673A\u53D7\u9650\u6587\u4EF6\uFF0C\u4E0D\u5199\u5165\u4EFB\u4F55\u914D\u7F6E\u6216\u8865\u4E01\uFF1B\u754C\u9762\u4E0D\u56DE\u663E\u5BC6\u94A5\u5185\u5BB9\u3002\u53D1\u5E03\u5BC6\u94A5\u987B\u4E0E\u8BFB\u53D6\u5BC6\u94A5\u4E0D\u540C\u3002" }),
-    state.note && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-settings-note", role: "status", children: state.note }),
-    state.error && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-settings-error", role: "alert", children: state.error }),
-    test && /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("ul", { className: "rr-settings-test", role: "status", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("li", { children: test.connectorActive ? "\u2713 \u8FDE\u63A5\u914D\u7F6E\u5DF2\u6FC0\u6D3B" : `\u2717 \u8FDE\u63A5\u672A\u6FC0\u6D3B\uFF1A${testErrorText(test.connectorError)}` }),
-      test.read && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("li", { children: test.read.ok ? `\u2713 \u8BFB\u53D6\u68C0\u7D22\u53EF\u7528\uFF08\u77E5\u8BC6\u5E93 ${test.kbId}${Number.isFinite(test.read.total) ? `\uFF0C\u5171 ${test.read.total} \u6761\u8D44\u6599` : ""}\uFF09` : `\u2717 \u8BFB\u53D6\u68C0\u7D22\u5931\u8D25\uFF1A${testErrorText(test.read.error)}` }),
-      test.publish && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("li", { children: test.publish.ok ? `\u2713 \u53D1\u5E03\u8EAB\u4EFD\u5DF2\u786E\u8BA4\uFF1A${test.publish.username}\uFF08\u300C\u786E\u8BA4\u53D1\u5E03\u300D\u5C06\u89E3\u9501\uFF09` : `\u2717 \u53D1\u5E03\u8EAB\u4EFD\u672A\u901A\u8FC7\uFF1A${testErrorText(test.publish.error)}` })
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-muted", children: "\u5BC6\u94A5\u4FDD\u5B58\u4E3A\u672C\u673A\u53D7\u9650\u6587\u4EF6\uFF0C\u4E0D\u5199\u5165\u4EFB\u4F55\u914D\u7F6E\u6216\u8865\u4E01\uFF1B\u754C\u9762\u4E0D\u56DE\u663E\u5BC6\u94A5\u5185\u5BB9\u3002\u53D1\u5E03\u5BC6\u94A5\u987B\u4E0E\u8BFB\u53D6\u5BC6\u94A5\u4E0D\u540C\u3002" }),
+    state.note && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-settings-note", role: "status", children: state.note }),
+    state.error && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-settings-error", role: "alert", children: state.error }),
+    test && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("ul", { className: "rr-settings-test", role: "status", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("li", { children: test.connectorActive ? "\u2713 \u8FDE\u63A5\u914D\u7F6E\u5DF2\u6FC0\u6D3B" : `\u2717 \u8FDE\u63A5\u672A\u6FC0\u6D3B\uFF1A${testErrorText(test.connectorError)}` }),
+      test.read && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("li", { children: test.read.ok ? `\u2713 \u8BFB\u53D6\u68C0\u7D22\u53EF\u7528\uFF08\u77E5\u8BC6\u5E93 ${test.kbId}${Number.isFinite(test.read.total) ? `\uFF0C\u5171 ${test.read.total} \u6761\u8D44\u6599` : ""}\uFF09` : `\u2717 \u8BFB\u53D6\u68C0\u7D22\u5931\u8D25\uFF1A${testErrorText(test.read.error)}` }),
+      test.publish && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("li", { children: test.publish.ok ? `\u2713 \u53D1\u5E03\u8EAB\u4EFD\u5DF2\u786E\u8BA4\uFF1A${test.publish.username}\uFF08\u300C\u786E\u8BA4\u53D1\u5E03\u300D\u5C06\u89E3\u9501\uFF09` : `\u2717 \u53D1\u5E03\u8EAB\u4EFD\u672A\u901A\u8FC7\uFF1A${testErrorText(test.publish.error)}` })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-row", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button rr-button--primary", disabled: state.busy, onClick: save, children: "\u4FDD\u5B58\u5E76\u751F\u6548" }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: state.busy, onClick: runTest, children: "\u6D4B\u8BD5\u8FDE\u63A5" }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: state.busy, onClick: onClose, children: "\u5173\u95ED" })
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-row", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button rr-button--primary", disabled: state.busy, onClick: save, children: "\u4FDD\u5B58\u5E76\u751F\u6548" }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: state.busy, onClick: runTest, children: "\u6D4B\u8BD5\u8FDE\u63A5" }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: state.busy, onClick: onClose, children: "\u5173\u95ED" })
     ] })
   ] }) });
 }
@@ -114837,10 +121034,10 @@ var editorTheme = EditorView.theme({
   "&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection": { backgroundColor: "var(--rr-selection)" }
 });
 function Editor2({ value, onChange, readOnly: readOnly2 = false, editorRef }) {
-  const root4 = (0, import_react158.useRef)(null), view = (0, import_react158.useRef)(null), change = (0, import_react158.useRef)(onChange);
-  const access = (0, import_react158.useRef)(new Compartment());
+  const root4 = (0, import_react169.useRef)(null), view = (0, import_react169.useRef)(null), change = (0, import_react169.useRef)(onChange);
+  const access = (0, import_react169.useRef)(new Compartment());
   change.current = onChange;
-  (0, import_react158.useEffect)(() => {
+  (0, import_react169.useEffect)(() => {
     view.current = new EditorView({ parent: root4.current, state: EditorState.create({ doc: value || "", extensions: [lineNumbers(), history(), markdown(), markdownHighlight, keymap.of([...defaultKeymap, ...historyKeymap]), EditorView.lineWrapping, editorTheme, access.current.of([EditorState.readOnly.of(readOnly2), EditorView.editable.of(!readOnly2)]), EditorView.updateListener.of((u2) => {
       if (u2.docChanged && !u2.transactions.some((t4) => t4.isUserEvent("remote"))) change.current?.(u2.state.doc.toString());
     })] }) });
@@ -114851,22 +121048,22 @@ function Editor2({ value, onChange, readOnly: readOnly2 = false, editorRef }) {
       view.current = null;
     };
   }, []);
-  (0, import_react158.useEffect)(() => {
+  (0, import_react169.useEffect)(() => {
     view.current?.dispatch({ effects: access.current.reconfigure([EditorState.readOnly.of(readOnly2), EditorView.editable.of(!readOnly2)]) });
   }, [readOnly2]);
-  (0, import_react158.useEffect)(() => {
+  (0, import_react169.useEffect)(() => {
     const v = view.current;
     if (v && v.state.doc.toString() !== value) v.dispatch({ changes: { from: 0, to: v.state.doc.length, insert: value || "" }, userEvent: "remote" });
   }, [value]);
-  return /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("div", { ref: root4, className: "rr-editor" });
+  return /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("div", { ref: root4, className: "rr-editor" });
 }
 function Diff({ before, after }) {
-  const root4 = (0, import_react158.useRef)(null);
-  (0, import_react158.useEffect)(() => {
-    const merge2 = new MergeView({ parent: root4.current, a: { doc: before, extensions: [markdown(), markdownHighlight, editorTheme, EditorState.readOnly.of(true), EditorView.editable.of(false), EditorView.lineWrapping] }, b: { doc: after, extensions: [markdown(), markdownHighlight, editorTheme, EditorState.readOnly.of(true), EditorView.editable.of(false), EditorView.lineWrapping] } });
-    return () => merge2.destroy();
+  const root4 = (0, import_react169.useRef)(null);
+  (0, import_react169.useEffect)(() => {
+    const merge3 = new MergeView({ parent: root4.current, a: { doc: before, extensions: [markdown(), markdownHighlight, editorTheme, EditorState.readOnly.of(true), EditorView.editable.of(false), EditorView.lineWrapping] }, b: { doc: after, extensions: [markdown(), markdownHighlight, editorTheme, EditorState.readOnly.of(true), EditorView.editable.of(false), EditorView.lineWrapping] } });
+    return () => merge3.destroy();
   }, [before, after]);
-  return /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("div", { ref: root4, className: "rr-diff" });
+  return /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("div", { ref: root4, className: "rr-diff" });
 }
 var DEFAULT_PROMPT_TEMPLATE = [
   "\u7ED3\u5408\u8FD1\u56DB\u5468\u540C\u54C1\u7C7B\u5468\u62A5\uFF0C\u505A\u4E00\u6B21\u7EFC\u5408\u5206\u6790\u3002",
@@ -114892,105 +121089,105 @@ function humanItemPayload(items) {
   return (items || []).map((i3) => ({ annotationId: i3.annotationId, category: i3.category || "supplement", selected: i3.selected === true, visibility: i3.visibility === "public" ? "public" : "local", ...typeof i3.publicSource === "string" ? { publicSource: i3.publicSource } : {} }));
 }
 function HumanItemsPanel({ value, readOnly: readOnly2, onSave }) {
-  const [items, setItems] = (0, import_react158.useState)(() => humanItemPayload(value.items).map((i3, n3) => ({ ...value.items[n3], ...i3 })));
+  const [items, setItems] = (0, import_react169.useState)(() => humanItemPayload(value.items).map((i3, n3) => ({ ...value.items[n3], ...i3 })));
   const update = (n3, patch2) => setItems((previous3) => previous3.map((i3, k6) => k6 === n3 ? { ...i3, ...patch2 } : i3));
-  return /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("section", { "aria-label": "\u91CD\u70B9\u4EBA\u5DE5\u4FE1\u606F", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("h3", { children: "\u91CD\u70B9\u4EBA\u5DE5\u4FE1\u606F" }),
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { children: "\u4EC5\u672C\u5730\u5BA1\u6838\u786E\u8BA4\u548C\u53D1\u5E03\u51C6\u5907\uFF0C\u5C1A\u672A\u4E0A\u4F20\u72EC\u7ACB\u8D44\u6599\u3002\u9ED8\u8BA4\u4E0D\u5168\u9009\uFF1B\u63AA\u8F9E/\u6392\u7248\u7C7B\u4E0D\u72EC\u7ACB\u5165\u5E93\u3002\u672C\u5730\u654F\u611F\u5907\u6CE8\u672C\u7248\u4E0D\u7F16\u8F91\u3001\u4E0D\u53D1\u9001\u3002\u5220\u9664\u539F\u6587\u7684\u64A4\u56DE\u6761\u76EE\u5C1A\u4E0D\u652F\u6301\uFF0C\u4E0D\u80FD\u5C06\u5F53\u524D\u6BB5\u843D\u5206\u7C7B\u4E3A\u64A4\u56DE\u5192\u5145\u5220\u9664\u8FFD\u6EAF\u3002" }),
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("ul", { children: safeWarnings(value.warnings).map((w4) => /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("li", { children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("section", { "aria-label": "\u91CD\u70B9\u4EBA\u5DE5\u4FE1\u606F", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h3", { children: "\u91CD\u70B9\u4EBA\u5DE5\u4FE1\u606F" }),
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u4EC5\u672C\u5730\u5BA1\u6838\u786E\u8BA4\u548C\u53D1\u5E03\u51C6\u5907\uFF0C\u5C1A\u672A\u4E0A\u4F20\u72EC\u7ACB\u8D44\u6599\u3002\u9ED8\u8BA4\u4E0D\u5168\u9009\uFF1B\u63AA\u8F9E/\u6392\u7248\u7C7B\u4E0D\u72EC\u7ACB\u5165\u5E93\u3002\u672C\u5730\u654F\u611F\u5907\u6CE8\u672C\u7248\u4E0D\u7F16\u8F91\u3001\u4E0D\u53D1\u9001\u3002\u5220\u9664\u539F\u6587\u7684\u64A4\u56DE\u6761\u76EE\u5C1A\u4E0D\u652F\u6301\uFF0C\u4E0D\u80FD\u5C06\u5F53\u524D\u6BB5\u843D\u5206\u7C7B\u4E3A\u64A4\u56DE\u5192\u5145\u5220\u9664\u8FFD\u6EAF\u3002" }),
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("ul", { children: safeWarnings(value.warnings).map((w4) => /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("li", { children: [
       w4.code,
       "\uFF1A",
       w4.message
     ] }, w4.code)) }),
-    readOnly2 && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { children: "\u5DF2\u786E\u8BA4\u7A3F\u53EA\u8BFB\uFF0C\u8BF7\u5148\u5F00\u542F\u65B0\u4E00\u8F6E\u4FEE\u8BA2\u3002" }),
-    items.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { children: "\u6682\u65E0\u53EF\u786E\u8BA4\u7684\u4EBA\u7C7B\u4FEE\u8BA2\u5757\u3002" }),
-    items.map((item, n3) => /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("fieldset", { disabled: readOnly2, className: "rr-fieldset", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("legend", { children: item.annotationId }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("pre", { className: "rr-pre", children: item.content || "\u5F53\u524D\u5185\u5BB9\u65E0\u6CD5\u53EF\u9760\u5B9A\u4F4D" }),
-      item.mappingConfidence === "low" && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { children: "\u4F4E\u7F6E\u4FE1\u5EA6\uFF1A\u8BF7\u6838\u5BF9\u6765\u6E90\uFF0C\u4E0D\u81EA\u52A8\u8BA4\u5B9A\u4E3A\u6709\u6548\u60C5\u62A5\u3002" }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { type: "checkbox", checked: item.selected === true, onChange: (e6) => update(n3, { selected: e6.target.checked }) }),
+    readOnly2 && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u5DF2\u786E\u8BA4\u7A3F\u53EA\u8BFB\uFF0C\u8BF7\u5148\u5F00\u542F\u65B0\u4E00\u8F6E\u4FEE\u8BA2\u3002" }),
+    items.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u6682\u65E0\u53EF\u786E\u8BA4\u7684\u4EBA\u7C7B\u4FEE\u8BA2\u5757\u3002" }),
+    items.map((item, n3) => /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("fieldset", { disabled: readOnly2, className: "rr-fieldset", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("legend", { children: item.annotationId }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("pre", { className: "rr-pre", children: item.content || "\u5F53\u524D\u5185\u5BB9\u65E0\u6CD5\u53EF\u9760\u5B9A\u4F4D" }),
+      item.mappingConfidence === "low" && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u4F4E\u7F6E\u4FE1\u5EA6\uFF1A\u8BF7\u6838\u5BF9\u6765\u6E90\uFF0C\u4E0D\u81EA\u52A8\u8BA4\u5B9A\u4E3A\u6709\u6548\u60C5\u62A5\u3002" }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { type: "checkbox", checked: item.selected === true, onChange: (e6) => update(n3, { selected: e6.target.checked }) }),
         "\u91CD\u70B9\u6761\u76EE"
       ] }),
       " ",
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("label", { children: [
         "\u7C7B\u522B ",
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("select", { value: item.category, onChange: (e6) => update(n3, { category: e6.target.value }), children: [["supplement", "\u8865\u5145"], ["correction", "\u7EA0\u9519"], ["retraction", "\u64A4\u56DE"], ["judgment", "\u4E2A\u4EBA\u5224\u65AD"], ["style", "\u63AA\u8F9E/\u6392\u7248"]].map(([v, l3]) => /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("option", { value: v, children: l3 }, v)) })
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("select", { value: item.category, onChange: (e6) => update(n3, { category: e6.target.value }), children: [["supplement", "\u8865\u5145"], ["correction", "\u7EA0\u9519"], ["retraction", "\u64A4\u56DE"], ["judgment", "\u4E2A\u4EBA\u5224\u65AD"], ["style", "\u63AA\u8F9E/\u6392\u7248"]].map(([v, l3]) => /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("option", { value: v, children: l3 }, v)) })
       ] }),
       " ",
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("label", { children: [
         "\u516C\u5F00\u8303\u56F4 ",
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("select", { value: item.visibility, onChange: (e6) => update(n3, { visibility: e6.target.value }), children: [
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("option", { value: "local", children: "\u4EC5\u672C\u5730" }),
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("option", { value: "public", children: "\u53EF\u516C\u5F00" })
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("select", { value: item.visibility, onChange: (e6) => update(n3, { visibility: e6.target.value }), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("option", { value: "local", children: "\u4EC5\u672C\u5730" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("option", { value: "public", children: "\u53EF\u516C\u5F00" })
         ] })
       ] }),
       " ",
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("label", { children: [
         "\u53EF\u516C\u5F00\u6765\u6E90 ",
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { maxLength: 4e3, value: item.publicSource || "", onChange: (e6) => update(n3, { publicSource: e6.target.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { maxLength: 4e3, value: item.publicSource || "", onChange: (e6) => update(n3, { publicSource: e6.target.value }) })
       ] })
     ] }, item.annotationId)),
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: readOnly2, onClick: () => onSave(humanItemPayload(items), value.saveToken), children: "\u4FDD\u5B58\u4EBA\u5DE5\u4FE1\u606F\u9009\u62E9\uFF08\u4EC5\u672C\u5730\uFF09" })
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: readOnly2, onClick: () => onSave(humanItemPayload(items), value.saveToken), children: "\u4FDD\u5B58\u4EBA\u5DE5\u4FE1\u606F\u9009\u62E9\uFF08\u4EC5\u672C\u5730\uFF09" })
   ] });
 }
-function DiffOps({ diff: diff2 }) {
-  if (!diff2) return /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-muted", children: "\u57FA\u7EBF\u7248\u672C\uFF0C\u65E0\u4E0A\u4E00\u7248\u53EF\u6BD4\u3002" });
-  const ops = Array.isArray(diff2.ops) ? diff2.ops : [];
-  if (!diff2.changed) return /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-muted", children: "\u76F8\u5BF9\u4E0A\u4E00\u7248\uFF1A\u65E0\u5185\u5BB9\u53D8\u5316\u3002" });
-  return /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-diff-summary", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("p", { className: "rr-muted", children: [
+function DiffOps({ diff: diff3 }) {
+  if (!diff3) return /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-muted", children: "\u57FA\u7EBF\u7248\u672C\uFF0C\u65E0\u4E0A\u4E00\u7248\u53EF\u6BD4\u3002" });
+  const ops = Array.isArray(diff3.ops) ? diff3.ops : [];
+  if (!diff3.changed) return /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-muted", children: "\u76F8\u5BF9\u4E0A\u4E00\u7248\uFF1A\u65E0\u5185\u5BB9\u53D8\u5316\u3002" });
+  return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-diff-summary", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("p", { className: "rr-muted", children: [
       "\u76F8\u5BF9\u4E0A\u4E00\u7248\uFF1A+",
-      diff2.add,
+      diff3.add,
       " \u884C \xB7 \u2212",
-      diff2.del,
+      diff3.del,
       " \u884C\uFF08\u9AD8\u4EAE\u4E3A\u672C\u6B21\u4FEE\u6539\uFF09"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("pre", { className: "rr-diff-body", children: ops.map((o4, i3) => o4.op === "same" ? null : /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: o4.op === "del" || o4.op === "delblock" ? "rr-diff-delete" : "rr-diff-insert", children: o4.op === "del" || o4.op === "delblock" ? `- ${o4.before ?? ""}` : `+ ${o4.after ?? ""}` }) }, i3)) })
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("pre", { className: "rr-diff-body", children: ops.map((o4, i3) => o4.op === "same" ? null : /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: o4.op === "del" || o4.op === "delblock" ? "rr-diff-delete" : "rr-diff-insert", children: o4.op === "del" || o4.op === "delblock" ? `- ${o4.before ?? ""}` : `+ ${o4.after ?? ""}` }) }, i3)) })
   ] });
 }
 function Timeline({ value }) {
   const versions = Array.isArray(value?.versions) ? value.versions : [];
   const markdowns = value?.markdowns || {};
-  return /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)(import_jsx_runtime125.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("h3", { children: "\u7248\u672C\u5386\u53F2\uFF08report-core \u5207\u7247 \xB7 \u81EA\u52A8\u76F8\u90BB\u5DEE\u5F02\uFF09" }),
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-muted", children: "\u6BCF\u4EFD\u62A5\u544A\u5728\u704C\u5165 WeKnora \u524D\uFF0C\u5148\u5728\u672C\u5730\u6309\u7248\u672C\u5207\u7247\u5C55\u793A V0(LLM \u57FA\u7EBF)\u2192V1\u2192V2\u2026 \u53CA\u5176\u5DEE\u5F02\uFF1B\u6B63\u6587\u53EA\u8BFB\uFF0C\u4E0D\u5F71\u54CD\u5DE5\u4F5C\u7A3F\u3002" }),
-    !versions.length && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { children: "\u6682\u65E0\u7248\u672C\u3002" }),
-    versions.map((v) => /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("article", { className: "rr-record", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-row", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("strong", { children: v.versionId }),
-        v.isBaseline && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-muted", children: "(LLM \u57FA\u7EBF)" }),
-        v.humanEdited && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-info", children: "\u270E \u4EBA\u5DE5\u4FEE\u8BA2" }),
-        v.published ? /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-success", children: "\u25CF \u5DF2\u63D0\u4EA4\u4E0A\u4F20\uFF08\u89E3\u6790\u4E0E\u68C0\u7D22\u672A\u6838\u9A8C\uFF09" }) : /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-muted", children: "\u25CB \u672A\u786E\u8BA4\u4E0A\u4F20" }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("span", { className: "rr-muted", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h3", { children: "\u7248\u672C\u5386\u53F2\uFF08report-core \u5207\u7247 \xB7 \u81EA\u52A8\u76F8\u90BB\u5DEE\u5F02\uFF09" }),
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-muted", children: "\u6BCF\u4EFD\u62A5\u544A\u5728\u704C\u5165 WeKnora \u524D\uFF0C\u5148\u5728\u672C\u5730\u6309\u7248\u672C\u5207\u7247\u5C55\u793A V0(LLM \u57FA\u7EBF)\u2192V1\u2192V2\u2026 \u53CA\u5176\u5DEE\u5F02\uFF1B\u6B63\u6587\u53EA\u8BFB\uFF0C\u4E0D\u5F71\u54CD\u5DE5\u4F5C\u7A3F\u3002" }),
+    !versions.length && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u6682\u65E0\u7248\u672C\u3002" }),
+    versions.map((v) => /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("article", { className: "rr-record", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-row", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("strong", { children: v.versionId }),
+        v.isBaseline && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-muted", children: "(LLM \u57FA\u7EBF)" }),
+        v.humanEdited && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-info", children: "\u270E \u4EBA\u5DE5\u4FEE\u8BA2" }),
+        v.published ? /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-success", children: "\u25CF \u5DF2\u63D0\u4EA4\u4E0A\u4F20\uFF08\u89E3\u6790\u4E0E\u68C0\u7D22\u672A\u6838\u9A8C\uFF09" }) : /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-muted", children: "\u25CB \u672A\u786E\u8BA4\u4E0A\u4F20" }),
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("span", { className: "rr-muted", children: [
           v.author?.displayName || "",
           v.completedAt ? ` \xB7 ${String(v.completedAt).slice(0, 10)}` : ""
         ] })
       ] }),
-      v.diffFromPrevious && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)(DiffOps, { diff: v.diffFromPrevious }),
-      typeof markdowns[v.versionId] === "string" && /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("details", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("summary", { children: [
+      v.diffFromPrevious && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(DiffOps, { diff: v.diffFromPrevious }),
+      typeof markdowns[v.versionId] === "string" && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("details", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("summary", { children: [
           "\u9605\u8BFB ",
           v.versionId,
           " \u6B63\u6587"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("pre", { className: "rr-pre", children: markdowns[v.versionId] })
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("pre", { className: "rr-pre", children: markdowns[v.versionId] })
       ] })
     ] }, v.versionId))
   ] });
 }
 function Workspace({ sessionId, close: close2, initialMode = "real" }) {
-  const [mode, setMode] = (0, import_react158.useState)(initialMode);
-  return /* @__PURE__ */ (0, import_jsx_runtime125.jsx)(WorkspaceContent, { sessionId, close: close2, mode, onModeChange: setMode }, mode);
+  const [mode, setMode] = (0, import_react169.useState)(initialMode);
+  return /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(WorkspaceContent, { sessionId, close: close2, mode, onModeChange: setMode }, mode);
 }
 function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
   const demo = mode === "demo";
-  const demoApi = (0, import_react158.useMemo)(() => demo ? createDemoApi(globalThis.localStorage) : null, [demo]);
-  const [stage, setStage] = (0, import_react158.useState)("generation"), [blankTitle, setBlankTitle] = (0, import_react158.useState)("");
-  const dialogRef = (0, import_react158.useRef)(null);
-  const [search2, setSearch] = (0, import_react158.useState)(""), [viewMode, setViewMode] = (0, import_react158.useState)("editor"), [focused, setFocused] = (0, import_react158.useState)(false);
+  const demoApi = (0, import_react169.useMemo)(() => demo ? createDemoApi(globalThis.localStorage) : null, [demo]);
+  const [stage, setStage] = (0, import_react169.useState)("generation"), [blankTitle, setBlankTitle] = (0, import_react169.useState)("");
+  const dialogRef = (0, import_react169.useRef)(null);
+  const [search2, setSearch] = (0, import_react169.useState)(""), [viewMode, setViewMode] = (0, import_react169.useState)("editor"), [focused, setFocused] = (0, import_react169.useState)(false);
   const sourceMode = viewMode !== "editor";
-  (0, import_react158.useEffect)(() => {
+  (0, import_react169.useEffect)(() => {
     const dialog = dialogRef.current, previous3 = document.activeElement;
     dialog.showModal();
     return () => {
@@ -114998,19 +121195,37 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       if (previous3?.isConnected) previous3.focus();
     };
   }, []);
-  const [reports, setReports] = (0, import_react158.useState)([]), [draft, setDraft] = (0, import_react158.useState)(null), [text7, setText] = (0, import_react158.useState)("");
-  const [dirty, setDirty] = (0, import_react158.useState)(false), [status, setStatus] = (0, import_react158.useState)("\u6B63\u5728\u52A0\u8F7D"), [error3, setError] = (0, import_react158.useState)("");
-  const [reportWarnings, setReportWarnings] = (0, import_react158.useState)([]);
-  const [preview, setPreview] = (0, import_react158.useState)(null), [pdf, setPdf] = (0, import_react158.useState)(null), [identity2, setIdentity] = (0, import_react158.useState)(null), [panel, setPanel] = (0, import_react158.useState)(null), [busy, setBusy] = (0, import_react158.useState)(false);
-  const [variety, setVariety] = (0, import_react158.useState)("\u9521"), [end, setEnd] = (0, import_react158.useState)(() => {
+  const [reports, setReports] = (0, import_react169.useState)([]), [draft, setDraft] = (0, import_react169.useState)(null), [text7, setText] = (0, import_react169.useState)("");
+  const [dirty, setDirty] = (0, import_react169.useState)(false), [status, setStatus] = (0, import_react169.useState)("\u6B63\u5728\u52A0\u8F7D"), [error3, setError] = (0, import_react169.useState)("");
+  const [reportWarnings, setReportWarnings] = (0, import_react169.useState)([]);
+  const [preview, setPreview] = (0, import_react169.useState)(null), [pdf, setPdf] = (0, import_react169.useState)(null), [identity2, setIdentity] = (0, import_react169.useState)(null), [panel, setPanel] = (0, import_react169.useState)(null), [busy, setBusy] = (0, import_react169.useState)(false);
+  const [variety, setVariety] = (0, import_react169.useState)("\u9521"), [end, setEnd] = (0, import_react169.useState)(() => {
     const d = /* @__PURE__ */ new Date();
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-  }), [analysisPrompt, setAnalysisPrompt] = (0, import_react158.useState)(DEFAULT_PROMPT_TEMPLATE), [webSearchEnabled, setWebSearchEnabled] = (0, import_react158.useState)(false);
-  const [templates, setTemplates] = (0, import_react158.useState)([]), [tmplId, setTmplId] = (0, import_react158.useState)(""), [tmplName, setTmplName] = (0, import_react158.useState)("");
-  const [confirmClose, setConfirmClose] = (0, import_react158.useState)(false);
-  const [confirmPublish, setConfirmPublish] = (0, import_react158.useState)(false);
-  const [settingsOpen, setSettingsOpen] = (0, import_react158.useState)(false);
-  const current = (0, import_react158.useRef)({}), alive = (0, import_react158.useRef)(true), saving = (0, import_react158.useRef)(false), revision = (0, import_react158.useRef)(0), previewSerial = (0, import_react158.useRef)(0);
+  }), [analysisPrompt, setAnalysisPrompt] = (0, import_react169.useState)(DEFAULT_PROMPT_TEMPLATE), [webSearchEnabled, setWebSearchEnabled] = (0, import_react169.useState)(false);
+  const [templates, setTemplates] = (0, import_react169.useState)([]), [tmplId, setTmplId] = (0, import_react169.useState)(""), [tmplName, setTmplName] = (0, import_react169.useState)("");
+  const [confirmClose, setConfirmClose] = (0, import_react169.useState)(false);
+  const [confirmPublish, setConfirmPublish] = (0, import_react169.useState)(false);
+  const [settingsOpen, setSettingsOpen] = (0, import_react169.useState)(false);
+  const [aiModel, setAiModel] = (0, import_react169.useState)(null);
+  const current = (0, import_react169.useRef)({}), alive = (0, import_react169.useRef)(true), saving = (0, import_react169.useRef)(false), revision = (0, import_react169.useRef)(0), previewSerial = (0, import_react169.useRef)(0);
+  (0, import_react169.useEffect)(() => {
+    let live = true;
+    hostFetch("/api/run19/review", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "aiDefaultModel" }) }).then(async (r4) => {
+      if (live && r4.ok) {
+        const d = await r4.json();
+        const m2 = d?.value;
+        if (m2?.model) setAiModel({ provider: m2.provider, model: m2.model });
+      } else {
+        console.error("[run19] ai-default-model failed:", r4.status);
+      }
+    }).catch((e6) => {
+      console.error("[run19] ai-default-model error:", e6);
+    });
+    return () => {
+      live = false;
+    };
+  }, []);
   async function generate(event) {
     event.preventDefault();
     if (current.current.dirty || saving.current || current.current.busy) return;
@@ -115187,7 +121402,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       saving.current = false;
     }
   }
-  (0, import_react158.useEffect)(() => {
+  (0, import_react169.useEffect)(() => {
     alive.current = true;
     request("list").then((v) => {
       if (alive.current) {
@@ -115203,12 +121418,12 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       previewSerial.current++;
     };
   }, [sessionId]);
-  (0, import_react158.useEffect)(() => {
+  (0, import_react169.useEffect)(() => {
     if (!dirty || error3) return;
     const timer = setTimeout(save, 650);
     return () => clearTimeout(timer);
   }, [text7, dirty, draft?.saveToken, busy, error3]);
-  (0, import_react158.useEffect)(() => {
+  (0, import_react169.useEffect)(() => {
     const timer = setInterval(async () => {
       const c4 = current.current;
       if (!c4.draft || c4.dirty || saving.current || c4.busy) return;
@@ -115222,7 +121437,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
     }, 5e3);
     return () => clearInterval(timer);
   }, [sessionId]);
-  (0, import_react158.useEffect)(() => {
+  (0, import_react169.useEffect)(() => {
     if (!draft || dirty) return;
     const serial = ++previewSerial.current;
     let cancelled = false, timer;
@@ -115242,7 +121457,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       clearTimeout(timer);
     };
   }, [draft?.reportId, draft?.saveToken, dirty]);
-  (0, import_react158.useEffect)(() => {
+  (0, import_react169.useEffect)(() => {
     const warn = (e6) => {
       if (current.current.dirty) {
         e6.preventDefault();
@@ -115347,7 +121562,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
     }
   }
   const assetKey = previewAssetKey(preview);
-  (0, import_react158.useEffect)(() => {
+  (0, import_react169.useEffect)(() => {
     let cancelled = false, ownedUrl;
     setPdf(null);
     if (!assetKey) return;
@@ -115382,7 +121597,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
     setDirty(true);
     setStatus("\u6709\u672A\u4FDD\u5B58\u4FEE\u6539");
   };
-  const editorRef = (0, import_react158.useRef)(null), markdownScrollRef = (0, import_react158.useRef)(null);
+  const editorRef = (0, import_react169.useRef)(null), markdownScrollRef = (0, import_react169.useRef)(null);
   usePreviewScroll(editorRef, markdownScrollRef, viewMode === "markdown" && stage === "editor", text7, readOnly2);
   const warnings = safeWarnings(reportWarnings.map((w4) => w4.code), draft?.warnings, preview?.warnings);
   const verified = identity2?.confirmed === true && !!identity2?.displayName;
@@ -115393,85 +121608,85 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
     if (dirty) setConfirmClose(true);
     else close2();
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("dialog", { ref: dialogRef, "aria-label": "\u5468\u62A5\u5BA1\u9605\u5DE5\u4F5C\u53F0", className: "rr-workspace", "data-focus": focused && stage === "editor", "data-stage": stage, "data-mode": mode, onCancel: (event) => {
+  return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("dialog", { ref: dialogRef, "aria-label": "\u5468\u62A5\u5BA1\u9605\u5DE5\u4F5C\u53F0", className: "rr-workspace", "data-focus": focused && stage === "editor", "data-stage": stage, "data-mode": mode, onCancel: (event) => {
     event.preventDefault();
     requestClose();
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("style", { children: workspace_default }),
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("header", { className: "rr-header", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("strong", { className: "rr-app-title", children: "\u5468\u62A5\u5DE5\u4F5C\u53F0" }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-steps", role: "group", "aria-label": "\u5DE5\u4F5C\u6D41\u7A0B", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", "aria-pressed": stage === "generation", onClick: () => {
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("style", { children: workspace_default }),
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("header", { className: "rr-header", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("strong", { className: "rr-app-title", children: "\u5468\u62A5\u5DE5\u4F5C\u53F0" }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-steps", role: "group", "aria-label": "\u5DE5\u4F5C\u6D41\u7A0B", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", "aria-pressed": stage === "generation", onClick: () => {
           setStage("generation");
           setFocused(false);
         }, children: "1 \u751F\u6210\u4E0E\u5206\u6790" }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: !draft, "aria-pressed": stage === "editor", onClick: () => setStage("editor"), children: "2 \u53EF\u89C6\u5316\u7F16\u8F91" })
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: !draft, "aria-pressed": stage === "editor", onClick: () => setStage("editor"), children: "2 \u53EF\u89C6\u5316\u7F16\u8F91" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: busy || demo, title: demo ? "\u6F14\u793A\u6A21\u5F0F\u4E0D\u542B\u8FDE\u63A5\u8BBE\u7F6E" : "WeKnora \u8FDE\u63A5\u4E0E\u5BC6\u94A5", "aria-haspopup": "dialog", onClick: () => setSettingsOpen(true), children: "\u2699 \u8BBE\u7F6E" }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button rr-mode-switch", disabled: busy || dirty, onClick: () => {
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy || demo, title: demo ? "\u6F14\u793A\u6A21\u5F0F\u4E0D\u542B\u8FDE\u63A5\u8BBE\u7F6E" : "WeKnora \u8FDE\u63A5\u4E0E\u5BC6\u94A5", "aria-haspopup": "dialog", onClick: () => setSettingsOpen(true), children: "\u2699 \u8BBE\u7F6E" }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button rr-mode-switch", disabled: busy || dirty, onClick: () => {
         if (!saving.current) onModeChange(demo ? "real" : "demo");
       }, children: demo ? "\u5207\u6362\u771F\u5B9E\u6A21\u5F0F" : "\u4F53\u9A8C\u6F14\u793A\u6570\u636E" }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", hidden: stage !== "editor", "aria-pressed": focused, onClick: () => setFocused((v) => !v), children: focused ? "\u9000\u51FA\u4E13\u6CE8" : "\u4E13\u6CE8\u6B63\u6587" }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: busy, onClick: requestClose, children: "\u5173\u95ED" })
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", hidden: stage !== "editor", "aria-pressed": focused, onClick: () => setFocused((v) => !v), children: focused ? "\u9000\u51FA\u4E13\u6CE8" : "\u4E13\u6CE8\u6B63\u6587" }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy, onClick: requestClose, children: "\u5173\u95ED" })
     ] }),
-    demo && /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-demo-banner", role: "note", children: [
+    demo && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-demo-banner", role: "note", children: [
       "\u672C\u5730\u6F14\u793A \xB7 \u6570\u636E\u4E0E\u5206\u6790\u5747\u4E3A\u6A21\u62DF\u6837\u4F8B\uFF0C\u4FDD\u5B58\u5728\u6B64\u6D4F\u89C8\u5668\uFF1B\u4E0D\u8FDE\u63A5\u6570\u636E\u5E93\uFF0C\u4E0D\u8C03\u7528 AI\uFF0C\u4E0D\u4E0A\u4F20\u77E5\u8BC6\u5E93\u3002",
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: busy || dirty, title: dirty ? "\u8BF7\u5148\u4FDD\u5B58\u5F53\u524D\u7A3F" : "\u65B0\u5EFA\u5B8C\u6574\u6837\u4F8B\uFF0C\u4E0D\u8986\u76D6\u5DF2\u6709\u6F14\u793A\u7A3F", onClick: generate, children: "\u65B0\u5EFA\u5B8C\u6574\u6F14\u793A\u5468\u62A5" })
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy || dirty, title: dirty ? "\u8BF7\u5148\u4FDD\u5B58\u5F53\u524D\u7A3F" : "\u65B0\u5EFA\u5B8C\u6574\u6837\u4F8B\uFF0C\u4E0D\u8986\u76D6\u5DF2\u6709\u6F14\u793A\u7A3F", onClick: generate, children: "\u65B0\u5EFA\u5B8C\u6574\u6F14\u793A\u5468\u62A5" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-layout", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("nav", { className: "rr-sidebar", "aria-label": "\u5468\u62A5\u6863\u6848", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-section-heading", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("h2", { children: "\u7814\u7A76\u6863\u6848" }),
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-badge", children: reports.length })
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-layout", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("nav", { className: "rr-sidebar", "aria-label": "\u5468\u62A5\u6863\u6848", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-section-heading", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h2", { children: "\u7814\u7A76\u6863\u6848" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-badge", children: reports.length })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button rr-button--primary", disabled: busy || dirty, onClick: () => {
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button rr-button--primary", disabled: busy || dirty, onClick: () => {
           setStage("generation");
           setFocused(false);
         }, children: "\uFF0B \u65B0\u5EFA\u5468\u62A5" }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { "aria-label": "\u641C\u7D22\u62A5\u544A", placeholder: "\u641C\u7D22\u62A5\u544A\u2026", type: "search", value: search2, onChange: (e6) => setSearch(e6.target.value) }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-report-list", children: [
-          visibleReports.map((r4) => /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("button", { className: "rr-report-item", "aria-current": draft?.reportId === r4.reportId ? "page" : void 0, disabled: busy || dirty, onClick: () => load(r4.reportId), children: [
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("strong", { children: r4.title || r4.reportId }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { children: r4.status === "confirmed" ? "\u5DF2\u786E\u8BA4\u7248\u672C" : "\u7814\u7A76\u8349\u7A3F" })
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { "aria-label": "\u641C\u7D22\u62A5\u544A", placeholder: "\u641C\u7D22\u62A5\u544A\u2026", type: "search", value: search2, onChange: (e6) => setSearch(e6.target.value) }),
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-report-list", children: [
+          visibleReports.map((r4) => /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("button", { className: "rr-report-item", "aria-current": draft?.reportId === r4.reportId ? "page" : void 0, disabled: busy || dirty, onClick: () => load(r4.reportId), children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("strong", { children: r4.title || r4.reportId }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { children: r4.status === "confirmed" ? "\u5DF2\u786E\u8BA4\u7248\u672C" : "\u7814\u7A76\u8349\u7A3F" })
           ] }, r4.reportId)),
-          !visibleReports.length && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-empty", children: search2 ? "\u6CA1\u6709\u5339\u914D\u7684\u62A5\u544A" : "\u6682\u65E0\u62A5\u544A\uFF0C\u65B0\u5EFA\u4E00\u4EFD\u5F00\u59CB\u7814\u7A76\u3002" })
+          !visibleReports.length && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-empty", children: search2 ? "\u6CA1\u6709\u5339\u914D\u7684\u62A5\u544A" : "\u6682\u65E0\u62A5\u544A\uFF0C\u65B0\u5EFA\u4E00\u4EFD\u5F00\u59CB\u7814\u7A76\u3002" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("p", { className: "rr-sidebar-note", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("p", { className: "rr-sidebar-note", children: [
           "\u4ECE\u672C\u5468\u6570\u636E\u51FA\u53D1\uFF0C\u7559\u4E0B\u5224\u65AD\u4E0E\u4F9D\u636E\u3002",
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("br", {}),
           "\u4FDD\u5B58\u540E\u53EF\u5207\u6362\u62A5\u544A\u3002"
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("main", { className: "rr-main", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("section", { className: "rr-generation-stage", "aria-label": "\u751F\u6210\u4E0E\u5206\u6790", hidden: stage !== "generation", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("header", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("h1", { children: "\u751F\u6210\u5468\u62A5" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-muted", children: "\u5148\u786E\u5B9A\u54C1\u79CD\u3001\u622A\u6B62\u65E5\u671F\u548C\u5206\u6790\u8981\u6C42\u3002\u751F\u6210\u540E\u8FDB\u5165\u53EF\u89C6\u5316\u7F16\u8F91\uFF0C\u5DF2\u6709\u62A5\u544A\u4E0D\u4F1A\u88AB\u8986\u76D6\u3002" })
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("main", { className: "rr-main", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("section", { className: "rr-generation-stage", "aria-label": "\u751F\u6210\u4E0E\u5206\u6790", hidden: stage !== "generation", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("header", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h1", { children: "\u751F\u6210\u5468\u62A5" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-muted", children: "\u5148\u786E\u5B9A\u54C1\u79CD\u3001\u622A\u6B62\u65E5\u671F\u548C\u5206\u6790\u8981\u6C42\u3002\u751F\u6210\u540E\u8FDB\u5165\u53EF\u89C6\u5316\u7F16\u8F91\uFF0C\u5DF2\u6709\u62A5\u544A\u4E0D\u4F1A\u88AB\u8986\u76D6\u3002" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("form", { onSubmit: generate, className: "rr-generation-form", "aria-label": "\u751F\u6210\u5468\u62A5\u53C2\u6570", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-generation-basics", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("form", { onSubmit: generate, className: "rr-generation-form", "aria-label": "\u751F\u6210\u5468\u62A5\u53C2\u6570", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-generation-basics", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("label", { children: [
                 "\u5546\u54C1 ",
-                /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { "aria-label": "\u5546\u54C1", value: variety, disabled: busy, onChange: (e6) => setVariety(e6.target.value), className: "rr-commodity-input", required: true })
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { "aria-label": "\u5546\u54C1", value: variety, disabled: busy, onChange: (e6) => setVariety(e6.target.value), className: "rr-commodity-input", required: true })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("label", { children: [
                 "\u622A\u6B62\u65E5\u671F ",
-                /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { "aria-label": "\u622A\u6B62\u65E5\u671F", type: "date", value: end, disabled: busy, onChange: (e6) => setEnd(e6.target.value), required: true })
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { "aria-label": "\u622A\u6B62\u65E5\u671F", type: "date", value: end, disabled: busy, onChange: (e6) => setEnd(e6.target.value), required: true })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("label", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { type: "checkbox", checked: webSearchEnabled, disabled: busy, onChange: (e6) => setWebSearchEnabled(e6.target.checked) }),
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("label", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { type: "checkbox", checked: webSearchEnabled, disabled: busy, onChange: (e6) => setWebSearchEnabled(e6.target.checked) }),
                 "\u8054\u7F51\u68C0\u7D22\uFF08\u65B0\u95FB/\u5916\u90E8\u4FE1\u6E90\uFF09"
               ] })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-form-heading", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("h2", { children: "\u5206\u6790\u8981\u6C42" }),
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-muted", children: "\u9009\u7528\u6A21\u677F\u5F00\u59CB\uFF0C\u4E5F\u53EF\u4EE5\u76F4\u63A5\u8C03\u6574\u7AE0\u8282\u548C\u7814\u7A76\u91CD\u70B9\u3002\u7559\u7A7A\u5219\u4EC5\u6574\u7406 7 \u5929\u6570\u636E\u3002" })
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-form-heading", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h2", { children: "\u5206\u6790\u8981\u6C42" }),
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-muted", children: "\u9009\u7528\u6A21\u677F\u5F00\u59CB\uFF0C\u4E5F\u53EF\u4EE5\u76F4\u63A5\u8C03\u6574\u7AE0\u8282\u548C\u7814\u7A76\u91CD\u70B9\u3002\u7559\u7A7A\u5219\u4EC5\u6574\u7406 7 \u5929\u6570\u636E\u3002" })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-template-tools", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsx)(TemplateSelect, { value: tmplId, templates, disabled: busy, onChange: loadTemplate }),
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { "aria-label": "\u6A21\u677F\u540D\u79F0", placeholder: "\u6A21\u677F\u540D\u79F0\uFF08\u53EF\u7559\u7A7A\uFF09", value: tmplName, onChange: (e6) => setTmplName(e6.target.value), disabled: busy, className: "rr-template-name" }),
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { type: "button", className: "rr-button", disabled: busy || !analysisPrompt.trim(), onClick: saveTemplate, children: "\u4FDD\u5B58\u4E3A\u6A21\u677F" }),
-              tmplId && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { type: "button", className: "rr-button", disabled: busy, onClick: async () => {
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-template-tools", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(TemplateSelect, { value: tmplId, templates, disabled: busy, onChange: loadTemplate }),
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { "aria-label": "\u6A21\u677F\u540D\u79F0", placeholder: "\u6A21\u677F\u540D\u79F0\uFF08\u53EF\u7559\u7A7A\uFF09", value: tmplName, onChange: (e6) => setTmplName(e6.target.value), disabled: busy, className: "rr-template-name" }),
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { type: "button", className: "rr-button", disabled: busy || !analysisPrompt.trim(), onClick: saveTemplate, children: "\u4FDD\u5B58\u4E3A\u6A21\u677F" }),
+              tmplId && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { type: "button", className: "rr-button", disabled: busy, onClick: async () => {
                 try {
                   const r4 = await request("templateDelete", { id: tmplId });
                   if (r4?.deleted && alive.current) {
@@ -115484,129 +121699,129 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
                 }
               }, children: "\u5220\u9664\u6A21\u677F" })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("textarea", { "aria-label": "\u5206\u6790\u8981\u6C42\uFF08\u53EF\u9009\uFF09", value: analysisPrompt, disabled: busy, onChange: (e6) => setAnalysisPrompt(e6.target.value), rows: 12, className: "rr-prompt", placeholder: "\u7559\u7A7A\u5219\u4EC5\u6309 7 \u5929\u6570\u636E\u51FA\u5468\u62A5\u3002\u9700\u8981\u7ED3\u5408\u5386\u53F2\u5468\u62A5\u65F6\u5199\u6E05\u8981\u6C42\uFF0C\u5982\u201C\u8BF7\u7ED3\u5408\u8FD1\u56DB\u5468\u540C\u54C1\u7C7B\u5468\u62A5\u505A\u8FDE\u7EED\u6027\u68B3\u7406\u201D\uFF1B\u4E5F\u53EF\u53EA\u5199\u201C\u8865\u5145\u591A\u7A7A\u903B\u8F91\u201D\u201C\u5206\u6790\u4F9B\u9700\u7ED3\u6784\u201D\u7B49\u3002" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button rr-button--primary", type: "submit", disabled: busy || dirty || !demo && !sessionId, children: demo ? "\u751F\u6210\u6F14\u793A\u5468\u62A5" : "\u751F\u6210\u5468\u62A5" })
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("textarea", { "aria-label": "\u5206\u6790\u8981\u6C42\uFF08\u53EF\u9009\uFF09", value: analysisPrompt, disabled: busy, onChange: (e6) => setAnalysisPrompt(e6.target.value), rows: 12, className: "rr-prompt", placeholder: "\u7559\u7A7A\u5219\u4EC5\u6309 7 \u5929\u6570\u636E\u51FA\u5468\u62A5\u3002\u9700\u8981\u7ED3\u5408\u5386\u53F2\u5468\u62A5\u65F6\u5199\u6E05\u8981\u6C42\uFF0C\u5982\u201C\u8BF7\u7ED3\u5408\u8FD1\u56DB\u5468\u540C\u54C1\u7C7B\u5468\u62A5\u505A\u8FDE\u7EED\u6027\u68B3\u7406\u201D\uFF1B\u4E5F\u53EF\u53EA\u5199\u201C\u8865\u5145\u591A\u7A7A\u903B\u8F91\u201D\u201C\u5206\u6790\u4F9B\u9700\u7ED3\u6784\u201D\u7B49\u3002" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button rr-button--primary", type: "submit", disabled: busy || dirty || !demo && !sessionId, children: demo ? "\u751F\u6210\u6F14\u793A\u5468\u62A5" : "\u751F\u6210\u5468\u62A5" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("section", { className: "rr-blank-create", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("h2", { children: "\u6216\u4ECE\u7A7A\u767D\u6B63\u6587\u5F00\u59CB" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-row", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("input", { "aria-label": "\u7A7A\u767D\u62A5\u544A\u6807\u9898", placeholder: "\u8F93\u5165\u62A5\u544A\u6807\u9898", value: blankTitle, onChange: (e6) => setBlankTitle(e6.target.value) }),
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { type: "button", className: "rr-button", disabled: busy || dirty || !blankTitle.trim() || !demo && !sessionId, onClick: createBlank, children: "\u521B\u5EFA\u7A7A\u767D\u62A5\u544A" })
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("section", { className: "rr-blank-create", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h2", { children: "\u6216\u4ECE\u7A7A\u767D\u6B63\u6587\u5F00\u59CB" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-row", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { "aria-label": "\u7A7A\u767D\u62A5\u544A\u6807\u9898", placeholder: "\u8F93\u5165\u62A5\u544A\u6807\u9898", value: blankTitle, onChange: (e6) => setBlankTitle(e6.target.value) }),
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { type: "button", className: "rr-button", disabled: busy || dirty || !blankTitle.trim() || !demo && !sessionId, onClick: createBlank, children: "\u521B\u5EFA\u7A7A\u767D\u62A5\u544A" })
             ] })
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("section", { className: "rr-editor-stage", hidden: stage !== "editor", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("header", { className: "rr-report-header", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-eyebrow", children: "WEEKLY RESEARCH" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("h1", { children: draft?.title || "\u5F00\u59CB\u672C\u5468\u7814\u7A76" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-row", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-badge", children: draft?.status === "confirmed" ? "\u5DF2\u786E\u8BA4 \xB7 \u53EA\u8BFB" : dirty ? "\u5F85\u4FDD\u5B58" : draft ? "\u7814\u7A76\u8349\u7A3F" : "\u672A\u9009\u62E9\u62A5\u544A" }),
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-muted", children: "\u5148\u770B\u7ED3\u8BBA\uFF0C\u518D\u6838\u5BF9\u8BC1\u636E" })
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("section", { className: "rr-editor-stage", hidden: stage !== "editor", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("header", { className: "rr-report-header", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-eyebrow", children: "WEEKLY RESEARCH" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h1", { children: draft?.title || "\u5F00\u59CB\u672C\u5468\u7814\u7A76" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-row", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-badge", children: draft?.status === "confirmed" ? "\u5DF2\u786E\u8BA4 \xB7 \u53EA\u8BFB" : dirty ? "\u5F85\u4FDD\u5B58" : draft ? "\u7814\u7A76\u8349\u7A3F" : "\u672A\u9009\u62E9\u62A5\u544A" }),
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-muted", children: "\u5148\u770B\u7ED3\u8BBA\uFF0C\u518D\u6838\u5BF9\u8BC1\u636E" })
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-toolbar", role: "group", "aria-label": "\u6587\u6863\u89C6\u56FE", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", "aria-pressed": viewMode === "editor", onClick: () => setViewMode("editor"), children: "\u53EF\u89C6\u5316\u7F16\u8F91" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: !draft, "aria-pressed": viewMode === "markdown", onClick: () => {
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-toolbar", role: "group", "aria-label": "\u6587\u6863\u89C6\u56FE", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", "aria-pressed": viewMode === "editor", onClick: () => setViewMode("editor"), children: "\u53EF\u89C6\u5316\u7F16\u8F91" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: !draft, "aria-pressed": viewMode === "markdown", onClick: () => {
               setViewMode("markdown");
               setFocused(true);
             }, children: "Markdown \u5B9E\u65F6\u6D4F\u89C8" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: !draft, "aria-pressed": viewMode === "pdf", onClick: () => {
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: !draft, "aria-pressed": viewMode === "pdf", onClick: () => {
               setViewMode("pdf");
               setFocused(true);
             }, children: "PDF \u5B9E\u65F6\u6D4F\u89C8" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: !synced || busy, title: synced ? "\u5BFC\u51FA\u5F53\u524D\u5DF2\u4FDD\u5B58\u7248\u672C" : "\u7B49\u5F85\u5F53\u524D\u5185\u5BB9\u4FDD\u5B58\u5E76\u5B8C\u6210 PDF \u751F\u6210\u540E\u53EF\u5BFC\u51FA", onClick: () => {
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: !synced || busy, title: synced ? "\u5BFC\u51FA\u5F53\u524D\u5DF2\u4FDD\u5B58\u7248\u672C" : "\u7B49\u5F85\u5F53\u524D\u5185\u5BB9\u4FDD\u5B58\u5E76\u5B8C\u6210 PDF \u751F\u6210\u540E\u53EF\u5BFC\u51FA", onClick: () => {
               if (!synced) return;
               const link3 = document.createElement("a");
               link3.href = pdf.url;
               link3.download = demo ? "demo-weekly-report.pdf" : (draft.title || "weekly-report").replace(/[<>:"/\\|?*]/g, "_") + ".pdf";
               link3.click();
             }, children: "\u5BFC\u51FA PDF" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button rr-button--primary rr-push", disabled: !dirty || readOnly2, onClick: () => {
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button rr-button--primary rr-push", disabled: !dirty || readOnly2, onClick: () => {
               setError("");
               save();
             }, children: "\u4FDD\u5B58 / \u91CD\u8BD5" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-engine-note", children: "\u5207\u6362\u6A21\u5F0F\u4FDD\u7559\u6B63\u6587\u5185\u5BB9\uFF1B\u53EF\u89C6\u5316\u4E0E\u6E90\u7801\u4E4B\u95F4\u5207\u6362\u65F6\uFF0C\u64A4\u9500\u5386\u53F2\u91CD\u65B0\u5F00\u59CB\u3002" }),
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-document-panes", "data-view": viewMode, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-source-pane", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-pane-heading", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("strong", { children: sourceMode ? "Markdown \u6E90\u7801" : "\u53EF\u89C6\u5316\u7F16\u8F91" }),
-                /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { children: dirty ? "\u672A\u4FDD\u5B58" : "\u81EA\u52A8\u4FDD\u5B58" })
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-engine-note", children: "\u5207\u6362\u6A21\u5F0F\u4FDD\u7559\u6B63\u6587\u5185\u5BB9\uFF1B\u53EF\u89C6\u5316\u4E0E\u6E90\u7801\u4E4B\u95F4\u5207\u6362\u65F6\uFF0C\u64A4\u9500\u5386\u53F2\u91CD\u65B0\u5F00\u59CB\u3002" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-document-panes", "data-view": viewMode, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-source-pane", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-pane-heading", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("strong", { children: sourceMode ? "Markdown \u6E90\u7801" : "\u53EF\u89C6\u5316\u7F16\u8F91" }),
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { children: dirty ? "\u672A\u4FDD\u5B58" : "\u81EA\u52A8\u4FDD\u5B58" })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("section", { className: "rr-canvas", "aria-label": "\u62A5\u544A\u6B63\u6587", children: draft ? sourceMode ? /* @__PURE__ */ (0, import_jsx_runtime125.jsx)(Editor2, { editorRef, value: text7, readOnly: readOnly2, onChange: changeText }, draft.reportId) : /* @__PURE__ */ (0, import_jsx_runtime125.jsx)(BlockEditor, { value: text7, readOnly: readOnly2, onSource: () => {
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("section", { className: "rr-canvas", "aria-label": "\u62A5\u544A\u6B63\u6587", children: draft ? sourceMode ? /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(Editor2, { editorRef, value: text7, readOnly: readOnly2, onChange: changeText }, draft.reportId) : /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(BlockEditor, { value: text7, readOnly: readOnly2, onSource: () => {
                 setViewMode("markdown");
                 setFocused(true);
-              }, onChange: changeText }, draft.reportId) : /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-welcome", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-eyebrow", children: "\u672C\u5468\u7684\u5224\u65AD\uFF0C\u4ECE\u8FD9\u91CC\u5F00\u59CB" }),
-                /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("h2", { children: "\u628A\u6570\u636E\u6574\u7406\u6210\u6709\u4F9D\u636E\u7684\u89C2\u70B9" }),
-                /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { children: "\u4ECE\u5DE6\u4FA7\u6253\u5F00\u5DF2\u6709\u62A5\u544A\uFF0C\u6216\u65B0\u5EFA\u5468\u62A5\u540E\u4F7F\u7528\u4E0A\u65B9\u8BBE\u7F6E\u751F\u6210\u521D\u7A3F\u3002" }),
-                /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-muted", children: "\u751F\u6210\u521D\u7A3F \u2192 \u4EBA\u5DE5\u5BA1\u9605 \u2192 \u786E\u8BA4\u7248\u672C \u2192 \u53D1\u5E03\u4E0E\u6838\u5BF9" })
+              }, onChange: changeText }, draft.reportId) : /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-welcome", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-eyebrow", children: "\u672C\u5468\u7684\u5224\u65AD\uFF0C\u4ECE\u8FD9\u91CC\u5F00\u59CB" }),
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h2", { children: "\u628A\u6570\u636E\u6574\u7406\u6210\u6709\u4F9D\u636E\u7684\u89C2\u70B9" }),
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u4ECE\u5DE6\u4FA7\u6253\u5F00\u5DF2\u6709\u62A5\u544A\uFF0C\u6216\u65B0\u5EFA\u5468\u62A5\u540E\u4F7F\u7528\u4E0A\u65B9\u8BBE\u7F6E\u751F\u6210\u521D\u7A3F\u3002" }),
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-muted", children: "\u751F\u6210\u521D\u7A3F \u2192 \u4EBA\u5DE5\u5BA1\u9605 \u2192 \u786E\u8BA4\u7248\u672C \u2192 \u53D1\u5E03\u4E0E\u6838\u5BF9" })
               ] }) })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("section", { className: "rr-markdown-preview", "aria-label": "Markdown \u5B9E\u65F6\u9884\u89C8", hidden: viewMode !== "markdown", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-pane-heading", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("strong", { children: "\u9605\u8BFB\u9884\u89C8" }),
-                /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { children: "\u968F\u8F93\u5165\u5B9E\u65F6\u66F4\u65B0" })
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("section", { className: "rr-markdown-preview", "aria-label": "Markdown \u5B9E\u65F6\u9884\u89C8", hidden: viewMode !== "markdown", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-pane-heading", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("strong", { children: "\u9605\u8BFB\u9884\u89C8" }),
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { children: "\u968F\u8F93\u5165\u5B9E\u65F6\u66F4\u65B0" })
               ] }),
-              viewMode === "markdown" && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)(MarkdownPreview, { text: text7, scrollRef: markdownScrollRef })
+              viewMode === "markdown" && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(MarkdownPreview, { text: text7, scrollRef: markdownScrollRef })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("section", { className: "rr-pdf", "aria-label": "\u62A5\u544A\u7248\u5F0F", hidden: viewMode !== "pdf", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-pane-heading", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("strong", { children: "PDF \u7248\u5F0F" }),
-                /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { children: synced ? "\u5DF2\u540C\u6B65" : "\u7B49\u5F85\u751F\u6210 / \u65E7\u9884\u89C8" })
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("section", { className: "rr-pdf", "aria-label": "\u62A5\u544A\u7248\u5F0F", hidden: viewMode !== "pdf", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-pane-heading", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("strong", { children: "PDF \u7248\u5F0F" }),
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { children: synced ? "\u5DF2\u540C\u6B65" : "\u7B49\u5F85\u751F\u6210 / \u65E7\u9884\u89C8" })
               ] }),
-              pdf ? /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)(import_jsx_runtime125.Fragment, { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("a", { href: pdf.url, target: "_blank", rel: "noreferrer", download: demo ? "demo-weekly-report.pdf" : void 0, children: [
+              pdf ? /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("a", { href: pdf.url, target: "_blank", rel: "noreferrer", download: demo ? "demo-weekly-report.pdf" : void 0, children: [
                   demo ? "\u4E0B\u8F7D\u6F14\u793A PDF\uFF08\u6A21\u62DF\u6570\u636E\uFF09" : "\u4E0B\u8F7D / \u6253\u5F00\u5F53\u524D PDF",
                   !synced ? "\uFF08\u65E7\u9884\u89C8\uFF09" : ""
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("object", { "aria-label": "\u5B9E\u9645 PDF \u9884\u89C8", data: pdf.url, type: "application/pdf", className: "rr-pdf-object", children: /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("a", { href: pdf.url, target: "_blank", rel: "noreferrer", children: "\u6D4F\u89C8\u5668\u65E0\u6CD5\u5185\u5D4C PDF\uFF0C\u8BF7\u6253\u5F00\u5B9E\u9645 PDF" }) })
-              ] }) : /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-empty", children: "\u5C1A\u65E0\u53EF\u7528\u5B9E\u9645 PDF\uFF0C\u4FDD\u5B58\u540E\u7B49\u5F85\u9884\u89C8\u751F\u6210\u3002" })
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("object", { "aria-label": "\u5B9E\u9645 PDF \u9884\u89C8", data: pdf.url, type: "application/pdf", className: "rr-pdf-object", children: /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("a", { href: pdf.url, target: "_blank", rel: "noreferrer", children: "\u6D4F\u89C8\u5668\u65E0\u6CD5\u5185\u5D4C PDF\uFF0C\u8BF7\u6253\u5F00\u5B9E\u9645 PDF" }) })
+              ] }) : /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-empty", children: "\u5C1A\u65E0\u53EF\u7528\u5B9E\u9645 PDF\uFF0C\u4FDD\u5B58\u540E\u7B49\u5F85\u9884\u89C8\u751F\u6210\u3002" })
             ] })
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("aside", { className: "rr-inspector", "aria-label": "\u5BA1\u9605\u4E0E\u4EA4\u4ED8", hidden: stage !== "editor", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-section-heading", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("h2", { children: "\u5BA1\u9605\u4E0E\u4EA4\u4ED8" }),
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("span", { className: "rr-badge", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("aside", { className: "rr-inspector", "aria-label": "\u5BA1\u9605\u4E0E\u4EA4\u4ED8", hidden: stage !== "editor", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-section-heading", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h2", { children: "\u5BA1\u9605\u4E0E\u4EA4\u4ED8" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("span", { className: "rr-badge", children: [
             warnings.length,
             " \u9879\u63D0\u793A"
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("section", { className: "rr-review-card", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("span", { className: "rr-eyebrow", children: "\u5F53\u524D\u7248\u672C" }),
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("h3", { children: draft?.status === "confirmed" ? "\u5185\u5BB9\u5DF2\u51BB\u7ED3" : "\u4FDD\u7559\u4F60\u7684\u4E13\u4E1A\u5224\u65AD" }),
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { children: draft?.status === "confirmed" ? "\u786E\u8BA4\u7A3F\u53EA\u8BFB\u3002\u540E\u7EED\u4FEE\u6539\u8BF7\u5F00\u542F\u65B0\u4FEE\u8BA2\u3002" : "\u6838\u5BF9\u6570\u636E\u53E3\u5F84\u3001\u5F15\u7528\u6750\u6599\u4E0E\u63A8\u7406\uFF0C\u518D\u786E\u8BA4\u672C\u671F\u7248\u672C\u3002" }),
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-action-stack", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: !draft || dirty || busy, onClick: () => action("timeline"), children: "\u7248\u672C\u5386\u53F2\u4E0E\u5DEE\u5F02" }),
-            (draft?.annotations || []).length > 0 && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: dirty || busy, onClick: () => action("humanItems"), children: "\u91CD\u70B9\u4EBA\u5DE5\u4FE1\u606F" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button rr-button--primary", disabled: !draft || dirty || readOnly2 || !verified, onClick: () => setConfirmPublish(true), children: demo ? "\u6A21\u62DF\u786E\u8BA4\u53D1\u5E03" : "\u786E\u8BA4\u53D1\u5E03" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: !draft || dirty || readOnly2 || !verified, onClick: () => action("confirm"), children: "\u4EC5\u786E\u8BA4\u7248\u672C" }),
-            confirmPublish && /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-notice", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { children: demo ? "\u5C06\u51BB\u7ED3\u6F14\u793A\u7248\u672C\u5E76\u6A21\u62DF\u53D1\u5E03\uFF0C\u5168\u7A0B\u4E0D\u4E0A\u4F20\u3002" : "\u5C06\u51BB\u7ED3\u5F53\u524D\u6B63\u6587\u5E76\u4E0A\u4F20\u5230 WeKnora\uFF0C\u662F\u5426\u7EE7\u7EED\uFF1F" }),
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button rr-button--primary", disabled: busy || dirty || readOnly2 || !verified, onClick: publishAll, children: demo ? "\u786E\u8BA4\u6A21\u62DF\u53D1\u5E03" : "\u786E\u8BA4\u53D1\u5E03\u5E76\u4E0A\u4F20" }),
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("section", { className: "rr-review-card", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-eyebrow", children: "\u5F53\u524D\u7248\u672C" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h3", { children: draft?.status === "confirmed" ? "\u5185\u5BB9\u5DF2\u51BB\u7ED3" : "\u4FDD\u7559\u4F60\u7684\u4E13\u4E1A\u5224\u65AD" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: draft?.status === "confirmed" ? "\u786E\u8BA4\u7A3F\u53EA\u8BFB\u3002\u540E\u7EED\u4FEE\u6539\u8BF7\u5F00\u542F\u65B0\u4FEE\u8BA2\u3002" : "\u6838\u5BF9\u6570\u636E\u53E3\u5F84\u3001\u5F15\u7528\u6750\u6599\u4E0E\u63A8\u7406\uFF0C\u518D\u786E\u8BA4\u672C\u671F\u7248\u672C\u3002" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-action-stack", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: !draft || dirty || busy, onClick: () => action("timeline"), children: "\u7248\u672C\u5386\u53F2\u4E0E\u5DEE\u5F02" }),
+            (draft?.annotations || []).length > 0 && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: dirty || busy, onClick: () => action("humanItems"), children: "\u91CD\u70B9\u4EBA\u5DE5\u4FE1\u606F" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button rr-button--primary", disabled: !draft || dirty || readOnly2 || !verified, onClick: () => setConfirmPublish(true), children: demo ? "\u6A21\u62DF\u786E\u8BA4\u53D1\u5E03" : "\u786E\u8BA4\u53D1\u5E03" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: !draft || dirty || readOnly2 || !verified, onClick: () => action("confirm"), children: "\u4EC5\u786E\u8BA4\u7248\u672C" }),
+            confirmPublish && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-notice", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: demo ? "\u5C06\u51BB\u7ED3\u6F14\u793A\u7248\u672C\u5E76\u6A21\u62DF\u53D1\u5E03\uFF0C\u5168\u7A0B\u4E0D\u4E0A\u4F20\u3002" : "\u5C06\u51BB\u7ED3\u5F53\u524D\u6B63\u6587\u5E76\u4E0A\u4F20\u5230 WeKnora\uFF0C\u662F\u5426\u7EE7\u7EED\uFF1F" }),
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button rr-button--primary", disabled: busy || dirty || readOnly2 || !verified, onClick: publishAll, children: demo ? "\u786E\u8BA4\u6A21\u62DF\u53D1\u5E03" : "\u786E\u8BA4\u53D1\u5E03\u5E76\u4E0A\u4F20" }),
               " ",
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => setConfirmPublish(false), children: "\u53D6\u6D88" })
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => setConfirmPublish(false), children: "\u53D6\u6D88" })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: draft?.status !== "confirmed" || dirty || busy, onClick: () => action("versions"), children: "\u67E5\u770B\u786E\u8BA4\u7248 / \u51C6\u5907\u53D1\u5E03" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: draft?.status !== "confirmed" || dirty || busy, onClick: () => action("startRevision"), children: "\u5F00\u542F\u65B0\u4E00\u8F6E\u4FEE\u8BA2" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: !draft || busy, onClick: () => showPublication(), children: "\u53D1\u5E03\u8BB0\u5F55 / \u53EA\u8BFB\u6838\u5BF9" })
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: draft?.status !== "confirmed" || dirty || busy, onClick: () => action("versions"), children: "\u67E5\u770B\u786E\u8BA4\u7248 / \u51C6\u5907\u53D1\u5E03" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: draft?.status !== "confirmed" || dirty || busy, onClick: () => action("startRevision"), children: "\u5F00\u542F\u65B0\u4E00\u8F6E\u4FEE\u8BA2" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: !draft || busy, onClick: () => showPublication(), children: "\u53D1\u5E03\u8BB0\u5F55 / \u53EA\u8BFB\u6838\u5BF9" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { className: "rr-muted", children: verified ? "\u5BA1\u6838\u7F72\u540D\uFF1A" + identity2.displayName : "\u77E5\u8BC6\u5E93\u8EAB\u4EFD\u672A\u786E\u8BA4\uFF0C\u6682\u4E0D\u80FD\u786E\u8BA4\u7248\u672C\u3002" })
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-muted", children: verified ? "\u5BA1\u6838\u7F72\u540D\uFF1A" + identity2.displayName : "\u77E5\u8BC6\u5E93\u8EAB\u4EFD\u672A\u786E\u8BA4\uFF0C\u6682\u4E0D\u80FD\u786E\u8BA4\u7248\u672C\u3002" })
         ] }),
-        warnings.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("section", { "aria-label": "\u5BA1\u9605\u6CE8\u610F\u4E8B\u9879", role: "status", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("strong", { children: "\u6CE8\u610F\u4E8B\u9879" }),
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("ul", { children: warnings.map((w4) => /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("li", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("code", { children: w4.code }),
+        warnings.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("section", { "aria-label": "\u5BA1\u9605\u6CE8\u610F\u4E8B\u9879", role: "status", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("strong", { children: "\u6CE8\u610F\u4E8B\u9879" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("ul", { children: warnings.map((w4) => /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("li", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("code", { children: w4.code }),
             "\uFF1A",
             w4.message
           ] }, w4.code)) })
         ] }),
-        draft?.retrieval && /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("section", { "aria-label": "\u68C0\u7D22\u7406\u89E3", role: "note", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("strong", { children: "\u68C0\u7D22\u7406\u89E3\uFF08\u6211\u7406\u89E3\u4E3A\u2014\u2014\u7528\u4EE5\u6838\u5BF9\u6709\u6CA1\u6709\u7406\u89E3\u9519\uFF09" }),
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("ul", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("li", { children: [
+        draft?.retrieval && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("section", { "aria-label": "\u68C0\u7D22\u7406\u89E3", role: "note", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("strong", { children: "\u68C0\u7D22\u7406\u89E3\uFF08\u6211\u7406\u89E3\u4E3A\u2014\u2014\u7528\u4EE5\u6838\u5BF9\u6709\u6CA1\u6709\u7406\u89E3\u9519\uFF09" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("ul", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("li", { children: [
               "\u8303\u56F4\uFF1A\u7C7B\u578B ",
               draft.retrieval.scope?.kind || "-",
               "\uFF1B\u8FD1 ",
@@ -115617,13 +121832,13 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
               (draft.retrieval.scope?.queries || []).join("\u3001"),
               "]"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("li", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("li", { children: [
               "\u5B9E\u9645\u5F15\u7528 ",
               draft.retrieval.used?.length || 0,
               " \u4EFD\u77E5\u8BC6\u5E93\u6750\u6599\uFF1A",
               (draft.retrieval.used || []).map((u2) => u2.title).join("\u3001")
             ] }),
-            draft.retrieval.verification?.applied ? /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("li", { children: [
+            draft.retrieval.verification?.applied ? /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("li", { children: [
               "\u6838\u9A8C\uFF1A",
               draft.retrieval.verification.onTopic ? "\u8D34\u5408\u672C\u610F" : "\u53EF\u80FD\u4E0D\u8D34\u5408\u672C\u610F",
               " ",
@@ -115634,40 +121849,40 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
             ] }) : null
           ] })
         ] }),
-        panel && /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("section", { className: "rr-detail", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", onClick: () => setPanel(null), children: "\u5173\u95ED\u8BE6\u60C5" }),
-          panel.type === "humanItems" && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)(HumanItemsPanel, { value: panel.value, readOnly: readOnly2 || dirty || panel.value?.status !== "draft", onSave: (items, saveToken) => action("saveHumanItems", { items, saveToken }) }, `${draft?.reportId}:${panel.value?.saveToken}`),
-          panel.type === "diff" && /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)(import_jsx_runtime125.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { children: "\u5DE6\uFF1A\u672C\u8F6E\u57FA\u7EBF\uFF1B\u53F3\uFF1A\u5F53\u524D\u7A3F\u3002\u65E0\u6CD5\u786E\u5B9A\u57FA\u7EBF\u65F6\u4EC5\u5C55\u793A\u5BA1\u8BA1\u8BB0\u5F55\uFF0C\u4E0D\u4F2A\u9020\u5DEE\u5F02\u3002" }),
-            typeof (panel.value?.baselineMarkdown ?? draft?.baselineMarkdown) === "string" ? /* @__PURE__ */ (0, import_jsx_runtime125.jsx)(Diff, { before: panel.value?.baselineMarkdown ?? draft.baselineMarkdown, after: text7 }) : /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { children: "Host \u5C1A\u672A\u63D0\u4F9B baselineMarkdown\u3002" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("pre", { className: "rr-pre", children: JSON.stringify(panel.value, null, 2) })
+        panel && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("section", { className: "rr-detail", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", onClick: () => setPanel(null), children: "\u5173\u95ED\u8BE6\u60C5" }),
+          panel.type === "humanItems" && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(HumanItemsPanel, { value: panel.value, readOnly: readOnly2 || dirty || panel.value?.status !== "draft", onSave: (items, saveToken) => action("saveHumanItems", { items, saveToken }) }, `${draft?.reportId}:${panel.value?.saveToken}`),
+          panel.type === "diff" && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u5DE6\uFF1A\u672C\u8F6E\u57FA\u7EBF\uFF1B\u53F3\uFF1A\u5F53\u524D\u7A3F\u3002\u65E0\u6CD5\u786E\u5B9A\u57FA\u7EBF\u65F6\u4EC5\u5C55\u793A\u5BA1\u8BA1\u8BB0\u5F55\uFF0C\u4E0D\u4F2A\u9020\u5DEE\u5F02\u3002" }),
+            typeof (panel.value?.baselineMarkdown ?? draft?.baselineMarkdown) === "string" ? /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(Diff, { before: panel.value?.baselineMarkdown ?? draft.baselineMarkdown, after: text7 }) : /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "Host \u5C1A\u672A\u63D0\u4F9B baselineMarkdown\u3002" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("pre", { className: "rr-pre", children: JSON.stringify(panel.value, null, 2) })
           ] }),
-          panel.type === "versions" && /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)(import_jsx_runtime125.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("h3", { children: "\u786E\u8BA4\u7248\u672C\uFF08\u4E0D\u53EF\u53D8\uFF09" }),
-            versions.map((v) => /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("div", { className: "rr-record", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("strong", { children: [
+          panel.type === "versions" && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h3", { children: "\u786E\u8BA4\u7248\u672C\uFF08\u4E0D\u53EF\u53D8\uFF09" }),
+            versions.map((v) => /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-record", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("strong", { children: [
                 v.versionId,
                 " ",
                 v.title
               ] }),
               " ",
-              /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: busy || dirty, onClick: () => action("publishPlan", { versionId: v.versionId }), children: "\u67E5\u770B\u6B64\u7248\u672C\u53D1\u5E03\u6E05\u5355" }),
-              typeof v.markdown === "string" && /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("details", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("summary", { children: "\u9605\u8BFB\u7248\u672C\u6B63\u6587" }),
-                /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("pre", { className: "rr-pre", children: v.markdown })
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy || dirty, onClick: () => action("publishPlan", { versionId: v.versionId }), children: "\u67E5\u770B\u6B64\u7248\u672C\u53D1\u5E03\u6E05\u5355" }),
+              typeof v.markdown === "string" && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("details", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("summary", { children: "\u9605\u8BFB\u7248\u672C\u6B63\u6587" }),
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("pre", { className: "rr-pre", children: v.markdown })
               ] })
             ] }, v.versionId))
           ] }),
-          panel.type === "timeline" && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => showPublication("publicationStatus"), children: "\u53D1\u5E03\u8BB0\u5F55" }),
-          panel.type === "timeline" && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)(Timeline, { value: panel.value }),
-          panel.type === "publishPlan" && /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)(import_jsx_runtime125.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("h3", { children: [
+          panel.type === "timeline" && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => showPublication("publicationStatus"), children: "\u53D1\u5E03\u8BB0\u5F55" }),
+          panel.type === "timeline" && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(Timeline, { value: panel.value }),
+          panel.type === "publishPlan" && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("h3", { children: [
               "\u53D1\u5E03\u6E05\u5355\uFF1A",
               panel.value?.versionId
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { children: "\u4EC5\u4EE5\u4E0B\u6309\u94AE\u4F1A\u53D1\u51FA publish \u8BF7\u6C42\u3002\u8BF7\u6838\u5BF9\u6B63\u6587\u3001\u56FE\u7247\u3001\u516C\u5F00\u4FE1\u606F\u53CA\u77E5\u8BC6\u5E93\u8EAB\u4EFD\u3002" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("pre", { className: "rr-pre", children: JSON.stringify(panel.value, null, 2) }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: busy || dirty || !verified, onClick: (event) => {
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u4EC5\u4EE5\u4E0B\u6309\u94AE\u4F1A\u53D1\u51FA publish \u8BF7\u6C42\u3002\u8BF7\u6838\u5BF9\u6B63\u6587\u3001\u56FE\u7247\u3001\u516C\u5F00\u4FE1\u606F\u53CA\u77E5\u8BC6\u5E93\u8EAB\u4EFD\u3002" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("pre", { className: "rr-pre", children: JSON.stringify(panel.value, null, 2) }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy || dirty || !verified, onClick: (event) => {
               if (!event.nativeEvent.isTrusted) {
                 setError("\u53D1\u5E03\u5FC5\u987B\u7531\u4EBA\u7C7B\u5B9E\u9645\u70B9\u51FB");
                 return;
@@ -115675,33 +121890,34 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
               action("publish", { versionId: panel.value?.versionId, planId: panel.value?.planId, digest: panel.value?.digest, publishToken: panel.value?.publishToken, userInitiated: true });
             }, children: demo ? "\u6A21\u62DF\u53D1\u5E03\u6B64\u786E\u8BA4\u7248" : "\u53D1\u5E03\u6B64\u786E\u8BA4\u7248\u81F3 WeKnora" })
           ] }),
-          panel.type === "publish" && /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)(import_jsx_runtime125.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("h3", { children: demo ? "\u6A21\u62DF\u53D1\u5E03\u56DE\u6267\uFF08\u672A\u4E0A\u4F20\uFF09" : "\u53D1\u5E03\u56DE\u6267" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { children: publicationStateText(panel.value) }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { children: "\u5DF2\u63D0\u4EA4\u5E76\u4E0D\u7B49\u4E8E\u5B8C\u6210\u3002\u8BF7\u7528\u53EA\u8BFB\u6838\u5BF9\u67E5\u770B\u72B6\u6001\uFF1B\u6B64\u6309\u94AE\u4E0D\u4F1A\u518D\u6B21\u8C03\u7528\u53D1\u5E03\u3002" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => showPublication("reconcile"), children: "\u53EA\u8BFB\u6838\u5BF9" }),
+          panel.type === "publish" && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h3", { children: demo ? "\u6A21\u62DF\u53D1\u5E03\u56DE\u6267\uFF08\u672A\u4E0A\u4F20\uFF09" : "\u53D1\u5E03\u56DE\u6267" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: publicationStateText(panel.value) }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u5DF2\u63D0\u4EA4\u5E76\u4E0D\u7B49\u4E8E\u5B8C\u6210\u3002\u8BF7\u7528\u53EA\u8BFB\u6838\u5BF9\u67E5\u770B\u72B6\u6001\uFF1B\u6B64\u6309\u94AE\u4E0D\u4F1A\u518D\u6B21\u8C03\u7528\u53D1\u5E03\u3002" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => showPublication("reconcile"), children: "\u53EA\u8BFB\u6838\u5BF9" }),
             " ",
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => showPublication("publicationStatus"), children: "\u67E5\u770B\u53D1\u5E03\u8BB0\u5F55" }),
-            /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("pre", { className: "rr-pre", children: JSON.stringify(panel.value, null, 2) })
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => showPublication("publicationStatus"), children: "\u67E5\u770B\u53D1\u5E03\u8BB0\u5F55" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("pre", { className: "rr-pre", children: JSON.stringify(panel.value, null, 2) })
           ] }),
-          panel.type === "publicationStatus" && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)(PublicationRecords, { value: panel.value, busy, onRead: showPublication })
+          panel.type === "publicationStatus" && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(PublicationRecords, { value: panel.value, busy, onRead: showPublication })
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("footer", { className: "rr-status", role: "status", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("footer", { className: "rr-status", role: "status", children: [
       demo ? "\u6F14\u793A\u6A21\u5F0F \xB7 " : "",
       status,
       " \xB7 ",
-      dirty ? "\u672A\u4FDD\u5B58\uFF0CPDF \u4E3A\u65E7\u9884\u89C8" : synced && pdf ? "PDF \u5DF2\u540C\u6B65" : preview?.status === "failed" ? "PDF \u751F\u6210\u5931\u8D25" : "PDF \u7B49\u5F85\u751F\u6210 / \u65E7\u9884\u89C8"
+      dirty ? "\u672A\u4FDD\u5B58\uFF0CPDF \u4E3A\u65E7\u9884\u89C8" : synced && pdf ? "PDF \u5DF2\u540C\u6B65" : preview?.status === "failed" ? "PDF \u751F\u6210\u5931\u8D25" : "PDF \u7B49\u5F85\u751F\u6210 / \u65E7\u9884\u89C8",
+      aiModel?.model ? ` \xB7 AI ${aiModel.provider || ""}${aiModel.provider ? "/" : ""}${aiModel.model}` : ""
     ] }),
-    error3 && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("div", { className: "rr-error", role: "alert", children: error3 }),
-    confirmClose && /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)("section", { className: "rr-close-confirm", role: "alert", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("p", { children: "\u6709\u672A\u4FDD\u5B58\u4FEE\u6539\uFF0C\u653E\u5F03\u540E\u5C06\u4E22\u5931\u8FD9\u4E9B\u5185\u5BB9\u3002" }),
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button rr-button--danger", onClick: close2, children: "\u653E\u5F03\u5E76\u5173\u95ED" }),
+    error3 && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("div", { className: "rr-error", role: "alert", children: error3 }),
+    confirmClose && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("section", { className: "rr-close-confirm", role: "alert", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u6709\u672A\u4FDD\u5B58\u4FEE\u6539\uFF0C\u653E\u5F03\u540E\u5C06\u4E22\u5931\u8FD9\u4E9B\u5185\u5BB9\u3002" }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button rr-button--danger", onClick: close2, children: "\u653E\u5F03\u5E76\u5173\u95ED" }),
       " ",
-      /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("button", { className: "rr-button", onClick: () => setConfirmClose(false), children: "\u8FD4\u56DE\u7F16\u8F91" })
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", onClick: () => setConfirmClose(false), children: "\u8FD4\u56DE\u7F16\u8F91" })
     ] }),
-    settingsOpen && !demo && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)(SettingsPanel, { request, onIdentity: (v) => alive.current && setIdentity(v), onClose: () => {
+    settingsOpen && !demo && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(SettingsPanel, { request, onIdentity: (v) => alive.current && setIdentity(v), onClose: () => {
       setSettingsOpen(false);
       request("identity").then((v) => alive.current && setIdentity(v)).catch(() => {
       });
@@ -115729,14 +121945,14 @@ function createWorkspaceController() {
   };
 }
 function WorkspaceOverlay({ controller }) {
-  const opened = (0, import_react158.useSyncExternalStore)(controller.subscribe, controller.snapshot, controller.snapshot);
-  return /* @__PURE__ */ (0, import_jsx_runtime125.jsxs)(import_jsx_runtime125.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime125.jsx)("style", { children: workspace_default }),
-    opened && /* @__PURE__ */ (0, import_jsx_runtime125.jsx)(Workspace, { sessionId: opened.sessionId, close: controller.close })
+  const opened = (0, import_react169.useSyncExternalStore)(controller.subscribe, controller.snapshot, controller.snapshot);
+  return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("style", { children: workspace_default }),
+    opened && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(Workspace, { sessionId: opened.sessionId, close: controller.close })
   ] });
 }
 function RegisteredTrigger({ controller, sessionId, getSessionId, renderTrigger, footer: footer2 = false, wide = true }) {
-  const opened = (0, import_react158.useSyncExternalStore)(controller.subscribe, controller.snapshot, controller.snapshot);
+  const opened = (0, import_react169.useSyncExternalStore)(controller.subscribe, controller.snapshot, controller.snapshot);
   const onClick = () => controller.open(sessionId || getSessionId?.() || null);
   return renderTrigger({ footer: footer2, wide, opened: !!opened, onClick });
 }
@@ -115748,13 +121964,13 @@ function apply3(ctx, renderTrigger) {
 }
 
 // packages/report-review/src/entry.jsx
-var import_jsx_runtime126 = require("react/jsx-runtime");
+var import_jsx_runtime132 = require("react/jsx-runtime");
 function ReportIcon({ size: size4 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime126.jsx)("svg", { "aria-hidden": "true", width: size4, height: size4, viewBox: "0 0 16 16", fill: "none", stroke: "currentColor", strokeWidth: "1.25", children: /* @__PURE__ */ (0, import_jsx_runtime126.jsx)("path", { d: "M3 1.75h6.5L13 5.25v9H3zM9 1.75v4h4M5.5 8h5M5.5 11h5" }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime132.jsx)("svg", { "aria-hidden": "true", width: size4, height: size4, viewBox: "0 0 16 16", fill: "none", stroke: "currentColor", strokeWidth: "1.25", children: /* @__PURE__ */ (0, import_jsx_runtime132.jsx)("path", { d: "M3 1.75h6.5L13 5.25v9H3zM9 1.75v4h4M5.5 8h5M5.5 11h5" }) });
 }
 function ReportTrigger({ footer: footer2, wide, opened, onClick }) {
   const label = footer2 ? "\u5468\u62A5\u5DE5\u4F5C\u53F0" : "\u751F\u6210\u5468\u62A5";
-  return /* @__PURE__ */ (0, import_jsx_runtime126.jsx)(import_dsh_client_ui_primitives.Tooltip, { label, delayMs: 500, disabled: !footer2 || wide, children: /* @__PURE__ */ (0, import_jsx_runtime126.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime132.jsx)(import_dsh_client_ui_primitives.Tooltip, { label, delayMs: 500, disabled: !footer2 || wide, children: /* @__PURE__ */ (0, import_jsx_runtime132.jsx)(
     import_dsh_client_ui_primitives.Button,
     {
       variant: "ghost",
@@ -115763,7 +121979,7 @@ function ReportTrigger({ footer: footer2, wide, opened, onClick }) {
       "aria-label": label,
       "aria-haspopup": "dialog",
       "aria-expanded": opened,
-      icon: /* @__PURE__ */ (0, import_jsx_runtime126.jsx)(ReportIcon, { size: footer2 && !wide ? 18 : 16 }),
+      icon: /* @__PURE__ */ (0, import_jsx_runtime132.jsx)(ReportIcon, { size: footer2 && !wide ? 18 : 16 }),
       onClick,
       children: !footer2 || wide ? label : null
     }
@@ -115771,7 +121987,7 @@ function ReportTrigger({ footer: footer2, wide, opened, onClick }) {
 }
 var inject = ["slots"];
 function apply4(ctx) {
-  apply3(ctx, (props) => /* @__PURE__ */ (0, import_jsx_runtime126.jsx)(ReportTrigger, { ...props }));
+  apply3(ctx, (props) => /* @__PURE__ */ (0, import_jsx_runtime132.jsx)(ReportTrigger, { ...props }));
 }
 
 return module.exports;
