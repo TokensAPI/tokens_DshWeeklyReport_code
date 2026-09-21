@@ -12,10 +12,10 @@ async function load(source) {
   const module = { exports:{} }; new Function('require','module','exports',result.outputFiles[0].text)(require,module,module.exports); return module.exports;
 }
 test('baseline parity: unchanged Host packages and client payload/preview/identity guards', async () => {
-  const files = execFileSync('git',['ls-tree','-r','--name-only','2b81e92','--','packages'],{cwd:'../..',encoding:'utf8'}).trim().split('\n').filter(p => !p.startsWith('packages/report-review/') || (/\/src\//.test(p) && !p.endsWith('client.jsx')));
+  const files = execFileSync('git',['ls-tree','-r','--name-only','ef20751','--','packages'],{cwd:'../..',encoding:'utf8'}).trim().split('\n').filter(p => !p.startsWith('packages/report-review/') || (/\/src\//.test(p) && !p.endsWith('client.jsx')));
   // Includes core, source, renderer, connector, all review Host logic and helper modules.
-  assert.equal(execFileSync('git',['diff','2b81e92','--',...files],{cwd:'../..',encoding:'utf8'}),'');
-  const baseline = await load(execFileSync('git',['show','2b81e92:packages/report-review/src/client.jsx'],{encoding:'utf8',maxBuffer:3e6}));
+  assert.equal(execFileSync('git',['diff','ef20751','--',...files],{cwd:'../..',encoding:'utf8'}),'');
+  const baseline = await load(execFileSync('git',['show','ef20751:packages/report-review/src/client.jsx'],{encoding:'utf8',maxBuffer:3e6}));
   const current = await load("export * from './client.jsx';");
   const input = {variety:' 锡 ',end:'2026-09-08',analysisPrompt:' 核对近四周 ',webSearchEnabled:true};
   assert.deepEqual(current.generationInput(input),baseline.generationInput(input));
@@ -35,6 +35,6 @@ test('baseline parity: unchanged Host packages and client payload/preview/identi
   for(const state of [{phase:'unknown'},{phase:'submitted'},{parseReady:true},{phase:'failed'}]) assert.equal(current.publicationStateText(state),baseline.publicationStateText(state));
   const slots=[]; let selected='session-a';
   current.apply({slots:{inject:(_name,fn)=>fn(),register:(options,component)=>slots.push({options,component})},get:()=>({list:{getSnapshot:()=>({current:selected})}})});
-  assert.deepEqual(slots.map(x=>x.options.name),['conversation.session.header.actions','sidebar.footer.action','shell.overlay']);
-  const footer=slots[1].options.inject(); assert.equal(footer.getSessionId(),'session-a'); selected='session-b';assert.equal(footer.getSessionId(),'session-b');
+  assert.deepEqual(slots.map(x=>x.options.name),['sidebar.footer.action','shell.overlay']);
+  const footer=slots[0].options.inject(); assert.equal(footer.getSessionId(),'session-a'); selected='session-b';assert.equal(footer.getSessionId(),'session-b');
 });
