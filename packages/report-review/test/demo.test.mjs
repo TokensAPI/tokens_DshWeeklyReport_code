@@ -9,7 +9,7 @@ import { PDFDocument } from 'pdf-lib';
 import { readFile, mkdir } from 'node:fs/promises';
 
 test('offline demo: two flows, templates, edits, real PDF, history, mock publish and reopen', async () => {
-  const result = await build({ stdin: { contents: `import React from 'react';import {createRoot} from 'react-dom/client';import {Workspace} from './src/client.jsx';function DemoHarness(){const [open,setOpen]=React.useState(false);return <><button onClick={()=>setOpen(true)}>周报工作台</button>{open && <Workspace close={()=>setOpen(false)}/>}</>};createRoot(document.getElementById('root')).render(<DemoHarness/>);`, loader:'jsx', resolveDir:process.cwd() }, bundle:true, write:false, format:'iife', loader:{'.css':'text'} });
+  const result = await build({ stdin: { contents: `import React from 'react';import {createRoot} from 'react-dom/client';import {Workspace} from './src/client.jsx';function DemoHarness(){const [open,setOpen]=React.useState(false);return <><button onClick={()=>setOpen(true)}>周报工作台</button>{open && <Workspace close={()=>setOpen(false)}/>}</>};createRoot(document.getElementById('root')).render(<DemoHarness/>);`, loader:'jsx', resolveDir:process.cwd() }, bundle:true, write:false, format:'iife', jsx:'automatic', loader:{'.css':'text'} });
   const browser = await chromium.launch({ channel:process.env.BROWSER_CHANNEL || 'chrome', headless:true });
   const page = await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
   const outbound = [], errors = [];
@@ -100,6 +100,7 @@ test('offline demo: two flows, templates, edits, real PDF, history, mock publish
     await page.getByLabel('重点条目').check();
     await page.getByRole('button',{name:'保存人工信息选择（仅本地）'}).click();
     await expect(page.locator('.rr-status')).toContainText('人工信息选择已本地保存');
+    await page.getByRole('button',{name:/返回正文/}).click();
     await page.getByRole('button',{name:'PDF 实时浏览',exact:true}).click();
     await expect(page.locator('.cm-content')).toBeVisible();
     const pdfLeft = await page.getByLabel('报告正文').boundingBox();
@@ -117,7 +118,7 @@ test('offline demo: two flows, templates, edits, real PDF, history, mock publish
     await expect(page.locator('.rr-status')).toContainText('模拟发布完成');
     await expect(page.locator('.bn-editor')).toHaveAttribute('contenteditable','false');
     await page.getByRole('button',{name:'版本历史与差异',exact:true}).click();
-    await expect(page.locator('.rr-detail')).toContainText('v1');
+    await expect(page.locator('.rr-review-view-body')).toContainText('v1');
     await page.getByRole('button',{name:'开启新一轮修订'}).click();
     await expect(page.locator('.bn-editor')).toHaveAttribute('contenteditable','true');
     await page.getByRole('button',{name:'1 生成与分析',exact:true}).click();

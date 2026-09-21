@@ -12,3 +12,20 @@
 .bn-combobox-items:empty {
   display: none;
 }
+
+/* AI 编辑审阅态：删除的旧文字 = 红色删除线 + 浅红底 + 斜体，明显区别于正文；
+ * 插入的新文字 = 主题色浅底，去掉默认下划线。二者形成经典 diff 对比。 */
+.rr-block-editor .bn-editor del {
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: var(--rr-danger, #d64545);
+  color: var(--rr-danger, #d64545);
+  background: color-mix(in srgb, var(--rr-danger, #d64545) 10%, transparent);
+  font-style: italic;
+}
+.rr-block-editor .bn-editor ins {
+  text-decoration: none;
+  color: var(--rr-accent, #2f7d5f);
+  background: color-mix(in srgb, var(--rr-accent, #2f7d5f) 12%, transparent);
+  border-radius: 2px;
+}

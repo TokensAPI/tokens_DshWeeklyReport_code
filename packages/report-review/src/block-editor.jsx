@@ -56,10 +56,11 @@ export function BlockEditor({ value, onChange, readOnly, onSource }) {
   const [failed, setFailed] = useState(false);
   // Show the outcome of the last AI request on screen (readable without DevTools).
   const [aiDiag, setAiDiag] = useState(null);
+  const diagTimer = useRef(null);
   useEffect(() => {
-    const on = (e) => setAiDiag(e.detail);
+    const on = (e) => { setAiDiag(e.detail); clearTimeout(diagTimer.current); diagTimer.current = setTimeout(() => setAiDiag(null), e.detail?.error ? 15000 : 6000); };
     window.addEventListener('dsh-ai-diag', on);
-    return () => window.removeEventListener('dsh-ai-diag', on);
+    return () => { window.removeEventListener('dsh-ai-diag', on); clearTimeout(diagTimer.current); };
   }, []);
   const session = useMemo(() => {
     try {

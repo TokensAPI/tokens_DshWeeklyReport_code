@@ -80,6 +80,27 @@ export function publicationStateText(record = {}) {
   return '当前记录尚未证明发布完成；解析状态与检索核验应分别检查。';
 }
 const recordText = value => typeof value === 'string' && value.length <= 160 && /^[\w. :+-]+$/.test(value) ? value : '未提供';
+// Readable review views: field cards replace raw JSON dumps; raw JSON stays in a collapsed fallback.
+const FIELD_MONO = ['digest','publishToken','saveToken','versionId','planId','id','remoteId','remote_id','reportId','version_id','knowledge_id','knowledge_base_id','resourceUri','resource_uri','file_path','sha256','itemKey','item_key'];
+function FieldRow({ label, value, mono }) {
+  if (value === undefined || value === null || value === '') return null;
+  return <div className="rr-field-row"><dt>{label}</dt><dd className={mono || FIELD_MONO.includes(label) ? 'rr-mono' : ''}>{typeof value === 'object' ? JSON.stringify(value) : String(value)}</dd></div>;
+}
+function FieldCard({ title, obj, order, children }) {
+  const entries = obj && typeof obj === 'object' ? Object.entries(obj) : [];
+  const rows = order ? order.map(k => [k, obj?.[k]]).filter(([,v]) => v !== undefined && v !== null && v !== '') : entries.filter(([,v]) => v !== undefined && v !== null && v !== '');
+  return <div className="rr-field-card"><h4>{title}</h4><dl className="rr-fields">{rows.map(([k,v],i) => <FieldRow key={`${k}-${i}`} label={k} value={v} />)}{children}</dl></div>;
+}
+function RawJSON({ value }) {
+  return <details className="rr-raw"><summary>查看原始 JSON（调试用）</summary><pre className="rr-pre">{JSON.stringify(value, null, 2)}</pre></details>;
+}
+const phaseBadge = r => {
+  if (r.parseReady === true) return ['is-ready', '解析就绪'];
+  if (r.phase === 'submitted' || r.status === 'submitted') return ['is-submitted', '已提交'];
+  if (r.phase === 'failed' || r.status === 'failed') return ['is-failed', '失败'];
+  if (r.outcomeUnknown === true || r.phase === 'unknown') return ['is-unknown', '结果未知'];
+  return ['is-pending', '进行中'];
+};
 export function PublicationRecords({ value, busy, onRead }) {
   const records = Array.isArray(value?.records) ? value.records : [];
   const notices = safeWarnings(value?.warnings);
@@ -88,11 +109,113 @@ export function PublicationRecords({ value, busy, onRead }) {
     <button className="rr-button" disabled={busy} onClick={() => onRead('reconcile')}>只读核对</button>
     {notices.length > 0 && <ul>{notices.map(w => <li key={w.code}>{w.code}：{w.message}</li>)}</ul>}
     {!records.length && <p>暂无发布记录；不会自动创建发布任务。</p>}
-    {records.map((r,index) => <article key={`${recordText(r.planId)}-${index}`} className="rr-record">
-      <strong>{recordText(r.versionId)} · 计划 {recordText(r.planId)}</strong><p>{publicationStateText(r)}</p>
+    {records.map((r,index) => { const [cls,label] = phaseBadge(r); return <article key={`${recordText(r.planId)}-${index}`} className="rr-record">
+      <div className="rr-row"><strong>{recordText(r.versionId)} · 计划 {recordText(r.planId)}</strong><span className={`rr-phase ${cls}`}>{label}</span></div><p>{publicationStateText(r)}</p>
       <dl><dt>上传阶段</dt><dd>{recordText(r.phase || r.status)}</dd><dt>远端资料 ID</dt><dd>{recordText(r.remoteId)}</dd><dt>解析状态</dt><dd>{recordText(r.parseStatus)}{r.parseReady === true ? '（解析就绪）' : ''}</dd><dt>检索核验</dt><dd>未核验；不标记发布完成</dd><dt>最近只读核对时间</dt><dd>{recordText(r.checkedAt)}</dd></dl>
-    </article>)}
+    </article>; })}
   </>;
+}
+// ---- Generation progress (controllable loading animation) ----
+const GEN_STEP_ORDER = ['init','plan','retrieve','data','charts','analyse','assemble','save','pdf'];
+const GEN_STEP_NAMES = { init:'初始化', plan:'检索规划', retrieve:'检索资料', data:'获取数据', charts:'生成图表', analyse:'AI 分析', assemble:'组装正文', save:'保存草稿', pdf:'生成 PDF' };
+const GEN_ICON = { done:'✓', running:'◌', failed:'✕', cancelled:'–', skipped:'–', pending:'' };
+const GEN_STXT = { done:'已完成', running:'进行中', failed:'失败', cancelled:'已取消', skipped:'跳过', pending:'待处理' };
+const genStepsInit = () => GEN_STEP_ORDER.map(k => ({ key:k, name:GEN_STEP_NAMES[k], state:'pending', label:'', detail:'' }));
+const genErrorFix = code => ({ 'LLM_SYNTHESIS_CONTEXT_OVERFLOW':'参考材料过多，超出模型上下文。建议缩短「近N周」或精简【分析要求】后重试',
+  'KNOWLEDGE_SEARCH_FAILED':'知识库检索不可用，请检查连接后重试', 'WEB_SEARCH_FAILED':'联网检索失败，请稍后重试',
+  'GENERATION_TIMEOUT':'数据/图表生成超时，请稍后重试', 'GENERATION_FAILED':'数据/图表生成失败，请检查数据源',
+  'SOURCE_FAILED':'数据/图表生成失败，请检查数据源与连接配置', 'SOURCE_UNAVAILABLE':'数据源未就绪',
+  'CONNECTION_REQUIRED':'需要先配置 WeKnora 连接', 'SOURCE_ROOT_REQUIRED':'数据输出目录缺失', 'PDF_RENDER_FAILED':'PDF 渲染失败，请重试预览' }[code] || '未知错误，请重试');
+// Finalize step states on a generation failure: mark the failing step failed, steps
+// after it skipped, and steps before it done — so nothing is left "进行中".
+const finalizeFailureSteps = (steps, failKey) => {
+  const at = steps.findIndex(s => s.key === failKey);
+  const idx = at === -1 ? steps.length - 1 : at;
+  return steps.map((s, i) => {
+    if (i < idx) return s.state === 'done' ? s : { ...s, state: 'done', label: '', detail: s.detail || '' };
+    if (i === idx) return { ...s, state: 'failed' };
+    return { ...s, state: 'skipped', label: '', detail: '' };
+  });
+};
+// Turn a bare error code into a friendly, actionable Chinese message for the footer bar.
+const friendlyError = (code, message) => {
+  const head = ({ SOURCE_FAILED:'数据/图表生成失败', GENERATION_FAILED:'数据/图表生成失败', GENERATION_TIMEOUT:'生成超时', SOURCE_UNAVAILABLE:'数据源未就绪', CONNECTION_REQUIRED:'连接未配置', KNONLEDGE_SEARCH_FAILED:'知识库检索失败', WEB_SEARCH_FAILED:'联网检索失败' })[code];
+  if (!head) return message || code || '操作失败';
+  const cause = /cause=([A-Z0-9_]+)/.exec(message || '')?.[1];
+  const causeFix = cause && ({ GENERATION_FAILED:'请检查数据源/连接，或先在「⚙ 设置」配置 WeKnora 后重试', GENERATION_TIMEOUT:'生成超时，请稍后重试', CONNECTION_REQUIRED:'请先在「⚙ 设置」配置连接' })[cause];
+  return `${head}${cause ? `（${cause}）` : ''}；${causeFix || genErrorFix(code) || '请重试，或检查连接与配置。'}`;
+};
+const GEN_DEMO_LABEL = { init:'正在初始化…', plan:'LLM 正在判断检索范围…', retrieve:'正在检索知识库 / 联网…', data:'正在读取数据库（5100）…', charts:'正在渲染图表…', analyse:'LLM 正在写「本周多空逻辑」…', assemble:'正在组装正文…', save:'正在保存草稿…', pdf:'正在生成 PDF…' };
+const GEN_DEMO_DETAIL = { init:'初始化完成', plan:'判定：结合近4周知识库材料', retrieve:'知识库命中 12 条 · 联网命中 8 条 · 核验剔除 3 条', data:'26 条序列拉取完成', charts:'6 张图表渲染完成', analyse:'多空逻辑 · 近四周连贯性 · 风险提示', assemble:'锚点替换 · 资产校验通过', save:'已写入报告库，带审计', pdf:'4 页 · 6 图' };
+// ---- Full-width review detail views (evidence opens in the main canvas) ----
+const REVIEW_TITLES = { humanItems:'重点人工信息', diff:'版本差异', versions:'确认版本（不可变）', timeline:'版本时间线', publishPlan:'发布清单', publish:'发布回执', publicationStatus:'发布记录 / 只读核对' };
+const reviewTitle = t => REVIEW_TITLES[t] || '审阅详情';
+const reviewSub = (t, v) => t === 'diff' ? '本轮基线 vs 当前稿' : t === 'versions' ? '审查确认版本（不可变）' : t === 'timeline' ? '每次版本切片与相邻差异' : t === 'publishPlan' ? `核对正文 / 图片 / 公开信息 / 知识库身份` : t === 'publish' ? '发布提交回执' : t === 'publicationStatus' ? '上传 / 解析为异步；核验前不标记发布完成' : '';
+export function GenerateProgress({ progress, onCancel, onRetry, onRegenerate, onClose }) {
+  const [open, setOpen] = useState(true);
+  const [expanded, setExpanded] = useState(() => new Set());
+  // Auto-collapse to a compact header after a successful generation so the card
+  // never stays expanded over content (it would intercept clicks on nearby buttons).
+  useEffect(() => {
+    if (progress?.status === 'ok') { const t = setTimeout(() => setOpen(false), 1600); return () => clearTimeout(t); }
+  }, [progress?.status]);
+  if (!progress) return null;
+  const steps = progress.steps || [];
+  const done = steps.filter(s => s.state === 'done').length;
+  const total = steps.length || 1;
+  const running = steps.find(s => s.state === 'running');
+  const failed = steps.find(s => s.state === 'failed');
+  const cur = running || failed;
+  const headIcon = progress.status === 'running' ? '◌' : progress.status === 'ok' ? '✓' : progress.status === 'failed' ? '✕' : '–';
+  const headState = progress.status === 'running' ? 'running' : progress.status === 'ok' ? 'ok' : progress.status === 'failed' ? 'fail' : 'cancel';
+  const headLbl = progress.status === 'running' ? (cur?.label || '正在生成…') : progress.status === 'ok' ? '生成成功' : progress.status === 'failed' ? (failed ? `第 ${steps.findIndex(s=>s.state==='failed')+1} 步（${failed.name}）失败` : `生成失败：${progress.error?.code || '未知错误'}`) : '已取消';
+  const headSub = progress.status === 'running' ? (cur ? `第 ${steps.findIndex(s=>s.key===cur.key)+1} 步 · ${cur.name}` : '') : progress.status === 'ok' ? `${done}/${total} 步完成` : progress.status === 'failed' ? (progress.error?.code || '') : `已完成 ${done}/${total} 步`;
+  const bar = Math.round(done / total * 100);
+  const toggle = key => setExpanded(prev => { const n = new Set(prev); n.has(key) ? n.delete(key) : n.add(key); return n; });
+  return (
+    <div className={`rr-gen-progress${open ? ' open' : ''}`} role="status" aria-live="polite">
+      <div className="rr-gen-head" role="button" tabIndex={0} onClick={() => setOpen(v => !v)} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(v => !v); } }}>
+        <span className={`rr-gen-icon ${headState}`}>{headIcon}</span>
+        <span className="rr-gen-meta"><span className="rr-gen-lbl">{headLbl}</span><span className="rr-gen-sub">{headSub}</span></span>
+        <span className="rr-gen-chev">{open ? '▾' : '▸'}</span>
+      </div>
+      {open && <div className="rr-gen-body">
+        <div className="rr-gen-bar-wrap"><span className="rr-gen-num">{done}/{total} 步完成</span><span className="rr-gen-bar"><i style={{ width: `${bar}%` }} /></span></div>
+        {steps.map((s, i) => {
+          const showDetails = expanded.has(s.key) || s.state === 'failed';
+          return (
+          <div key={s.key} className={`rr-gen-step ${s.state}${showDetails ? ' expand' : ''}`}>
+            <span className="rr-gen-dot">{GEN_ICON[s.state] || ''}</span>
+            <div className="rr-gen-body2">
+              <div className="rr-gen-row" role="button" tabIndex={0} onClick={() => toggle(s.key)} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(s.key); } }}>
+                <span className="rr-gen-name">{s.name}</span>
+                <span className="rr-gen-status">{GEN_STXT[s.state]}{s.state === 'running' ? '…' : ''}</span>
+              </div>
+              <div className="rr-gen-detail">{s.state === 'failed'
+                ? <><div className="rr-gen-err">第 {i + 1} 步（{s.name}）失败：{progress.error?.code || ''}</div><div className="rr-gen-fix">{genErrorFix(progress.error?.code)}</div></>
+                : <div>{s.detail || s.label || ''}</div>}</div>
+            </div>
+          </div>);
+        })}
+      </div>}
+      {open && <div className="rr-gen-foot">
+        {progress.status === 'running' ? <>
+          <span className="rr-gen-hint">正在生成 · 当前第 {steps.findIndex(s => s.state === 'running') + 1} 步</span>
+          <button className="rr-button rr-button--danger" onClick={onCancel}>✕ 取消</button></>
+          : progress.status === 'failed' ? <>
+          <span className="rr-gen-hint">已在第 {steps.findIndex(s => s.state === 'failed') + 1} 步中止</span>
+          <button className="rr-button rr-button--primary" onClick={onRetry}>↻ 重试</button>
+          <button className="rr-button" onClick={onClose}>关闭</button></>
+          : progress.status === 'ok' ? <>
+          <span className="rr-gen-hint">生成成功</span>
+          <button className="rr-button rr-button--primary" onClick={onRegenerate}>↻ 重新生成</button>
+          <button className="rr-button" onClick={onClose}>关闭</button></>
+          : <><span className="rr-gen-hint">已中止，未落盘</span>
+          <button className="rr-button rr-button--primary" onClick={onRegenerate}>↻ 重新生成</button>
+          <button className="rr-button" onClick={onClose}>关闭</button></>}
+      </div>}
+    </div>
+  );
 }
 const testErrorText = code => ({
   identity_credential_unavailable: '未配置发布密钥（当前为只读模式）',
@@ -102,6 +225,7 @@ const testErrorText = code => ({
   plaintext_non_loopback: '明文 http 只允许本机回环地址，远端请使用 https',
 }[code] || code);
 export function SettingsPanel({ request, onClose, onIdentity }) {
+  const dialogRef = useRef(null);
   const [view, setView] = useState(null);
   const [form, setForm] = useState({ baseUrl: '', kbId: '', tenantId: '', readKey: '', writeKey: '' });
   const [state, setState] = useState({ busy: true, note: '', error: '' });
@@ -113,6 +237,9 @@ export function SettingsPanel({ request, onClose, onIdentity }) {
       .catch(e => { if (!cancelled) setState({ busy: false, note: '', error: e.code === 'SETTINGS_UNAVAILABLE' ? '当前 Host 版本不支持可视化设置，请升级插件后完全重启。' : (e.message || '读取设置失败') }); });
     return () => { cancelled = true; };
   }, []);
+  // A real modal <dialog> lives in the top layer, so it reliably floats above
+  // the workspace dialog (which is itself a modal). Call showModal once mounted.
+  useEffect(() => { const d = dialogRef.current; if (d && !d.open) d.showModal(); }, []);
   const save = async () => {
     setState({ busy: true, note: '', error: '' });
     try {
@@ -134,7 +261,7 @@ export function SettingsPanel({ request, onClose, onIdentity }) {
     } catch (e) { setState(s => ({ ...s, busy: false, error: e.message || '测试失败' })); }
   };
   const field = (key, value) => setForm(f => ({ ...f, [key]: value }));
-  return <section className="rr-settings" role="dialog" aria-label="连接设置">
+  return <dialog ref={dialogRef} className="rr-settings" aria-label="连接设置" onCancel={event => { event.preventDefault(); onClose(); }} onClose={onClose}>
     <div className="rr-settings-card">
       <div className="rr-section-heading"><h2>连接设置</h2><span className="rr-badge">{view?.connectorActive ? '配置完整（未实测）' : '配置不完整'}</span></div>
       {view?.managedByHost && <p className="rr-muted">部分配置由环境变量 / Profile 管理，此处修改仅补充未被其覆盖的项。</p>}
@@ -153,7 +280,7 @@ export function SettingsPanel({ request, onClose, onIdentity }) {
       </ul>}
       <div className="rr-row"><button className="rr-button rr-button--primary" disabled={state.busy} onClick={save}>保存并生效</button><button className="rr-button" disabled={state.busy} onClick={runTest}>测试连接</button><button className="rr-button" disabled={state.busy} onClick={onClose}>关闭</button></div>
     </div>
-  </section>;
+  </dialog>;
 }
 const asDraft = v => v?.draft || v?.workingDraft || v;
 const rows = (v, key) => Array.isArray(v) ? v : v?.[key] || [];
@@ -260,7 +387,7 @@ function Timeline({ value }) {
         <span className="rr-muted">{v.author?.displayName || ''}{v.completedAt ? ` · ${String(v.completedAt).slice(0, 10)}` : ''}</span>
       </div>
       {v.diffFromPrevious && <DiffOps diff={v.diffFromPrevious} />}
-      {typeof markdowns[v.versionId] === 'string' && <details><summary>阅读 {v.versionId} 正文</summary><pre className="rr-pre">{markdowns[v.versionId]}</pre></details>}
+      {typeof markdowns[v.versionId] === 'string' && <details><summary>阅读 {v.versionId} 正文</summary><MarkdownPreview text={markdowns[v.versionId]} /></details>}
     </article>)}
   </>;
 }
@@ -290,20 +417,78 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
   const [confirmPublish, setConfirmPublish] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [aiModel, setAiModel] = useState(null); // current AI provider/model for the status bar
-  const current = useRef({}), alive = useRef(true), saving = useRef(false), revision = useRef(0), previewSerial = useRef(0);
+  const current = useRef({}), alive = useRef(true), saving = useRef(false), revision = useRef(0), previewSerial = useRef(0), genAbort = useRef(null);
+  const [progress, setProgress] = useState(null);
   useEffect(() => {
+    if (demo || !sessionId) return;
     let live = true;
     hostFetch('/api/run19/review', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'aiDefaultModel' }) }).then(async r => { if (live && r.ok) { const d = await r.json(); const m = d?.value; if (m?.model) setAiModel({ provider: m.provider, model: m.model }); } else { console.error('[run19] ai-default-model failed:', r.status); } }).catch(e => { console.error('[run19] ai-default-model error:', e); });
     return () => { live = false; };
   }, []);
+  const applyGenEv = ev => setProgress(p => { if (!p) return p; const steps = p.steps.map(s => s.key === ev.step ? { ...s, state: ev.state, label: ev.label || s.label, detail: ev.detail || s.detail } : s); return { ...p, steps }; });
+  async function runGenerate(input) {
+    const controller = new AbortController();
+    genAbort.current = controller;
+    setProgress({ status: 'running', steps: genStepsInit() });
+    try {
+      const res = await hostFetch('/api/run19/generate', { method: 'POST', credentials: 'same-origin', signal: controller.signal, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...input, action: 'generate', sessionId }) });
+      if (!res.ok) { let body = null; try { body = await res.json(); } catch { /* ignore */ } const e = new Error(body?.error?.message || `HTTP ${res.status}`); e.code = body?.error?.code || 'HTTP_ERROR'; throw e; }
+      const reader = res.body.getReader(), dec = new TextDecoder(); let buf = '';
+      for (;;) {
+        const { done, value } = await reader.read(); if (done) break;
+        buf += dec.decode(value, { stream: true });
+        const lines = buf.split('\n'); buf = lines.pop();
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          let ev; try { ev = JSON.parse(line); } catch { continue; }
+          if (ev.t === 'progress') applyGenEv(ev);
+          else if (ev.t === 'result') { setProgress(p => ({ ...p, status: 'ok' })); return ev.value; }
+          else if (ev.t === 'error') { setProgress(p => ({ ...p, status: 'failed', error: { step: ev.step, code: ev.code, message: ev.message }, steps: finalizeFailureSteps(p.steps, ev.step) })); const e = new Error(ev.message || ev.code); e.code = ev.code; e.step = ev.step; throw e; }
+        }
+      }
+      throw new Error('生成流意外结束');
+    } catch (e) {
+      if (e?.name === 'AbortError' || controller.signal.aborted) { setProgress(p => ({ ...p, status: 'cancelled' })); throw Object.assign(new Error('生成已取消'), { code: 'GENERATION_CANCELLED' }); }
+      throw e;
+    }
+  }
+  const cancelGen = () => { genAbort.current?.abort(); };
+  async function runDemoGenerate(input) {
+    const controller = new AbortController(); genAbort.current = controller;
+    setProgress({ status:'running', steps: genStepsInit() });
+    const delay = ms => new Promise(r => setTimeout(r, ms));
+    try {
+      for (const k of GEN_STEP_ORDER) {
+        if (controller.signal.aborted) throw Object.assign(new Error('生成已取消'), { code:'GENERATION_CANCELLED' });
+        applyGenEv({ step:k, state:'running', label: GEN_DEMO_LABEL[k] });
+        await delay(360 + Math.floor(Math.random() * 260));
+        applyGenEv({ step:k, state:'done', detail: GEN_DEMO_DETAIL[k] });
+      }
+      if (controller.signal.aborted) throw Object.assign(new Error('生成已取消'), { code:'GENERATION_CANCELLED' });
+      const result = await request('generate', input);   // demo API
+      setProgress(p => ({ ...p, status:'ok' }));
+      return result;
+    } catch (e) {
+      if (controller.signal.aborted) { setProgress(p => ({ ...p, status:'cancelled' })); throw Object.assign(new Error('生成已取消'), { code:'GENERATION_CANCELLED' }); }
+      throw e;
+    }
+  }
   async function generate(event) {
     event.preventDefault();
     if (current.current.dirty || saving.current || current.current.busy) return;
     let input; try { input = generationInput({variety,end,analysisPrompt,webSearchEnabled}); } catch(e) { fail(e); return; }
-    current.current.busy = true; setBusy(true); setError(''); setStatus(demo ? '正在生成演示周报…' : '正在生成周报（5100 数据 · ' + (analysisPrompt.trim() ? '按分析要求由 LLM 分析' : '纯 7 天数据') + (webSearchEnabled ? ' · 联网检索' : '') + '），请稍候');
-    try { const result = await request('generate',input); if (!alive.current) return;
-      const d = asDraft(result); adopt(result); setReports(v => [...v.filter(r => r.reportId !== d.reportId), d]); setPreview(null); setPanel(null); setStage('editor'); setViewMode('editor'); setStatus(demo ? '演示初稿已生成并保存在此浏览器' : '初稿已生成并保存，请人工审阅；尚未完成或发布');
-    } catch(e) { fail(e); } finally { if (alive.current) { current.current.busy = false; setBusy(false); } }
+    current.current.busy = true; setBusy(true); setError('');
+    try {
+      let result;
+      if (demo) { setStatus('正在生成演示周报…'); result = await runDemoGenerate(input); }
+      else { setStatus('正在生成周报…'); result = await runGenerate(input); }
+      if (!alive.current) return;
+      const d = asDraft(result); adopt(result);
+      setReports(v => [...v.filter(r => r.reportId !== d.reportId), d]);
+      setPreview(null); setPanel(null); setStage('editor'); setViewMode('editor');
+      setStatus(demo ? '演示初稿已生成并保存在此浏览器' : '初稿已生成并保存，请人工审阅；尚未完成或发布');
+    } catch(e) { if (alive.current) { if (e?.code === 'GENERATION_CANCELLED') setStatus('已取消，未落盘'); else fail(e); } }
+    finally { if (alive.current) { current.current.busy = false; setBusy(false); } }
   }
   async function saveTemplate() {
     if (busy) return;
@@ -332,7 +517,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
     catch(e) { fail(e); } finally { if (alive.current) setBusy(false); }
   }
   const isConflict = e => (e?.code || '').toLowerCase().includes('conflict');
-  const fail = e => { if (alive.current) { setError(`${e.code || 'ERROR'}: ${e.message}`); setStatus(isConflict(e) ? '冲突：本地草稿已保留，请对照远端后处理' : '操作失败，本地草稿保留'); } };
+  const fail = e => { if (alive.current) { setError(friendlyError(e?.code, e?.message)); setStatus(isConflict(e) ? '冲突：本地草稿已保留，请对照远端后处理' : '操作失败，本地草稿保留'); } };
   function adopt(value) { const d = asDraft(value); if (!d?.reportId || typeof d.markdown !== 'string') throw new Error('Host 未返回有效工作稿'); const sameReport = current.current.draft?.reportId === d.reportId; setReportWarnings(previous => { const received = safeWarnings(value?.warnings, d.warnings); return sameReport ? safeWarnings(previous.map(w => w.code), received.map(w => w.code)) : received; }); revision.current++; current.current = { ...current.current, draft: d, text: d.markdown, dirty: false }; setDraft(d); setReports(previous => previous.map(r => r.reportId === d.reportId ? { ...r, title: d.title, status: d.status } : r)); setText(d.markdown); setDirty(false); setStatus('已保存'); setError(''); }
   async function load(id) { if (current.current.dirty || saving.current) { setError('请先保存或导出当前脏稿；不会覆盖本地输入。'); return; } setBusy(true); try { const d = await request('get', { reportId: id }); if (alive.current) { adopt(d); setPreview(null); setPanel(null); setStage('editor'); setViewMode('editor'); } } catch(e) { fail(e); } finally { if (alive.current) setBusy(false); } }
   async function save() {
@@ -447,6 +632,19 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
   const warnings = safeWarnings(reportWarnings.map(w => w.code), draft?.warnings, preview?.warnings);
   const verified = identity?.confirmed === true && !!identity?.displayName;
   const versions = panel?.type === 'versions' ? rows(panel.value, 'versions') : [];
+  const renderPanel = () => {
+    if (!panel) return null;
+    switch (panel.type) {
+      case 'humanItems': return <HumanItemsPanel key={`${draft?.reportId}:${panel.value?.saveToken}`} value={panel.value} readOnly={readOnly || dirty} onSave={(items,saveToken)=>action('saveHumanItems',{items,saveToken})}/>;
+      case 'diff': return <><div className="rr-diff-helper"><p>左：本轮基线；右：当前稿。无法确定基线时仅展示审计记录，不伪造差异。</p><span className="rr-diff-legend"><span className="rr-diff-insert">＋ 新增内容</span><span className="rr-diff-delete">－ 删除内容</span></span></div>{typeof (panel.value?.baselineMarkdown ?? draft?.baselineMarkdown) === 'string' ? <Diff before={panel.value?.baselineMarkdown ?? draft.baselineMarkdown} after={text} /> : <p>Host 尚未提供 baselineMarkdown。</p>}<FieldCard title="差异信息" obj={panel.value} order={['reportId','versionId','baseVersionId','changed','add','del']} /><RawJSON value={panel.value} /></>;
+      case 'versions': return <>{versions.map(v => <div key={v.versionId} className="rr-record"><div className="rr-row"><strong>{v.versionId} {v.title}</strong>{v.author?.displayName ? <span className="rr-muted">· {v.author.displayName}</span> : ''}{v.completedAt ? <span className="rr-muted">· {String(v.completedAt).slice(0,10)}</span> : ''}</div><button className="rr-button" disabled={busy || dirty} onClick={() => action('publishPlan', {versionId:v.versionId})}>查看此版本发布清单</button>{typeof v.markdown === 'string' && <details open={versions.length <= 1}><summary>阅读版本正文</summary><MarkdownPreview text={v.markdown} /></details>}</div>)}</>;
+      case 'timeline': return <><button className="rr-button" disabled={busy} onClick={() => showPublication('publicationStatus')}>发布记录</button><Timeline value={panel.value} /></>;
+      case 'publishPlan': return <><div className="rr-publish-plan"><div className="rr-row rr-muted"><span>计划 {recordText(panel.value?.planId)}</span><span>版本 {recordText(panel.value?.versionId)}</span></div><p>仅以下按钮会发出 publish 请求。请核对正文、图片、公开信息及知识库身份。</p><FieldCard title="发布清单" obj={panel.value} order={['planId','versionId','digest','items','assets','knowledgeBaseId','knowledge_base_id','placement']} /><RawJSON value={panel.value} /><button className="rr-button rr-button--primary" disabled={busy || dirty || !verified} onClick={event => { if (!event.nativeEvent.isTrusted) { setError('发布必须由人类实际点击'); return; } action('publish', { versionId:panel.value?.versionId, planId:panel.value?.planId, digest:panel.value?.digest, publishToken:panel.value?.publishToken, userInitiated:true }); }}>{demo ? '模拟发布此确认版' : '发布此确认版至 WeKnora'}</button></div></>;
+      case 'publish': return <><p>{publicationStateText(panel.value)}</p><p>已提交并不等于完成。请用只读核对查看状态；此按钮不会再次调用发布。</p><FieldCard title="回执" obj={panel.value} order={['planId','versionId','status','phase','remoteId','remote_id','parseStatus','parse_status']} /><RawJSON value={panel.value} /><div className="rr-row"><button className="rr-button" disabled={busy} onClick={() => showPublication('reconcile')}>只读核对</button><button className="rr-button" disabled={busy} onClick={() => showPublication('publicationStatus')}>查看发布记录</button></div></>;
+      case 'publicationStatus': return <PublicationRecords value={panel.value} busy={busy} onRead={showPublication} />;
+      default: return null;
+    }
+  };
   const visibleReports = reports.filter(r => (r.title || r.reportId).toLowerCase().includes(search.trim().toLowerCase()));
   const requestClose = () => { if (busy || saving.current) return; if (dirty) setConfirmClose(true); else close(); };
   return <dialog ref={dialogRef} aria-label="周报审阅工作台" className="rr-workspace" data-focus={focused && stage === 'editor'} data-stage={stage} data-mode={mode} onCancel={event => { event.preventDefault(); requestClose(); }}>
@@ -465,11 +663,11 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
         <div className="rr-section-heading"><h2>研究档案</h2><span className="rr-badge">{reports.length}</span></div>
         <button className="rr-button rr-button--primary" disabled={busy || dirty} onClick={() => { setStage('generation'); setFocused(false); }}>＋ 新建周报</button>
         <input aria-label="搜索报告" placeholder="搜索报告…" type="search" value={search} onChange={e => setSearch(e.target.value)} />
-        <div className="rr-report-list">{visibleReports.map(r => <button className="rr-report-item" key={r.reportId} aria-current={draft?.reportId === r.reportId ? 'page' : undefined} disabled={busy || dirty} onClick={() => load(r.reportId)}><strong>{r.title || r.reportId}</strong><span>{r.status === 'confirmed' ? '已确认版本' : '研究草稿'}</span></button>)}
+        <div className="rr-report-list">{visibleReports.map(r => <button className="rr-report-item" key={r.reportId} aria-current={draft?.reportId === r.reportId ? 'page' : undefined} disabled={busy || dirty} onClick={() => load(r.reportId)}><span className="rr-item-top"><span className={`rr-status-dot ${r.status === 'confirmed' ? 'is-confirmed' : ''}`} aria-hidden="true"/><strong className="rr-report-title">{r.title || r.reportId}</strong></span><span className="rr-report-sub">{r.status === 'confirmed' ? '已确认 · 只读' : '研究草稿'}</span></button>)}
           {!visibleReports.length && <p className="rr-empty">{search ? '没有匹配的报告' : '暂无报告，新建一份开始研究。'}</p>}</div>
         <p className="rr-sidebar-note">从本周数据出发，留下判断与依据。<br/>保存后可切换报告。</p>
       </nav>
-      <main className="rr-main">
+      <main className="rr-main" data-review={panel ? panel.type : undefined}>
 
         <section className="rr-generation-stage" aria-label="生成与分析" hidden={stage !== 'generation'}><header><h1>生成周报</h1><p className="rr-muted">先确定品种、截止日期和分析要求。生成后进入可视化编辑，已有报告不会被覆盖。</p></header>
     <form onSubmit={generate} className="rr-generation-form" aria-label="生成周报参数">
@@ -491,7 +689,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
         <section className="rr-editor-stage" hidden={stage !== 'editor'}>
         <header className="rr-report-header"><span className="rr-eyebrow">WEEKLY RESEARCH</span><h1>{draft?.title || '开始本周研究'}</h1><div className="rr-row"><span className="rr-badge">{draft?.status === 'confirmed' ? '已确认 · 只读' : dirty ? '待保存' : draft ? '研究草稿' : '未选择报告'}</span><span className="rr-muted">先看结论，再核对证据</span></div></header>
         <div className="rr-toolbar" role="group" aria-label="文档视图"><button className="rr-button" aria-pressed={viewMode === 'editor'} onClick={() => setViewMode('editor')}>可视化编辑</button><button className="rr-button" disabled={!draft} aria-pressed={viewMode === 'markdown'} onClick={() => { setViewMode('markdown'); setFocused(true); }}>Markdown 实时浏览</button><button className="rr-button" disabled={!draft} aria-pressed={viewMode === 'pdf'} onClick={() => { setViewMode('pdf'); setFocused(true); }}>PDF 实时浏览</button><button className="rr-button" disabled={!synced || busy} title={synced ? '导出当前已保存版本' : '等待当前内容保存并完成 PDF 生成后可导出'} onClick={() => { if (!synced) return; const link = document.createElement('a'); link.href = pdf.url; link.download = demo ? 'demo-weekly-report.pdf' : (draft.title || 'weekly-report').replace(/[<>:"/\\|?*]/g, '_') + '.pdf'; link.click(); }}>导出 PDF</button><button className="rr-button rr-button--primary rr-push" disabled={!dirty || readOnly} onClick={() => { setError(''); save(); }}>保存 / 重试</button></div>
-        <p className="rr-engine-note">切换模式保留正文内容；可视化与源码之间切换时，撤销历史重新开始。</p><div className="rr-document-panes" data-view={viewMode}><div className="rr-source-pane"><div className="rr-pane-heading"><strong>{sourceMode ? 'Markdown 源码' : '可视化编辑'}</strong><span>{dirty ? '未保存' : '自动保存'}</span></div><section className="rr-canvas" aria-label="报告正文">{draft ? (sourceMode ? <Editor key={draft.reportId} editorRef={editorRef} value={text} readOnly={readOnly} onChange={changeText} /> : <BlockEditor key={draft.reportId} value={text} readOnly={readOnly} onSource={() => { setViewMode('markdown'); setFocused(true); }} onChange={changeText} />) : <div className="rr-welcome"><span className="rr-eyebrow">本周的判断，从这里开始</span><h2>把数据整理成有依据的观点</h2><p>从左侧打开已有报告，或新建周报后使用上方设置生成初稿。</p><p className="rr-muted">生成初稿 → 人工审阅 → 确认版本 → 发布与核对</p></div>}</section>
+        <p className="rr-engine-note">切换模式保留正文内容；可视化与源码之间切换时，撤销历史重新开始。</p>{panel && <section className="rr-review-view" aria-label="审阅详情"><div className="rr-review-view-head"><button className="rr-button" onClick={() => setPanel(null)}>← 返回正文</button><div className="rr-review-view-head2"><h2>{reviewTitle(panel.type)}</h2><span className="rr-muted">{reviewSub(panel.type, panel.value)}</span></div></div><div className="rr-review-view-body">{renderPanel()}</div></section>}<div className="rr-document-panes" data-view={viewMode}><div className="rr-source-pane"><div className="rr-pane-heading"><strong>{sourceMode ? 'Markdown 源码' : '可视化编辑'}</strong><span>{dirty ? '未保存' : '自动保存'}</span></div><section className="rr-canvas" aria-label="报告正文">{draft ? (sourceMode ? <Editor key={draft.reportId} editorRef={editorRef} value={text} readOnly={readOnly} onChange={changeText} /> : <BlockEditor key={draft.reportId} value={text} readOnly={readOnly} onSource={() => { setViewMode('markdown'); setFocused(true); }} onChange={changeText} />) : <div className="rr-welcome"><span className="rr-eyebrow">本周的判断，从这里开始</span><h2>把数据整理成有依据的观点</h2><p>从左侧打开已有报告，或新建周报后使用上方设置生成初稿。</p><p className="rr-muted">生成初稿 → 人工审阅 → 确认版本 → 发布与核对</p></div>}</section>
         </div><section className="rr-markdown-preview" aria-label="Markdown 实时预览" hidden={viewMode !== 'markdown'}><div className="rr-pane-heading"><strong>阅读预览</strong><span>随输入实时更新</span></div>{viewMode === 'markdown' && <MarkdownPreview text={text} scrollRef={markdownScrollRef} />}</section>
         <section className="rr-pdf" aria-label="报告版式" hidden={viewMode !== 'pdf'}><div className="rr-pane-heading"><strong>PDF 版式</strong><span>{synced ? '已同步' : '等待生成 / 旧预览'}</span></div>{pdf ? <><a href={pdf.url} target="_blank" rel="noreferrer" download={demo ? "demo-weekly-report.pdf" : undefined}>{demo ? "下载演示 PDF（模拟数据）" : "下载 / 打开当前 PDF"}{!synced ? '（旧预览）' : ''}</a><object aria-label="实际 PDF 预览" data={pdf.url} type="application/pdf" className="rr-pdf-object"><a href={pdf.url} target="_blank" rel="noreferrer">浏览器无法内嵌 PDF，请打开实际 PDF</a></object></> : <p className="rr-empty">尚无可用实际 PDF，保存后等待预览生成。</p>}</section></div>
         </section>
@@ -514,23 +712,13 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
       <li>实际引用 {draft.retrieval.used?.length || 0} 份知识库材料：{(draft.retrieval.used || []).map(u => u.title).join('、')}</li>
       {draft.retrieval.verification?.applied ? <li>核验：{draft.retrieval.verification.onTopic ? '贴合本意' : '可能不贴合本意'} {draft.retrieval.verification.gaps?.length ? `；缺：${draft.retrieval.verification.gaps.join('；')}` : ''} {draft.retrieval.verification.skipped?.length ? `；已剔除：${draft.retrieval.verification.skipped.join('、')}` : ''}{draft.retrieval.verification.note ? `；${draft.retrieval.verification.note}` : ''}</li> : null}
     </ul></section>}
-
-    {panel && <section className="rr-detail"><button className="rr-button" onClick={() => setPanel(null)}>关闭详情</button>
-      {panel.type === 'humanItems' && <HumanItemsPanel key={`${draft?.reportId}:${panel.value?.saveToken}`} value={panel.value} readOnly={readOnly || dirty || panel.value?.status!=='draft'} onSave={(items,saveToken)=>action('saveHumanItems',{items,saveToken})}/>}
-      {panel.type === 'diff' && <><p>左：本轮基线；右：当前稿。无法确定基线时仅展示审计记录，不伪造差异。</p>{typeof (panel.value?.baselineMarkdown ?? draft?.baselineMarkdown) === 'string' ? <Diff before={panel.value?.baselineMarkdown ?? draft.baselineMarkdown} after={text} /> : <p>Host 尚未提供 baselineMarkdown。</p>}<pre className="rr-pre">{JSON.stringify(panel.value,null,2)}</pre></>}
-      {panel.type === 'versions' && <><h3>确认版本（不可变）</h3>{versions.map(v => <div key={v.versionId} className="rr-record"><strong>{v.versionId} {v.title}</strong> <button className="rr-button" disabled={busy || dirty} onClick={() => action('publishPlan', {versionId:v.versionId})}>查看此版本发布清单</button>{typeof v.markdown === 'string' && <details><summary>阅读版本正文</summary><pre className="rr-pre">{v.markdown}</pre></details>}</div>)}</>}
-      {panel.type === 'timeline' && <button className="rr-button" disabled={busy} onClick={() => showPublication('publicationStatus')}>发布记录</button>}
-      {panel.type === 'timeline' && <Timeline value={panel.value} />}
-      {panel.type === 'publishPlan' && <><h3>发布清单：{panel.value?.versionId}</h3><p>仅以下按钮会发出 publish 请求。请核对正文、图片、公开信息及知识库身份。</p><pre className="rr-pre">{JSON.stringify(panel.value,null,2)}</pre><button className="rr-button" disabled={busy || dirty || !verified} onClick={event => { if (!event.nativeEvent.isTrusted) { setError('发布必须由人类实际点击'); return; } action('publish', { versionId:panel.value?.versionId, planId:panel.value?.planId, digest:panel.value?.digest, publishToken:panel.value?.publishToken, userInitiated:true }); }}>{demo ? '模拟发布此确认版' : '发布此确认版至 WeKnora'}</button></>}
-      {panel.type === 'publish' && <><h3>{demo ? '模拟发布回执（未上传）' : '发布回执'}</h3><p>{publicationStateText(panel.value)}</p><p>已提交并不等于完成。请用只读核对查看状态；此按钮不会再次调用发布。</p><button className="rr-button" disabled={busy} onClick={() => showPublication('reconcile')}>只读核对</button>{' '}<button className="rr-button" disabled={busy} onClick={() => showPublication('publicationStatus')}>查看发布记录</button><pre className="rr-pre">{JSON.stringify(panel.value,null,2)}</pre></>}
-      {panel.type === 'publicationStatus' && <PublicationRecords value={panel.value} busy={busy} onRead={showPublication} />}
-    </section>}
       </aside>
     </div>
     <footer className="rr-status" role="status">{demo ? '演示模式 · ' : ''}{status} · {dirty ? '未保存，PDF 为旧预览' : synced && pdf ? 'PDF 已同步' : preview?.status === 'failed' ? 'PDF 生成失败' : 'PDF 等待生成 / 旧预览'}{aiModel?.model ? ` · AI ${aiModel.provider || ''}${aiModel.provider ? '/' : ''}${aiModel.model}` : ''}</footer>
-    {error && <div className="rr-error" role="alert">{error}</div>}
+    {error && <div className="rr-error" role="alert"><span className="rr-error-msg">{error}</span><button className="rr-error-close" aria-label="关闭错误提示" onClick={() => setError('')}>✕</button></div>}
     {confirmClose && <section className="rr-close-confirm" role="alert"><p>有未保存修改，放弃后将丢失这些内容。</p><button className="rr-button rr-button--danger" onClick={close}>放弃并关闭</button> <button className="rr-button" onClick={() => setConfirmClose(false)}>返回编辑</button></section>}
     {settingsOpen && !demo && <SettingsPanel request={request} onIdentity={v => alive.current && setIdentity(v)} onClose={() => { setSettingsOpen(false); request('identity').then(v => alive.current && setIdentity(v)).catch(() => {}); }} />}
+    <GenerateProgress progress={progress} onCancel={cancelGen} onRetry={generate} onRegenerate={generate} onClose={() => setProgress(null)} />
   </dialog>;
 }
 

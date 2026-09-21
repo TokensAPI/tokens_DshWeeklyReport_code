@@ -172,7 +172,7 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
     if (sha256(bytes) !== descriptor.sha256 || (descriptor.bytes !== undefined && descriptor.bytes !== bytes.length)) fail('SOURCE_HASH_MISMATCH');
     return { path: actual, bytes };
   }
-  async function synthesizeAnalysis({ variety, dataSummary, analysisPrompt = '', materials, wantHistory = false }, warnings) {
+  async function synthesizeAnalysis({ variety, dataSummary, analysisPrompt = '', materials, wantHistory = false }, warnings, signal) {
     // Optional enhancement: write reference-style 五/六 analysis over current data (+ web news when the human asked).
     // Invoked only when the human supplied an analysis requirement; any failure returns null so generation
     // falls back to a pure data report and never blocks.
@@ -200,9 +200,10 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
     const user = `你是投研分析师，为 ${variety} 周报撰写分析段落。下面给出了可用材料：【本周数据】${wek.length ? '与【知识库材料】' : ''}${web.length ? '与【联网信源材料】' : ''}。请**基于这些已提供的材料做梳理与推理**（不是凭空推测）：材料足以支撑的判断才写；材料不足以支撑的，说明缺少哪部分并给出仍可判断的内容，不要虚构，也不要引用材料之外的数据。${citeInstruction}\n\n请严格按【人类分析要求】列出的章节结构输出（简洁中文 Markdown，不要输出数据表）；【人类分析要求】未指明具体章节时，按${defaultSections}的常规结构综合输出。${wek.length ? `注意：${wantHistory ? '本次已提供知识库材料（含既往周报），请按用户要求综合使用' : '本次已提供知识库材料，请基于这些材料做推理并按“〔N〕”标注来源；不要虚构或引用材料之外的数据'}。` : ''}`;
     const runStream = async (streamOpts) => {
       const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), llmSynthesisTimeoutMs);
+      const streamSignal = signal ? AbortSignal.any([controller.signal, signal]) : controller.signal;
       let text = '';
       try {
-        for await (const chunk of llm.stream({ ...streamOpts, signal: controller.signal })) {
+        for await (const chunk of llm.stream({ ...streamOpts, signal: streamSignal })) {
           if (chunk.type === 'text-delta') text += chunk.text;
           else if (chunk.type === 'finish') { const k = chunk.reason?.kind; if (k && !['stop', 'max-tokens'].includes(k)) throw new Error('LLM_FINISH_' + k); }
         }
@@ -287,7 +288,7 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
       return folders.find(f => f.split('/').pop() === last) || null;
     } catch { return null; }
   }
-  async function planKnowledgeRetrieval({ llm, model, request, analysisPrompt, connector, kbId, memory = [] }) {
+  async function planKnowledgeRetrieval({ llm, model, request, analysisPrompt, connector, kbId, memory = [], signal }) {
     if (!analysisPrompt) return { enabled: false, wantHistory: false, kind: 'none', weeksBack: 0, queries: [], folderPath: null, source: 'none' };
     if (!llm?.stream || !validString(model?.provider, 64) || !validString(model?.model, 128)) return heuristicPlan(request, analysisPrompt);
     // Give the LLM the REAL folder tree so a "笔记文件夹里的材料" request resolves to an exact path. The script
@@ -313,7 +314,8 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
     const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), llmSynthesisTimeoutMs);
     try {
       let text = '';
-      for await (const c of llm.stream({ provider: model.provider, model: model.model, messages: [{ id: token(), role: 'user', content: [{ type: 'text', text: prompt }], source: { kind: 'plugin', plugin: 'run19-report-review' } }], system: '你只输出 JSON 对象。', temperature: 0, maxTokens: 512, signal: controller.signal })) {
+      const streamSignal = signal ? AbortSignal.any([controller.signal, signal]) : controller.signal;
+      for await (const c of llm.stream({ provider: model.provider, model: model.model, messages: [{ id: token(), role: 'user', content: [{ type: 'text', text: prompt }], source: { kind: 'plugin', plugin: 'run19-report-review' } }], system: '你只输出 JSON 对象。', temperature: 0, maxTokens: 512, signal: streamSignal })) {
         if (c.type === 'text-delta') text += c.text; else if (c.type === 'finish') break;
       }
       const m = text.match(/\{[\s\S]*\}/);
@@ -336,7 +338,7 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
    *  re-queries (bounded) to fill gaps, and returns which materials to actually synthesize. Only judges from the
    *  given fragments (never invents); a parse/failure returns `applied:false` so the caller falls back to "use all"
    *  rather than dropping material on a flaky LLM. */
-  async function verifyRetrieval({ llm, model, analysisPrompt, plan, materials, requery, maxRounds = 1 }) {
+  async function verifyRetrieval({ llm, model, analysisPrompt, plan, materials, requery, maxRounds = 1, signal }) {
     if (!llm?.stream || !validString(model?.provider, 64) || !validString(model?.model, 128)) return { applied: false, note: 'NO_LLM' };
     if (!Array.isArray(materials) || !materials.length) return { applied: false, note: 'NO_MATERIALS' };
     let current = materials.slice();
@@ -348,8 +350,9 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
       const prompt = `你是检索核验器。用户的分析要求：${analysisPrompt}\n检索范围：${scopeDesc}。\n下面是从知识库检回的材料（每条=一个来源文档，含标题与开头）。请判断这些材料与用户本意是否一致。只输出 JSON，不要多余文字：\n{"on_topic":true,"gaps":["缺少什么（无需补则空数组）"],"re_queries":["需补充检索的词（≤2，无需补则空数组）"],"skip":[1,3],"note":"一句话结论"}\n其中：on_topic=是否整体贴合用户本意；gaps=还缺什么；re_queries=若本意未被满足，可再检索的词（≤2 个，只填语义词，不填文件夹/时间）；skip=与本意明显无关、应剔除的材料序号（从 1 开始，无则空数组）；note=一句话结论。务必只依据给出的材料判断，不臆测材料之外的内容。\n\n【检回材料】\n${summary}`;
       const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), llmSynthesisTimeoutMs);
       let text = '';
+      const streamSignal = signal ? AbortSignal.any([controller.signal, signal]) : controller.signal;
       try {
-        for await (const c of llm.stream({ provider: model.provider, model: model.model, messages: [{ id: token(), role: 'user', content: [{ type: 'text', text: prompt }], source: { kind: 'plugin', plugin: 'run19-report-review' } }], system: '只输出 JSON 对象；只依据给出的材料判断，不臆测不存在的内容。', temperature: 0, maxTokens: 600, signal: controller.signal })) {
+        for await (const c of llm.stream({ provider: model.provider, model: model.model, messages: [{ id: token(), role: 'user', content: [{ type: 'text', text: prompt }], source: { kind: 'plugin', plugin: 'run19-report-review' } }], system: '只输出 JSON 对象；只依据给出的材料判断，不臆测不存在的内容。', temperature: 0, maxTokens: 600, signal: streamSignal })) {
           if (c.type === 'text-delta') text += c.text; else if (c.type === 'finish') break;
         }
       } catch { return { applied: false, note: 'VERIFY_FAILED', warnings: ['RETRIEVAL_VERIFY_FAILED'] }; }
@@ -385,7 +388,12 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
       warnings: [],
     };
   }
-  async function generate(b, input) {
+  async function generate(b, input, opts = {}) {
+    const { onProgress = () => {}, signal } = opts;
+    const emit = (step, state, label, detail) => { onProgress({ step, state, label, ...(detail ? { detail } : {}) }); };
+    const guard = () => { if (signal?.aborted) { const e = new Error('cancelled'); e.code = 'GENERATION_CANCELLED'; throw e; } };
+    emit('init', 'running', '正在初始化…');
+    guard();
     const source = getSource(); if (!source?.generate) fail('SOURCE_UNAVAILABLE');
     if (!config.sourceOutputRoot || !isAbsolute(config.sourceOutputRoot)) fail('SOURCE_ROOT_REQUIRED');
     // No browser path, command, source excerpt, identity, or connector config can enter source invocation.
@@ -400,10 +408,16 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
     // past WeKnora weekly reports (and asks for the continuity section) when the prompt explicitly asks for it.
     // The decision to pull from WeKnora is prompt-driven (LLM identifies the intent), not a fixed regex. When the
     // LLM is unavailable we fall back to a deterministic heuristic so generation still behaves predictably.
+    emit('plan', 'running', 'LLM 正在判断检索范围…');
+    guard();
     const plan = analysisRequested
-      ? await planKnowledgeRetrieval({ llm: getLlm(), model: getDefaultModel()?.currentSelection?.(), request, analysisPrompt, connector: getConnector(), kbId: config.publishKbId, memory: lookupRetrievalMemory(b.sessionId, request.variety) })
+      ? await planKnowledgeRetrieval({ llm: getLlm(), model: getDefaultModel()?.currentSelection?.(), request, analysisPrompt, connector: getConnector(), kbId: config.publishKbId, memory: lookupRetrievalMemory(b.sessionId, request.variety), signal })
       : { enabled: false, wantHistory: false, queries: [], folderPath: null, source: 'none' };
+    emit('plan', 'ok', '检索规划完成');
+    guard();
     const wantHistory = plan.wantHistory;
+    emit('retrieve', 'running', '正在检索资料…');
+    guard();
     // Web material is an input to the LLM analysis only; it never becomes an excerpt block in the report.
     let webMaterials = [];
     if (analysisRequested && input.webSearchEnabled === true) {
@@ -522,6 +536,7 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
           const v = await verifyRetrieval({
             llm: getLlm(), model: getDefaultModel()?.currentSelection?.(), analysisPrompt, plan,
             materials: weknoraMaterials,
+            signal,
             requery: async (q) => {
               if (!connector.search) return [];
               const found = await connector.search(config.publishKbId, q, searchOpts);
@@ -549,9 +564,20 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
         if (wantsScope && scopeStatus === 'failed') generationWarnings.push('KNOWLEDGE_RANGE_NOT_ENFORCED');
       } else generationWarnings.push('KNOWLEDGE_UNAVAILABLE');
     }
+    emit('retrieve', 'ok', '检索资料完成');
+    guard();
     // Surface only the inner machine code (GENERATION_FAILED / GENERATION_TIMEOUT / spawn errno); stderr and
     // failure.json contents stay private, but a bare SOURCE_FAILED made field diagnosis near-impossible.
-    let manifest; try { manifest = await source.generate(request); } catch (error) { const cause = /^[A-Z0-9_]{1,40}$/.test(error?.code || '') ? error.code : 'UNKNOWN'; fail('SOURCE_FAILED', `SOURCE_FAILED(cause=${cause})`); }
+    emit('data', 'running', '正在读取数据库（5100）…');
+    guard();
+    let manifest; try { manifest = await source.generate(request, { signal }); } catch (error) {
+      if (signal?.aborted) { const e = new Error('cancelled'); e.code = 'GENERATION_CANCELLED'; throw e; }
+      const cause = /^[A-Z0-9_]{1,40}$/.test(error?.code || '') ? error.code : 'UNKNOWN'; fail('SOURCE_FAILED', `SOURCE_FAILED(cause=${cause})`);
+    }
+    emit('data', 'ok', '数据拉取完成');
+    emit('charts', 'running', '正在渲染图表…');
+    emit('charts', 'ok', '图表渲染完成');
+    guard();
     if (!manifest || !Array.isArray(manifest.assets) || !validString(manifest.runDir,8192)) fail('SOURCE_MANIFEST_INVALID');
     const root = await realpath(config.sourceOutputRoot), runDir = await realpath(manifest.runDir), rel = relative(root, runDir);
     if (!rel || rel === '..' || rel.startsWith(`..${sep}`) || isAbsolute(rel)) fail('SOURCE_FILE_INVALID');
@@ -560,19 +586,30 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
     // Post-generation LLM synthesis: only when the human stated an analysis requirement (default = pure 7-day data report).
     let markdownText = md.bytes.toString('utf8');
     if (analysisRequested) {
-      const analysis = await synthesizeAnalysis({ variety: request.variety, dataSummary: manifest.sourceMeta?.dataSummary || '', analysisPrompt, wantHistory, materials: [...weknoraMaterials, ...webMaterials] }, generationWarnings);
+      emit('analyse', 'running', 'LLM 正在写分析段落…');
+      guard();
+      const analysis = await synthesizeAnalysis({ variety: request.variety, dataSummary: manifest.sourceMeta?.dataSummary || '', analysisPrompt, wantHistory, materials: [...weknoraMaterials, ...webMaterials] }, generationWarnings, signal);
       if (analysis) {
         if (analysis.body) markdownText = markdownText.replace('__RUN19_ANALYSIS__', analysis.body);
         if (analysis.risk) markdownText = markdownText.replace('__RUN19_RISK__', analysis.risk);
         markdownText = markdownText.replace(/（待填充）\s*/g, '').replace(/- 待填充：[^\n]*\n?/g, '').replace(/- 待分析师补充：[^\n]*\n?/g, '');
         generationWarnings.push('LLM_SYNTHESIS_APPLIED');
       }
+      emit('analyse', 'ok', 'AI 分析完成');
+      guard();
     }
+    emit('assemble', 'running', '正在组装正文…');
+    guard();
     markdownText = markdownText.replace(/[\t ]*\n?\s*__RUN19_ANALYSIS__\s*\n?/g, '\n');
     markdownText = markdownText.replace(/[\t ]*\n?\s*__RUN19_RISK__\s*\n?/g, '\n');
     const assets = [];
     for (const descriptor of manifest.assets) { const checked = await checkedSourceFile(root, runDir, descriptor); assets.push({ path: checked.path, markdownPath: descriptor.path }); }
+    emit('assemble', 'ok', '正文组装完成');
+    guard();
+    emit('save', 'running', '正在保存草稿…');
+    guard();
     const d = await core.createDraft({ sessionId: b.sessionId, title: manifest.title, markdown: markdownText, assets, source: 'agent_inference', markers: [{ kind: 'source_provenance', ...pick(manifest, ['runId','sources','config','generator']), reviewGeneration: { analysisRequested, wantHistory, analysisPrompt, weknoraRetrieved: weknoraMaterials.length, webSearchExecuted: webMaterials.length > 0, warnings: generationWarnings, ...(retrievalSummary ? { retrieval: retrievalSummary } : {}) } }] });
+    emit('save', 'ok', '草稿已保存');
     const view = draftView(d); return { ...view, warnings: [...view.warnings, ...generationWarnings] };
   }
   async function publicationGuard(b, { versionId } = {}) {
@@ -1054,6 +1091,38 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
         return json({ ok: true, value: await dispatch(input, true) });
       } catch (e) { return json(safeError(e), e.code === 'SESSION_FORBIDDEN' ? 403 : 400); }
     },
+    async fetchGenerate(request) {
+      try {
+        if (request.method !== 'POST') return json({ ok:false, error:{code:'METHOD_NOT_ALLOWED', message:'POST required'} },405);
+        const text = await request.text(); if (Buffer.byteLength(text) > maxBodyBytes) fail('BODY_TOO_LARGE');
+        let input; try { input = JSON.parse(text); } catch { fail('INVALID_INPUT'); }
+        if (!input || typeof input !== 'object' || Array.isArray(input)) fail('INVALID_INPUT');
+        const b = await binding(input);
+        const controller = new AbortController();
+        const reqSignal = (request.signal && typeof request.signal?.aborted === 'boolean') ? request.signal : null;
+        const signal = (reqSignal && typeof AbortSignal?.any === 'function') ? AbortSignal.any([controller.signal, reqSignal]) : controller.signal;
+        const encoder = new TextEncoder();
+        let lastStep = 'init';
+        const stream = new ReadableStream({
+          async start(ctrl) {
+            const send = (obj) => { try { ctrl.enqueue(encoder.encode(JSON.stringify(obj) + '\n')); } catch { /* client gone */ } };
+            try {
+              const value = await generate(b, input, {
+                signal,
+                onProgress: (p) => { lastStep = p.step; send({ t:'progress', ...p, at: new Date().toISOString() }); },
+              });
+              send({ t:'result', value });
+            } catch (e) {
+              if (e?.code === 'GENERATION_CANCELLED') return; // client aborted; no further events
+              const se = safeError(e);
+              send({ t:'error', step: lastStep, code: se.error.code, message: se.error.message });
+            } finally { try { ctrl.close(); } catch { /* ignore */ } }
+          },
+          cancel() { try { controller.abort(); } catch { /* ignore */ } },
+        });
+        return new Response(stream, { headers: { 'content-type':'application/x-ndjson; charset=utf-8', 'cache-control':'no-store', 'x-accel-buffering':'no' } });
+      } catch(e) { return json(safeError(e), e.code === 'SESSION_FORBIDDEN' ? 403 : 400); }
+    },
     async fetchPdf(request) {
       try {
         if (request.method !== 'GET') return json({ok:false,error:{code:'METHOD_NOT_ALLOWED',message:'GET required'}},405);
@@ -1143,6 +1212,7 @@ export function apply(ctx, config = {}) {
     llmSynthesisTimeoutMs: config.llmSynthesisTimeoutMs ?? 300000 }, config);
   ctx.provide('reportReview', api);
   ctx.connection.fetch.register({ path:'/api/run19/review', methods:['POST'], requestBody:'buffered', fetch: request => api.fetchReview(request) });
+  ctx.connection.fetch.register({ path:'/api/run19/generate', methods:['POST'], requestBody:'buffered', fetch: request => api.fetchGenerate(request) });
   ctx.connection.fetch.register({ path:'/api/run19/ai-stream', methods:['POST'], requestBody:'buffered', fetch: request => api.fetchAiStream(request) });
   ctx.connection.fetch.register({ path:'/api/run19/pdf', methods:['GET'], requestBody:'buffered', fetch: request => api.fetchPdf(request) });
   ctx.effect(() => () => api.dispose());

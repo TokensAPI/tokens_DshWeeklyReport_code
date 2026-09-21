@@ -55,7 +55,7 @@ export const en = {
     },
   },
   ai_menu: {
-    input_placeholder: "Ask AI anything…",
+    input_placeholder: 'Describe the edit, e.g. "Change … to …"',
     status: {
       thinking: "Thinking…",
       editing: "Editing…",

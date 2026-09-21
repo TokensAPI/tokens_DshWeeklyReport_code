@@ -25628,6 +25628,7 @@ var init_demo_pdf = __esm({
 var entry_exports = {};
 __export(entry_exports, {
   DEFAULT_PROMPT_TEMPLATE: () => DEFAULT_PROMPT_TEMPLATE,
+  GenerateProgress: () => GenerateProgress,
   HumanItemsPanel: () => HumanItemsPanel,
   PublicationRecords: () => PublicationRecords,
   RegisteredTrigger: () => RegisteredTrigger,
@@ -52138,7 +52139,13 @@ var workspace_default = `/* Local aliases consume the TokensAPI contract; never 
 .rr-notice { padding: 12px; background: var(--rr-selection); border-radius: var(--rr-radius); }\r
 .rr-notice p { margin-bottom: 10px; }\r
 .rr-status { padding: 10px 20px; border-top: 1px solid var(--rr-border); background: var(--rr-shell); color: var(--rr-muted); font-size: 12px; }\r
-.rr-error, .rr-close-confirm { padding: 12px 20px; color: var(--rr-danger); background: var(--rr-paper); border-top: 1px solid var(--rr-danger); white-space: pre-wrap; max-height: 30vh; overflow: auto; flex-shrink: 0; }\r
+.rr-close-confirm { padding: 12px 20px; color: var(--rr-danger); background: var(--rr-paper); border-top: 1px solid var(--rr-danger); white-space: pre-wrap; max-height: 30vh; overflow: auto; flex-shrink: 0; }\r
+.rr-error { padding: 12px 16px; color: var(--rr-danger); background: color-mix(in srgb, var(--rr-danger) 9%, var(--rr-paper)); border-left: 3px solid var(--rr-danger); white-space: pre-wrap; font-size: 13px; line-height: 1.55; display: flex; gap: 10px; align-items: flex-start; flex-shrink: 0; max-height: 30vh; overflow: auto; }\r
+.rr-error::before { content: '\u26A0'; font-weight: 700; flex: none; font-size: 15px; line-height: 1.2; margin-top: 1px; }\r
+.rr-error-msg { flex: 1; min-width: 0; }\r
+.rr-error-close { flex: none; border: 1px solid var(--rr-border); border-radius: 6px; background: transparent; color: var(--rr-muted); font-size: 13px; line-height: 1; padding: 4px 8px; cursor: pointer; }\r
+.rr-error-close:hover { color: var(--rr-danger); border-color: var(--rr-danger); background: color-mix(in srgb, var(--rr-danger) 8%, transparent); }\r
+.rr-gen-foot .rr-button + .rr-button { margin-left: 8px; }\r
 .rr-empty { color: var(--rr-muted); padding: 12px 0; }\r
 .rr-workspace .rr-diff-delete { color: var(--rr-danger); }\r
 .rr-workspace .rr-diff-insert { color: var(--rr-success); }\r
@@ -52276,8 +52283,11 @@ var workspace_default = `/* Local aliases consume the TokensAPI contract; never 
 .rr-workspace .bn-block-content[data-content-type="codeBlock"] { overflow-x: auto; }\r
 .rr-demo-banner .rr-button { margin-left: 12px; min-height: 30px; padding-block: 4px; }\r
 \r
-/* Connection settings modal: centered card above the workspace, same tokens as the rest of the UI. */\r
-.rr-settings { position: fixed; inset: 0; z-index: 30; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--rr-text) 24%, transparent); }\r
+/* Connection settings modal: now a real <dialog> in the top layer, so it\r
+ * reliably floats above the workspace dialog (itself a modal). The UA centers\r
+ * it with margin:auto and its own ::backdrop dims the whole viewport. */\r
+.rr-settings { margin: auto; padding: 0; border: none; background: transparent; overflow: visible; }\r
+.rr-settings::backdrop { background: rgb(12 15 22 / 48%); }\r
 .rr-settings-card { width: min(520px, calc(100vw - 48px)); max-height: calc(100vh - 96px); overflow: auto; padding: 24px; background: var(--rr-paper); border: 1px solid var(--rr-border); border-radius: 12px; box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25); }\r
 .rr-settings-card label { display: block; margin: 12px 0 0; font-size: 13px; color: var(--rr-text); }\r
 .rr-settings-card label .rr-muted { font-size: 12px; margin-left: 6px; }\r
@@ -52287,6 +52297,97 @@ var workspace_default = `/* Local aliases consume the TokensAPI contract; never 
 .rr-settings-error { color: var(--rr-danger); font-size: 13px; margin: 10px 0 0; white-space: pre-wrap; }\r
 .rr-settings-test { margin: 12px 0 0; padding: 10px 12px 10px 28px; border: 1px solid var(--rr-border); border-radius: 8px; font-size: 13px; }\r
 .rr-settings-test li { margin: 4px 0; }\r
+\r
+/* Generation progress: a controllable loading animation in the corner (in-between state of step 1 -> step 2). */\r
+.rr-gen-progress { position: fixed; right: 22px; bottom: 22px; z-index: 40; width: 372px; max-width: calc(100vw - 44px);\r
+  background: var(--rr-paper); border: 1px solid var(--rr-border); border-radius: 12px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);\r
+  font-size: 13px; color: var(--rr-text); overflow: hidden; }\r
+.rr-gen-head { display: flex; align-items: center; gap: 10px; padding: 12px 14px; cursor: pointer; user-select: none; }\r
+.rr-gen-icon { width: 22px; height: 22px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: #fff; background: var(--rr-muted); }\r
+.rr-gen-icon.running { background: var(--rr-accent); animation: rr-gen-spin 1s linear infinite; }\r
+.rr-gen-icon.ok { background: var(--rr-success); }\r
+.rr-gen-icon.fail { background: var(--rr-danger); }\r
+.rr-gen-icon.cancel { background: var(--rr-muted); }\r
+.rr-gen-meta { flex: 1; min-width: 0; }\r
+.rr-gen-lbl { display: block; font-weight: 650; color: var(--rr-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\r
+.rr-gen-sub { display: block; color: var(--rr-muted); font-size: 12px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\r
+.rr-gen-chev { color: var(--rr-muted); font-size: 12px; transition: transform .2s; }\r
+.rr-gen-progress.open .rr-gen-chev { transform: rotate(180deg); }\r
+.rr-gen-body { border-top: 1px solid var(--rr-border); padding: 8px 6px 6px; max-height: 320px; overflow: auto; }\r
+.rr-gen-bar-wrap { display: flex; align-items: center; gap: 10px; padding: 4px 8px 10px; border-bottom: 1px dashed var(--rr-border); margin-bottom: 4px; }\r
+.rr-gen-num { font-size: 12px; color: var(--rr-muted); white-space: nowrap; }\r
+.rr-gen-bar { flex: 1; height: 6px; background: var(--rr-border); border-radius: 999px; overflow: hidden; }\r
+.rr-gen-bar > i { display: block; height: 100%; background: var(--rr-accent); border-radius: 999px; transition: width .3s; }\r
+.rr-gen-step { display: flex; gap: 10px; align-items: flex-start; padding: 6px 8px; border-radius: 8px; }\r
+.rr-gen-step.running { background: var(--rr-selection); }\r
+.rr-gen-step.failed { background: color-mix(in srgb, var(--rr-danger) 12%, transparent); }\r
+.rr-gen-step.cancelled, .rr-gen-step.skipped { opacity: .55; }\r
+.rr-gen-dot { width: 16px; height: 16px; flex: none; margin-top: 2px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; color: #fff; }\r
+.rr-gen-step.done .rr-gen-dot { background: var(--rr-success); }\r
+.rr-gen-step.running .rr-gen-dot { background: var(--rr-accent); animation: rr-gen-spin 1s linear infinite; }\r
+.rr-gen-step.failed .rr-gen-dot { background: var(--rr-danger); }\r
+.rr-gen-step.cancelled .rr-gen-dot, .rr-gen-step.skipped .rr-gen-dot { background: var(--rr-muted); }\r
+.rr-gen-step.pending .rr-gen-dot { border: 2px solid var(--rr-border); background: transparent; }\r
+.rr-gen-body2 { flex: 1; min-width: 0; }\r
+.rr-gen-row { display: flex; align-items: center; gap: 8px; cursor: pointer; }\r
+.rr-gen-name { font-weight: 600; color: var(--rr-text); }\r
+.rr-gen-status { font-size: 11px; color: var(--rr-muted); }\r
+.rr-gen-step.running .rr-gen-status { color: var(--rr-accent); }\r
+.rr-gen-step.failed .rr-gen-status { color: var(--rr-danger); }\r
+.rr-gen-detail { font-size: 11.5px; color: var(--rr-muted); line-height: 1.55; margin-top: 4px; padding-left: 2px; display: none; }\r
+.rr-gen-step.expand .rr-gen-detail { display: block; }\r
+.rr-gen-err { color: var(--rr-danger); font-weight: 600; }\r
+.rr-gen-fix { color: var(--rr-text); }\r
+.rr-gen-foot { display: flex; align-items: center; gap: 8px; padding: 10px 14px 14px; border-top: 1px solid var(--rr-border); }\r
+.rr-gen-hint { flex: 1; color: var(--rr-muted); font-size: 12px; }\r
+.rr-gen-progress .rr-button { padding: 6px 11px; font-size: 12px; }\r
+.rr-gen-progress .rr-button--danger { background: var(--rr-danger); border-color: var(--rr-danger); color: #fff; }\r
+@keyframes rr-gen-spin { to { transform: rotate(360deg); } }\r
+\r
+/* Review detail opens in the main canvas (full width) instead of the narrow inspector.\r
+ * data-review is present only while a review panel is active. */\r
+.rr-main[data-review] :is(.rr-toolbar, .rr-engine-note, .rr-document-panes) { display: none; }\r
+.rr-review-view { display: flex; flex-direction: column; flex: 1 0 0; min-height: 0; gap: 12px; margin: 0 24px 24px; }\r
+.rr-review-view-head { display: flex; align-items: flex-start; gap: 12px; }\r
+.rr-review-view-head .rr-button { flex: none; }\r
+.rr-review-view-head2 { min-width: 0; }\r
+.rr-review-view-head2 h2 { font-size: 18px; line-height: 1.3; }\r
+.rr-review-view-head2 .rr-muted { font-size: 12px; }\r
+.rr-review-view-body { flex: 1; min-height: 0; overflow: auto; border: 1px solid var(--rr-border); border-radius: var(--rr-radius); background: var(--rr-paper); padding: 18px 20px; }\r
+.rr-review-view-body .rr-pre { max-height: none; }\r
+@media (max-width:650px) { .rr-review-view { margin-inline: 12px; gap: 8px; } .rr-review-view-body { padding: 12px; } }\r
+\r
+/* Readable review detail: field cards, diff legend, raw-JSON fallback. */\r
+.rr-field-card { margin: 14px 0; padding: 12px 14px; border: 1px solid var(--rr-border); border-radius: var(--rr-radius); background: var(--rr-shell); }\r
+.rr-field-card h4 { font-size: 13px; margin: 0 0 8px; color: var(--rr-accent); font-weight: 650; }\r
+.rr-fields { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 6px 16px; }\r
+.rr-field-row { display: flex; gap: 8px; align-items: baseline; min-width: 0; }\r
+.rr-field-row dt { color: var(--rr-muted); font-size: 12px; flex: none; min-width: 84px; }\r
+.rr-field-row dd { margin: 0; font-size: 12.5px; overflow-wrap: anywhere; }\r
+.rr-fields .rr-mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 11.5px; }\r
+.rr-raw { margin: 14px 0; }\r
+.rr-raw summary { color: var(--rr-muted); font-size: 12px; cursor: pointer; }\r
+.rr-raw pre { margin-top: 8px; }\r
+.rr-diff-helper { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }\r
+.rr-diff-legend { display: inline-flex; gap: 12px; }\r
+.rr-diff-legend span { font-size: 12px; }\r
+.rr-publish-plan .rr-row + p { margin-top: 8px; }\r
+.rr-publish-plan .rr-button { margin-top: 12px; }\r
+\r
+/* Report list items: status dot + clearer hierarchy. */\r
+.rr-item-top { display: flex; align-items: center; gap: 8px; min-width: 0; }\r
+.rr-status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rr-muted); flex: none; }\r
+.rr-status-dot.is-confirmed { background: var(--rr-success); }\r
+.rr-report-title { font-size: 13px; font-weight: 600; overflow-wrap: anywhere; }\r
+.rr-report-sub { font-size: 11px; color: var(--rr-muted); padding-left: 16px; }\r
+\r
+/* Publication record phase badge. */\r
+.rr-phase { font-size: 11px; font-weight: 650; padding: 2px 9px; border-radius: 999px; line-height: 1.4; }\r
+.rr-phase.is-ready { color: var(--rr-success); background: color-mix(in srgb, var(--rr-success) 14%, transparent); }\r
+.rr-phase.is-submitted { color: var(--rr-info); background: color-mix(in srgb, var(--rr-info) 14%, transparent); }\r
+.rr-phase.is-failed { color: var(--rr-danger); background: color-mix(in srgb, var(--rr-danger) 14%, transparent); }\r
+.rr-phase.is-unknown { color: var(--rr-info); background: color-mix(in srgb, var(--rr-info) 14%, transparent); }\r
+.rr-phase.is-pending { color: var(--rr-muted); background: color-mix(in srgb, var(--rr-muted) 16%, transparent); }\r
 `;
 
 // packages/report-review/src/block-editor.jsx
@@ -102698,7 +102799,7 @@ var ht4 = {
 };
 
 // packages/report-review/src/editor-ai/style.css
-var style_default = ".bn-combobox {\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n  width: 100%;\n}\n\n.bn-combobox-items {\n  max-width: 50%;\n}\n\n.bn-combobox-items:empty {\n  display: none;\n}\n";
+var style_default = ".bn-combobox {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 4px;\r\n  width: 100%;\r\n}\r\n\r\n.bn-combobox-items {\r\n  max-width: 50%;\r\n}\r\n\r\n.bn-combobox-items:empty {\r\n  display: none;\r\n}\r\n\r\n/* AI \u7F16\u8F91\u5BA1\u9605\u6001\uFF1A\u5220\u9664\u7684\u65E7\u6587\u5B57 = \u7EA2\u8272\u5220\u9664\u7EBF + \u6D45\u7EA2\u5E95 + \u659C\u4F53\uFF0C\u660E\u663E\u533A\u522B\u4E8E\u6B63\u6587\uFF1B\r\n * \u63D2\u5165\u7684\u65B0\u6587\u5B57 = \u4E3B\u9898\u8272\u6D45\u5E95\uFF0C\u53BB\u6389\u9ED8\u8BA4\u4E0B\u5212\u7EBF\u3002\u4E8C\u8005\u5F62\u6210\u7ECF\u5178 diff \u5BF9\u6BD4\u3002 */\r\n.rr-block-editor .bn-editor del {\r\n  text-decoration: line-through;\r\n  text-decoration-thickness: 1.5px;\r\n  text-decoration-color: var(--rr-danger, #d64545);\r\n  color: var(--rr-danger, #d64545);\r\n  background: color-mix(in srgb, var(--rr-danger, #d64545) 10%, transparent);\r\n  font-style: italic;\r\n}\r\n.rr-block-editor .bn-editor ins {\r\n  text-decoration: none;\r\n  color: var(--rr-accent, #2f7d5f);\r\n  background: color-mix(in srgb, var(--rr-accent, #2f7d5f) 12%, transparent);\r\n  border-radius: 2px;\r\n}\r\n";
 
 // packages/report-review/src/editor-ai/ai-shim.ts
 var Chat = void 0;
@@ -106971,7 +107072,7 @@ var zh = {
     }
   },
   ai_menu: {
-    input_placeholder: "\u5411\u4EBA\u5DE5\u667A\u80FD\u63D0\u95EE\u4EFB\u4F55\u95EE\u9898\u2026",
+    input_placeholder: "\u8F93\u5165\u8981\u4FEE\u6539\u7684\u5185\u5BB9\uFF0C\u4F8B\u5982\u300C\u628A\u7B2C\u4E00\u6BB5\u7684\u2026\u6539\u6210\u2026\u300D",
     status: {
       thinking: "\u601D\u8003\u4E2D\u2026",
       editing: "\u7F16\u8F91\u4E2D\u2026",
@@ -120454,10 +120555,18 @@ function BlockEditor({ value, onChange, readOnly: readOnly2, onSource }) {
   const last3 = (0, import_react167.useRef)(value);
   const [failed, setFailed] = (0, import_react167.useState)(false);
   const [aiDiag, setAiDiag] = (0, import_react167.useState)(null);
+  const diagTimer = (0, import_react167.useRef)(null);
   (0, import_react167.useEffect)(() => {
-    const on5 = (e6) => setAiDiag(e6.detail);
+    const on5 = (e6) => {
+      setAiDiag(e6.detail);
+      clearTimeout(diagTimer.current);
+      diagTimer.current = setTimeout(() => setAiDiag(null), e6.detail?.error ? 15e3 : 6e3);
+    };
     window.addEventListener("dsh-ai-diag", on5);
-    return () => window.removeEventListener("dsh-ai-diag", on5);
+    return () => {
+      window.removeEventListener("dsh-ai-diag", on5);
+      clearTimeout(diagTimer.current);
+    };
   }, []);
   const session = (0, import_react167.useMemo)(() => {
     try {
@@ -120866,6 +120975,38 @@ function publicationStateText(record = {}) {
   return "\u5F53\u524D\u8BB0\u5F55\u5C1A\u672A\u8BC1\u660E\u53D1\u5E03\u5B8C\u6210\uFF1B\u89E3\u6790\u72B6\u6001\u4E0E\u68C0\u7D22\u6838\u9A8C\u5E94\u5206\u522B\u68C0\u67E5\u3002";
 }
 var recordText = (value) => typeof value === "string" && value.length <= 160 && /^[\w. :+-]+$/.test(value) ? value : "\u672A\u63D0\u4F9B";
+var FIELD_MONO = ["digest", "publishToken", "saveToken", "versionId", "planId", "id", "remoteId", "remote_id", "reportId", "version_id", "knowledge_id", "knowledge_base_id", "resourceUri", "resource_uri", "file_path", "sha256", "itemKey", "item_key"];
+function FieldRow({ label, value, mono }) {
+  if (value === void 0 || value === null || value === "") return null;
+  return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-field-row", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dt", { children: label }),
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dd", { className: mono || FIELD_MONO.includes(label) ? "rr-mono" : "", children: typeof value === "object" ? JSON.stringify(value) : String(value) })
+  ] });
+}
+function FieldCard({ title, obj, order: order2, children }) {
+  const entries = obj && typeof obj === "object" ? Object.entries(obj) : [];
+  const rows2 = order2 ? order2.map((k6) => [k6, obj?.[k6]]).filter(([, v]) => v !== void 0 && v !== null && v !== "") : entries.filter(([, v]) => v !== void 0 && v !== null && v !== "");
+  return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-field-card", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h4", { children: title }),
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("dl", { className: "rr-fields", children: [
+      rows2.map(([k6, v], i3) => /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(FieldRow, { label: k6, value: v }, `${k6}-${i3}`)),
+      children
+    ] })
+  ] });
+}
+function RawJSON({ value }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("details", { className: "rr-raw", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("summary", { children: "\u67E5\u770B\u539F\u59CB JSON\uFF08\u8C03\u8BD5\u7528\uFF09" }),
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("pre", { className: "rr-pre", children: JSON.stringify(value, null, 2) })
+  ] });
+}
+var phaseBadge = (r4) => {
+  if (r4.parseReady === true) return ["is-ready", "\u89E3\u6790\u5C31\u7EEA"];
+  if (r4.phase === "submitted" || r4.status === "submitted") return ["is-submitted", "\u5DF2\u63D0\u4EA4"];
+  if (r4.phase === "failed" || r4.status === "failed") return ["is-failed", "\u5931\u8D25"];
+  if (r4.outcomeUnknown === true || r4.phase === "unknown") return ["is-unknown", "\u7ED3\u679C\u672A\u77E5"];
+  return ["is-pending", "\u8FDB\u884C\u4E2D"];
+};
 function PublicationRecords({ value, busy, onRead }) {
   const records = Array.isArray(value?.records) ? value.records : [];
   const notices = safeWarnings(value?.warnings);
@@ -120881,29 +121022,181 @@ function PublicationRecords({ value, busy, onRead }) {
       w4.message
     ] }, w4.code)) }),
     !records.length && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u6682\u65E0\u53D1\u5E03\u8BB0\u5F55\uFF1B\u4E0D\u4F1A\u81EA\u52A8\u521B\u5EFA\u53D1\u5E03\u4EFB\u52A1\u3002" }),
-    records.map((r4, index4) => /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("article", { className: "rr-record", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("strong", { children: [
-        recordText(r4.versionId),
-        " \xB7 \u8BA1\u5212 ",
-        recordText(r4.planId)
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: publicationStateText(r4) }),
-      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("dl", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dt", { children: "\u4E0A\u4F20\u9636\u6BB5" }),
-        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dd", { children: recordText(r4.phase || r4.status) }),
-        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dt", { children: "\u8FDC\u7AEF\u8D44\u6599 ID" }),
-        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dd", { children: recordText(r4.remoteId) }),
-        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dt", { children: "\u89E3\u6790\u72B6\u6001" }),
-        /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("dd", { children: [
-          recordText(r4.parseStatus),
-          r4.parseReady === true ? "\uFF08\u89E3\u6790\u5C31\u7EEA\uFF09" : ""
+    records.map((r4, index4) => {
+      const [cls, label] = phaseBadge(r4);
+      return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("article", { className: "rr-record", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-row", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("strong", { children: [
+            recordText(r4.versionId),
+            " \xB7 \u8BA1\u5212 ",
+            recordText(r4.planId)
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: `rr-phase ${cls}`, children: label })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dt", { children: "\u68C0\u7D22\u6838\u9A8C" }),
-        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dd", { children: "\u672A\u6838\u9A8C\uFF1B\u4E0D\u6807\u8BB0\u53D1\u5E03\u5B8C\u6210" }),
-        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dt", { children: "\u6700\u8FD1\u53EA\u8BFB\u6838\u5BF9\u65F6\u95F4" }),
-        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dd", { children: recordText(r4.checkedAt) })
-      ] })
-    ] }, `${recordText(r4.planId)}-${index4}`))
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: publicationStateText(r4) }),
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("dl", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dt", { children: "\u4E0A\u4F20\u9636\u6BB5" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dd", { children: recordText(r4.phase || r4.status) }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dt", { children: "\u8FDC\u7AEF\u8D44\u6599 ID" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dd", { children: recordText(r4.remoteId) }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dt", { children: "\u89E3\u6790\u72B6\u6001" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("dd", { children: [
+            recordText(r4.parseStatus),
+            r4.parseReady === true ? "\uFF08\u89E3\u6790\u5C31\u7EEA\uFF09" : ""
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dt", { children: "\u68C0\u7D22\u6838\u9A8C" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dd", { children: "\u672A\u6838\u9A8C\uFF1B\u4E0D\u6807\u8BB0\u53D1\u5E03\u5B8C\u6210" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dt", { children: "\u6700\u8FD1\u53EA\u8BFB\u6838\u5BF9\u65F6\u95F4" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dd", { children: recordText(r4.checkedAt) })
+        ] })
+      ] }, `${recordText(r4.planId)}-${index4}`);
+    })
+  ] });
+}
+var GEN_STEP_ORDER = ["init", "plan", "retrieve", "data", "charts", "analyse", "assemble", "save", "pdf"];
+var GEN_STEP_NAMES = { init: "\u521D\u59CB\u5316", plan: "\u68C0\u7D22\u89C4\u5212", retrieve: "\u68C0\u7D22\u8D44\u6599", data: "\u83B7\u53D6\u6570\u636E", charts: "\u751F\u6210\u56FE\u8868", analyse: "AI \u5206\u6790", assemble: "\u7EC4\u88C5\u6B63\u6587", save: "\u4FDD\u5B58\u8349\u7A3F", pdf: "\u751F\u6210 PDF" };
+var GEN_ICON = { done: "\u2713", running: "\u25CC", failed: "\u2715", cancelled: "\u2013", skipped: "\u2013", pending: "" };
+var GEN_STXT = { done: "\u5DF2\u5B8C\u6210", running: "\u8FDB\u884C\u4E2D", failed: "\u5931\u8D25", cancelled: "\u5DF2\u53D6\u6D88", skipped: "\u8DF3\u8FC7", pending: "\u5F85\u5904\u7406" };
+var genStepsInit = () => GEN_STEP_ORDER.map((k6) => ({ key: k6, name: GEN_STEP_NAMES[k6], state: "pending", label: "", detail: "" }));
+var genErrorFix = (code4) => ({
+  "LLM_SYNTHESIS_CONTEXT_OVERFLOW": "\u53C2\u8003\u6750\u6599\u8FC7\u591A\uFF0C\u8D85\u51FA\u6A21\u578B\u4E0A\u4E0B\u6587\u3002\u5EFA\u8BAE\u7F29\u77ED\u300C\u8FD1N\u5468\u300D\u6216\u7CBE\u7B80\u3010\u5206\u6790\u8981\u6C42\u3011\u540E\u91CD\u8BD5",
+  "KNOWLEDGE_SEARCH_FAILED": "\u77E5\u8BC6\u5E93\u68C0\u7D22\u4E0D\u53EF\u7528\uFF0C\u8BF7\u68C0\u67E5\u8FDE\u63A5\u540E\u91CD\u8BD5",
+  "WEB_SEARCH_FAILED": "\u8054\u7F51\u68C0\u7D22\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5",
+  "GENERATION_TIMEOUT": "\u6570\u636E/\u56FE\u8868\u751F\u6210\u8D85\u65F6\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5",
+  "GENERATION_FAILED": "\u6570\u636E/\u56FE\u8868\u751F\u6210\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6570\u636E\u6E90",
+  "SOURCE_FAILED": "\u6570\u636E/\u56FE\u8868\u751F\u6210\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6570\u636E\u6E90\u4E0E\u8FDE\u63A5\u914D\u7F6E",
+  "SOURCE_UNAVAILABLE": "\u6570\u636E\u6E90\u672A\u5C31\u7EEA",
+  "CONNECTION_REQUIRED": "\u9700\u8981\u5148\u914D\u7F6E WeKnora \u8FDE\u63A5",
+  "SOURCE_ROOT_REQUIRED": "\u6570\u636E\u8F93\u51FA\u76EE\u5F55\u7F3A\u5931",
+  "PDF_RENDER_FAILED": "PDF \u6E32\u67D3\u5931\u8D25\uFF0C\u8BF7\u91CD\u8BD5\u9884\u89C8"
+})[code4] || "\u672A\u77E5\u9519\u8BEF\uFF0C\u8BF7\u91CD\u8BD5";
+var finalizeFailureSteps = (steps, failKey) => {
+  const at4 = steps.findIndex((s4) => s4.key === failKey);
+  const idx = at4 === -1 ? steps.length - 1 : at4;
+  return steps.map((s4, i3) => {
+    if (i3 < idx) return s4.state === "done" ? s4 : { ...s4, state: "done", label: "", detail: s4.detail || "" };
+    if (i3 === idx) return { ...s4, state: "failed" };
+    return { ...s4, state: "skipped", label: "", detail: "" };
+  });
+};
+var friendlyError = (code4, message) => {
+  const head = { SOURCE_FAILED: "\u6570\u636E/\u56FE\u8868\u751F\u6210\u5931\u8D25", GENERATION_FAILED: "\u6570\u636E/\u56FE\u8868\u751F\u6210\u5931\u8D25", GENERATION_TIMEOUT: "\u751F\u6210\u8D85\u65F6", SOURCE_UNAVAILABLE: "\u6570\u636E\u6E90\u672A\u5C31\u7EEA", CONNECTION_REQUIRED: "\u8FDE\u63A5\u672A\u914D\u7F6E", KNONLEDGE_SEARCH_FAILED: "\u77E5\u8BC6\u5E93\u68C0\u7D22\u5931\u8D25", WEB_SEARCH_FAILED: "\u8054\u7F51\u68C0\u7D22\u5931\u8D25" }[code4];
+  if (!head) return message || code4 || "\u64CD\u4F5C\u5931\u8D25";
+  const cause = /cause=([A-Z0-9_]+)/.exec(message || "")?.[1];
+  const causeFix = cause && { GENERATION_FAILED: "\u8BF7\u68C0\u67E5\u6570\u636E\u6E90/\u8FDE\u63A5\uFF0C\u6216\u5148\u5728\u300C\u2699 \u8BBE\u7F6E\u300D\u914D\u7F6E WeKnora \u540E\u91CD\u8BD5", GENERATION_TIMEOUT: "\u751F\u6210\u8D85\u65F6\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5", CONNECTION_REQUIRED: "\u8BF7\u5148\u5728\u300C\u2699 \u8BBE\u7F6E\u300D\u914D\u7F6E\u8FDE\u63A5" }[cause];
+  return `${head}${cause ? `\uFF08${cause}\uFF09` : ""}\uFF1B${causeFix || genErrorFix(code4) || "\u8BF7\u91CD\u8BD5\uFF0C\u6216\u68C0\u67E5\u8FDE\u63A5\u4E0E\u914D\u7F6E\u3002"}`;
+};
+var GEN_DEMO_LABEL = { init: "\u6B63\u5728\u521D\u59CB\u5316\u2026", plan: "LLM \u6B63\u5728\u5224\u65AD\u68C0\u7D22\u8303\u56F4\u2026", retrieve: "\u6B63\u5728\u68C0\u7D22\u77E5\u8BC6\u5E93 / \u8054\u7F51\u2026", data: "\u6B63\u5728\u8BFB\u53D6\u6570\u636E\u5E93\uFF085100\uFF09\u2026", charts: "\u6B63\u5728\u6E32\u67D3\u56FE\u8868\u2026", analyse: "LLM \u6B63\u5728\u5199\u300C\u672C\u5468\u591A\u7A7A\u903B\u8F91\u300D\u2026", assemble: "\u6B63\u5728\u7EC4\u88C5\u6B63\u6587\u2026", save: "\u6B63\u5728\u4FDD\u5B58\u8349\u7A3F\u2026", pdf: "\u6B63\u5728\u751F\u6210 PDF\u2026" };
+var GEN_DEMO_DETAIL = { init: "\u521D\u59CB\u5316\u5B8C\u6210", plan: "\u5224\u5B9A\uFF1A\u7ED3\u5408\u8FD14\u5468\u77E5\u8BC6\u5E93\u6750\u6599", retrieve: "\u77E5\u8BC6\u5E93\u547D\u4E2D 12 \u6761 \xB7 \u8054\u7F51\u547D\u4E2D 8 \u6761 \xB7 \u6838\u9A8C\u5254\u9664 3 \u6761", data: "26 \u6761\u5E8F\u5217\u62C9\u53D6\u5B8C\u6210", charts: "6 \u5F20\u56FE\u8868\u6E32\u67D3\u5B8C\u6210", analyse: "\u591A\u7A7A\u903B\u8F91 \xB7 \u8FD1\u56DB\u5468\u8FDE\u8D2F\u6027 \xB7 \u98CE\u9669\u63D0\u793A", assemble: "\u951A\u70B9\u66FF\u6362 \xB7 \u8D44\u4EA7\u6821\u9A8C\u901A\u8FC7", save: "\u5DF2\u5199\u5165\u62A5\u544A\u5E93\uFF0C\u5E26\u5BA1\u8BA1", pdf: "4 \u9875 \xB7 6 \u56FE" };
+var REVIEW_TITLES = { humanItems: "\u91CD\u70B9\u4EBA\u5DE5\u4FE1\u606F", diff: "\u7248\u672C\u5DEE\u5F02", versions: "\u786E\u8BA4\u7248\u672C\uFF08\u4E0D\u53EF\u53D8\uFF09", timeline: "\u7248\u672C\u65F6\u95F4\u7EBF", publishPlan: "\u53D1\u5E03\u6E05\u5355", publish: "\u53D1\u5E03\u56DE\u6267", publicationStatus: "\u53D1\u5E03\u8BB0\u5F55 / \u53EA\u8BFB\u6838\u5BF9" };
+var reviewTitle = (t4) => REVIEW_TITLES[t4] || "\u5BA1\u9605\u8BE6\u60C5";
+var reviewSub = (t4, v) => t4 === "diff" ? "\u672C\u8F6E\u57FA\u7EBF vs \u5F53\u524D\u7A3F" : t4 === "versions" ? "\u5BA1\u67E5\u786E\u8BA4\u7248\u672C\uFF08\u4E0D\u53EF\u53D8\uFF09" : t4 === "timeline" ? "\u6BCF\u6B21\u7248\u672C\u5207\u7247\u4E0E\u76F8\u90BB\u5DEE\u5F02" : t4 === "publishPlan" ? `\u6838\u5BF9\u6B63\u6587 / \u56FE\u7247 / \u516C\u5F00\u4FE1\u606F / \u77E5\u8BC6\u5E93\u8EAB\u4EFD` : t4 === "publish" ? "\u53D1\u5E03\u63D0\u4EA4\u56DE\u6267" : t4 === "publicationStatus" ? "\u4E0A\u4F20 / \u89E3\u6790\u4E3A\u5F02\u6B65\uFF1B\u6838\u9A8C\u524D\u4E0D\u6807\u8BB0\u53D1\u5E03\u5B8C\u6210" : "";
+function GenerateProgress({ progress, onCancel, onRetry, onRegenerate, onClose }) {
+  const [open, setOpen] = (0, import_react169.useState)(true);
+  const [expanded, setExpanded] = (0, import_react169.useState)(() => /* @__PURE__ */ new Set());
+  (0, import_react169.useEffect)(() => {
+    if (progress?.status === "ok") {
+      const t4 = setTimeout(() => setOpen(false), 1600);
+      return () => clearTimeout(t4);
+    }
+  }, [progress?.status]);
+  if (!progress) return null;
+  const steps = progress.steps || [];
+  const done = steps.filter((s4) => s4.state === "done").length;
+  const total = steps.length || 1;
+  const running = steps.find((s4) => s4.state === "running");
+  const failed = steps.find((s4) => s4.state === "failed");
+  const cur = running || failed;
+  const headIcon = progress.status === "running" ? "\u25CC" : progress.status === "ok" ? "\u2713" : progress.status === "failed" ? "\u2715" : "\u2013";
+  const headState = progress.status === "running" ? "running" : progress.status === "ok" ? "ok" : progress.status === "failed" ? "fail" : "cancel";
+  const headLbl = progress.status === "running" ? cur?.label || "\u6B63\u5728\u751F\u6210\u2026" : progress.status === "ok" ? "\u751F\u6210\u6210\u529F" : progress.status === "failed" ? failed ? `\u7B2C ${steps.findIndex((s4) => s4.state === "failed") + 1} \u6B65\uFF08${failed.name}\uFF09\u5931\u8D25` : `\u751F\u6210\u5931\u8D25\uFF1A${progress.error?.code || "\u672A\u77E5\u9519\u8BEF"}` : "\u5DF2\u53D6\u6D88";
+  const headSub = progress.status === "running" ? cur ? `\u7B2C ${steps.findIndex((s4) => s4.key === cur.key) + 1} \u6B65 \xB7 ${cur.name}` : "" : progress.status === "ok" ? `${done}/${total} \u6B65\u5B8C\u6210` : progress.status === "failed" ? progress.error?.code || "" : `\u5DF2\u5B8C\u6210 ${done}/${total} \u6B65`;
+  const bar = Math.round(done / total * 100);
+  const toggle = (key) => setExpanded((prev) => {
+    const n3 = new Set(prev);
+    n3.has(key) ? n3.delete(key) : n3.add(key);
+    return n3;
+  });
+  return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: `rr-gen-progress${open ? " open" : ""}`, role: "status", "aria-live": "polite", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-gen-head", role: "button", tabIndex: 0, onClick: () => setOpen((v) => !v), onKeyDown: (e6) => {
+      if (e6.key === "Enter" || e6.key === " ") {
+        e6.preventDefault();
+        setOpen((v) => !v);
+      }
+    }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: `rr-gen-icon ${headState}`, children: headIcon }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("span", { className: "rr-gen-meta", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-gen-lbl", children: headLbl }),
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-gen-sub", children: headSub })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-gen-chev", children: open ? "\u25BE" : "\u25B8" })
+    ] }),
+    open && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-gen-body", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-gen-bar-wrap", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("span", { className: "rr-gen-num", children: [
+          done,
+          "/",
+          total,
+          " \u6B65\u5B8C\u6210"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-gen-bar", children: /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("i", { style: { width: `${bar}%` } }) })
+      ] }),
+      steps.map((s4, i3) => {
+        const showDetails = expanded.has(s4.key) || s4.state === "failed";
+        return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: `rr-gen-step ${s4.state}${showDetails ? " expand" : ""}`, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-gen-dot", children: GEN_ICON[s4.state] || "" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-gen-body2", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-gen-row", role: "button", tabIndex: 0, onClick: () => toggle(s4.key), onKeyDown: (e6) => {
+              if (e6.key === "Enter" || e6.key === " ") {
+                e6.preventDefault();
+                toggle(s4.key);
+              }
+            }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-gen-name", children: s4.name }),
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("span", { className: "rr-gen-status", children: [
+                GEN_STXT[s4.state],
+                s4.state === "running" ? "\u2026" : ""
+              ] })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("div", { className: "rr-gen-detail", children: s4.state === "failed" ? /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-gen-err", children: [
+                "\u7B2C ",
+                i3 + 1,
+                " \u6B65\uFF08",
+                s4.name,
+                "\uFF09\u5931\u8D25\uFF1A",
+                progress.error?.code || ""
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("div", { className: "rr-gen-fix", children: genErrorFix(progress.error?.code) })
+            ] }) : /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("div", { children: s4.detail || s4.label || "" }) })
+          ] })
+        ] }, s4.key);
+      })
+    ] }),
+    open && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("div", { className: "rr-gen-foot", children: progress.status === "running" ? /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("span", { className: "rr-gen-hint", children: [
+        "\u6B63\u5728\u751F\u6210 \xB7 \u5F53\u524D\u7B2C ",
+        steps.findIndex((s4) => s4.state === "running") + 1,
+        " \u6B65"
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button rr-button--danger", onClick: onCancel, children: "\u2715 \u53D6\u6D88" })
+    ] }) : progress.status === "failed" ? /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("span", { className: "rr-gen-hint", children: [
+        "\u5DF2\u5728\u7B2C ",
+        steps.findIndex((s4) => s4.state === "failed") + 1,
+        " \u6B65\u4E2D\u6B62"
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button rr-button--primary", onClick: onRetry, children: "\u21BB \u91CD\u8BD5" }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", onClick: onClose, children: "\u5173\u95ED" })
+    ] }) : progress.status === "ok" ? /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-gen-hint", children: "\u751F\u6210\u6210\u529F" }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button rr-button--primary", onClick: onRegenerate, children: "\u21BB \u91CD\u65B0\u751F\u6210" }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", onClick: onClose, children: "\u5173\u95ED" })
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-gen-hint", children: "\u5DF2\u4E2D\u6B62\uFF0C\u672A\u843D\u76D8" }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button rr-button--primary", onClick: onRegenerate, children: "\u21BB \u91CD\u65B0\u751F\u6210" }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", onClick: onClose, children: "\u5173\u95ED" })
+    ] }) })
   ] });
 }
 var testErrorText = (code4) => ({
@@ -120914,6 +121207,7 @@ var testErrorText = (code4) => ({
   plaintext_non_loopback: "\u660E\u6587 http \u53EA\u5141\u8BB8\u672C\u673A\u56DE\u73AF\u5730\u5740\uFF0C\u8FDC\u7AEF\u8BF7\u4F7F\u7528 https"
 })[code4] || code4;
 function SettingsPanel({ request, onClose, onIdentity }) {
+  const dialogRef = (0, import_react169.useRef)(null);
   const [view, setView] = (0, import_react169.useState)(null);
   const [form, setForm] = (0, import_react169.useState)({ baseUrl: "", kbId: "", tenantId: "", readKey: "", writeKey: "" });
   const [state, setState] = (0, import_react169.useState)({ busy: true, note: "", error: "" });
@@ -120935,6 +121229,10 @@ function SettingsPanel({ request, onClose, onIdentity }) {
     return () => {
       cancelled = true;
     };
+  }, []);
+  (0, import_react169.useEffect)(() => {
+    const d = dialogRef.current;
+    if (d && !d.open) d.showModal();
   }, []);
   const save = async () => {
     setState({ busy: true, note: "", error: "" });
@@ -120963,7 +121261,10 @@ function SettingsPanel({ request, onClose, onIdentity }) {
     }
   };
   const field = (key, value) => setForm((f2) => ({ ...f2, [key]: value }));
-  return /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("section", { className: "rr-settings", role: "dialog", "aria-label": "\u8FDE\u63A5\u8BBE\u7F6E", children: /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-settings-card", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("dialog", { ref: dialogRef, className: "rr-settings", "aria-label": "\u8FDE\u63A5\u8BBE\u7F6E", onCancel: (event) => {
+    event.preventDefault();
+    onClose();
+  }, onClose, children: /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-settings-card", children: [
     /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-section-heading", children: [
       /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h2", { children: "\u8FDE\u63A5\u8BBE\u7F6E" }),
       /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-badge", children: view?.connectorActive ? "\u914D\u7F6E\u5B8C\u6574\uFF08\u672A\u5B9E\u6D4B\uFF09" : "\u914D\u7F6E\u4E0D\u5B8C\u6574" })
@@ -121171,7 +121472,7 @@ function Timeline({ value }) {
           v.versionId,
           " \u6B63\u6587"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("pre", { className: "rr-pre", children: markdowns[v.versionId] })
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(MarkdownPreview, { text: markdowns[v.versionId] })
       ] })
     ] }, v.versionId))
   ] });
@@ -121208,8 +121509,10 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
   const [confirmPublish, setConfirmPublish] = (0, import_react169.useState)(false);
   const [settingsOpen, setSettingsOpen] = (0, import_react169.useState)(false);
   const [aiModel, setAiModel] = (0, import_react169.useState)(null);
-  const current = (0, import_react169.useRef)({}), alive = (0, import_react169.useRef)(true), saving = (0, import_react169.useRef)(false), revision = (0, import_react169.useRef)(0), previewSerial = (0, import_react169.useRef)(0);
+  const current = (0, import_react169.useRef)({}), alive = (0, import_react169.useRef)(true), saving = (0, import_react169.useRef)(false), revision = (0, import_react169.useRef)(0), previewSerial = (0, import_react169.useRef)(0), genAbort = (0, import_react169.useRef)(null);
+  const [progress, setProgress] = (0, import_react169.useState)(null);
   (0, import_react169.useEffect)(() => {
+    if (demo || !sessionId) return;
     let live = true;
     hostFetch("/api/run19/review", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "aiDefaultModel" }) }).then(async (r4) => {
       if (live && r4.ok) {
@@ -121226,6 +121529,92 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       live = false;
     };
   }, []);
+  const applyGenEv = (ev) => setProgress((p2) => {
+    if (!p2) return p2;
+    const steps = p2.steps.map((s4) => s4.key === ev.step ? { ...s4, state: ev.state, label: ev.label || s4.label, detail: ev.detail || s4.detail } : s4);
+    return { ...p2, steps };
+  });
+  async function runGenerate(input) {
+    const controller = new AbortController();
+    genAbort.current = controller;
+    setProgress({ status: "running", steps: genStepsInit() });
+    try {
+      const res = await hostFetch("/api/run19/generate", { method: "POST", credentials: "same-origin", signal: controller.signal, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...input, action: "generate", sessionId }) });
+      if (!res.ok) {
+        let body = null;
+        try {
+          body = await res.json();
+        } catch {
+        }
+        const e6 = new Error(body?.error?.message || `HTTP ${res.status}`);
+        e6.code = body?.error?.code || "HTTP_ERROR";
+        throw e6;
+      }
+      const reader = res.body.getReader(), dec2 = new TextDecoder();
+      let buf = "";
+      for (; ; ) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += dec2.decode(value, { stream: true });
+        const lines = buf.split("\n");
+        buf = lines.pop();
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          let ev;
+          try {
+            ev = JSON.parse(line);
+          } catch {
+            continue;
+          }
+          if (ev.t === "progress") applyGenEv(ev);
+          else if (ev.t === "result") {
+            setProgress((p2) => ({ ...p2, status: "ok" }));
+            return ev.value;
+          } else if (ev.t === "error") {
+            setProgress((p2) => ({ ...p2, status: "failed", error: { step: ev.step, code: ev.code, message: ev.message }, steps: finalizeFailureSteps(p2.steps, ev.step) }));
+            const e6 = new Error(ev.message || ev.code);
+            e6.code = ev.code;
+            e6.step = ev.step;
+            throw e6;
+          }
+        }
+      }
+      throw new Error("\u751F\u6210\u6D41\u610F\u5916\u7ED3\u675F");
+    } catch (e6) {
+      if (e6?.name === "AbortError" || controller.signal.aborted) {
+        setProgress((p2) => ({ ...p2, status: "cancelled" }));
+        throw Object.assign(new Error("\u751F\u6210\u5DF2\u53D6\u6D88"), { code: "GENERATION_CANCELLED" });
+      }
+      throw e6;
+    }
+  }
+  const cancelGen = () => {
+    genAbort.current?.abort();
+  };
+  async function runDemoGenerate(input) {
+    const controller = new AbortController();
+    genAbort.current = controller;
+    setProgress({ status: "running", steps: genStepsInit() });
+    const delay = (ms) => new Promise((r4) => setTimeout(r4, ms));
+    try {
+      for (const k6 of GEN_STEP_ORDER) {
+        if (controller.signal.aborted) throw Object.assign(new Error("\u751F\u6210\u5DF2\u53D6\u6D88"), { code: "GENERATION_CANCELLED" });
+        applyGenEv({ step: k6, state: "running", label: GEN_DEMO_LABEL[k6] });
+        await delay(360 + Math.floor(Math.random() * 260));
+        applyGenEv({ step: k6, state: "done", detail: GEN_DEMO_DETAIL[k6] });
+      }
+      if (controller.signal.aborted) throw Object.assign(new Error("\u751F\u6210\u5DF2\u53D6\u6D88"), { code: "GENERATION_CANCELLED" });
+      const result = await request("generate", input);
+      setProgress((p2) => ({ ...p2, status: "ok" }));
+      return result;
+    } catch (e6) {
+      if (controller.signal.aborted) {
+        setProgress((p2) => ({ ...p2, status: "cancelled" }));
+        throw Object.assign(new Error("\u751F\u6210\u5DF2\u53D6\u6D88"), { code: "GENERATION_CANCELLED" });
+      }
+      throw e6;
+    }
+  }
   async function generate(event) {
     event.preventDefault();
     if (current.current.dirty || saving.current || current.current.busy) return;
@@ -121239,9 +121628,15 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
     current.current.busy = true;
     setBusy(true);
     setError("");
-    setStatus(demo ? "\u6B63\u5728\u751F\u6210\u6F14\u793A\u5468\u62A5\u2026" : "\u6B63\u5728\u751F\u6210\u5468\u62A5\uFF085100 \u6570\u636E \xB7 " + (analysisPrompt.trim() ? "\u6309\u5206\u6790\u8981\u6C42\u7531 LLM \u5206\u6790" : "\u7EAF 7 \u5929\u6570\u636E") + (webSearchEnabled ? " \xB7 \u8054\u7F51\u68C0\u7D22" : "") + "\uFF09\uFF0C\u8BF7\u7A0D\u5019");
     try {
-      const result = await request("generate", input);
+      let result;
+      if (demo) {
+        setStatus("\u6B63\u5728\u751F\u6210\u6F14\u793A\u5468\u62A5\u2026");
+        result = await runDemoGenerate(input);
+      } else {
+        setStatus("\u6B63\u5728\u751F\u6210\u5468\u62A5\u2026");
+        result = await runGenerate(input);
+      }
       if (!alive.current) return;
       const d = asDraft(result);
       adopt(result);
@@ -121252,7 +121647,10 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       setViewMode("editor");
       setStatus(demo ? "\u6F14\u793A\u521D\u7A3F\u5DF2\u751F\u6210\u5E76\u4FDD\u5B58\u5728\u6B64\u6D4F\u89C8\u5668" : "\u521D\u7A3F\u5DF2\u751F\u6210\u5E76\u4FDD\u5B58\uFF0C\u8BF7\u4EBA\u5DE5\u5BA1\u9605\uFF1B\u5C1A\u672A\u5B8C\u6210\u6216\u53D1\u5E03");
     } catch (e6) {
-      fail2(e6);
+      if (alive.current) {
+        if (e6?.code === "GENERATION_CANCELLED") setStatus("\u5DF2\u53D6\u6D88\uFF0C\u672A\u843D\u76D8");
+        else fail2(e6);
+      }
     } finally {
       if (alive.current) {
         current.current.busy = false;
@@ -121326,7 +121724,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
   const isConflict = (e6) => (e6?.code || "").toLowerCase().includes("conflict");
   const fail2 = (e6) => {
     if (alive.current) {
-      setError(`${e6.code || "ERROR"}: ${e6.message}`);
+      setError(friendlyError(e6?.code, e6?.message));
       setStatus(isConflict(e6) ? "\u51B2\u7A81\uFF1A\u672C\u5730\u8349\u7A3F\u5DF2\u4FDD\u7559\uFF0C\u8BF7\u5BF9\u7167\u8FDC\u7AEF\u540E\u5904\u7406" : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u672C\u5730\u8349\u7A3F\u4FDD\u7559");
     }
   };
@@ -121602,6 +122000,92 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
   const warnings = safeWarnings(reportWarnings.map((w4) => w4.code), draft?.warnings, preview?.warnings);
   const verified = identity2?.confirmed === true && !!identity2?.displayName;
   const versions = panel?.type === "versions" ? rows(panel.value, "versions") : [];
+  const renderPanel = () => {
+    if (!panel) return null;
+    switch (panel.type) {
+      case "humanItems":
+        return /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(HumanItemsPanel, { value: panel.value, readOnly: readOnly2 || dirty, onSave: (items, saveToken) => action("saveHumanItems", { items, saveToken }) }, `${draft?.reportId}:${panel.value?.saveToken}`);
+      case "diff":
+        return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-diff-helper", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u5DE6\uFF1A\u672C\u8F6E\u57FA\u7EBF\uFF1B\u53F3\uFF1A\u5F53\u524D\u7A3F\u3002\u65E0\u6CD5\u786E\u5B9A\u57FA\u7EBF\u65F6\u4EC5\u5C55\u793A\u5BA1\u8BA1\u8BB0\u5F55\uFF0C\u4E0D\u4F2A\u9020\u5DEE\u5F02\u3002" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("span", { className: "rr-diff-legend", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-diff-insert", children: "\uFF0B \u65B0\u589E\u5185\u5BB9" }),
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-diff-delete", children: "\uFF0D \u5220\u9664\u5185\u5BB9" })
+            ] })
+          ] }),
+          typeof (panel.value?.baselineMarkdown ?? draft?.baselineMarkdown) === "string" ? /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(Diff, { before: panel.value?.baselineMarkdown ?? draft.baselineMarkdown, after: text7 }) : /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "Host \u5C1A\u672A\u63D0\u4F9B baselineMarkdown\u3002" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(FieldCard, { title: "\u5DEE\u5F02\u4FE1\u606F", obj: panel.value, order: ["reportId", "versionId", "baseVersionId", "changed", "add", "del"] }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(RawJSON, { value: panel.value })
+        ] });
+      case "versions":
+        return /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(import_jsx_runtime131.Fragment, { children: versions.map((v) => /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-record", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-row", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("strong", { children: [
+              v.versionId,
+              " ",
+              v.title
+            ] }),
+            v.author?.displayName ? /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("span", { className: "rr-muted", children: [
+              "\xB7 ",
+              v.author.displayName
+            ] }) : "",
+            v.completedAt ? /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("span", { className: "rr-muted", children: [
+              "\xB7 ",
+              String(v.completedAt).slice(0, 10)
+            ] }) : ""
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy || dirty, onClick: () => action("publishPlan", { versionId: v.versionId }), children: "\u67E5\u770B\u6B64\u7248\u672C\u53D1\u5E03\u6E05\u5355" }),
+          typeof v.markdown === "string" && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("details", { open: versions.length <= 1, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("summary", { children: "\u9605\u8BFB\u7248\u672C\u6B63\u6587" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(MarkdownPreview, { text: v.markdown })
+          ] })
+        ] }, v.versionId)) });
+      case "timeline":
+        return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => showPublication("publicationStatus"), children: "\u53D1\u5E03\u8BB0\u5F55" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(Timeline, { value: panel.value })
+        ] });
+      case "publishPlan":
+        return /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(import_jsx_runtime131.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-publish-plan", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-row rr-muted", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("span", { children: [
+              "\u8BA1\u5212 ",
+              recordText(panel.value?.planId)
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("span", { children: [
+              "\u7248\u672C ",
+              recordText(panel.value?.versionId)
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u4EC5\u4EE5\u4E0B\u6309\u94AE\u4F1A\u53D1\u51FA publish \u8BF7\u6C42\u3002\u8BF7\u6838\u5BF9\u6B63\u6587\u3001\u56FE\u7247\u3001\u516C\u5F00\u4FE1\u606F\u53CA\u77E5\u8BC6\u5E93\u8EAB\u4EFD\u3002" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(FieldCard, { title: "\u53D1\u5E03\u6E05\u5355", obj: panel.value, order: ["planId", "versionId", "digest", "items", "assets", "knowledgeBaseId", "knowledge_base_id", "placement"] }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(RawJSON, { value: panel.value }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button rr-button--primary", disabled: busy || dirty || !verified, onClick: (event) => {
+            if (!event.nativeEvent.isTrusted) {
+              setError("\u53D1\u5E03\u5FC5\u987B\u7531\u4EBA\u7C7B\u5B9E\u9645\u70B9\u51FB");
+              return;
+            }
+            action("publish", { versionId: panel.value?.versionId, planId: panel.value?.planId, digest: panel.value?.digest, publishToken: panel.value?.publishToken, userInitiated: true });
+          }, children: demo ? "\u6A21\u62DF\u53D1\u5E03\u6B64\u786E\u8BA4\u7248" : "\u53D1\u5E03\u6B64\u786E\u8BA4\u7248\u81F3 WeKnora" })
+        ] }) });
+      case "publish":
+        return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: publicationStateText(panel.value) }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u5DF2\u63D0\u4EA4\u5E76\u4E0D\u7B49\u4E8E\u5B8C\u6210\u3002\u8BF7\u7528\u53EA\u8BFB\u6838\u5BF9\u67E5\u770B\u72B6\u6001\uFF1B\u6B64\u6309\u94AE\u4E0D\u4F1A\u518D\u6B21\u8C03\u7528\u53D1\u5E03\u3002" }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(FieldCard, { title: "\u56DE\u6267", obj: panel.value, order: ["planId", "versionId", "status", "phase", "remoteId", "remote_id", "parseStatus", "parse_status"] }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(RawJSON, { value: panel.value }),
+          /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-row", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => showPublication("reconcile"), children: "\u53EA\u8BFB\u6838\u5BF9" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => showPublication("publicationStatus"), children: "\u67E5\u770B\u53D1\u5E03\u8BB0\u5F55" })
+          ] })
+        ] });
+      case "publicationStatus":
+        return /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(PublicationRecords, { value: panel.value, busy, onRead: showPublication });
+      default:
+        return null;
+    }
+  };
   const visibleReports = reports.filter((r4) => (r4.title || r4.reportId).toLowerCase().includes(search2.trim().toLowerCase()));
   const requestClose = () => {
     if (busy || saving.current) return;
@@ -121646,8 +122130,11 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
         /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { "aria-label": "\u641C\u7D22\u62A5\u544A", placeholder: "\u641C\u7D22\u62A5\u544A\u2026", type: "search", value: search2, onChange: (e6) => setSearch(e6.target.value) }),
         /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-report-list", children: [
           visibleReports.map((r4) => /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("button", { className: "rr-report-item", "aria-current": draft?.reportId === r4.reportId ? "page" : void 0, disabled: busy || dirty, onClick: () => load(r4.reportId), children: [
-            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("strong", { children: r4.title || r4.reportId }),
-            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { children: r4.status === "confirmed" ? "\u5DF2\u786E\u8BA4\u7248\u672C" : "\u7814\u7A76\u8349\u7A3F" })
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("span", { className: "rr-item-top", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: `rr-status-dot ${r4.status === "confirmed" ? "is-confirmed" : ""}`, "aria-hidden": "true" }),
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("strong", { className: "rr-report-title", children: r4.title || r4.reportId })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-report-sub", children: r4.status === "confirmed" ? "\u5DF2\u786E\u8BA4 \xB7 \u53EA\u8BFB" : "\u7814\u7A76\u8349\u7A3F" })
           ] }, r4.reportId)),
           !visibleReports.length && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-empty", children: search2 ? "\u6CA1\u6709\u5339\u914D\u7684\u62A5\u544A" : "\u6682\u65E0\u62A5\u544A\uFF0C\u65B0\u5EFA\u4E00\u4EFD\u5F00\u59CB\u7814\u7A76\u3002" })
         ] }),
@@ -121657,7 +122144,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
           "\u4FDD\u5B58\u540E\u53EF\u5207\u6362\u62A5\u544A\u3002"
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("main", { className: "rr-main", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("main", { className: "rr-main", "data-review": panel ? panel.type : void 0, children: [
         /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("section", { className: "rr-generation-stage", "aria-label": "\u751F\u6210\u4E0E\u5206\u6790", hidden: stage !== "generation", children: [
           /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("header", { children: [
             /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h1", { children: "\u751F\u6210\u5468\u62A5" }),
@@ -121742,6 +122229,16 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
             }, children: "\u4FDD\u5B58 / \u91CD\u8BD5" })
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-engine-note", children: "\u5207\u6362\u6A21\u5F0F\u4FDD\u7559\u6B63\u6587\u5185\u5BB9\uFF1B\u53EF\u89C6\u5316\u4E0E\u6E90\u7801\u4E4B\u95F4\u5207\u6362\u65F6\uFF0C\u64A4\u9500\u5386\u53F2\u91CD\u65B0\u5F00\u59CB\u3002" }),
+          panel && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("section", { className: "rr-review-view", "aria-label": "\u5BA1\u9605\u8BE6\u60C5", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-review-view-head", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", onClick: () => setPanel(null), children: "\u2190 \u8FD4\u56DE\u6B63\u6587" }),
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-review-view-head2", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h2", { children: reviewTitle(panel.type) }),
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-muted", children: reviewSub(panel.type, panel.value) })
+              ] })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("div", { className: "rr-review-view-body", children: renderPanel() })
+          ] }),
           /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-document-panes", "data-view": viewMode, children: [
             /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-source-pane", children: [
               /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-pane-heading", children: [
@@ -121848,58 +122345,6 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
               draft.retrieval.verification.note ? `\uFF1B${draft.retrieval.verification.note}` : ""
             ] }) : null
           ] })
-        ] }),
-        panel && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("section", { className: "rr-detail", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", onClick: () => setPanel(null), children: "\u5173\u95ED\u8BE6\u60C5" }),
-          panel.type === "humanItems" && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(HumanItemsPanel, { value: panel.value, readOnly: readOnly2 || dirty || panel.value?.status !== "draft", onSave: (items, saveToken) => action("saveHumanItems", { items, saveToken }) }, `${draft?.reportId}:${panel.value?.saveToken}`),
-          panel.type === "diff" && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u5DE6\uFF1A\u672C\u8F6E\u57FA\u7EBF\uFF1B\u53F3\uFF1A\u5F53\u524D\u7A3F\u3002\u65E0\u6CD5\u786E\u5B9A\u57FA\u7EBF\u65F6\u4EC5\u5C55\u793A\u5BA1\u8BA1\u8BB0\u5F55\uFF0C\u4E0D\u4F2A\u9020\u5DEE\u5F02\u3002" }),
-            typeof (panel.value?.baselineMarkdown ?? draft?.baselineMarkdown) === "string" ? /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(Diff, { before: panel.value?.baselineMarkdown ?? draft.baselineMarkdown, after: text7 }) : /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "Host \u5C1A\u672A\u63D0\u4F9B baselineMarkdown\u3002" }),
-            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("pre", { className: "rr-pre", children: JSON.stringify(panel.value, null, 2) })
-          ] }),
-          panel.type === "versions" && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h3", { children: "\u786E\u8BA4\u7248\u672C\uFF08\u4E0D\u53EF\u53D8\uFF09" }),
-            versions.map((v) => /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-record", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("strong", { children: [
-                v.versionId,
-                " ",
-                v.title
-              ] }),
-              " ",
-              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy || dirty, onClick: () => action("publishPlan", { versionId: v.versionId }), children: "\u67E5\u770B\u6B64\u7248\u672C\u53D1\u5E03\u6E05\u5355" }),
-              typeof v.markdown === "string" && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("details", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("summary", { children: "\u9605\u8BFB\u7248\u672C\u6B63\u6587" }),
-                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("pre", { className: "rr-pre", children: v.markdown })
-              ] })
-            ] }, v.versionId))
-          ] }),
-          panel.type === "timeline" && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => showPublication("publicationStatus"), children: "\u53D1\u5E03\u8BB0\u5F55" }),
-          panel.type === "timeline" && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(Timeline, { value: panel.value }),
-          panel.type === "publishPlan" && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("h3", { children: [
-              "\u53D1\u5E03\u6E05\u5355\uFF1A",
-              panel.value?.versionId
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u4EC5\u4EE5\u4E0B\u6309\u94AE\u4F1A\u53D1\u51FA publish \u8BF7\u6C42\u3002\u8BF7\u6838\u5BF9\u6B63\u6587\u3001\u56FE\u7247\u3001\u516C\u5F00\u4FE1\u606F\u53CA\u77E5\u8BC6\u5E93\u8EAB\u4EFD\u3002" }),
-            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("pre", { className: "rr-pre", children: JSON.stringify(panel.value, null, 2) }),
-            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy || dirty || !verified, onClick: (event) => {
-              if (!event.nativeEvent.isTrusted) {
-                setError("\u53D1\u5E03\u5FC5\u987B\u7531\u4EBA\u7C7B\u5B9E\u9645\u70B9\u51FB");
-                return;
-              }
-              action("publish", { versionId: panel.value?.versionId, planId: panel.value?.planId, digest: panel.value?.digest, publishToken: panel.value?.publishToken, userInitiated: true });
-            }, children: demo ? "\u6A21\u62DF\u53D1\u5E03\u6B64\u786E\u8BA4\u7248" : "\u53D1\u5E03\u6B64\u786E\u8BA4\u7248\u81F3 WeKnora" })
-          ] }),
-          panel.type === "publish" && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h3", { children: demo ? "\u6A21\u62DF\u53D1\u5E03\u56DE\u6267\uFF08\u672A\u4E0A\u4F20\uFF09" : "\u53D1\u5E03\u56DE\u6267" }),
-            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: publicationStateText(panel.value) }),
-            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u5DF2\u63D0\u4EA4\u5E76\u4E0D\u7B49\u4E8E\u5B8C\u6210\u3002\u8BF7\u7528\u53EA\u8BFB\u6838\u5BF9\u67E5\u770B\u72B6\u6001\uFF1B\u6B64\u6309\u94AE\u4E0D\u4F1A\u518D\u6B21\u8C03\u7528\u53D1\u5E03\u3002" }),
-            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => showPublication("reconcile"), children: "\u53EA\u8BFB\u6838\u5BF9" }),
-            " ",
-            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: busy, onClick: () => showPublication("publicationStatus"), children: "\u67E5\u770B\u53D1\u5E03\u8BB0\u5F55" }),
-            /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("pre", { className: "rr-pre", children: JSON.stringify(panel.value, null, 2) })
-          ] }),
-          panel.type === "publicationStatus" && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(PublicationRecords, { value: panel.value, busy, onRead: showPublication })
         ] })
       ] })
     ] }),
@@ -121910,7 +122355,10 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       dirty ? "\u672A\u4FDD\u5B58\uFF0CPDF \u4E3A\u65E7\u9884\u89C8" : synced && pdf ? "PDF \u5DF2\u540C\u6B65" : preview?.status === "failed" ? "PDF \u751F\u6210\u5931\u8D25" : "PDF \u7B49\u5F85\u751F\u6210 / \u65E7\u9884\u89C8",
       aiModel?.model ? ` \xB7 AI ${aiModel.provider || ""}${aiModel.provider ? "/" : ""}${aiModel.model}` : ""
     ] }),
-    error3 && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("div", { className: "rr-error", role: "alert", children: error3 }),
+    error3 && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-error", role: "alert", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-error-msg", children: error3 }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-error-close", "aria-label": "\u5173\u95ED\u9519\u8BEF\u63D0\u793A", onClick: () => setError(""), children: "\u2715" })
+    ] }),
     confirmClose && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("section", { className: "rr-close-confirm", role: "alert", children: [
       /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { children: "\u6709\u672A\u4FDD\u5B58\u4FEE\u6539\uFF0C\u653E\u5F03\u540E\u5C06\u4E22\u5931\u8FD9\u4E9B\u5185\u5BB9\u3002" }),
       /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button rr-button--danger", onClick: close2, children: "\u653E\u5F03\u5E76\u5173\u95ED" }),
@@ -121921,7 +122369,8 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       setSettingsOpen(false);
       request("identity").then((v) => alive.current && setIdentity(v)).catch(() => {
       });
-    } })
+    } }),
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(GenerateProgress, { progress, onCancel: cancelGen, onRetry: generate, onRegenerate: generate, onClose: () => setProgress(null) })
   ] });
 }
 function createWorkspaceController() {

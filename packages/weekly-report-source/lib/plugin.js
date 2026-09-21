@@ -10,9 +10,13 @@ export class WeeklyReportSource {
       baseUrl: config.baseUrl, timeoutMs: config.timeoutMs,
     });
   }
-  generate(input) {
+  generate(input, extra = {}) {
     if (this.controller.signal.aborted) return Promise.reject(new Error('weeklyReportSource disposed'));
-    return generate(input, this.options);
+    // Honor a per-call cancel signal (from the generate progress stream) while retaining the disposal signal.
+    const options = extra?.signal
+      ? { ...this.options, signal: (typeof AbortSignal?.any === 'function') ? AbortSignal.any([this.options.signal, extra.signal]) : extra.signal }
+      : this.options;
+    return generate(input, options);
   }
   dispose() { this.controller.abort(); }
 }

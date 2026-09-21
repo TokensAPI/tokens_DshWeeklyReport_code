@@ -8,7 +8,7 @@ import { readFile, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
 test('workspace: host themes, responsive layout, save conflicts and explicit publication', async () => {
-  const bundled = await build({ stdin: { contents: `import React from 'react'; import {createRoot} from 'react-dom/client'; import {Workspace} from './src/client.jsx'; function App(){const [open,setOpen]=React.useState(true); return <><button onClick={()=>setOpen(true)}>打开工作台</button>{open && <Workspace sessionId="test" close={()=>setOpen(false)}/>}</>};createRoot(document.getElementById('root')).render(<App/>);`, resolveDir: process.cwd(), loader: 'jsx' }, bundle: true, write: false, format: 'iife', loader: { '.css': 'text' } });
+  const bundled = await build({ stdin: { contents: `import React from 'react'; import {createRoot} from 'react-dom/client'; import {Workspace} from './src/client.jsx'; function App(){const [open,setOpen]=React.useState(true); return <><button onClick={()=>setOpen(true)}>打开工作台</button>{open && <Workspace sessionId="test" close={()=>setOpen(false)}/>}</>};createRoot(document.getElementById('root')).render(<App/>);`, resolveDir: process.cwd(), loader: 'jsx' }, bundle: true, write: false, format: 'iife', jsx: 'automatic', loader: { '.css': 'text' } });
   const browser = await chromium.launch({ channel: process.env.BROWSER_CHANNEL || 'chrome', headless: true });
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce' });
   const errors = [];
@@ -30,7 +30,8 @@ test('workspace: host themes, responsive layout, save conflicts and explicit pub
         versions: () => ({ versions: [{ versionId: 'v1', title: draft.title, markdown: draft.markdown }] }),
         publishPlan: () => ({ versionId: 'v1', planId: 'plan1', digest: 'digest1', publishToken: 'one-shot' }),
         publish: () => ({ phase: 'submitted' }), publicationStatus: () => ({ records: [] }), reconcile: () => ({ records: [] }),
-        startRevision: () => (draft = { ...draft, status: 'draft', saveToken: 'revision' })
+        startRevision: () => (draft = { ...draft, status: 'draft', saveToken: 'revision' }),
+        aiDefaultModel: () => ({ provider: null, model: null })
       }[data.action];
       assert.ok(result, `Unexpected action ${data.action}`);
       return route.fulfill({ json: { ok: true, value: result() } });
@@ -120,7 +121,7 @@ test('workspace: host themes, responsive layout, save conflicts and explicit pub
     await page.getByRole('button', {name:'退出专注', exact:true}).click();
     conflict = true;
     await page.locator('.cm-content').fill('# 人工修订\n\n本地内容必须保留');
-    await expect(page.getByRole('alert')).toContainText('SAVE_CONFLICT');
+    await expect(page.getByRole('alert')).toContainText('版本冲突');
     await expect(page.locator('.cm-content')).toContainText('本地内容必须保留');
     await expect(page.getByRole('button', {name:'仅确认版本', exact:true})).toBeDisabled();
     await page.keyboard.press('Escape');
@@ -131,8 +132,9 @@ test('workspace: host themes, responsive layout, save conflicts and explicit pub
     await expect(page.getByRole('button', {name:'仅确认版本', exact:true})).toBeEnabled();
     assert.equal(requests.find(r => r.action === 'save').saveToken, 's1');
     await page.getByRole('button', {name:'版本历史与差异', exact:true}).click();
-    await expect(page.getByRole('button', {name:'关闭详情', exact:true})).toBeEnabled();
+    await expect(page.getByRole('button', {name:/返回正文/})).toBeEnabled();
     assert.ok(await editorNode.evaluate(el => el.isConnected), 'Read-only busy state preserves the editor and undo history');
+    await page.getByRole('button', {name:/返回正文/}).click();
     await page.locator('.cm-content').click();
     await page.keyboard.press('Control+z');
     await expect(page.locator('.cm-content')).toContainText('库存变化');

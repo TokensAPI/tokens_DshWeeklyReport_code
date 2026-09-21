@@ -184,7 +184,13 @@
 .rr-notice { padding: 12px; background: var(--rr-selection); border-radius: var(--rr-radius); }
 .rr-notice p { margin-bottom: 10px; }
 .rr-status { padding: 10px 20px; border-top: 1px solid var(--rr-border); background: var(--rr-shell); color: var(--rr-muted); font-size: 12px; }
-.rr-error, .rr-close-confirm { padding: 12px 20px; color: var(--rr-danger); background: var(--rr-paper); border-top: 1px solid var(--rr-danger); white-space: pre-wrap; max-height: 30vh; overflow: auto; flex-shrink: 0; }
+.rr-close-confirm { padding: 12px 20px; color: var(--rr-danger); background: var(--rr-paper); border-top: 1px solid var(--rr-danger); white-space: pre-wrap; max-height: 30vh; overflow: auto; flex-shrink: 0; }
+.rr-error { padding: 12px 16px; color: var(--rr-danger); background: color-mix(in srgb, var(--rr-danger) 9%, var(--rr-paper)); border-left: 3px solid var(--rr-danger); white-space: pre-wrap; font-size: 13px; line-height: 1.55; display: flex; gap: 10px; align-items: flex-start; flex-shrink: 0; max-height: 30vh; overflow: auto; }
+.rr-error::before { content: '⚠'; font-weight: 700; flex: none; font-size: 15px; line-height: 1.2; margin-top: 1px; }
+.rr-error-msg { flex: 1; min-width: 0; }
+.rr-error-close { flex: none; border: 1px solid var(--rr-border); border-radius: 6px; background: transparent; color: var(--rr-muted); font-size: 13px; line-height: 1; padding: 4px 8px; cursor: pointer; }
+.rr-error-close:hover { color: var(--rr-danger); border-color: var(--rr-danger); background: color-mix(in srgb, var(--rr-danger) 8%, transparent); }
+.rr-gen-foot .rr-button + .rr-button { margin-left: 8px; }
 .rr-empty { color: var(--rr-muted); padding: 12px 0; }
 .rr-workspace .rr-diff-delete { color: var(--rr-danger); }
 .rr-workspace .rr-diff-insert { color: var(--rr-success); }
@@ -322,8 +328,11 @@
 .rr-workspace .bn-block-content[data-content-type="codeBlock"] { overflow-x: auto; }
 .rr-demo-banner .rr-button { margin-left: 12px; min-height: 30px; padding-block: 4px; }
 
-/* Connection settings modal: centered card above the workspace, same tokens as the rest of the UI. */
-.rr-settings { position: fixed; inset: 0; z-index: 30; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--rr-text) 24%, transparent); }
+/* Connection settings modal: now a real <dialog> in the top layer, so it
+ * reliably floats above the workspace dialog (itself a modal). The UA centers
+ * it with margin:auto and its own ::backdrop dims the whole viewport. */
+.rr-settings { margin: auto; padding: 0; border: none; background: transparent; overflow: visible; }
+.rr-settings::backdrop { background: rgb(12 15 22 / 48%); }
 .rr-settings-card { width: min(520px, calc(100vw - 48px)); max-height: calc(100vh - 96px); overflow: auto; padding: 24px; background: var(--rr-paper); border: 1px solid var(--rr-border); border-radius: 12px; box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25); }
 .rr-settings-card label { display: block; margin: 12px 0 0; font-size: 13px; color: var(--rr-text); }
 .rr-settings-card label .rr-muted { font-size: 12px; margin-left: 6px; }
@@ -333,3 +342,94 @@
 .rr-settings-error { color: var(--rr-danger); font-size: 13px; margin: 10px 0 0; white-space: pre-wrap; }
 .rr-settings-test { margin: 12px 0 0; padding: 10px 12px 10px 28px; border: 1px solid var(--rr-border); border-radius: 8px; font-size: 13px; }
 .rr-settings-test li { margin: 4px 0; }
+
+/* Generation progress: a controllable loading animation in the corner (in-between state of step 1 -> step 2). */
+.rr-gen-progress { position: fixed; right: 22px; bottom: 22px; z-index: 40; width: 372px; max-width: calc(100vw - 44px);
+  background: var(--rr-paper); border: 1px solid var(--rr-border); border-radius: 12px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+  font-size: 13px; color: var(--rr-text); overflow: hidden; }
+.rr-gen-head { display: flex; align-items: center; gap: 10px; padding: 12px 14px; cursor: pointer; user-select: none; }
+.rr-gen-icon { width: 22px; height: 22px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: #fff; background: var(--rr-muted); }
+.rr-gen-icon.running { background: var(--rr-accent); animation: rr-gen-spin 1s linear infinite; }
+.rr-gen-icon.ok { background: var(--rr-success); }
+.rr-gen-icon.fail { background: var(--rr-danger); }
+.rr-gen-icon.cancel { background: var(--rr-muted); }
+.rr-gen-meta { flex: 1; min-width: 0; }
+.rr-gen-lbl { display: block; font-weight: 650; color: var(--rr-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rr-gen-sub { display: block; color: var(--rr-muted); font-size: 12px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rr-gen-chev { color: var(--rr-muted); font-size: 12px; transition: transform .2s; }
+.rr-gen-progress.open .rr-gen-chev { transform: rotate(180deg); }
+.rr-gen-body { border-top: 1px solid var(--rr-border); padding: 8px 6px 6px; max-height: 320px; overflow: auto; }
+.rr-gen-bar-wrap { display: flex; align-items: center; gap: 10px; padding: 4px 8px 10px; border-bottom: 1px dashed var(--rr-border); margin-bottom: 4px; }
+.rr-gen-num { font-size: 12px; color: var(--rr-muted); white-space: nowrap; }
+.rr-gen-bar { flex: 1; height: 6px; background: var(--rr-border); border-radius: 999px; overflow: hidden; }
+.rr-gen-bar > i { display: block; height: 100%; background: var(--rr-accent); border-radius: 999px; transition: width .3s; }
+.rr-gen-step { display: flex; gap: 10px; align-items: flex-start; padding: 6px 8px; border-radius: 8px; }
+.rr-gen-step.running { background: var(--rr-selection); }
+.rr-gen-step.failed { background: color-mix(in srgb, var(--rr-danger) 12%, transparent); }
+.rr-gen-step.cancelled, .rr-gen-step.skipped { opacity: .55; }
+.rr-gen-dot { width: 16px; height: 16px; flex: none; margin-top: 2px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; color: #fff; }
+.rr-gen-step.done .rr-gen-dot { background: var(--rr-success); }
+.rr-gen-step.running .rr-gen-dot { background: var(--rr-accent); animation: rr-gen-spin 1s linear infinite; }
+.rr-gen-step.failed .rr-gen-dot { background: var(--rr-danger); }
+.rr-gen-step.cancelled .rr-gen-dot, .rr-gen-step.skipped .rr-gen-dot { background: var(--rr-muted); }
+.rr-gen-step.pending .rr-gen-dot { border: 2px solid var(--rr-border); background: transparent; }
+.rr-gen-body2 { flex: 1; min-width: 0; }
+.rr-gen-row { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.rr-gen-name { font-weight: 600; color: var(--rr-text); }
+.rr-gen-status { font-size: 11px; color: var(--rr-muted); }
+.rr-gen-step.running .rr-gen-status { color: var(--rr-accent); }
+.rr-gen-step.failed .rr-gen-status { color: var(--rr-danger); }
+.rr-gen-detail { font-size: 11.5px; color: var(--rr-muted); line-height: 1.55; margin-top: 4px; padding-left: 2px; display: none; }
+.rr-gen-step.expand .rr-gen-detail { display: block; }
+.rr-gen-err { color: var(--rr-danger); font-weight: 600; }
+.rr-gen-fix { color: var(--rr-text); }
+.rr-gen-foot { display: flex; align-items: center; gap: 8px; padding: 10px 14px 14px; border-top: 1px solid var(--rr-border); }
+.rr-gen-hint { flex: 1; color: var(--rr-muted); font-size: 12px; }
+.rr-gen-progress .rr-button { padding: 6px 11px; font-size: 12px; }
+.rr-gen-progress .rr-button--danger { background: var(--rr-danger); border-color: var(--rr-danger); color: #fff; }
+@keyframes rr-gen-spin { to { transform: rotate(360deg); } }
+
+/* Review detail opens in the main canvas (full width) instead of the narrow inspector.
+ * data-review is present only while a review panel is active. */
+.rr-main[data-review] :is(.rr-toolbar, .rr-engine-note, .rr-document-panes) { display: none; }
+.rr-review-view { display: flex; flex-direction: column; flex: 1 0 0; min-height: 0; gap: 12px; margin: 0 24px 24px; }
+.rr-review-view-head { display: flex; align-items: flex-start; gap: 12px; }
+.rr-review-view-head .rr-button { flex: none; }
+.rr-review-view-head2 { min-width: 0; }
+.rr-review-view-head2 h2 { font-size: 18px; line-height: 1.3; }
+.rr-review-view-head2 .rr-muted { font-size: 12px; }
+.rr-review-view-body { flex: 1; min-height: 0; overflow: auto; border: 1px solid var(--rr-border); border-radius: var(--rr-radius); background: var(--rr-paper); padding: 18px 20px; }
+.rr-review-view-body .rr-pre { max-height: none; }
+@media (max-width:650px) { .rr-review-view { margin-inline: 12px; gap: 8px; } .rr-review-view-body { padding: 12px; } }
+
+/* Readable review detail: field cards, diff legend, raw-JSON fallback. */
+.rr-field-card { margin: 14px 0; padding: 12px 14px; border: 1px solid var(--rr-border); border-radius: var(--rr-radius); background: var(--rr-shell); }
+.rr-field-card h4 { font-size: 13px; margin: 0 0 8px; color: var(--rr-accent); font-weight: 650; }
+.rr-fields { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 6px 16px; }
+.rr-field-row { display: flex; gap: 8px; align-items: baseline; min-width: 0; }
+.rr-field-row dt { color: var(--rr-muted); font-size: 12px; flex: none; min-width: 84px; }
+.rr-field-row dd { margin: 0; font-size: 12.5px; overflow-wrap: anywhere; }
+.rr-fields .rr-mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 11.5px; }
+.rr-raw { margin: 14px 0; }
+.rr-raw summary { color: var(--rr-muted); font-size: 12px; cursor: pointer; }
+.rr-raw pre { margin-top: 8px; }
+.rr-diff-helper { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.rr-diff-legend { display: inline-flex; gap: 12px; }
+.rr-diff-legend span { font-size: 12px; }
+.rr-publish-plan .rr-row + p { margin-top: 8px; }
+.rr-publish-plan .rr-button { margin-top: 12px; }
+
+/* Report list items: status dot + clearer hierarchy. */
+.rr-item-top { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.rr-status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rr-muted); flex: none; }
+.rr-status-dot.is-confirmed { background: var(--rr-success); }
+.rr-report-title { font-size: 13px; font-weight: 600; overflow-wrap: anywhere; }
+.rr-report-sub { font-size: 11px; color: var(--rr-muted); padding-left: 16px; }
+
+/* Publication record phase badge. */
+.rr-phase { font-size: 11px; font-weight: 650; padding: 2px 9px; border-radius: 999px; line-height: 1.4; }
+.rr-phase.is-ready { color: var(--rr-success); background: color-mix(in srgb, var(--rr-success) 14%, transparent); }
+.rr-phase.is-submitted { color: var(--rr-info); background: color-mix(in srgb, var(--rr-info) 14%, transparent); }
+.rr-phase.is-failed { color: var(--rr-danger); background: color-mix(in srgb, var(--rr-danger) 14%, transparent); }
+.rr-phase.is-unknown { color: var(--rr-info); background: color-mix(in srgb, var(--rr-info) 14%, transparent); }
+.rr-phase.is-pending { color: var(--rr-muted); background: color-mix(in srgb, var(--rr-muted) 16%, transparent); }
