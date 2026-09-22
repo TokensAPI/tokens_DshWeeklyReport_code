@@ -124,7 +124,7 @@ test('workspace: host themes, responsive layout, save conflicts and explicit pub
     await expect(page.getByRole('alert')).toContainText('版本冲突');
     await expect(page.locator('.cm-content')).toContainText('本地内容必须保留');
     await expect(page.getByRole('button', {name:'仅确认版本', exact:true})).toBeDisabled();
-    await page.keyboard.press('Escape');
+    await page.getByRole('button', {name:'关闭', exact:true}).click();
     await expect(page.getByRole('button', {name:'返回编辑'})).toBeVisible();
     await page.getByRole('button', {name:'返回编辑'}).click();
     conflict = false;

@@ -91,9 +91,16 @@
 .rr-workspace .rr-button:hover:not(:disabled), .rr-launch:hover { background: var(--rr-raised); border-color: var(--rr-accent); }
 .rr-workspace .rr-button--primary { color: var(--rr-on-accent); background: var(--rr-fill); border-color: var(--rr-fill); }
 .rr-workspace .rr-button--primary:hover:not(:disabled) { background: var(--theme-accent-fill-hover, var(--rr-fill)); }
+/* AI 入口：默认中性，仅保留主题色小图标做识别；悬停/激活才浮现主题色，不再整块大红大绿。 */
+.rr-workspace .rr-button.rr-ai-enter { color: var(--rr-text); border-color: var(--rr-border); background: var(--rr-paper); font-weight: 600; }
+.rr-workspace .rr-button.rr-ai-enter:hover:not(:disabled) { background: color-mix(in srgb, var(--rr-accent) 8%, var(--rr-paper)); border-color: var(--rr-accent); color: var(--rr-accent); }
+/* 语音入口：同样中性，图标用主题色描边；不会整块红色刺激眼睛。 */
+.rr-workspace .rr-button.rr-voice-enter { color: var(--rr-text); border-color: var(--rr-border); background: var(--rr-paper); font-weight: 600; }
+.rr-workspace .rr-button.rr-voice-enter:hover:not(:disabled) { background: color-mix(in srgb, var(--rr-accent) 8%, var(--rr-paper)); border-color: var(--rr-accent); color: var(--rr-accent); }
 .rr-workspace .rr-button--danger { color: var(--rr-danger); border-color: var(--rr-danger); }
 .rr-workspace button:disabled { opacity: .45; cursor: not-allowed; }
-.rr-workspace .rr-button[aria-pressed="true"] { background: var(--rr-selection); border-color: var(--rr-accent); color: var(--rr-accent); }
+/* 激活态统一为柔和的主题选色（不再绿色实心/红色实心）。 */
+.rr-workspace .rr-button[aria-pressed="true"] { background: color-mix(in srgb, var(--rr-accent) 12%, var(--rr-paper)); border-color: var(--rr-accent); color: var(--rr-accent); }
 .rr-header { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--rr-border); background: var(--rr-shell); }
 .rr-app-title { font-size: 17px; white-space: nowrap; }
 .rr-steps { display: flex; gap: 8px; flex: 1; }
@@ -162,7 +169,10 @@
 .rr-report-header { padding: 28px 32px 20px; }
 .rr-report-header h1 { margin: 6px 0 12px; }
 .rr-generation-form { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 16px; border-top: 1px solid var(--rr-border); }
-.rr-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 0 24px 12px; }
+.rr-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 0 24px 12px; }
+/* 单色图标按钮：去掉彩色 emoji，图标与文字同色、垂直居中对齐。只影响文档视图工具栏。 */
+.rr-toolbar .rr-button { display: inline-flex; align-items: center; gap: 6px; }
+.rr-btn-ico { flex: none; color: inherit; opacity: .8; }
 .rr-push { margin-left: auto; }
 .rr-canvas, .rr-pdf { flex: 1 0 360px; min-height: 360px; margin: 0 24px 24px; border: 1px solid var(--rr-border); border-radius: var(--rr-radius); background: var(--rr-paper); overflow: hidden; }
 .rr-canvas { position: relative; }
@@ -342,6 +352,11 @@
 .rr-settings-error { color: var(--rr-danger); font-size: 13px; margin: 10px 0 0; white-space: pre-wrap; }
 .rr-settings-test { margin: 12px 0 0; padding: 10px 12px 10px 28px; border: 1px solid var(--rr-border); border-radius: 8px; font-size: 13px; }
 .rr-settings-test li { margin: 4px 0; }
+/* Voice-input preference section inside the settings dialog (checkbox toggle + section divider). */
+.rr-settings-section { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--rr-border); }
+.rr-settings-section h3 { margin: 0 0 4px; font-size: 13px; font-weight: 650; color: var(--rr-text); }
+.rr-settings-toggle { display: flex !important; align-items: flex-start; gap: 8px; }
+.rr-settings-toggle input[type="checkbox"] { display: inline-block; width: 16px; height: 16px; margin: 2px 0 0; padding: 0; flex: none; accent-color: var(--rr-accent, #2f7d5f); }
 
 /* Generation progress: a controllable loading animation in the corner (in-between state of step 1 -> step 2). */
 .rr-gen-progress { position: fixed; right: 22px; bottom: 22px; z-index: 40; width: 372px; max-width: calc(100vw - 44px);
@@ -433,3 +448,22 @@
 .rr-phase.is-failed { color: var(--rr-danger); background: color-mix(in srgb, var(--rr-danger) 14%, transparent); }
 .rr-phase.is-unknown { color: var(--rr-info); background: color-mix(in srgb, var(--rr-info) 14%, transparent); }
 .rr-phase.is-pending { color: var(--rr-muted); background: color-mix(in srgb, var(--rr-muted) 16%, transparent); }
+
+/* AI 对话修改面板（Route A）：右缘抽屉，覆盖在编辑阶段之上。 */
+.rr-editor-stage { position: relative; }
+.rr-ai-chat { position: absolute; top: 0; right: 0; bottom: 0; width: min(360px, calc(100% - 48px)); display: flex; flex-direction: column; gap: 0; background: var(--rr-shell); border-left: 1px solid var(--rr-border); box-shadow: -8px 0 24px rgba(0, 0, 0, 0.14); z-index: 6; }
+.rr-ai-chat-head { display: flex; flex-direction: column; gap: 2px; padding: 14px 16px 10px; border-bottom: 1px solid var(--rr-border); background: var(--rr-paper); }
+.rr-ai-chat-head strong { font-size: 14px; }
+.rr-ai-chat-head .rr-muted { font-size: 11px; }
+.rr-ai-chat-messages { flex: 1 1 0; min-height: 0; overflow: auto; padding: 14px 16px; }
+.rr-ai-chat-empty { margin: 0 0 12px; font-size: 12px; color: var(--rr-muted); line-height: 1.6; }
+.rr-ai-chat-msg { max-width: 92%; margin: 0 0 10px; padding: 8px 10px; border-radius: 10px; font-size: 13px; line-height: 1.55; overflow-wrap: anywhere; background: var(--rr-raised); border: 1px solid var(--rr-border); color: var(--rr-text); }
+.rr-ai-chat-msg.is-user { background: color-mix(in srgb, var(--rr-accent) 12%, var(--rr-paper)); border-color: color-mix(in srgb, var(--rr-accent) 35%, var(--rr-border)); }
+.rr-ai-chat-msg.is-busy { color: var(--rr-muted); font-style: italic; }
+.rr-ai-chat-actions { display: flex; gap: 8px; padding: 10px 16px; border-top: 1px solid var(--rr-border); background: var(--rr-paper); }
+.rr-ai-chat-actions .rr-button { flex: 1; }
+.rr-ai-chat-error { padding: 10px 16px; font-size: 12px; color: var(--rr-danger); background: color-mix(in srgb, var(--rr-danger) 10%, var(--rr-paper)); border-top: 1px solid var(--rr-border); }
+.rr-ai-chat-input { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--rr-border); background: var(--rr-paper); }
+.rr-ai-chat-input input { flex: 1; min-width: 0; padding: 8px 10px; border: 1px solid var(--rr-border); border-radius: 6px; color: var(--rr-text); background: var(--rr-paper); }
+.rr-ai-chat-input .rr-button { flex: none; }
+@media (max-width: 650px) { .rr-ai-chat { width: calc(100% - 24px); box-shadow: none; } }

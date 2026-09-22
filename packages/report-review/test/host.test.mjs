@@ -21,7 +21,7 @@ async function setup(t, options = {}) {
 }
 test('formal routes use connection authenticated exact registry and clean lifecycle',()=>{
   const routes=[],effects=[],services={}; const ctx={reportCore:{},reportPdf:{},sessions:{get:()=>({})},get:()=>undefined,provide:(k,v)=>services[k]=v,connection:{fetch:{register:r=>routes.push(r)}},effect:f=>effects.push(f())};
-  apply(ctx,{allowedSessionIds:['s1']}); assert.deepEqual(routes.map(r=>[r.path,r.methods,r.requestBody]),[['/api/run19/review',['POST'],'buffered'],['/api/run19/generate',['POST'],'buffered'],['/api/run19/ai-stream',['POST'],'buffered'],['/api/run19/pdf',['GET'],'buffered']]);
+  apply(ctx,{allowedSessionIds:['s1']}); assert.deepEqual(routes.map(r=>[r.path,r.methods,r.requestBody]),[['/api/run19/review',['POST'],'buffered'],['/api/run19/generate',['POST'],'buffered'],['/api/run19/ai-stream',['POST'],'buffered'],['/api/run19/asr',['POST'],'buffered'],['/api/run19/asr-polish',['POST'],'buffered'],['/api/run19/pdf',['GET'],'buffered']]);
   assert.ok(services.reportReview); effects.forEach(f=>f());
 });
 test('draft projection strips paths, arbitrary metadata, audit prompts; session and conflict checks',async t=>{

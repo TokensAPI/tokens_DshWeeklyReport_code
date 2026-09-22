@@ -134,6 +134,9 @@ export function createDshLlmModel(opts) {
       tools: dshTools,
       temperature: typeof temperature === 'number' ? temperature : undefined,
       maxTokens: typeof maxTokens === 'number' ? maxTokens : undefined,
+      // Route the edit call to a real DSH session (context/telemetry/replay) when one is
+      // provided. Omitted for one-shot / demo / non-session callers.
+      ...(opts.sessionId ? { sessionId: opts.sessionId } : {}),
     };
 
     try { console.error('[dsh-ai] >>> request tools=', (dshTools||[]).map(t=>t.name).join(','), 'msgs=', dshMessages.length, 'provider=', opts.provider ?? '(host-default)', 'model=', opts.model ?? '(host-default)'); } catch { /* ignore */ }
@@ -334,14 +337,33 @@ function injectDocumentStateMessages(messages) {
   });
 }
 
+// Last user/assistant text from a message whose `content`/`parts` may carry text
+// blocks (and possibly tool/state blocks that we want to exclude from context).
+function extractMessageText(msg) {
+  if (!msg) return '';
+  const raw = msg.content ?? msg.parts;
+  if (typeof raw === 'string') return raw;
+  if (Array.isArray(raw)) return raw.filter((p) => p?.type === 'text').map((p) => p?.text ?? '').join('');
+  if (raw && typeof raw === 'object') return typeof raw.text === 'string' ? raw.text : '';
+  return '';
+}
+
 /**
  * Create a native chat object that drives the DSH LLM directly (no model SDK).
- * @param {object} opts  forwarded to createDshLlmModel (fetchFn, provider, model, system)
+ * @param {object} opts  forwarded to createDshLlmModel (fetchFn, provider, model, system, sessionId)
  */
 export function createNativeChat(opts) {
   const model = createDshLlmModel(opts);
+  // Which report this conversation is scoped to. Each report mounts its own editor
+  // (client uses key={reportId}), so a chat is per-report. We use this to (a) tag every
+  // convo entry and only feed the current report's turns back, (b) anchor the model on the
+  // current report, and (c) reject applyDocumentOperations calls stamped for another report.
+  const reportId = (typeof opts?.reportId === 'string' && opts.reportId.length > 0) ? opts.reportId : null;
   const state = {
     messages: [],
+    // Full user/assistant exchange used to give the model conversation context across
+    // turns. `messages`/`lastMessage` keep the xl-ai UIMessage shape for the executor.
+    convo: [],
     lastMessage: null,
     status: 'ready',             // 'ready' | 'submitted' | 'error'
     error: undefined,
@@ -375,17 +397,33 @@ export function createNativeChat(opts) {
       }));
       // The DSH bridge consumes ModelMessage-shaped messages (`content` is an array of
       // parts). xl-ai's injected state uses UIMessage-shaped `parts`, so normalize here.
-      const injected = injectDocumentStateMessages([message]).map((m) =>
+      // For a conversation we prepend the accumulated history (prior user + assistant
+      // text) so the model sees the whole exchange, then inject the latest document state
+      // onto the current message. This is what makes "直接对话修改" carry real context.
+      const userText = extractMessageText(message);
+      // Tag every convo entry with the report it belongs to, so the model only ever sees
+      // turns from the CURRENT report (each report mounts its own chat; this is defensive).
+      state.convo = [...state.convo, { role: 'user', text: userText, reportId }];
+      const history = state.convo.slice(0, -1)
+        .filter((m) => m && typeof m.text === 'string' && m.text.length > 0 && (reportId == null || m.reportId == null || m.reportId === reportId))
+        .map((m) => ({ role: m.role, content: [{ type: 'text', text: m.text }] }));
+      const injected = injectDocumentStateMessages([...history, message]).map((m) =>
         m && Array.isArray(m.parts) ? { role: m.role, id: m.id, content: m.parts } : m,
       );
 
       setStatus('submitted');
       let stream;
       try {
+        // Anchor the model on the current report so it knows which report it is editing and
+        // stamps it on applyDocumentOperations; the tool-call guard below rejects mismatches.
+        const system = [
+          opts.system,
+          reportId ? `当前报告 ID：${reportId}。你正在编辑这份报告。调用 applyDocumentOperations 时必须在顶层传入 reportId 字段，其值必须等于 ${reportId}，否则会被拒绝。` : '',
+        ].filter(Boolean).join('\n');
         ({ stream } = await model.doStream({
           prompt: injected,
           tools,
-          system: opts.system,
+          system: system || undefined,
           abortSignal: state.abortController.signal,
         }));
       } catch (e) {
@@ -410,7 +448,19 @@ export function createNativeChat(opts) {
             // expects DeepPartial<{operations}>), not the raw JSON string.
             let input = value.input;
             if (typeof input === 'string') { try { input = JSON.parse(input); } catch { /* keep */ } }
-            parts.push({ type: 'tool-applyDocumentOperations', state: 'input-available', toolCallId: String(value.id), input });
+            // Guard: if the model stamps a reportId that is NOT this report, refuse to apply so
+            // we can never edit a different report's document. Absent stamp = accept (the chat is
+            // per-report anchored anyway). Strip reportId before forwarding so the operations
+            // pipeline only ever sees {operations}.
+            const stamp = input && typeof input === 'object' ? input.reportId : undefined;
+            if (reportId && typeof stamp === 'string' && stamp !== reportId) {
+              const err = new Error(`AI 尝试编辑其他报告（reportId=${stamp}），为保护当前报告已拒绝本次修改。`);
+              emitDiag({ tools: (tools || []).map((t) => t.name), toolCalls: 1, finishReason: 'error', error: String(err.message) });
+              setError(err);
+              break;
+            }
+            const safeInput = input && typeof input === 'object' && Array.isArray(input.operations) ? { operations: input.operations } : input;
+            parts.push({ type: 'tool-applyDocumentOperations', state: 'input-available', toolCallId: String(value.id), input: safeInput });
             setLastMessage({ role: 'assistant', parts: [...parts] });
           } else if (value.type === 'finish') {
             break;
@@ -422,6 +472,7 @@ export function createNativeChat(opts) {
       } catch (e) {
         setError(e);
       }
+      if (curText?.text) state.convo = [...state.convo, { role: 'assistant', text: curText.text, reportId }];
       if (state.status !== 'error') {
         setLastMessage({ role: 'assistant', parts: [...parts] });
         setStatus('ready');

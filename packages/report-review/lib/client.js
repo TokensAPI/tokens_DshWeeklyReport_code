@@ -2710,7 +2710,7 @@ var require_use_sync_external_store_shim_development = __commonJS({
             "The result of getSnapshot should be cached to avoid an infinite loop"
           ), didWarnUncachedGetSnapshot = true);
         }
-        cachedValue = useState25({
+        cachedValue = useState26({
           inst: { value, getSnapshot }
         });
         var inst = cachedValue[0].inst, forceUpdate = cachedValue[1];
@@ -2748,7 +2748,7 @@ var require_use_sync_external_store_shim_development = __commonJS({
         return getSnapshot();
       }
       "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-      var React14 = require("react"), objectIs = "function" === typeof Object.is ? Object.is : is3, useState25 = React14.useState, useEffect24 = React14.useEffect, useLayoutEffect5 = React14.useLayoutEffect, useDebugValue2 = React14.useDebugValue, didWarnOld18Alpha = false, didWarnUncachedGetSnapshot = false, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+      var React14 = require("react"), objectIs = "function" === typeof Object.is ? Object.is : is3, useState26 = React14.useState, useEffect24 = React14.useEffect, useLayoutEffect5 = React14.useLayoutEffect, useDebugValue2 = React14.useDebugValue, didWarnOld18Alpha = false, didWarnUncachedGetSnapshot = false, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
       exports.useSyncExternalStore = void 0 !== React14.useSyncExternalStore ? React14.useSyncExternalStore : shim;
       "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
     })();
@@ -2785,9 +2785,9 @@ var require_with_selector_development = __commonJS({
         return x3 === y4 && (0 !== x3 || 1 / x3 === 1 / y4) || x3 !== x3 && y4 !== y4;
       }
       "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-      var React14 = require("react"), shim = require_shim(), objectIs = "function" === typeof Object.is ? Object.is : is3, useSyncExternalStore3 = shim.useSyncExternalStore, useRef30 = React14.useRef, useEffect24 = React14.useEffect, useMemo11 = React14.useMemo, useDebugValue2 = React14.useDebugValue;
+      var React14 = require("react"), shim = require_shim(), objectIs = "function" === typeof Object.is ? Object.is : is3, useSyncExternalStore3 = shim.useSyncExternalStore, useRef31 = React14.useRef, useEffect24 = React14.useEffect, useMemo11 = React14.useMemo, useDebugValue2 = React14.useDebugValue;
       exports.useSyncExternalStoreWithSelector = function(subscribe, getSnapshot, getServerSnapshot, selector, isEqual2) {
-        var instRef = useRef30(null);
+        var instRef = useRef31(null);
         if (null === instRef.current) {
           var inst = { hasValue: false, value: null };
           instRef.current = inst;
@@ -25654,11 +25654,11 @@ __export(entry_exports, {
   safeWarnings: () => safeWarnings
 });
 module.exports = __toCommonJS(entry_exports);
-var import_react170 = __toESM(require("react"), 1);
+var import_react172 = __toESM(require("react"), 1);
 var import_dsh_client_ui_primitives = require("@deepseek-ai/dsh-client-ui-primitives");
 
 // packages/report-review/src/client.jsx
-var import_react169 = __toESM(require("react"), 1);
+var import_react171 = __toESM(require("react"), 1);
 
 // node_modules/@marijn/find-cluster-break/src/index.js
 var rangeFrom = [];
@@ -52046,9 +52046,16 @@ var workspace_default = `/* Local aliases consume the TokensAPI contract; never 
 .rr-workspace .rr-button:hover:not(:disabled), .rr-launch:hover { background: var(--rr-raised); border-color: var(--rr-accent); }\r
 .rr-workspace .rr-button--primary { color: var(--rr-on-accent); background: var(--rr-fill); border-color: var(--rr-fill); }\r
 .rr-workspace .rr-button--primary:hover:not(:disabled) { background: var(--theme-accent-fill-hover, var(--rr-fill)); }\r
+/* AI \u5165\u53E3\uFF1A\u9ED8\u8BA4\u4E2D\u6027\uFF0C\u4EC5\u4FDD\u7559\u4E3B\u9898\u8272\u5C0F\u56FE\u6807\u505A\u8BC6\u522B\uFF1B\u60AC\u505C/\u6FC0\u6D3B\u624D\u6D6E\u73B0\u4E3B\u9898\u8272\uFF0C\u4E0D\u518D\u6574\u5757\u5927\u7EA2\u5927\u7EFF\u3002 */\r
+.rr-workspace .rr-button.rr-ai-enter { color: var(--rr-text); border-color: var(--rr-border); background: var(--rr-paper); font-weight: 600; }\r
+.rr-workspace .rr-button.rr-ai-enter:hover:not(:disabled) { background: color-mix(in srgb, var(--rr-accent) 8%, var(--rr-paper)); border-color: var(--rr-accent); color: var(--rr-accent); }\r
+/* \u8BED\u97F3\u5165\u53E3\uFF1A\u540C\u6837\u4E2D\u6027\uFF0C\u56FE\u6807\u7528\u4E3B\u9898\u8272\u63CF\u8FB9\uFF1B\u4E0D\u4F1A\u6574\u5757\u7EA2\u8272\u523A\u6FC0\u773C\u775B\u3002 */\r
+.rr-workspace .rr-button.rr-voice-enter { color: var(--rr-text); border-color: var(--rr-border); background: var(--rr-paper); font-weight: 600; }\r
+.rr-workspace .rr-button.rr-voice-enter:hover:not(:disabled) { background: color-mix(in srgb, var(--rr-accent) 8%, var(--rr-paper)); border-color: var(--rr-accent); color: var(--rr-accent); }\r
 .rr-workspace .rr-button--danger { color: var(--rr-danger); border-color: var(--rr-danger); }\r
 .rr-workspace button:disabled { opacity: .45; cursor: not-allowed; }\r
-.rr-workspace .rr-button[aria-pressed="true"] { background: var(--rr-selection); border-color: var(--rr-accent); color: var(--rr-accent); }\r
+/* \u6FC0\u6D3B\u6001\u7EDF\u4E00\u4E3A\u67D4\u548C\u7684\u4E3B\u9898\u9009\u8272\uFF08\u4E0D\u518D\u7EFF\u8272\u5B9E\u5FC3/\u7EA2\u8272\u5B9E\u5FC3\uFF09\u3002 */\r
+.rr-workspace .rr-button[aria-pressed="true"] { background: color-mix(in srgb, var(--rr-accent) 12%, var(--rr-paper)); border-color: var(--rr-accent); color: var(--rr-accent); }\r
 .rr-header { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--rr-border); background: var(--rr-shell); }\r
 .rr-app-title { font-size: 17px; white-space: nowrap; }\r
 .rr-steps { display: flex; gap: 8px; flex: 1; }\r
@@ -52117,7 +52124,10 @@ var workspace_default = `/* Local aliases consume the TokensAPI contract; never 
 .rr-report-header { padding: 28px 32px 20px; }\r
 .rr-report-header h1 { margin: 6px 0 12px; }\r
 .rr-generation-form { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 16px; border-top: 1px solid var(--rr-border); }\r
-.rr-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 0 24px 12px; }\r
+.rr-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 0 24px 12px; }\r
+/* \u5355\u8272\u56FE\u6807\u6309\u94AE\uFF1A\u53BB\u6389\u5F69\u8272 emoji\uFF0C\u56FE\u6807\u4E0E\u6587\u5B57\u540C\u8272\u3001\u5782\u76F4\u5C45\u4E2D\u5BF9\u9F50\u3002\u53EA\u5F71\u54CD\u6587\u6863\u89C6\u56FE\u5DE5\u5177\u680F\u3002 */\r
+.rr-toolbar .rr-button { display: inline-flex; align-items: center; gap: 6px; }\r
+.rr-btn-ico { flex: none; color: inherit; opacity: .8; }\r
 .rr-push { margin-left: auto; }\r
 .rr-canvas, .rr-pdf { flex: 1 0 360px; min-height: 360px; margin: 0 24px 24px; border: 1px solid var(--rr-border); border-radius: var(--rr-radius); background: var(--rr-paper); overflow: hidden; }\r
 .rr-canvas { position: relative; }\r
@@ -52297,6 +52307,11 @@ var workspace_default = `/* Local aliases consume the TokensAPI contract; never 
 .rr-settings-error { color: var(--rr-danger); font-size: 13px; margin: 10px 0 0; white-space: pre-wrap; }\r
 .rr-settings-test { margin: 12px 0 0; padding: 10px 12px 10px 28px; border: 1px solid var(--rr-border); border-radius: 8px; font-size: 13px; }\r
 .rr-settings-test li { margin: 4px 0; }\r
+/* Voice-input preference section inside the settings dialog (checkbox toggle + section divider). */\r
+.rr-settings-section { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--rr-border); }\r
+.rr-settings-section h3 { margin: 0 0 4px; font-size: 13px; font-weight: 650; color: var(--rr-text); }\r
+.rr-settings-toggle { display: flex !important; align-items: flex-start; gap: 8px; }\r
+.rr-settings-toggle input[type="checkbox"] { display: inline-block; width: 16px; height: 16px; margin: 2px 0 0; padding: 0; flex: none; accent-color: var(--rr-accent, #2f7d5f); }\r
 \r
 /* Generation progress: a controllable loading animation in the corner (in-between state of step 1 -> step 2). */\r
 .rr-gen-progress { position: fixed; right: 22px; bottom: 22px; z-index: 40; width: 372px; max-width: calc(100vw - 44px);\r
@@ -52388,10 +52403,5131 @@ var workspace_default = `/* Local aliases consume the TokensAPI contract; never 
 .rr-phase.is-failed { color: var(--rr-danger); background: color-mix(in srgb, var(--rr-danger) 14%, transparent); }\r
 .rr-phase.is-unknown { color: var(--rr-info); background: color-mix(in srgb, var(--rr-info) 14%, transparent); }\r
 .rr-phase.is-pending { color: var(--rr-muted); background: color-mix(in srgb, var(--rr-muted) 16%, transparent); }\r
+\r
+/* AI \u5BF9\u8BDD\u4FEE\u6539\u9762\u677F\uFF08Route A\uFF09\uFF1A\u53F3\u7F18\u62BD\u5C49\uFF0C\u8986\u76D6\u5728\u7F16\u8F91\u9636\u6BB5\u4E4B\u4E0A\u3002 */\r
+.rr-editor-stage { position: relative; }\r
+.rr-ai-chat { position: absolute; top: 0; right: 0; bottom: 0; width: min(360px, calc(100% - 48px)); display: flex; flex-direction: column; gap: 0; background: var(--rr-shell); border-left: 1px solid var(--rr-border); box-shadow: -8px 0 24px rgba(0, 0, 0, 0.14); z-index: 6; }\r
+.rr-ai-chat-head { display: flex; flex-direction: column; gap: 2px; padding: 14px 16px 10px; border-bottom: 1px solid var(--rr-border); background: var(--rr-paper); }\r
+.rr-ai-chat-head strong { font-size: 14px; }\r
+.rr-ai-chat-head .rr-muted { font-size: 11px; }\r
+.rr-ai-chat-messages { flex: 1 1 0; min-height: 0; overflow: auto; padding: 14px 16px; }\r
+.rr-ai-chat-empty { margin: 0 0 12px; font-size: 12px; color: var(--rr-muted); line-height: 1.6; }\r
+.rr-ai-chat-msg { max-width: 92%; margin: 0 0 10px; padding: 8px 10px; border-radius: 10px; font-size: 13px; line-height: 1.55; overflow-wrap: anywhere; background: var(--rr-raised); border: 1px solid var(--rr-border); color: var(--rr-text); }\r
+.rr-ai-chat-msg.is-user { background: color-mix(in srgb, var(--rr-accent) 12%, var(--rr-paper)); border-color: color-mix(in srgb, var(--rr-accent) 35%, var(--rr-border)); }\r
+.rr-ai-chat-msg.is-busy { color: var(--rr-muted); font-style: italic; }\r
+.rr-ai-chat-actions { display: flex; gap: 8px; padding: 10px 16px; border-top: 1px solid var(--rr-border); background: var(--rr-paper); }\r
+.rr-ai-chat-actions .rr-button { flex: 1; }\r
+.rr-ai-chat-error { padding: 10px 16px; font-size: 12px; color: var(--rr-danger); background: color-mix(in srgb, var(--rr-danger) 10%, var(--rr-paper)); border-top: 1px solid var(--rr-border); }\r
+.rr-ai-chat-input { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--rr-border); background: var(--rr-paper); }\r
+.rr-ai-chat-input input { flex: 1; min-width: 0; padding: 8px 10px; border: 1px solid var(--rr-border); border-radius: 6px; color: var(--rr-text); background: var(--rr-paper); }\r
+.rr-ai-chat-input .rr-button { flex: none; }\r
+@media (max-width: 650px) { .rr-ai-chat { width: calc(100% - 24px); box-shadow: none; } }\r
 `;
 
 // packages/report-review/src/block-editor.jsx
-var import_react167 = __toESM(require("react"), 1);
+var import_react168 = __toESM(require("react"), 1);
+
+// node_modules/@floating-ui/react/dist/floating-ui.react.mjs
+var React3 = __toESM(require("react"), 1);
+
+// node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs
+function hasWindow() {
+  return typeof window !== "undefined";
+}
+function getNodeName(node2) {
+  if (isNode(node2)) {
+    return (node2.nodeName || "").toLowerCase();
+  }
+  return "#document";
+}
+function getWindow(node2) {
+  var _node$ownerDocument;
+  return (node2 == null || (_node$ownerDocument = node2.ownerDocument) == null ? void 0 : _node$ownerDocument.defaultView) || window;
+}
+function getDocumentElement(node2) {
+  var _ref;
+  return (_ref = (isNode(node2) ? node2.ownerDocument : node2.document) || window.document) == null ? void 0 : _ref.documentElement;
+}
+function isNode(value) {
+  if (!hasWindow()) {
+    return false;
+  }
+  return value instanceof Node || value instanceof getWindow(value).Node;
+}
+function isElement(value) {
+  if (!hasWindow()) {
+    return false;
+  }
+  return value instanceof Element || value instanceof getWindow(value).Element;
+}
+function isHTMLElement(value) {
+  if (!hasWindow()) {
+    return false;
+  }
+  return value instanceof HTMLElement || value instanceof getWindow(value).HTMLElement;
+}
+function isShadowRoot(value) {
+  if (!hasWindow() || typeof ShadowRoot === "undefined") {
+    return false;
+  }
+  return value instanceof ShadowRoot || value instanceof getWindow(value).ShadowRoot;
+}
+function isOverflowElement(element3) {
+  const {
+    overflow,
+    overflowX,
+    overflowY,
+    display
+  } = getComputedStyle2(element3);
+  return /auto|scroll|overlay|hidden|clip/.test(overflow + overflowY + overflowX) && display !== "inline" && display !== "contents";
+}
+function isTableElement(element3) {
+  return /^(table|td|th)$/.test(getNodeName(element3));
+}
+function isTopLayer(element3) {
+  try {
+    if (element3.matches(":popover-open")) {
+      return true;
+    }
+  } catch (_e2) {
+  }
+  try {
+    return element3.matches(":modal");
+  } catch (_e2) {
+    return false;
+  }
+}
+var willChangeRe = /transform|translate|scale|rotate|perspective|filter/;
+var containRe = /paint|layout|strict|content/;
+var isNotNone = (value) => !!value && value !== "none";
+var isWebKitValue;
+function isContainingBlock(elementOrCss) {
+  const css2 = isElement(elementOrCss) ? getComputedStyle2(elementOrCss) : elementOrCss;
+  return isNotNone(css2.transform) || isNotNone(css2.translate) || isNotNone(css2.scale) || isNotNone(css2.rotate) || isNotNone(css2.perspective) || !isWebKit() && (isNotNone(css2.backdropFilter) || isNotNone(css2.filter)) || willChangeRe.test(css2.willChange || "") || containRe.test(css2.contain || "");
+}
+function getContainingBlock(element3) {
+  let currentNode = getParentNode(element3);
+  while (isHTMLElement(currentNode) && !isLastTraversableNode(currentNode)) {
+    if (isContainingBlock(currentNode)) {
+      return currentNode;
+    } else if (isTopLayer(currentNode)) {
+      return null;
+    }
+    currentNode = getParentNode(currentNode);
+  }
+  return null;
+}
+function isWebKit() {
+  if (isWebKitValue == null) {
+    isWebKitValue = typeof CSS !== "undefined" && CSS.supports && CSS.supports("-webkit-backdrop-filter", "none");
+  }
+  return isWebKitValue;
+}
+function isLastTraversableNode(node2) {
+  return /^(html|body|#document)$/.test(getNodeName(node2));
+}
+function getComputedStyle2(element3) {
+  return getWindow(element3).getComputedStyle(element3);
+}
+function getNodeScroll(element3) {
+  if (isElement(element3)) {
+    return {
+      scrollLeft: element3.scrollLeft,
+      scrollTop: element3.scrollTop
+    };
+  }
+  return {
+    scrollLeft: element3.scrollX,
+    scrollTop: element3.scrollY
+  };
+}
+function getParentNode(node2) {
+  if (getNodeName(node2) === "html") {
+    return node2;
+  }
+  const result = (
+    // Step into the shadow DOM of the parent of a slotted node.
+    node2.assignedSlot || // DOM Element detected.
+    node2.parentNode || // ShadowRoot detected.
+    isShadowRoot(node2) && node2.host || // Fallback.
+    getDocumentElement(node2)
+  );
+  return isShadowRoot(result) ? result.host : result;
+}
+function getNearestOverflowAncestor(node2) {
+  const parentNode2 = getParentNode(node2);
+  if (isLastTraversableNode(parentNode2)) {
+    return (node2.ownerDocument || node2).body;
+  }
+  if (isHTMLElement(parentNode2) && isOverflowElement(parentNode2)) {
+    return parentNode2;
+  }
+  return getNearestOverflowAncestor(parentNode2);
+}
+function getOverflowAncestors(node2, list4, traverseIframes) {
+  var _node$ownerDocument2;
+  if (list4 === void 0) {
+    list4 = [];
+  }
+  if (traverseIframes === void 0) {
+    traverseIframes = true;
+  }
+  const scrollableAncestor = getNearestOverflowAncestor(node2);
+  const isBody = scrollableAncestor === ((_node$ownerDocument2 = node2.ownerDocument) == null ? void 0 : _node$ownerDocument2.body);
+  const win = getWindow(scrollableAncestor);
+  if (isBody) {
+    const frameElement = getFrameElement(win);
+    return list4.concat(win, win.visualViewport || [], isOverflowElement(scrollableAncestor) ? scrollableAncestor : [], frameElement && traverseIframes ? getOverflowAncestors(frameElement) : []);
+  } else {
+    return list4.concat(scrollableAncestor, getOverflowAncestors(scrollableAncestor, [], traverseIframes));
+  }
+}
+function getFrameElement(win) {
+  return win.parent && Object.getPrototypeOf(win.parent) ? win.frameElement : null;
+}
+
+// node_modules/@floating-ui/react/dist/floating-ui.react.utils.mjs
+var React = __toESM(require("react"), 1);
+var import_react = require("react");
+
+// node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs
+var sides = ["top", "right", "bottom", "left"];
+var alignments = ["start", "end"];
+var placements = /* @__PURE__ */ sides.reduce((acc, side) => acc.concat(side, side + "-" + alignments[0], side + "-" + alignments[1]), []);
+var min = Math.min;
+var max = Math.max;
+var round = Math.round;
+var floor = Math.floor;
+var createCoords = (v) => ({
+  x: v,
+  y: v
+});
+var oppositeSideMap = {
+  left: "right",
+  right: "left",
+  bottom: "top",
+  top: "bottom"
+};
+function clamp(start2, value, end) {
+  return max(start2, min(value, end));
+}
+function evaluate(value, param) {
+  return typeof value === "function" ? value(param) : value;
+}
+function getSide(placement) {
+  return placement.split("-")[0];
+}
+function getAlignment(placement) {
+  return placement.split("-")[1];
+}
+function getOppositeAxis(axis) {
+  return axis === "x" ? "y" : "x";
+}
+function getAxisLength(axis) {
+  return axis === "y" ? "height" : "width";
+}
+function getSideAxis(placement) {
+  const firstChar = placement[0];
+  return firstChar === "t" || firstChar === "b" ? "y" : "x";
+}
+function getAlignmentAxis(placement) {
+  return getOppositeAxis(getSideAxis(placement));
+}
+function getAlignmentSides(placement, rects, rtl) {
+  if (rtl === void 0) {
+    rtl = false;
+  }
+  const alignment = getAlignment(placement);
+  const alignmentAxis = getAlignmentAxis(placement);
+  const length = getAxisLength(alignmentAxis);
+  let mainAlignmentSide = alignmentAxis === "x" ? alignment === (rtl ? "end" : "start") ? "right" : "left" : alignment === "start" ? "bottom" : "top";
+  if (rects.reference[length] > rects.floating[length]) {
+    mainAlignmentSide = getOppositePlacement(mainAlignmentSide);
+  }
+  return [mainAlignmentSide, getOppositePlacement(mainAlignmentSide)];
+}
+function getExpandedPlacements(placement) {
+  const oppositePlacement = getOppositePlacement(placement);
+  return [getOppositeAlignmentPlacement(placement), oppositePlacement, getOppositeAlignmentPlacement(oppositePlacement)];
+}
+function getOppositeAlignmentPlacement(placement) {
+  return placement.includes("start") ? placement.replace("start", "end") : placement.replace("end", "start");
+}
+var lrPlacement = ["left", "right"];
+var rlPlacement = ["right", "left"];
+var tbPlacement = ["top", "bottom"];
+var btPlacement = ["bottom", "top"];
+function getSideList(side, isStart, rtl) {
+  switch (side) {
+    case "top":
+    case "bottom":
+      if (rtl) return isStart ? rlPlacement : lrPlacement;
+      return isStart ? lrPlacement : rlPlacement;
+    case "left":
+    case "right":
+      return isStart ? tbPlacement : btPlacement;
+    default:
+      return [];
+  }
+}
+function getOppositeAxisPlacements(placement, flipAlignment, direction, rtl) {
+  const alignment = getAlignment(placement);
+  let list4 = getSideList(getSide(placement), direction === "start", rtl);
+  if (alignment) {
+    list4 = list4.map((side) => side + "-" + alignment);
+    if (flipAlignment) {
+      list4 = list4.concat(list4.map(getOppositeAlignmentPlacement));
+    }
+  }
+  return list4;
+}
+function getOppositePlacement(placement) {
+  const side = getSide(placement);
+  return oppositeSideMap[side] + placement.slice(side.length);
+}
+function expandPaddingObject(padding) {
+  var _padding$top, _padding$right, _padding$bottom, _padding$left;
+  return {
+    top: (_padding$top = padding.top) != null ? _padding$top : 0,
+    right: (_padding$right = padding.right) != null ? _padding$right : 0,
+    bottom: (_padding$bottom = padding.bottom) != null ? _padding$bottom : 0,
+    left: (_padding$left = padding.left) != null ? _padding$left : 0
+  };
+}
+function getPaddingObject(padding) {
+  return typeof padding !== "number" ? expandPaddingObject(padding) : {
+    top: padding,
+    right: padding,
+    bottom: padding,
+    left: padding
+  };
+}
+function rectToClientRect(rect) {
+  const {
+    x: x3,
+    y: y4,
+    width,
+    height
+  } = rect;
+  return {
+    width,
+    height,
+    top: y4,
+    left: x3,
+    right: x3 + width,
+    bottom: y4 + height,
+    x: x3,
+    y: y4
+  };
+}
+
+// node_modules/tabbable/dist/index.esm.js
+/*!
+* tabbable 6.5.0
+* @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
+*/
+var candidateSelectors = ["input:not([inert]):not([inert] *)", "select:not([inert]):not([inert] *)", "textarea:not([inert]):not([inert] *)", "a[href]:not([inert]):not([inert] *)", "area[href]:not([inert]):not([inert] *)", "button:not([inert]):not([inert] *)", "[tabindex]:not(slot):not([inert]):not([inert] *)", "audio[controls]:not([inert]):not([inert] *)", "video[controls]:not([inert]):not([inert] *)", '[contenteditable]:not([contenteditable="false"]):not([inert]):not([inert] *)', "details>summary:first-of-type:not([inert]):not([inert] *)", "details:not([inert]):not([inert] *)"];
+var candidateSelector = /* @__PURE__ */ candidateSelectors.join(",");
+var NoElement = typeof Element === "undefined";
+var matches = NoElement ? function() {
+} : Element.prototype.matches || Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+var getRootNode = !NoElement && Element.prototype.getRootNode ? function(element3) {
+  var _element$getRootNode;
+  return element3 === null || element3 === void 0 ? void 0 : (_element$getRootNode = element3.getRootNode) === null || _element$getRootNode === void 0 ? void 0 : _element$getRootNode.call(element3);
+} : function(element3) {
+  return element3 === null || element3 === void 0 ? void 0 : element3.ownerDocument;
+};
+var _isInert = function isInert(node2, lookUp) {
+  var _node$getAttribute;
+  if (lookUp === void 0) {
+    lookUp = true;
+  }
+  var inertAtt = node2 === null || node2 === void 0 ? void 0 : (_node$getAttribute = node2.getAttribute) === null || _node$getAttribute === void 0 ? void 0 : _node$getAttribute.call(node2, "inert");
+  var inert = inertAtt === "" || inertAtt === "true";
+  var result = inert || lookUp && node2 && // closest does not exist on shadow roots, so we fall back to a manual
+  // lookup upward, in case it is not defined.
+  (typeof node2.closest === "function" ? node2.closest("[inert]") : _isInert(node2.parentNode));
+  return result;
+};
+var isContentEditable = function isContentEditable2(node2) {
+  var _node$getAttribute2;
+  var attValue = node2 === null || node2 === void 0 ? void 0 : (_node$getAttribute2 = node2.getAttribute) === null || _node$getAttribute2 === void 0 ? void 0 : _node$getAttribute2.call(node2, "contenteditable");
+  return attValue === "" || attValue === "true";
+};
+var getCandidates = function getCandidates2(el, includeContainer, filter) {
+  if (_isInert(el)) {
+    return [];
+  }
+  var candidates = Array.prototype.slice.apply(el.querySelectorAll(candidateSelector));
+  if (includeContainer && matches.call(el, candidateSelector)) {
+    candidates.unshift(el);
+  }
+  candidates = candidates.filter(filter);
+  return candidates;
+};
+var _getCandidatesIteratively = function getCandidatesIteratively(elements, includeContainer, options) {
+  var candidates = [];
+  var elementsToCheck = Array.from(elements);
+  while (elementsToCheck.length) {
+    var element3 = elementsToCheck.shift();
+    if (_isInert(element3, false)) {
+      continue;
+    }
+    if (element3.tagName === "SLOT") {
+      var assigned = element3.assignedElements();
+      var content4 = assigned.length ? assigned : element3.children;
+      var nestedCandidates = _getCandidatesIteratively(content4, true, options);
+      if (options.flatten) {
+        candidates.push.apply(candidates, nestedCandidates);
+      } else {
+        candidates.push({
+          scopeParent: element3,
+          candidates: nestedCandidates
+        });
+      }
+    } else {
+      var validCandidate = matches.call(element3, candidateSelector);
+      if (validCandidate && options.filter(element3) && (includeContainer || !elements.includes(element3))) {
+        candidates.push(element3);
+      }
+      var shadowRoot = element3.shadowRoot || // check for an undisclosed shadow
+      typeof options.getShadowRoot === "function" && options.getShadowRoot(element3);
+      var validShadowRoot = !_isInert(shadowRoot, false) && (!options.shadowRootFilter || options.shadowRootFilter(element3));
+      if (shadowRoot && validShadowRoot) {
+        var _nestedCandidates = _getCandidatesIteratively(shadowRoot === true ? element3.children : shadowRoot.children, true, options);
+        if (options.flatten) {
+          candidates.push.apply(candidates, _nestedCandidates);
+        } else {
+          candidates.push({
+            scopeParent: element3,
+            candidates: _nestedCandidates
+          });
+        }
+      } else {
+        elementsToCheck.unshift.apply(elementsToCheck, element3.children);
+      }
+    }
+  }
+  return candidates;
+};
+var hasTabIndex = function hasTabIndex2(node2) {
+  return !isNaN(parseInt(node2.getAttribute("tabindex"), 10));
+};
+var getTabIndex = function getTabIndex2(node2) {
+  if (!node2) {
+    throw new Error("No node provided");
+  }
+  if (node2.tabIndex < 0) {
+    if ((/^(AUDIO|VIDEO|DETAILS)$/.test(node2.tagName) || isContentEditable(node2)) && !hasTabIndex(node2)) {
+      return 0;
+    }
+  }
+  return node2.tabIndex;
+};
+var getSortOrderTabIndex = function getSortOrderTabIndex2(node2, isScope) {
+  var tabIndex = getTabIndex(node2);
+  if (tabIndex < 0 && isScope && !hasTabIndex(node2)) {
+    return 0;
+  }
+  return tabIndex;
+};
+var sortOrderedTabbables = function sortOrderedTabbables2(a3, b4) {
+  return a3.tabIndex === b4.tabIndex ? a3.documentOrder - b4.documentOrder : a3.tabIndex - b4.tabIndex;
+};
+var isInput = function isInput2(node2) {
+  return node2.tagName === "INPUT";
+};
+var isHiddenInput = function isHiddenInput2(node2) {
+  return isInput(node2) && node2.type === "hidden";
+};
+var isDetailsWithSummary = function isDetailsWithSummary2(node2) {
+  var r4 = node2.tagName === "DETAILS" && Array.prototype.slice.apply(node2.children).some(function(child) {
+    return child.tagName === "SUMMARY";
+  });
+  return r4;
+};
+var getCheckedRadio = function getCheckedRadio2(nodes, form) {
+  for (var i3 = 0; i3 < nodes.length; i3++) {
+    if (nodes[i3].checked && nodes[i3].form === form) {
+      return nodes[i3];
+    }
+  }
+};
+var isTabbableRadio = function isTabbableRadio2(node2) {
+  if (!node2.name) {
+    return true;
+  }
+  var radioScope = node2.form || getRootNode(node2);
+  var queryRadios = function queryRadios2(name3) {
+    return radioScope.querySelectorAll('input[type="radio"][name="' + name3 + '"]');
+  };
+  var radioSet;
+  if (typeof window !== "undefined" && typeof window.CSS !== "undefined" && typeof window.CSS.escape === "function") {
+    radioSet = queryRadios(window.CSS.escape(node2.name));
+  } else {
+    try {
+      radioSet = queryRadios(node2.name);
+    } catch (err) {
+      console.error("Looks like you have a radio button with a name attribute containing invalid CSS selector characters and need the CSS.escape polyfill: %s", err.message);
+      return false;
+    }
+  }
+  var checked = getCheckedRadio(radioSet, node2.form);
+  return !checked || checked === node2;
+};
+var isRadio = function isRadio2(node2) {
+  return isInput(node2) && node2.type === "radio";
+};
+var isNonTabbableRadio = function isNonTabbableRadio2(node2) {
+  return isRadio(node2) && !isTabbableRadio(node2);
+};
+var isNodeAttached = function isNodeAttached2(node2) {
+  var _nodeRoot;
+  var nodeRoot = node2 && getRootNode(node2);
+  var nodeRootHost = (_nodeRoot = nodeRoot) === null || _nodeRoot === void 0 ? void 0 : _nodeRoot.host;
+  var attached = false;
+  if (nodeRoot && nodeRoot !== node2) {
+    var _nodeRootHost, _nodeRootHost$ownerDo, _node$ownerDocument;
+    attached = !!((_nodeRootHost = nodeRootHost) !== null && _nodeRootHost !== void 0 && (_nodeRootHost$ownerDo = _nodeRootHost.ownerDocument) !== null && _nodeRootHost$ownerDo !== void 0 && _nodeRootHost$ownerDo.contains(nodeRootHost) || node2 !== null && node2 !== void 0 && (_node$ownerDocument = node2.ownerDocument) !== null && _node$ownerDocument !== void 0 && _node$ownerDocument.contains(node2));
+    while (!attached && nodeRootHost) {
+      var _nodeRoot2, _nodeRootHost2, _nodeRootHost2$ownerD;
+      nodeRoot = getRootNode(nodeRootHost);
+      nodeRootHost = (_nodeRoot2 = nodeRoot) === null || _nodeRoot2 === void 0 ? void 0 : _nodeRoot2.host;
+      attached = !!((_nodeRootHost2 = nodeRootHost) !== null && _nodeRootHost2 !== void 0 && (_nodeRootHost2$ownerD = _nodeRootHost2.ownerDocument) !== null && _nodeRootHost2$ownerD !== void 0 && _nodeRootHost2$ownerD.contains(nodeRootHost));
+    }
+  }
+  return attached;
+};
+var isZeroArea = function isZeroArea2(node2) {
+  var _node$getBoundingClie = node2.getBoundingClientRect(), width = _node$getBoundingClie.width, height = _node$getBoundingClie.height;
+  return width === 0 && height === 0;
+};
+var isHidden = function isHidden2(node2, _ref) {
+  var displayCheck = _ref.displayCheck, getShadowRoot = _ref.getShadowRoot;
+  if (displayCheck === "full-native") {
+    if ("checkVisibility" in node2) {
+      var visible2 = node2.checkVisibility({
+        // Checking opacity might be desirable for some use cases, but natively,
+        // opacity zero elements _are_ focusable and tabbable.
+        checkOpacity: false,
+        opacityProperty: false,
+        contentVisibilityAuto: true,
+        visibilityProperty: true,
+        // This is an alias for `visibilityProperty`. Contemporary browsers
+        // support both. However, this alias has wider browser support (Chrome
+        // >= 105 and Firefox >= 106, vs. Chrome >= 121 and Firefox >= 122), so
+        // we include it anyway.
+        checkVisibilityCSS: true
+      });
+      return !visible2;
+    }
+  }
+  var _getComputedStyle = getComputedStyle(node2), visibility = _getComputedStyle.visibility;
+  if (visibility === "hidden" || visibility === "collapse") {
+    return true;
+  }
+  var isDirectSummary = matches.call(node2, "details>summary:first-of-type");
+  var nodeUnderDetails = isDirectSummary ? node2.parentElement : node2;
+  if (matches.call(nodeUnderDetails, "details:not([open]) *")) {
+    return true;
+  }
+  if (!displayCheck || displayCheck === "full" || // full-native can run this branch when it falls through in case
+  // Element#checkVisibility is unsupported
+  displayCheck === "full-native" || displayCheck === "legacy-full") {
+    if (typeof getShadowRoot === "function") {
+      var originalNode = node2;
+      while (node2) {
+        var parentElement = node2.parentElement;
+        var rootNode = getRootNode(node2);
+        if (parentElement && !parentElement.shadowRoot && getShadowRoot(parentElement) === true) {
+          return isZeroArea(node2);
+        } else if (node2.assignedSlot) {
+          node2 = node2.assignedSlot;
+        } else if (!parentElement && rootNode !== node2.ownerDocument) {
+          node2 = rootNode.host;
+        } else {
+          node2 = parentElement;
+        }
+      }
+      node2 = originalNode;
+    }
+    if (isNodeAttached(node2)) {
+      return !node2.getClientRects().length;
+    }
+    if (displayCheck !== "legacy-full") {
+      return true;
+    }
+  } else if (displayCheck === "non-zero-area") {
+    return isZeroArea(node2);
+  }
+  return false;
+};
+var isDisabledFromFieldset = function isDisabledFromFieldset2(node2) {
+  if (/^(INPUT|BUTTON|SELECT|TEXTAREA)$/.test(node2.tagName)) {
+    var parentNode2 = node2.parentElement;
+    while (parentNode2) {
+      if (parentNode2.tagName === "FIELDSET" && parentNode2.disabled) {
+        for (var i3 = 0; i3 < parentNode2.children.length; i3++) {
+          var child = parentNode2.children.item(i3);
+          if (child.tagName === "LEGEND") {
+            return matches.call(parentNode2, "fieldset[disabled] *") ? true : !child.contains(node2);
+          }
+        }
+        return true;
+      }
+      parentNode2 = parentNode2.parentElement;
+    }
+  }
+  return false;
+};
+var isNodeMatchingSelectorFocusable = function isNodeMatchingSelectorFocusable2(options, node2) {
+  if (node2.disabled || isHiddenInput(node2) || isHidden(node2, options) || // For a details element with a summary, the summary element gets the focus
+  isDetailsWithSummary(node2) || isDisabledFromFieldset(node2)) {
+    return false;
+  }
+  return true;
+};
+var isNodeMatchingSelectorTabbable = function isNodeMatchingSelectorTabbable2(options, node2) {
+  if (isNonTabbableRadio(node2) || getTabIndex(node2) < 0 || !isNodeMatchingSelectorFocusable(options, node2)) {
+    return false;
+  }
+  return true;
+};
+var isShadowRootTabbable = function isShadowRootTabbable2(shadowHostNode) {
+  var tabIndex = parseInt(shadowHostNode.getAttribute("tabindex"), 10);
+  if (isNaN(tabIndex) || tabIndex >= 0) {
+    return true;
+  }
+  return false;
+};
+var _sortByOrder = function sortByOrder(candidates) {
+  var regularTabbables = [];
+  var orderedTabbables = [];
+  candidates.forEach(function(item, i3) {
+    var isScope = !!item.scopeParent;
+    var element3 = isScope ? item.scopeParent : item;
+    var candidateTabindex = getSortOrderTabIndex(element3, isScope);
+    var elements = isScope ? _sortByOrder(item.candidates) : element3;
+    if (candidateTabindex === 0) {
+      isScope ? regularTabbables.push.apply(regularTabbables, elements) : regularTabbables.push(element3);
+    } else {
+      orderedTabbables.push({
+        documentOrder: i3,
+        tabIndex: candidateTabindex,
+        item,
+        isScope,
+        content: elements
+      });
+    }
+  });
+  return orderedTabbables.sort(sortOrderedTabbables).reduce(function(acc, sortable) {
+    sortable.isScope ? acc.push.apply(acc, sortable.content) : acc.push(sortable.content);
+    return acc;
+  }, []).concat(regularTabbables);
+};
+var tabbable = function tabbable2(container, options) {
+  options = options || {};
+  var candidates;
+  if (options.getShadowRoot) {
+    candidates = _getCandidatesIteratively([container], options.includeContainer, {
+      filter: isNodeMatchingSelectorTabbable.bind(null, options),
+      flatten: false,
+      getShadowRoot: options.getShadowRoot,
+      shadowRootFilter: isShadowRootTabbable
+    });
+  } else {
+    candidates = getCandidates(container, options.includeContainer, isNodeMatchingSelectorTabbable.bind(null, options));
+  }
+  return _sortByOrder(candidates);
+};
+var focusable = function focusable2(container, options) {
+  options = options || {};
+  var candidates;
+  if (options.getShadowRoot) {
+    candidates = _getCandidatesIteratively([container], options.includeContainer, {
+      filter: isNodeMatchingSelectorFocusable.bind(null, options),
+      flatten: true,
+      getShadowRoot: options.getShadowRoot
+    });
+  } else {
+    candidates = getCandidates(container, options.includeContainer, isNodeMatchingSelectorFocusable.bind(null, options));
+  }
+  return candidates;
+};
+var isTabbable = function isTabbable2(node2, options) {
+  options = options || {};
+  if (!node2) {
+    throw new Error("No node provided");
+  }
+  if (matches.call(node2, candidateSelector) === false) {
+    return false;
+  }
+  return isNodeMatchingSelectorTabbable(options, node2);
+};
+
+// node_modules/@floating-ui/react/dist/floating-ui.react.utils.mjs
+function getPlatform() {
+  const uaData = navigator.userAgentData;
+  if (uaData != null && uaData.platform) {
+    return uaData.platform;
+  }
+  return navigator.platform;
+}
+function getUserAgent() {
+  const uaData = navigator.userAgentData;
+  if (uaData && Array.isArray(uaData.brands)) {
+    return uaData.brands.map((_ref) => {
+      let {
+        brand,
+        version: version2
+      } = _ref;
+      return brand + "/" + version2;
+    }).join(" ");
+  }
+  return navigator.userAgent;
+}
+function isSafari() {
+  return /apple/i.test(navigator.vendor);
+}
+function isAndroid() {
+  const re2 = /android/i;
+  return re2.test(getPlatform()) || re2.test(getUserAgent());
+}
+function isMac() {
+  return getPlatform().toLowerCase().startsWith("mac") && !navigator.maxTouchPoints;
+}
+function isJSDOM() {
+  return getUserAgent().includes("jsdom/");
+}
+var FOCUSABLE_ATTRIBUTE = "data-floating-ui-focusable";
+var TYPEABLE_SELECTOR = "input:not([type='hidden']):not([disabled]),[contenteditable]:not([contenteditable='false']),textarea:not([disabled])";
+function activeElement(doc4) {
+  let activeElement2 = doc4.activeElement;
+  while (((_activeElement = activeElement2) == null || (_activeElement = _activeElement.shadowRoot) == null ? void 0 : _activeElement.activeElement) != null) {
+    var _activeElement;
+    activeElement2 = activeElement2.shadowRoot.activeElement;
+  }
+  return activeElement2;
+}
+function contains2(parent, child) {
+  if (!parent || !child) {
+    return false;
+  }
+  const rootNode = child.getRootNode == null ? void 0 : child.getRootNode();
+  if (parent.contains(child)) {
+    return true;
+  }
+  if (rootNode && isShadowRoot(rootNode)) {
+    let next = child;
+    while (next) {
+      if (parent === next) {
+        return true;
+      }
+      next = next.parentNode || next.host;
+    }
+  }
+  return false;
+}
+function getTarget(event) {
+  if ("composedPath" in event) {
+    return event.composedPath()[0];
+  }
+  return event.target;
+}
+function isEventTargetWithin(event, node2) {
+  if (node2 == null) {
+    return false;
+  }
+  if ("composedPath" in event) {
+    return event.composedPath().includes(node2);
+  }
+  const e6 = event;
+  return e6.target != null && node2.contains(e6.target);
+}
+function isRootElement(element3) {
+  return element3.matches("html,body");
+}
+function getDocument(node2) {
+  return (node2 == null ? void 0 : node2.ownerDocument) || document;
+}
+function isTypeableElement(element3) {
+  return isHTMLElement(element3) && element3.matches(TYPEABLE_SELECTOR);
+}
+function isTypeableCombobox(element3) {
+  if (!element3) return false;
+  return element3.getAttribute("role") === "combobox" && isTypeableElement(element3);
+}
+function matchesFocusVisible(element3) {
+  if (!element3 || isJSDOM()) return true;
+  try {
+    return element3.matches(":focus-visible");
+  } catch (_e2) {
+    return true;
+  }
+}
+function getFloatingFocusElement(floatingElement) {
+  if (!floatingElement) {
+    return null;
+  }
+  return floatingElement.hasAttribute(FOCUSABLE_ATTRIBUTE) ? floatingElement : floatingElement.querySelector("[" + FOCUSABLE_ATTRIBUTE + "]") || floatingElement;
+}
+function getNodeChildren(nodes, id3, onlyOpenChildren) {
+  if (onlyOpenChildren === void 0) {
+    onlyOpenChildren = true;
+  }
+  const directChildren = nodes.filter((node2) => {
+    var _node$context;
+    return node2.parentId === id3 && (!onlyOpenChildren || ((_node$context = node2.context) == null ? void 0 : _node$context.open));
+  });
+  return directChildren.flatMap((child) => [child, ...getNodeChildren(nodes, child.id, onlyOpenChildren)]);
+}
+function getNodeAncestors(nodes, id3) {
+  var _nodes$find;
+  let allAncestors = [];
+  let currentParentId = (_nodes$find = nodes.find((node2) => node2.id === id3)) == null ? void 0 : _nodes$find.parentId;
+  while (currentParentId) {
+    const currentNode = nodes.find((node2) => node2.id === currentParentId);
+    currentParentId = currentNode == null ? void 0 : currentNode.parentId;
+    if (currentNode) {
+      allAncestors = allAncestors.concat(currentNode);
+    }
+  }
+  return allAncestors;
+}
+function stopEvent(event) {
+  event.preventDefault();
+  event.stopPropagation();
+}
+function isReactEvent(event) {
+  return "nativeEvent" in event;
+}
+function isVirtualClick(event) {
+  if (event.mozInputSource === 0 && event.isTrusted) {
+    return true;
+  }
+  if (isAndroid() && event.pointerType) {
+    return event.type === "click" && event.buttons === 1;
+  }
+  return event.detail === 0 && !event.pointerType;
+}
+function isVirtualPointerEvent(event) {
+  if (isJSDOM()) return false;
+  return !isAndroid() && event.width === 0 && event.height === 0 || isAndroid() && event.width === 1 && event.height === 1 && event.pressure === 0 && event.detail === 0 && event.pointerType === "mouse" || // iOS VoiceOver returns 0.333• for width/height.
+  event.width < 1 && event.height < 1 && event.pressure === 0 && event.detail === 0 && event.pointerType === "touch";
+}
+function isMouseLikePointerType(pointerType, strict) {
+  const values4 = ["mouse", "pen"];
+  if (!strict) {
+    values4.push("", void 0);
+  }
+  return values4.includes(pointerType);
+}
+var isClient = typeof document !== "undefined";
+var noop = function noop2() {
+};
+var index = isClient ? import_react.useLayoutEffect : noop;
+var SafeReact = {
+  ...React
+};
+function useLatestRef(value) {
+  const ref = React.useRef(value);
+  index(() => {
+    ref.current = value;
+  });
+  return ref;
+}
+var useInsertionEffect = SafeReact.useInsertionEffect;
+var useSafeInsertionEffect = useInsertionEffect || ((fn5) => fn5());
+function useEffectEvent(callback) {
+  const ref = React.useRef(() => {
+    if (true) {
+      throw new Error("Cannot call an event handler while rendering.");
+    }
+  });
+  useSafeInsertionEffect(() => {
+    ref.current = callback;
+  });
+  return React.useCallback(function() {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    return ref.current == null ? void 0 : ref.current(...args);
+  }, []);
+}
+var getTabbableOptions = () => ({
+  getShadowRoot: true,
+  displayCheck: (
+    // JSDOM does not support the `tabbable` library. To solve this we can
+    // check if `ResizeObserver` is a real function (not polyfilled), which
+    // determines if the current environment is JSDOM-like.
+    typeof ResizeObserver === "function" && ResizeObserver.toString().includes("[native code]") ? "full" : "none"
+  )
+});
+function getTabbableIn(container, dir) {
+  const list4 = tabbable(container, getTabbableOptions());
+  const len = list4.length;
+  if (len === 0) return;
+  const active = activeElement(getDocument(container));
+  const index4 = list4.indexOf(active);
+  const nextIndex = index4 === -1 ? dir === 1 ? 0 : len - 1 : index4 + dir;
+  return list4[nextIndex];
+}
+function getNextTabbable(referenceElement) {
+  return getTabbableIn(getDocument(referenceElement).body, 1) || referenceElement;
+}
+function getPreviousTabbable(referenceElement) {
+  return getTabbableIn(getDocument(referenceElement).body, -1) || referenceElement;
+}
+function isOutsideEvent(event, container) {
+  const containerElement = container || event.currentTarget;
+  const relatedTarget = event.relatedTarget;
+  return !relatedTarget || !contains2(containerElement, relatedTarget);
+}
+function disableFocusInside(container) {
+  const tabbableElements = tabbable(container, getTabbableOptions());
+  tabbableElements.forEach((element3) => {
+    element3.dataset.tabindex = element3.getAttribute("tabindex") || "";
+    element3.setAttribute("tabindex", "-1");
+  });
+}
+function enableFocusInside(container) {
+  const elements = container.querySelectorAll("[data-tabindex]");
+  elements.forEach((element3) => {
+    const tabindex = element3.dataset.tabindex;
+    delete element3.dataset.tabindex;
+    if (tabindex) {
+      element3.setAttribute("tabindex", tabindex);
+    } else {
+      element3.removeAttribute("tabindex");
+    }
+  });
+}
+
+// node_modules/@floating-ui/react/dist/floating-ui.react.mjs
+var import_jsx_runtime = require("react/jsx-runtime");
+var ReactDOM2 = __toESM(require("react-dom"), 1);
+
+// node_modules/@floating-ui/core/dist/floating-ui.core.mjs
+function computeCoordsFromPlacement(_ref, placement, rtl) {
+  let {
+    reference,
+    floating
+  } = _ref;
+  const sideAxis = getSideAxis(placement);
+  const alignmentAxis = getAlignmentAxis(placement);
+  const alignLength = getAxisLength(alignmentAxis);
+  const side = getSide(placement);
+  const isVertical = sideAxis === "y";
+  const commonX = reference.x + reference.width / 2 - floating.width / 2;
+  const commonY = reference.y + reference.height / 2 - floating.height / 2;
+  const commonAlign = reference[alignLength] / 2 - floating[alignLength] / 2;
+  let coords;
+  switch (side) {
+    case "top":
+      coords = {
+        x: commonX,
+        y: reference.y - floating.height
+      };
+      break;
+    case "bottom":
+      coords = {
+        x: commonX,
+        y: reference.y + reference.height
+      };
+      break;
+    case "right":
+      coords = {
+        x: reference.x + reference.width,
+        y: commonY
+      };
+      break;
+    case "left":
+      coords = {
+        x: reference.x - floating.width,
+        y: commonY
+      };
+      break;
+    default:
+      coords = {
+        x: reference.x,
+        y: reference.y
+      };
+  }
+  const alignment = getAlignment(placement);
+  if (alignment) {
+    coords[alignmentAxis] += commonAlign * (alignment === "end" ? 1 : -1) * (rtl && isVertical ? -1 : 1);
+  }
+  return coords;
+}
+async function detectOverflow(state, options) {
+  var _await$platform$isEle;
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    x: x3,
+    y: y4,
+    platform: platform2,
+    rects,
+    elements,
+    strategy
+  } = state;
+  const {
+    boundary = "clippingAncestors",
+    rootBoundary = "viewport",
+    elementContext: elementContext2 = "floating",
+    altBoundary = false,
+    padding = 0
+  } = evaluate(options, state);
+  const paddingObject = getPaddingObject(padding);
+  const altContext = elementContext2 === "floating" ? "reference" : "floating";
+  const element3 = elements[altBoundary ? altContext : elementContext2];
+  const clippingClientRect = rectToClientRect(await platform2.getClippingRect({
+    element: ((_await$platform$isEle = await (platform2.isElement == null ? void 0 : platform2.isElement(element3))) != null ? _await$platform$isEle : true) ? element3 : element3.contextElement || await (platform2.getDocumentElement == null ? void 0 : platform2.getDocumentElement(elements.floating)),
+    boundary,
+    rootBoundary,
+    strategy
+  }));
+  const rect = elementContext2 === "floating" ? {
+    x: x3,
+    y: y4,
+    width: rects.floating.width,
+    height: rects.floating.height
+  } : rects.reference;
+  const offsetParent = await (platform2.getOffsetParent == null ? void 0 : platform2.getOffsetParent(elements.floating));
+  const offsetScale = await (platform2.isElement == null ? void 0 : platform2.isElement(offsetParent)) && await (platform2.getScale == null ? void 0 : platform2.getScale(offsetParent)) || {
+    x: 1,
+    y: 1
+  };
+  const elementClientRect = rectToClientRect(platform2.convertOffsetParentRelativeRectToViewportRelativeRect ? await platform2.convertOffsetParentRelativeRectToViewportRelativeRect({
+    elements,
+    rect,
+    offsetParent,
+    strategy
+  }) : rect);
+  return {
+    top: (clippingClientRect.top - elementClientRect.top + paddingObject.top) / offsetScale.y,
+    bottom: (elementClientRect.bottom - clippingClientRect.bottom + paddingObject.bottom) / offsetScale.y,
+    left: (clippingClientRect.left - elementClientRect.left + paddingObject.left) / offsetScale.x,
+    right: (elementClientRect.right - clippingClientRect.right + paddingObject.right) / offsetScale.x
+  };
+}
+var MAX_RESET_COUNT = 50;
+var computePosition = async (reference, floating, config) => {
+  const {
+    placement = "bottom",
+    strategy = "absolute",
+    middleware = [],
+    platform: platform2
+  } = config;
+  const platformWithDetectOverflow = platform2.detectOverflow ? platform2 : {
+    ...platform2,
+    detectOverflow
+  };
+  const rtl = await (platform2.isRTL == null ? void 0 : platform2.isRTL(floating));
+  let rects = await platform2.getElementRects({
+    reference,
+    floating,
+    strategy
+  });
+  let {
+    x: x3,
+    y: y4
+  } = computeCoordsFromPlacement(rects, placement, rtl);
+  let statefulPlacement = placement;
+  let resetCount = 0;
+  const middlewareData = {};
+  for (let i3 = 0; i3 < middleware.length; i3++) {
+    const currentMiddleware = middleware[i3];
+    if (!currentMiddleware) {
+      continue;
+    }
+    const {
+      name: name3,
+      fn: fn5
+    } = currentMiddleware;
+    const {
+      x: nextX,
+      y: nextY,
+      data: data2,
+      reset
+    } = await fn5({
+      x: x3,
+      y: y4,
+      initialPlacement: placement,
+      placement: statefulPlacement,
+      strategy,
+      middlewareData,
+      rects,
+      platform: platformWithDetectOverflow,
+      elements: {
+        reference,
+        floating
+      }
+    });
+    x3 = nextX != null ? nextX : x3;
+    y4 = nextY != null ? nextY : y4;
+    middlewareData[name3] = {
+      ...middlewareData[name3],
+      ...data2
+    };
+    if (reset && resetCount < MAX_RESET_COUNT) {
+      resetCount++;
+      if (typeof reset === "object") {
+        if (reset.placement) {
+          statefulPlacement = reset.placement;
+        }
+        if (reset.rects) {
+          rects = reset.rects === true ? await platform2.getElementRects({
+            reference,
+            floating,
+            strategy
+          }) : reset.rects;
+        }
+        ({
+          x: x3,
+          y: y4
+        } = computeCoordsFromPlacement(rects, statefulPlacement, rtl));
+      }
+      i3 = -1;
+    }
+  }
+  return {
+    x: x3,
+    y: y4,
+    placement: statefulPlacement,
+    strategy,
+    middlewareData
+  };
+};
+var arrow = (options) => ({
+  name: "arrow",
+  options,
+  async fn(state) {
+    const {
+      x: x3,
+      y: y4,
+      placement,
+      rects,
+      platform: platform2,
+      elements,
+      middlewareData
+    } = state;
+    const {
+      element: element3,
+      padding = 0
+    } = evaluate(options, state) || {};
+    if (element3 == null) {
+      return {};
+    }
+    const paddingObject = getPaddingObject(padding);
+    const coords = {
+      x: x3,
+      y: y4
+    };
+    const axis = getAlignmentAxis(placement);
+    const length = getAxisLength(axis);
+    const arrowDimensions = await platform2.getDimensions(element3);
+    const isYAxis = axis === "y";
+    const minProp = isYAxis ? "top" : "left";
+    const maxProp = isYAxis ? "bottom" : "right";
+    const clientProp = isYAxis ? "clientHeight" : "clientWidth";
+    const endDiff = rects.reference[length] + rects.reference[axis] - coords[axis] - rects.floating[length];
+    const startDiff = coords[axis] - rects.reference[axis];
+    const arrowOffsetParent = await (platform2.getOffsetParent == null ? void 0 : platform2.getOffsetParent(element3));
+    let clientSize = arrowOffsetParent ? arrowOffsetParent[clientProp] : 0;
+    if (!clientSize || !await (platform2.isElement == null ? void 0 : platform2.isElement(arrowOffsetParent))) {
+      clientSize = elements.floating[clientProp] || rects.floating[length];
+    }
+    const centerToReference = endDiff / 2 - startDiff / 2;
+    const largestPossiblePadding = clientSize / 2 - arrowDimensions[length] / 2 - 1;
+    const minPadding = min(paddingObject[minProp], largestPossiblePadding);
+    const maxPadding = min(paddingObject[maxProp], largestPossiblePadding);
+    const max2 = clientSize - arrowDimensions[length] - maxPadding;
+    const center = clientSize / 2 - arrowDimensions[length] / 2 + centerToReference;
+    const offset4 = clamp(minPadding, center, max2);
+    const shouldAddOffset = !middlewareData.arrow && getAlignment(placement) != null && center !== offset4 && rects.reference[length] / 2 - (center < minPadding ? minPadding : maxPadding) - arrowDimensions[length] / 2 < 0;
+    const alignmentOffset = shouldAddOffset ? center < minPadding ? center - minPadding : center - max2 : 0;
+    return {
+      [axis]: coords[axis] + alignmentOffset,
+      data: {
+        [axis]: offset4,
+        centerOffset: center - offset4 - alignmentOffset,
+        ...shouldAddOffset && {
+          alignmentOffset
+        }
+      },
+      reset: shouldAddOffset
+    };
+  }
+});
+function getPlacementList(alignment, autoAlignment, allowedPlacements) {
+  const allowedPlacementsSortedByAlignment = alignment ? [...allowedPlacements.filter((placement) => getAlignment(placement) === alignment), ...allowedPlacements.filter((placement) => getAlignment(placement) !== alignment)] : allowedPlacements.filter((placement) => getSide(placement) === placement);
+  return allowedPlacementsSortedByAlignment.filter((placement) => {
+    if (alignment) {
+      return getAlignment(placement) === alignment || (autoAlignment ? getOppositeAlignmentPlacement(placement) !== placement : false);
+    }
+    return true;
+  });
+}
+var autoPlacement = function(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: "autoPlacement",
+    options,
+    async fn(state) {
+      var _middlewareData$autoP, _middlewareData$autoP2, _placementsThatFitOnE;
+      const {
+        rects,
+        middlewareData,
+        placement,
+        platform: platform2,
+        elements
+      } = state;
+      const {
+        crossAxis = false,
+        alignment,
+        allowedPlacements = placements,
+        autoAlignment = true,
+        ...detectOverflowOptions
+      } = evaluate(options, state);
+      const placements$1 = alignment !== void 0 || allowedPlacements === placements ? getPlacementList(alignment || null, autoAlignment, allowedPlacements) : allowedPlacements;
+      const currentIndex = ((_middlewareData$autoP = middlewareData.autoPlacement) == null ? void 0 : _middlewareData$autoP.index) || 0;
+      const currentPlacement = placements$1[currentIndex];
+      if (currentPlacement == null) {
+        return {};
+      }
+      if (placement !== currentPlacement) {
+        return {
+          reset: {
+            placement: placements$1[0]
+          }
+        };
+      }
+      const overflow = await platform2.detectOverflow(state, detectOverflowOptions);
+      const alignmentSides = getAlignmentSides(currentPlacement, rects, await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating)));
+      const currentOverflows = [overflow[getSide(currentPlacement)], overflow[alignmentSides[0]], overflow[alignmentSides[1]]];
+      const allOverflows = [...((_middlewareData$autoP2 = middlewareData.autoPlacement) == null ? void 0 : _middlewareData$autoP2.overflows) || [], {
+        placement: currentPlacement,
+        overflows: currentOverflows
+      }];
+      const nextPlacement = placements$1[currentIndex + 1];
+      if (nextPlacement) {
+        return {
+          data: {
+            index: currentIndex + 1,
+            overflows: allOverflows
+          },
+          reset: {
+            placement: nextPlacement
+          }
+        };
+      }
+      const placementsSortedByMostSpace = allOverflows.map((d) => {
+        const alignment2 = getAlignment(d.placement);
+        return [d.placement, alignment2 && crossAxis ? (
+          // Check along the mainAxis and main crossAxis side.
+          d.overflows.slice(0, 2).reduce((acc, v) => acc + v, 0)
+        ) : (
+          // Check only the mainAxis.
+          d.overflows[0]
+        ), d.overflows];
+      }).sort((a3, b4) => a3[1] - b4[1]);
+      const placementsThatFitOnEachSide = placementsSortedByMostSpace.filter((d) => d[2].slice(
+        0,
+        // Aligned placements should not check their opposite crossAxis
+        // side.
+        getAlignment(d[0]) ? 2 : 3
+      ).every((v) => v <= 0));
+      const resetPlacement = ((_placementsThatFitOnE = placementsThatFitOnEachSide[0]) == null ? void 0 : _placementsThatFitOnE[0]) || placementsSortedByMostSpace[0][0];
+      if (resetPlacement !== placement) {
+        return {
+          data: {
+            index: currentIndex + 1,
+            overflows: allOverflows
+          },
+          reset: {
+            placement: resetPlacement
+          }
+        };
+      }
+      return {};
+    }
+  };
+};
+var flip = function(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: "flip",
+    options,
+    async fn(state) {
+      var _middlewareData$arrow, _middlewareData$flip;
+      const {
+        placement,
+        middlewareData,
+        rects,
+        initialPlacement,
+        platform: platform2,
+        elements
+      } = state;
+      const {
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = true,
+        fallbackPlacements: specifiedFallbackPlacements,
+        fallbackStrategy = "bestFit",
+        fallbackAxisSideDirection = "none",
+        flipAlignment = true,
+        ...detectOverflowOptions
+      } = evaluate(options, state);
+      if ((_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
+        return {};
+      }
+      const side = getSide(placement);
+      const initialSideAxis = getSideAxis(initialPlacement);
+      const isBasePlacement = getSide(initialPlacement) === initialPlacement;
+      const rtl = await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating));
+      const fallbackPlacements = specifiedFallbackPlacements || (isBasePlacement || !flipAlignment ? [getOppositePlacement(initialPlacement)] : getExpandedPlacements(initialPlacement));
+      const hasFallbackAxisSideDirection = fallbackAxisSideDirection !== "none";
+      if (!specifiedFallbackPlacements && hasFallbackAxisSideDirection) {
+        fallbackPlacements.push(...getOppositeAxisPlacements(initialPlacement, flipAlignment, fallbackAxisSideDirection, rtl));
+      }
+      const placements2 = [initialPlacement, ...fallbackPlacements];
+      const overflow = await platform2.detectOverflow(state, detectOverflowOptions);
+      const overflows = [];
+      let overflowsData = ((_middlewareData$flip = middlewareData.flip) == null ? void 0 : _middlewareData$flip.overflows) || [];
+      if (checkMainAxis) {
+        overflows.push(overflow[side]);
+      }
+      if (checkCrossAxis) {
+        const sides2 = getAlignmentSides(placement, rects, rtl);
+        overflows.push(overflow[sides2[0]], overflow[sides2[1]]);
+      }
+      overflowsData = [...overflowsData, {
+        placement,
+        overflows
+      }];
+      if (!overflows.every((side2) => side2 <= 0)) {
+        var _middlewareData$flip2, _overflowsData$filter;
+        const nextIndex = (((_middlewareData$flip2 = middlewareData.flip) == null ? void 0 : _middlewareData$flip2.index) || 0) + 1;
+        const nextPlacement = placements2[nextIndex];
+        if (nextPlacement) {
+          const ignoreCrossAxisOverflow = checkCrossAxis === "alignment" ? initialSideAxis !== getSideAxis(nextPlacement) : false;
+          if (!ignoreCrossAxisOverflow || // We leave the current main axis only if every placement on that axis
+          // overflows the main axis.
+          overflowsData.every((d) => getSideAxis(d.placement) === initialSideAxis ? d.overflows[0] > 0 : true)) {
+            return {
+              data: {
+                index: nextIndex,
+                overflows: overflowsData
+              },
+              reset: {
+                placement: nextPlacement
+              }
+            };
+          }
+        }
+        let resetPlacement = (_overflowsData$filter = overflowsData.filter((d) => d.overflows[0] <= 0).sort((a3, b4) => a3.overflows[1] - b4.overflows[1])[0]) == null ? void 0 : _overflowsData$filter.placement;
+        if (!resetPlacement) {
+          switch (fallbackStrategy) {
+            case "bestFit": {
+              var _overflowsData$filter2;
+              const placement2 = (_overflowsData$filter2 = overflowsData.filter((d) => {
+                if (hasFallbackAxisSideDirection) {
+                  const currentSideAxis = getSideAxis(d.placement);
+                  return currentSideAxis === initialSideAxis || // Create a bias to the `y` side axis due to horizontal
+                  // reading directions favoring greater width.
+                  currentSideAxis === "y";
+                }
+                return true;
+              }).map((d) => [d.placement, d.overflows.filter((overflow2) => overflow2 > 0).reduce((acc, overflow2) => acc + overflow2, 0)]).sort((a3, b4) => a3[1] - b4[1])[0]) == null ? void 0 : _overflowsData$filter2[0];
+              if (placement2) {
+                resetPlacement = placement2;
+              }
+              break;
+            }
+            case "initialPlacement":
+              resetPlacement = initialPlacement;
+              break;
+          }
+        }
+        if (placement !== resetPlacement) {
+          return {
+            reset: {
+              placement: resetPlacement
+            }
+          };
+        }
+      }
+      return {};
+    }
+  };
+};
+function getSideOffsets(overflow, rect) {
+  return {
+    top: overflow.top - rect.height,
+    right: overflow.right - rect.width,
+    bottom: overflow.bottom - rect.height,
+    left: overflow.left - rect.width
+  };
+}
+function isAnySideFullyClipped(overflow) {
+  return sides.some((side) => overflow[side] >= 0);
+}
+var hide = function(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: "hide",
+    options,
+    async fn(state) {
+      const {
+        rects,
+        platform: platform2
+      } = state;
+      const {
+        strategy = "referenceHidden",
+        ...detectOverflowOptions
+      } = evaluate(options, state);
+      switch (strategy) {
+        case "referenceHidden": {
+          const overflow = await platform2.detectOverflow(state, {
+            ...detectOverflowOptions,
+            elementContext: "reference"
+          });
+          const offsets = getSideOffsets(overflow, rects.reference);
+          return {
+            data: {
+              referenceHiddenOffsets: offsets,
+              referenceHidden: isAnySideFullyClipped(offsets)
+            }
+          };
+        }
+        case "escaped": {
+          const overflow = await platform2.detectOverflow(state, {
+            ...detectOverflowOptions,
+            altBoundary: true
+          });
+          const offsets = getSideOffsets(overflow, rects.floating);
+          return {
+            data: {
+              escapedOffsets: offsets,
+              escaped: isAnySideFullyClipped(offsets)
+            }
+          };
+        }
+        default: {
+          return {};
+        }
+      }
+    }
+  };
+};
+function getBoundingRect(rects) {
+  const minX = min(...rects.map((rect) => rect.left));
+  const minY = min(...rects.map((rect) => rect.top));
+  const maxX = max(...rects.map((rect) => rect.right));
+  const maxY = max(...rects.map((rect) => rect.bottom));
+  return {
+    x: minX,
+    y: minY,
+    width: maxX - minX,
+    height: maxY - minY
+  };
+}
+function getRectsByLine(rects) {
+  const sortedRects = rects.slice().sort((a3, b4) => a3.y - b4.y);
+  const groups = [];
+  let prevRect = null;
+  for (let i3 = 0; i3 < sortedRects.length; i3++) {
+    const rect = sortedRects[i3];
+    if (!prevRect || rect.y - prevRect.y > prevRect.height / 2) {
+      groups.push([rect]);
+    } else {
+      groups[groups.length - 1].push(rect);
+    }
+    prevRect = rect;
+  }
+  return groups.map((rect) => rectToClientRect(getBoundingRect(rect)));
+}
+var inline = function(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: "inline",
+    options,
+    async fn(state) {
+      const {
+        placement,
+        elements,
+        rects,
+        platform: platform2,
+        strategy
+      } = state;
+      const {
+        padding = 2,
+        x: x3,
+        y: y4
+      } = evaluate(options, state);
+      const nativeClientRects = Array.from(await (platform2.getClientRects == null ? void 0 : platform2.getClientRects(elements.reference)) || []);
+      if (!nativeClientRects.length) {
+        return {};
+      }
+      const clientRects = getRectsByLine(nativeClientRects);
+      const fallback = rectToClientRect(getBoundingRect(nativeClientRects));
+      const paddingObject = getPaddingObject(padding);
+      function getBoundingClientRect2() {
+        if (clientRects.length === 2 && (clientRects[0].left > clientRects[1].right || clientRects[1].left > clientRects[0].right) && x3 != null && y4 != null) {
+          return clientRects.find((rect) => x3 > rect.left - paddingObject.left && x3 < rect.right + paddingObject.right && y4 > rect.top - paddingObject.top && y4 < rect.bottom + paddingObject.bottom) || fallback;
+        }
+        if (clientRects.length >= 2) {
+          if (getSideAxis(placement) === "y") {
+            const firstRect = clientRects[0];
+            const lastRect = clientRects[clientRects.length - 1];
+            const isTop = getSide(placement) === "top";
+            const top3 = firstRect.top;
+            const bottom2 = lastRect.bottom;
+            const left = isTop ? firstRect.left : lastRect.left;
+            const right = isTop ? firstRect.right : lastRect.right;
+            return rectToClientRect({
+              x: left,
+              y: top3,
+              width: right - left,
+              height: bottom2 - top3
+            });
+          }
+          const isLeftSide = getSide(placement) === "left";
+          const maxRight = max(...clientRects.map((rect) => rect.right));
+          const minLeft = min(...clientRects.map((rect) => rect.left));
+          const measureRects = clientRects.filter((rect) => isLeftSide ? rect.left === minLeft : rect.right === maxRight);
+          const top2 = measureRects[0].top;
+          const bottom = measureRects[measureRects.length - 1].bottom;
+          return rectToClientRect({
+            x: minLeft,
+            y: top2,
+            width: maxRight - minLeft,
+            height: bottom - top2
+          });
+        }
+        return fallback;
+      }
+      const resetRects = await platform2.getElementRects({
+        reference: {
+          getBoundingClientRect: getBoundingClientRect2
+        },
+        floating: elements.floating,
+        strategy
+      });
+      if (rects.reference.x !== resetRects.reference.x || rects.reference.y !== resetRects.reference.y || rects.reference.width !== resetRects.reference.width || rects.reference.height !== resetRects.reference.height) {
+        return {
+          reset: {
+            rects: resetRects
+          }
+        };
+      }
+      return {};
+    }
+  };
+};
+var originSides = /* @__PURE__ */ new Set(["left", "top"]);
+async function convertValueToCoords(state, options) {
+  const {
+    placement,
+    platform: platform2,
+    elements
+  } = state;
+  const rtl = await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating));
+  const side = getSide(placement);
+  const alignment = getAlignment(placement);
+  const isVertical = getSideAxis(placement) === "y";
+  const mainAxisMulti = originSides.has(side) ? -1 : 1;
+  const crossAxisMulti = rtl && isVertical ? -1 : 1;
+  const rawValue = evaluate(options, state);
+  let {
+    mainAxis,
+    crossAxis,
+    alignmentAxis
+  } = typeof rawValue === "number" ? {
+    mainAxis: rawValue,
+    crossAxis: 0,
+    alignmentAxis: null
+  } : {
+    mainAxis: rawValue.mainAxis || 0,
+    crossAxis: rawValue.crossAxis || 0,
+    alignmentAxis: rawValue.alignmentAxis
+  };
+  if (alignment && typeof alignmentAxis === "number") {
+    crossAxis = alignment === "end" ? alignmentAxis * -1 : alignmentAxis;
+  }
+  return isVertical ? {
+    x: crossAxis * crossAxisMulti,
+    y: mainAxis * mainAxisMulti
+  } : {
+    x: mainAxis * mainAxisMulti,
+    y: crossAxis * crossAxisMulti
+  };
+}
+var offset = function(options) {
+  if (options === void 0) {
+    options = 0;
+  }
+  return {
+    name: "offset",
+    options,
+    async fn(state) {
+      var _middlewareData$offse, _middlewareData$arrow;
+      const {
+        x: x3,
+        y: y4,
+        placement,
+        middlewareData
+      } = state;
+      const diffCoords = await convertValueToCoords(state, options);
+      if (placement === ((_middlewareData$offse = middlewareData.offset) == null ? void 0 : _middlewareData$offse.placement) && (_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
+        return {};
+      }
+      return {
+        x: x3 + diffCoords.x,
+        y: y4 + diffCoords.y,
+        data: {
+          ...diffCoords,
+          placement
+        }
+      };
+    }
+  };
+};
+var shift2 = function(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: "shift",
+    options,
+    async fn(state) {
+      const {
+        x: x3,
+        y: y4,
+        placement,
+        platform: platform2
+      } = state;
+      const {
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = false,
+        limiter = {
+          fn: (_ref) => {
+            let {
+              x: x4,
+              y: y5
+            } = _ref;
+            return {
+              x: x4,
+              y: y5
+            };
+          }
+        },
+        ...detectOverflowOptions
+      } = evaluate(options, state);
+      const coords = {
+        x: x3,
+        y: y4
+      };
+      const overflow = await platform2.detectOverflow(state, detectOverflowOptions);
+      const crossAxis = getSideAxis(placement);
+      const mainAxis = getOppositeAxis(crossAxis);
+      let mainAxisCoord = coords[mainAxis];
+      let crossAxisCoord = coords[crossAxis];
+      const clampCoord = (axis, coord) => clamp(coord + overflow[axis === "y" ? "top" : "left"], coord, coord - overflow[axis === "y" ? "bottom" : "right"]);
+      if (checkMainAxis) {
+        mainAxisCoord = clampCoord(mainAxis, mainAxisCoord);
+      }
+      if (checkCrossAxis) {
+        crossAxisCoord = clampCoord(crossAxis, crossAxisCoord);
+      }
+      const limitedCoords = limiter.fn({
+        ...state,
+        [mainAxis]: mainAxisCoord,
+        [crossAxis]: crossAxisCoord
+      });
+      return {
+        ...limitedCoords,
+        data: {
+          x: limitedCoords.x - x3,
+          y: limitedCoords.y - y4,
+          enabled: {
+            [mainAxis]: checkMainAxis,
+            [crossAxis]: checkCrossAxis
+          }
+        }
+      };
+    }
+  };
+};
+var limitShift = function(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    options,
+    fn(state) {
+      var _rawOffset$mainAxis, _rawOffset$crossAxis;
+      const {
+        x: x3,
+        y: y4,
+        placement,
+        rects,
+        middlewareData
+      } = state;
+      const {
+        offset: offset4 = 0,
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = true
+      } = evaluate(options, state);
+      const coords = {
+        x: x3,
+        y: y4
+      };
+      const crossAxis = getSideAxis(placement);
+      const mainAxis = getOppositeAxis(crossAxis);
+      let mainAxisCoord = coords[mainAxis];
+      let crossAxisCoord = coords[crossAxis];
+      const rawOffset = evaluate(offset4, state);
+      const computedOffset = typeof rawOffset === "number" ? {
+        mainAxis: rawOffset,
+        crossAxis: 0
+      } : {
+        mainAxis: (_rawOffset$mainAxis = rawOffset.mainAxis) != null ? _rawOffset$mainAxis : 0,
+        crossAxis: (_rawOffset$crossAxis = rawOffset.crossAxis) != null ? _rawOffset$crossAxis : 0
+      };
+      if (checkMainAxis) {
+        const len = mainAxis === "y" ? "height" : "width";
+        const limitMin = rects.reference[mainAxis] - rects.floating[len] + computedOffset.mainAxis;
+        const limitMax = rects.reference[mainAxis] + rects.reference[len] - computedOffset.mainAxis;
+        if (mainAxisCoord < limitMin) {
+          mainAxisCoord = limitMin;
+        } else if (mainAxisCoord > limitMax) {
+          mainAxisCoord = limitMax;
+        }
+      }
+      if (checkCrossAxis) {
+        var _middlewareData$offse, _middlewareData$offse2;
+        const len = mainAxis === "y" ? "width" : "height";
+        const isOriginSide = originSides.has(getSide(placement));
+        const limitMin = rects.reference[crossAxis] - rects.floating[len] + (isOriginSide ? ((_middlewareData$offse = middlewareData.offset) == null ? void 0 : _middlewareData$offse[crossAxis]) || 0 : 0) + (isOriginSide ? 0 : computedOffset.crossAxis);
+        const limitMax = rects.reference[crossAxis] + rects.reference[len] + (isOriginSide ? 0 : ((_middlewareData$offse2 = middlewareData.offset) == null ? void 0 : _middlewareData$offse2[crossAxis]) || 0) - (isOriginSide ? computedOffset.crossAxis : 0);
+        if (crossAxisCoord < limitMin) {
+          crossAxisCoord = limitMin;
+        } else if (crossAxisCoord > limitMax) {
+          crossAxisCoord = limitMax;
+        }
+      }
+      return {
+        [mainAxis]: mainAxisCoord,
+        [crossAxis]: crossAxisCoord
+      };
+    }
+  };
+};
+var size = function(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: "size",
+    options,
+    async fn(state) {
+      const {
+        placement,
+        rects,
+        platform: platform2,
+        elements
+      } = state;
+      const {
+        apply: apply5 = () => {
+        },
+        ...detectOverflowOptions
+      } = evaluate(options, state);
+      const overflow = await platform2.detectOverflow(state, detectOverflowOptions);
+      const side = getSide(placement);
+      const alignment = getAlignment(placement);
+      const isYAxis = getSideAxis(placement) === "y";
+      const {
+        width,
+        height
+      } = rects.floating;
+      let heightSide;
+      let widthSide;
+      if (side === "top" || side === "bottom") {
+        heightSide = side;
+        widthSide = alignment === (await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating)) ? "start" : "end") ? "left" : "right";
+      } else {
+        widthSide = side;
+        heightSide = alignment === "end" ? "top" : "bottom";
+      }
+      const maximumClippingHeight = height - overflow.top - overflow.bottom;
+      const maximumClippingWidth = width - overflow.left - overflow.right;
+      const overflowAvailableHeight = min(height - overflow[heightSide], maximumClippingHeight);
+      const overflowAvailableWidth = min(width - overflow[widthSide], maximumClippingWidth);
+      const shiftData = state.middlewareData.shift;
+      const noShift = !shiftData;
+      let availableHeight = overflowAvailableHeight;
+      let availableWidth = overflowAvailableWidth;
+      if (shiftData != null && shiftData.enabled.x) {
+        availableWidth = maximumClippingWidth;
+      }
+      if (shiftData != null && shiftData.enabled.y) {
+        availableHeight = maximumClippingHeight;
+      }
+      if (noShift && !alignment) {
+        if (isYAxis) {
+          availableWidth = width - 2 * max(overflow.left, overflow.right);
+        } else {
+          availableHeight = height - 2 * max(overflow.top, overflow.bottom);
+        }
+      }
+      await apply5({
+        ...state,
+        availableWidth,
+        availableHeight
+      });
+      const nextDimensions = await platform2.getDimensions(elements.floating);
+      if (width !== nextDimensions.width || height !== nextDimensions.height) {
+        return {
+          reset: {
+            rects: true
+          }
+        };
+      }
+      return {};
+    }
+  };
+};
+
+// node_modules/@floating-ui/dom/dist/floating-ui.dom.mjs
+function getCssDimensions(element3) {
+  const css2 = getComputedStyle2(element3);
+  let width = parseFloat(css2.width) || 0;
+  let height = parseFloat(css2.height) || 0;
+  const hasOffset = isHTMLElement(element3);
+  const offsetWidth = hasOffset ? element3.offsetWidth : width;
+  const offsetHeight = hasOffset ? element3.offsetHeight : height;
+  const shouldFallback = round(width) !== offsetWidth || round(height) !== offsetHeight;
+  if (shouldFallback) {
+    width = offsetWidth;
+    height = offsetHeight;
+  }
+  return {
+    width,
+    height,
+    $: shouldFallback
+  };
+}
+function unwrapElement(element3) {
+  return !isElement(element3) ? element3.contextElement : element3;
+}
+function getScale2(element3) {
+  const domElement = unwrapElement(element3);
+  if (!isHTMLElement(domElement)) {
+    return createCoords(1);
+  }
+  const rect = domElement.getBoundingClientRect();
+  const {
+    width,
+    height,
+    $: $7
+  } = getCssDimensions(domElement);
+  let x3 = ($7 ? round(rect.width) : rect.width) / width;
+  let y4 = ($7 ? round(rect.height) : rect.height) / height;
+  if (!x3 || !Number.isFinite(x3)) {
+    x3 = 1;
+  }
+  if (!y4 || !Number.isFinite(y4)) {
+    y4 = 1;
+  }
+  return {
+    x: x3,
+    y: y4
+  };
+}
+var noOffsets = /* @__PURE__ */ createCoords(0);
+function getVisualOffsets(element3) {
+  const win = getWindow(element3);
+  if (!isWebKit() || !win.visualViewport) {
+    return noOffsets;
+  }
+  return {
+    x: win.visualViewport.offsetLeft,
+    y: win.visualViewport.offsetTop
+  };
+}
+function shouldAddVisualOffsets(element3, isFixed, floatingOffsetParent) {
+  if (isFixed === void 0) {
+    isFixed = false;
+  }
+  return !!floatingOffsetParent && isFixed && floatingOffsetParent === getWindow(element3);
+}
+function getBoundingClientRect(element3, includeScale, isFixedStrategy, offsetParent) {
+  if (includeScale === void 0) {
+    includeScale = false;
+  }
+  if (isFixedStrategy === void 0) {
+    isFixedStrategy = false;
+  }
+  const clientRect2 = element3.getBoundingClientRect();
+  const domElement = unwrapElement(element3);
+  let scale2 = createCoords(1);
+  if (includeScale) {
+    if (offsetParent) {
+      if (isElement(offsetParent)) {
+        scale2 = getScale2(offsetParent);
+      }
+    } else {
+      scale2 = getScale2(element3);
+    }
+  }
+  const visualOffsets = shouldAddVisualOffsets(domElement, isFixedStrategy, offsetParent) ? getVisualOffsets(domElement) : createCoords(0);
+  let x3 = (clientRect2.left + visualOffsets.x) / scale2.x;
+  let y4 = (clientRect2.top + visualOffsets.y) / scale2.y;
+  let width = clientRect2.width / scale2.x;
+  let height = clientRect2.height / scale2.y;
+  if (domElement && offsetParent) {
+    const win = getWindow(domElement);
+    const offsetWin = isElement(offsetParent) ? getWindow(offsetParent) : offsetParent;
+    let currentWin = win;
+    let currentIFrame = getFrameElement(currentWin);
+    while (currentIFrame && offsetWin !== currentWin) {
+      const iframeScale = getScale2(currentIFrame);
+      const iframeRect = currentIFrame.getBoundingClientRect();
+      const css2 = getComputedStyle2(currentIFrame);
+      const left = iframeRect.left + (currentIFrame.clientLeft + parseFloat(css2.paddingLeft)) * iframeScale.x;
+      const top2 = iframeRect.top + (currentIFrame.clientTop + parseFloat(css2.paddingTop)) * iframeScale.y;
+      x3 *= iframeScale.x;
+      y4 *= iframeScale.y;
+      width *= iframeScale.x;
+      height *= iframeScale.y;
+      x3 += left;
+      y4 += top2;
+      currentWin = getWindow(currentIFrame);
+      currentIFrame = getFrameElement(currentWin);
+    }
+  }
+  return rectToClientRect({
+    width,
+    height,
+    x: x3,
+    y: y4
+  });
+}
+function getWindowScrollBarX(element3, rect) {
+  const leftScroll = getNodeScroll(element3).scrollLeft;
+  if (!rect) {
+    return getBoundingClientRect(getDocumentElement(element3)).left + leftScroll;
+  }
+  return rect.left + leftScroll;
+}
+function getHTMLOffset(documentElement, scroll) {
+  const htmlRect = documentElement.getBoundingClientRect();
+  const x3 = htmlRect.left + scroll.scrollLeft - getWindowScrollBarX(documentElement, htmlRect);
+  const y4 = htmlRect.top + scroll.scrollTop;
+  return {
+    x: x3,
+    y: y4
+  };
+}
+function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
+  let {
+    elements,
+    rect,
+    offsetParent,
+    strategy
+  } = _ref;
+  const isFixed = strategy === "fixed";
+  const documentElement = getDocumentElement(offsetParent);
+  const topLayer = elements ? isTopLayer(elements.floating) : false;
+  if (offsetParent === documentElement || topLayer && isFixed) {
+    return rect;
+  }
+  let scroll = {
+    scrollLeft: 0,
+    scrollTop: 0
+  };
+  let scale2 = createCoords(1);
+  const offsets = createCoords(0);
+  const isOffsetParentAnElement = isHTMLElement(offsetParent);
+  if (isOffsetParentAnElement || !isFixed) {
+    if (getNodeName(offsetParent) !== "body" || isOverflowElement(documentElement)) {
+      scroll = getNodeScroll(offsetParent);
+    }
+    if (isOffsetParentAnElement) {
+      const offsetRect = getBoundingClientRect(offsetParent);
+      scale2 = getScale2(offsetParent);
+      offsets.x = offsetRect.x + offsetParent.clientLeft;
+      offsets.y = offsetRect.y + offsetParent.clientTop;
+    }
+  }
+  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : createCoords(0);
+  return {
+    width: rect.width * scale2.x,
+    height: rect.height * scale2.y,
+    x: rect.x * scale2.x - scroll.scrollLeft * scale2.x + offsets.x + htmlOffset.x,
+    y: rect.y * scale2.y - scroll.scrollTop * scale2.y + offsets.y + htmlOffset.y
+  };
+}
+function getClientRects(element3) {
+  return element3.getClientRects ? Array.from(element3.getClientRects()) : [];
+}
+function getDocumentRect(html6) {
+  const scroll = getNodeScroll(html6);
+  const body = html6.ownerDocument.body;
+  const width = max(html6.scrollWidth, html6.clientWidth, body.scrollWidth, body.clientWidth);
+  const height = max(html6.scrollHeight, html6.clientHeight, body.scrollHeight, body.clientHeight);
+  let x3 = -scroll.scrollLeft + getWindowScrollBarX(html6);
+  const y4 = -scroll.scrollTop;
+  if (getComputedStyle2(body).direction === "rtl") {
+    x3 += max(html6.clientWidth, body.clientWidth) - width;
+  }
+  return {
+    width,
+    height,
+    x: x3,
+    y: y4
+  };
+}
+var SCROLLBAR_MAX = 25;
+function getViewportRect(element3, strategy, rootBoundary) {
+  if (rootBoundary === void 0) {
+    rootBoundary = "viewport";
+  }
+  const isLayoutViewport = rootBoundary === "layoutViewport";
+  const win = getWindow(element3);
+  const html6 = getDocumentElement(element3);
+  const visualViewport = win.visualViewport;
+  let width = html6.clientWidth;
+  let height = html6.clientHeight;
+  let x3 = 0;
+  let y4 = 0;
+  if (visualViewport) {
+    const layoutRelativeClientCoords = !isWebKit() || strategy === "fixed";
+    if (isLayoutViewport) {
+      if (!layoutRelativeClientCoords) {
+        x3 = -visualViewport.offsetLeft;
+        y4 = -visualViewport.offsetTop;
+      }
+    } else {
+      width = visualViewport.width;
+      height = visualViewport.height;
+      if (layoutRelativeClientCoords) {
+        x3 = visualViewport.offsetLeft;
+        y4 = visualViewport.offsetTop;
+      }
+    }
+  }
+  const windowScrollbarX = getWindowScrollBarX(html6);
+  if (windowScrollbarX <= 0) {
+    const doc4 = html6.ownerDocument;
+    const body = doc4.body;
+    const bodyStyles = getComputedStyle(body);
+    const bodyMarginInline = doc4.compatMode === "CSS1Compat" ? parseFloat(bodyStyles.marginLeft) + parseFloat(bodyStyles.marginRight) || 0 : 0;
+    const reservedWidth = Math.abs(html6.clientWidth - body.clientWidth - bodyMarginInline);
+    const gutter2 = getComputedStyle(html6).scrollbarGutter === "stable both-edges" ? reservedWidth / 2 : reservedWidth;
+    if (gutter2 <= SCROLLBAR_MAX) {
+      width -= gutter2;
+    }
+  }
+  return {
+    width,
+    height,
+    x: x3,
+    y: y4
+  };
+}
+function getInnerBoundingClientRect(element3, strategy) {
+  const clientRect2 = getBoundingClientRect(element3, true, strategy === "fixed");
+  const top2 = clientRect2.top + element3.clientTop;
+  const left = clientRect2.left + element3.clientLeft;
+  const scale2 = getScale2(element3);
+  const width = element3.clientWidth * scale2.x;
+  const height = element3.clientHeight * scale2.y;
+  const x3 = left * scale2.x;
+  const y4 = top2 * scale2.y;
+  return {
+    width,
+    height,
+    x: x3,
+    y: y4
+  };
+}
+function getClientRectFromClippingAncestor(element3, clippingAncestor, strategy) {
+  let rect;
+  if (clippingAncestor === "viewport" || clippingAncestor === "layoutViewport") {
+    rect = getViewportRect(element3, strategy, clippingAncestor);
+  } else if (clippingAncestor === "document") {
+    rect = getDocumentRect(getDocumentElement(element3));
+  } else if (isElement(clippingAncestor)) {
+    rect = getInnerBoundingClientRect(clippingAncestor, strategy);
+  } else {
+    const visualOffsets = getVisualOffsets(element3);
+    rect = {
+      x: clippingAncestor.x - visualOffsets.x,
+      y: clippingAncestor.y - visualOffsets.y,
+      width: clippingAncestor.width,
+      height: clippingAncestor.height
+    };
+  }
+  return rectToClientRect(rect);
+}
+function getClippingElementAncestors(element3, cache2) {
+  const cachedResult2 = cache2.get(element3);
+  if (cachedResult2) {
+    return cachedResult2;
+  }
+  let result = getOverflowAncestors(element3, [], false).filter((el) => isElement(el) && getNodeName(el) !== "body");
+  let lastKeptComputedStyle = null;
+  const elementIsFixed = getComputedStyle2(element3).position === "fixed";
+  let currentNode = elementIsFixed ? getParentNode(element3) : element3;
+  while (isElement(currentNode) && !isLastTraversableNode(currentNode)) {
+    const computedStyle = getComputedStyle2(currentNode);
+    const currentNodeIsContaining = isContainingBlock(currentNode);
+    const lastPosition = lastKeptComputedStyle ? lastKeptComputedStyle.position : elementIsFixed ? "fixed" : "";
+    const shouldDropCurrentNode = !currentNodeIsContaining && (lastPosition === "fixed" || lastPosition === "absolute" && computedStyle.position === "static");
+    if (shouldDropCurrentNode) {
+      result = result.filter((ancestor) => ancestor !== currentNode);
+    } else {
+      lastKeptComputedStyle = computedStyle;
+    }
+    currentNode = getParentNode(currentNode);
+  }
+  cache2.set(element3, result);
+  return result;
+}
+function getClippingRect(_ref) {
+  let {
+    element: element3,
+    boundary,
+    rootBoundary,
+    strategy
+  } = _ref;
+  const elementClippingAncestors = boundary === "clippingAncestors" ? isTopLayer(element3) ? [] : getClippingElementAncestors(element3, this._c) : [].concat(boundary);
+  const clippingAncestors = [...elementClippingAncestors, rootBoundary];
+  const firstRect = getClientRectFromClippingAncestor(element3, clippingAncestors[0], strategy);
+  let top2 = firstRect.top;
+  let right = firstRect.right;
+  let bottom = firstRect.bottom;
+  let left = firstRect.left;
+  for (let i3 = 1; i3 < clippingAncestors.length; i3++) {
+    const rect = getClientRectFromClippingAncestor(element3, clippingAncestors[i3], strategy);
+    top2 = max(rect.top, top2);
+    right = min(rect.right, right);
+    bottom = min(rect.bottom, bottom);
+    left = max(rect.left, left);
+  }
+  return {
+    width: right - left,
+    height: bottom - top2,
+    x: left,
+    y: top2
+  };
+}
+function getDimensions(element3) {
+  const {
+    width,
+    height
+  } = getCssDimensions(element3);
+  return {
+    width,
+    height
+  };
+}
+function getRectRelativeToOffsetParent(element3, offsetParent, strategy) {
+  const isOffsetParentAnElement = isHTMLElement(offsetParent);
+  const documentElement = getDocumentElement(offsetParent);
+  const isFixed = strategy === "fixed";
+  const rect = getBoundingClientRect(element3, true, isFixed, offsetParent);
+  let scroll = {
+    scrollLeft: 0,
+    scrollTop: 0
+  };
+  const offsets = createCoords(0);
+  if (isOffsetParentAnElement || !isFixed) {
+    if (getNodeName(offsetParent) !== "body" || isOverflowElement(documentElement)) {
+      scroll = getNodeScroll(offsetParent);
+    }
+    if (isOffsetParentAnElement) {
+      const offsetRect = getBoundingClientRect(offsetParent, true, isFixed, offsetParent);
+      offsets.x = offsetRect.x + offsetParent.clientLeft;
+      offsets.y = offsetRect.y + offsetParent.clientTop;
+    }
+  }
+  if (!isOffsetParentAnElement && documentElement) {
+    offsets.x = getWindowScrollBarX(documentElement);
+  }
+  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : createCoords(0);
+  const x3 = rect.left + scroll.scrollLeft - offsets.x - htmlOffset.x;
+  const y4 = rect.top + scroll.scrollTop - offsets.y - htmlOffset.y;
+  return {
+    x: x3,
+    y: y4,
+    width: rect.width,
+    height: rect.height
+  };
+}
+function isStaticPositioned(element3) {
+  return getComputedStyle2(element3).position === "static";
+}
+function getTrueOffsetParent(element3, polyfill) {
+  if (!isHTMLElement(element3) || getComputedStyle2(element3).position === "fixed") {
+    return null;
+  }
+  if (polyfill) {
+    return polyfill(element3);
+  }
+  let rawOffsetParent = element3.offsetParent;
+  if (getDocumentElement(element3) === rawOffsetParent) {
+    rawOffsetParent = rawOffsetParent.ownerDocument.body;
+  }
+  return rawOffsetParent;
+}
+function getOffsetParent(element3, polyfill) {
+  const win = getWindow(element3);
+  if (isTopLayer(element3)) {
+    return win;
+  }
+  if (!isHTMLElement(element3)) {
+    let svgOffsetParent = getParentNode(element3);
+    while (svgOffsetParent && !isLastTraversableNode(svgOffsetParent)) {
+      if (isElement(svgOffsetParent) && !isStaticPositioned(svgOffsetParent)) {
+        return svgOffsetParent;
+      }
+      svgOffsetParent = getParentNode(svgOffsetParent);
+    }
+    return win;
+  }
+  let offsetParent = getTrueOffsetParent(element3, polyfill);
+  while (offsetParent && isTableElement(offsetParent) && isStaticPositioned(offsetParent)) {
+    offsetParent = getTrueOffsetParent(offsetParent, polyfill);
+  }
+  if (offsetParent && isLastTraversableNode(offsetParent) && isStaticPositioned(offsetParent) && !isContainingBlock(offsetParent)) {
+    return win;
+  }
+  return offsetParent || getContainingBlock(element3) || win;
+}
+var getElementRects = async function(data2) {
+  const getOffsetParentFn = this.getOffsetParent || getOffsetParent;
+  const getDimensionsFn = this.getDimensions;
+  const floatingDimensions = await getDimensionsFn(data2.floating);
+  return {
+    reference: getRectRelativeToOffsetParent(data2.reference, await getOffsetParentFn(data2.floating), data2.strategy),
+    floating: {
+      x: 0,
+      y: 0,
+      width: floatingDimensions.width,
+      height: floatingDimensions.height
+    }
+  };
+};
+function isRTL(element3) {
+  return getComputedStyle2(element3).direction === "rtl";
+}
+var platform = {
+  convertOffsetParentRelativeRectToViewportRelativeRect,
+  getDocumentElement,
+  getClippingRect,
+  getOffsetParent,
+  getElementRects,
+  getClientRects,
+  getDimensions,
+  getScale: getScale2,
+  isElement,
+  isRTL
+};
+function rectsAreEqual(a3, b4) {
+  return a3.x === b4.x && a3.y === b4.y && a3.width === b4.width && a3.height === b4.height;
+}
+function observeMove(element3, onMove, ancestorResize) {
+  let io = null;
+  let timeoutId;
+  const root4 = getDocumentElement(element3);
+  function cleanup() {
+    var _io;
+    clearTimeout(timeoutId);
+    (_io = io) == null || _io.disconnect();
+    io = null;
+  }
+  function refresh(skip, threshold) {
+    if (skip === void 0) {
+      skip = false;
+    }
+    if (threshold === void 0) {
+      threshold = 1;
+    }
+    cleanup();
+    const elementRectForRootMargin = element3.getBoundingClientRect();
+    const {
+      left,
+      top: top2,
+      width,
+      height
+    } = elementRectForRootMargin;
+    if (!skip) {
+      onMove();
+    }
+    if (!width || !height) {
+      return;
+    }
+    const insetTop = floor(top2);
+    const insetRight = floor(root4.clientWidth - (left + width));
+    const insetBottom = floor(root4.clientHeight - (top2 + height));
+    const insetLeft = floor(left);
+    const rootMargin = -insetTop + "px " + -insetRight + "px " + -insetBottom + "px " + -insetLeft + "px";
+    const options = {
+      rootMargin,
+      threshold: max(0, min(1, threshold)) || 1
+    };
+    let isFirstUpdate = true;
+    function handleObserve(entries) {
+      const ratio = entries[0].intersectionRatio;
+      if (!rectsAreEqual(elementRectForRootMargin, element3.getBoundingClientRect())) {
+        return refresh();
+      }
+      if (ratio !== threshold) {
+        if (!isFirstUpdate) {
+          return refresh();
+        }
+        if (!ratio) {
+          timeoutId = setTimeout(() => {
+            refresh(false, 1e-7);
+          }, 1e3);
+        } else {
+          refresh(false, ratio);
+        }
+      }
+      isFirstUpdate = false;
+    }
+    try {
+      io = new IntersectionObserver(handleObserve, {
+        ...options,
+        // Handle <iframe>s
+        root: root4.ownerDocument
+      });
+    } catch (_e2) {
+      io = new IntersectionObserver(handleObserve, options);
+    }
+    io.observe(element3);
+  }
+  const win = getWindow(element3);
+  const handleResize = () => refresh(ancestorResize);
+  win.addEventListener("resize", handleResize);
+  refresh(true);
+  return () => {
+    win.removeEventListener("resize", handleResize);
+    cleanup();
+  };
+}
+function autoUpdate(reference, floating, update, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    ancestorScroll = true,
+    ancestorResize = true,
+    elementResize = typeof ResizeObserver === "function",
+    layoutShift = typeof IntersectionObserver === "function",
+    animationFrame = false
+  } = options;
+  const referenceEl = unwrapElement(reference);
+  const ancestors = ancestorScroll || ancestorResize ? [...referenceEl ? getOverflowAncestors(referenceEl) : [], ...floating ? getOverflowAncestors(floating) : []] : [];
+  ancestors.forEach((ancestor) => {
+    ancestorScroll && ancestor.addEventListener("scroll", update);
+    ancestorResize && ancestor.addEventListener("resize", update);
+  });
+  const cleanupIo = referenceEl && layoutShift ? observeMove(referenceEl, update, ancestorResize) : null;
+  let reobserveFrame = -1;
+  let resizeObserver = null;
+  if (elementResize) {
+    resizeObserver = new ResizeObserver((_ref) => {
+      let [firstEntry] = _ref;
+      if (firstEntry && firstEntry.target === referenceEl && resizeObserver && floating) {
+        resizeObserver.unobserve(floating);
+        cancelAnimationFrame(reobserveFrame);
+        reobserveFrame = requestAnimationFrame(() => {
+          var _resizeObserver;
+          (_resizeObserver = resizeObserver) == null || _resizeObserver.observe(floating);
+        });
+      }
+      update();
+    });
+    if (referenceEl && !animationFrame) {
+      resizeObserver.observe(referenceEl);
+    }
+    if (floating) {
+      resizeObserver.observe(floating);
+    }
+  }
+  let frameId;
+  let prevRefRect = animationFrame ? getBoundingClientRect(reference) : null;
+  if (animationFrame) {
+    frameLoop();
+  }
+  function frameLoop() {
+    const nextRefRect = getBoundingClientRect(reference);
+    if (prevRefRect && !rectsAreEqual(prevRefRect, nextRefRect)) {
+      update();
+    }
+    prevRefRect = nextRefRect;
+    frameId = requestAnimationFrame(frameLoop);
+  }
+  update();
+  return () => {
+    var _resizeObserver2;
+    ancestors.forEach((ancestor) => {
+      ancestorScroll && ancestor.removeEventListener("scroll", update);
+      ancestorResize && ancestor.removeEventListener("resize", update);
+    });
+    cleanupIo == null || cleanupIo();
+    (_resizeObserver2 = resizeObserver) == null || _resizeObserver2.disconnect();
+    resizeObserver = null;
+    if (animationFrame) {
+      cancelAnimationFrame(frameId);
+    }
+  };
+}
+var offset2 = offset;
+var autoPlacement2 = autoPlacement;
+var shift3 = shift2;
+var flip2 = flip;
+var size2 = size;
+var hide2 = hide;
+var arrow2 = arrow;
+var inline2 = inline;
+var limitShift2 = limitShift;
+var computePosition2 = (reference, floating, options) => {
+  const cache2 = /* @__PURE__ */ new Map();
+  const mergedOptions = options != null ? options : {};
+  const platformWithCache = {
+    ...platform,
+    ...mergedOptions.platform,
+    _c: cache2
+  };
+  return computePosition(reference, floating, {
+    ...mergedOptions,
+    platform: platformWithCache
+  });
+};
+
+// node_modules/@floating-ui/react-dom/dist/floating-ui.react-dom.mjs
+var React2 = __toESM(require("react"), 1);
+var import_react2 = require("react");
+var ReactDOM = __toESM(require("react-dom"), 1);
+var isClient2 = typeof document !== "undefined";
+var noop3 = function noop4() {
+};
+var index2 = isClient2 ? import_react2.useLayoutEffect : noop3;
+function deepEqual(a3, b4) {
+  if (a3 === b4) {
+    return true;
+  }
+  if (typeof a3 !== typeof b4) {
+    return false;
+  }
+  if (typeof a3 === "function" && a3.toString() === b4.toString()) {
+    return true;
+  }
+  let length;
+  let i3;
+  let keys4;
+  if (a3 && b4 && typeof a3 === "object") {
+    if (Array.isArray(a3)) {
+      length = a3.length;
+      if (length !== b4.length) return false;
+      for (i3 = length; i3-- !== 0; ) {
+        if (!deepEqual(a3[i3], b4[i3])) {
+          return false;
+        }
+      }
+      return true;
+    }
+    keys4 = Object.keys(a3);
+    length = keys4.length;
+    if (length !== Object.keys(b4).length) {
+      return false;
+    }
+    for (i3 = length; i3-- !== 0; ) {
+      if (!{}.hasOwnProperty.call(b4, keys4[i3])) {
+        return false;
+      }
+    }
+    for (i3 = length; i3-- !== 0; ) {
+      const key = keys4[i3];
+      if (key === "_owner" && a3.$$typeof) {
+        continue;
+      }
+      if (!deepEqual(a3[key], b4[key])) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return a3 !== a3 && b4 !== b4;
+}
+function getDPR(element3) {
+  if (typeof window === "undefined") {
+    return 1;
+  }
+  const win = element3.ownerDocument.defaultView || window;
+  return win.devicePixelRatio || 1;
+}
+function roundByDPR(element3, value) {
+  const dpr = getDPR(element3);
+  return Math.round(value * dpr) / dpr;
+}
+function useLatestRef2(value) {
+  const ref = React2.useRef(value);
+  index2(() => {
+    ref.current = value;
+  });
+  return ref;
+}
+function useFloating(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    placement = "bottom",
+    strategy = "absolute",
+    middleware = [],
+    platform: platform2,
+    elements: {
+      reference: externalReference,
+      floating: externalFloating
+    } = {},
+    transform = true,
+    whileElementsMounted,
+    open
+  } = options;
+  const [data2, setData] = React2.useState({
+    x: 0,
+    y: 0,
+    strategy,
+    placement,
+    middlewareData: {},
+    isPositioned: false
+  });
+  const [latestMiddleware, setLatestMiddleware] = React2.useState(middleware);
+  if (!deepEqual(latestMiddleware, middleware)) {
+    setLatestMiddleware(middleware);
+  }
+  const [_reference, _setReference] = React2.useState(null);
+  const [_floating, _setFloating] = React2.useState(null);
+  const setReference = React2.useCallback((node2) => {
+    if (node2 !== referenceRef.current) {
+      referenceRef.current = node2;
+      _setReference(node2);
+    }
+  }, []);
+  const setFloating = React2.useCallback((node2) => {
+    if (node2 !== floatingRef.current) {
+      floatingRef.current = node2;
+      _setFloating(node2);
+    }
+  }, []);
+  const referenceEl = externalReference || _reference;
+  const floatingEl = externalFloating || _floating;
+  const referenceRef = React2.useRef(null);
+  const floatingRef = React2.useRef(null);
+  const dataRef = React2.useRef(data2);
+  const hasWhileElementsMounted = whileElementsMounted != null;
+  const whileElementsMountedRef = useLatestRef2(whileElementsMounted);
+  const platformRef = useLatestRef2(platform2);
+  const openRef = useLatestRef2(open);
+  const update = React2.useCallback(() => {
+    if (!referenceRef.current || !floatingRef.current) {
+      return;
+    }
+    const config = {
+      placement,
+      strategy,
+      middleware: latestMiddleware
+    };
+    if (platformRef.current) {
+      config.platform = platformRef.current;
+    }
+    computePosition2(referenceRef.current, floatingRef.current, config).then((data3) => {
+      const fullData = {
+        ...data3,
+        // The floating element's position may be recomputed while it's closed
+        // but still mounted (such as when transitioning out). To ensure
+        // `isPositioned` will be `false` initially on the next open, avoid
+        // setting it to `true` when `open === false` (must be specified).
+        isPositioned: openRef.current !== false
+      };
+      if (isMountedRef.current && !deepEqual(dataRef.current, fullData)) {
+        dataRef.current = fullData;
+        ReactDOM.flushSync(() => {
+          setData(fullData);
+        });
+      }
+    });
+  }, [latestMiddleware, placement, strategy, platformRef, openRef]);
+  index2(() => {
+    if (open === false && dataRef.current.isPositioned) {
+      dataRef.current.isPositioned = false;
+      setData((data3) => ({
+        ...data3,
+        isPositioned: false
+      }));
+    }
+  }, [open]);
+  const isMountedRef = React2.useRef(false);
+  index2(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+  index2(() => {
+    if (referenceEl) referenceRef.current = referenceEl;
+    if (floatingEl) floatingRef.current = floatingEl;
+    if (referenceEl && floatingEl) {
+      if (whileElementsMountedRef.current) {
+        return whileElementsMountedRef.current(referenceEl, floatingEl, update);
+      }
+      update();
+    }
+  }, [referenceEl, floatingEl, update, whileElementsMountedRef, hasWhileElementsMounted]);
+  const refs = React2.useMemo(() => ({
+    reference: referenceRef,
+    floating: floatingRef,
+    setReference,
+    setFloating
+  }), [setReference, setFloating]);
+  const elements = React2.useMemo(() => ({
+    reference: referenceEl,
+    floating: floatingEl
+  }), [referenceEl, floatingEl]);
+  const floatingStyles = React2.useMemo(() => {
+    const initialStyles = {
+      position: strategy,
+      left: 0,
+      top: 0
+    };
+    if (!elements.floating) {
+      return initialStyles;
+    }
+    const x3 = roundByDPR(elements.floating, data2.x);
+    const y4 = roundByDPR(elements.floating, data2.y);
+    if (transform) {
+      return {
+        ...initialStyles,
+        transform: "translate(" + x3 + "px, " + y4 + "px)",
+        ...getDPR(elements.floating) >= 1.5 && {
+          willChange: "transform"
+        }
+      };
+    }
+    return {
+      position: strategy,
+      left: x3,
+      top: y4
+    };
+  }, [strategy, transform, elements.floating, data2.x, data2.y]);
+  return React2.useMemo(() => ({
+    ...data2,
+    update,
+    refs,
+    elements,
+    floatingStyles
+  }), [data2, update, refs, elements, floatingStyles]);
+}
+var arrow$1 = (options) => {
+  function isRef(value) {
+    return {}.hasOwnProperty.call(value, "current");
+  }
+  return {
+    name: "arrow",
+    options,
+    fn(state) {
+      const {
+        element: element3,
+        padding
+      } = typeof options === "function" ? options(state) : options;
+      if (element3 && isRef(element3)) {
+        if (element3.current != null) {
+          return arrow2({
+            element: element3.current,
+            padding
+          }).fn(state);
+        }
+        return {};
+      }
+      if (element3) {
+        return arrow2({
+          element: element3,
+          padding
+        }).fn(state);
+      }
+      return {};
+    }
+  };
+};
+var offset3 = (options, deps) => {
+  const result = offset2(options);
+  return {
+    name: result.name,
+    fn: result.fn,
+    options: [options, deps]
+  };
+};
+var shift4 = (options, deps) => {
+  const result = shift3(options);
+  return {
+    name: result.name,
+    fn: result.fn,
+    options: [options, deps]
+  };
+};
+var limitShift3 = (options, deps) => {
+  const result = limitShift2(options);
+  return {
+    fn: result.fn,
+    options: [options, deps]
+  };
+};
+var flip3 = (options, deps) => {
+  const result = flip2(options);
+  return {
+    name: result.name,
+    fn: result.fn,
+    options: [options, deps]
+  };
+};
+var size3 = (options, deps) => {
+  const result = size2(options);
+  return {
+    name: result.name,
+    fn: result.fn,
+    options: [options, deps]
+  };
+};
+var autoPlacement3 = (options, deps) => {
+  const result = autoPlacement2(options);
+  return {
+    name: result.name,
+    fn: result.fn,
+    options: [options, deps]
+  };
+};
+var hide3 = (options, deps) => {
+  const result = hide2(options);
+  return {
+    name: result.name,
+    fn: result.fn,
+    options: [options, deps]
+  };
+};
+var inline3 = (options, deps) => {
+  const result = inline2(options);
+  return {
+    name: result.name,
+    fn: result.fn,
+    options: [options, deps]
+  };
+};
+var arrow3 = (options, deps) => {
+  const result = arrow$1(options);
+  return {
+    name: result.name,
+    fn: result.fn,
+    options: [options, deps]
+  };
+};
+
+// node_modules/@floating-ui/react/dist/floating-ui.react.mjs
+function useMergeRefs(refs) {
+  const cleanupRef = React3.useRef(void 0);
+  const refEffect = React3.useCallback((instance) => {
+    const cleanups = refs.map((ref) => {
+      if (ref == null) {
+        return;
+      }
+      if (typeof ref === "function") {
+        const refCallback = ref;
+        const refCleanup = refCallback(instance);
+        return typeof refCleanup === "function" ? refCleanup : () => {
+          refCallback(null);
+        };
+      }
+      ref.current = instance;
+      return () => {
+        ref.current = null;
+      };
+    });
+    return () => {
+      cleanups.forEach((refCleanup) => refCleanup == null ? void 0 : refCleanup());
+    };
+  }, refs);
+  return React3.useMemo(() => {
+    if (refs.every((ref) => ref == null)) {
+      return null;
+    }
+    return (value) => {
+      if (cleanupRef.current) {
+        cleanupRef.current();
+        cleanupRef.current = void 0;
+      }
+      if (value != null) {
+        cleanupRef.current = refEffect(value);
+      }
+    };
+  }, refs);
+}
+var FOCUSABLE_ATTRIBUTE2 = "data-floating-ui-focusable";
+var ACTIVE_KEY = "active";
+var SELECTED_KEY = "selected";
+var ARROW_LEFT = "ArrowLeft";
+var ARROW_RIGHT = "ArrowRight";
+var ARROW_UP = "ArrowUp";
+var ARROW_DOWN = "ArrowDown";
+var horizontalKeys = [ARROW_LEFT, ARROW_RIGHT];
+var verticalKeys = [ARROW_UP, ARROW_DOWN];
+var allKeys = [...horizontalKeys, ...verticalKeys];
+var SafeReact2 = {
+  ...React3
+};
+var serverHandoffComplete = false;
+var count2 = 0;
+var genId = () => (
+  // Ensure the id is unique with multiple independent versions of Floating UI
+  // on <React 18
+  "floating-ui-" + Math.random().toString(36).slice(2, 6) + count2++
+);
+function useFloatingId() {
+  const [id3, setId] = React3.useState(() => serverHandoffComplete ? genId() : void 0);
+  index(() => {
+    if (id3 == null) {
+      setId(genId());
+    }
+  }, []);
+  React3.useEffect(() => {
+    serverHandoffComplete = true;
+  }, []);
+  return id3;
+}
+var useReactId = SafeReact2.useId;
+var useId = useReactId || useFloatingId;
+var devMessageSet;
+if (true) {
+  devMessageSet = /* @__PURE__ */ new Set();
+}
+function error() {
+  var _devMessageSet3;
+  for (var _len2 = arguments.length, messages = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+    messages[_key2] = arguments[_key2];
+  }
+  const message = "Floating UI: " + messages.join(" ");
+  if (!((_devMessageSet3 = devMessageSet) != null && _devMessageSet3.has(message))) {
+    var _devMessageSet4;
+    (_devMessageSet4 = devMessageSet) == null || _devMessageSet4.add(message);
+    console.error(message);
+  }
+}
+function createEventEmitter() {
+  const map4 = /* @__PURE__ */ new Map();
+  return {
+    emit(event, data2) {
+      var _map$get;
+      (_map$get = map4.get(event)) == null || _map$get.forEach((listener) => listener(data2));
+    },
+    on(event, listener) {
+      if (!map4.has(event)) {
+        map4.set(event, /* @__PURE__ */ new Set());
+      }
+      map4.get(event).add(listener);
+    },
+    off(event, listener) {
+      var _map$get2;
+      (_map$get2 = map4.get(event)) == null || _map$get2.delete(listener);
+    }
+  };
+}
+var FloatingNodeContext = /* @__PURE__ */ React3.createContext(null);
+var FloatingTreeContext = /* @__PURE__ */ React3.createContext(null);
+var useFloatingParentNodeId = () => {
+  var _React$useContext;
+  return ((_React$useContext = React3.useContext(FloatingNodeContext)) == null ? void 0 : _React$useContext.id) || null;
+};
+var useFloatingTree = () => React3.useContext(FloatingTreeContext);
+function createAttribute(name3) {
+  return "data-floating-ui-" + name3;
+}
+function clearTimeoutIfSet(timeoutRef) {
+  if (timeoutRef.current !== -1) {
+    clearTimeout(timeoutRef.current);
+    timeoutRef.current = -1;
+  }
+}
+var safePolygonIdentifier = /* @__PURE__ */ createAttribute("safe-polygon");
+function getDelay(value, prop, pointerType) {
+  if (pointerType && !isMouseLikePointerType(pointerType)) {
+    return 0;
+  }
+  if (typeof value === "number") {
+    return value;
+  }
+  if (typeof value === "function") {
+    const result = value();
+    if (typeof result === "number") {
+      return result;
+    }
+    return result == null ? void 0 : result[prop];
+  }
+  return value == null ? void 0 : value[prop];
+}
+function getRestMs(value) {
+  if (typeof value === "function") {
+    return value();
+  }
+  return value;
+}
+function useHover(context, props) {
+  if (props === void 0) {
+    props = {};
+  }
+  const {
+    open,
+    onOpenChange,
+    dataRef,
+    events,
+    elements
+  } = context;
+  const {
+    enabled = true,
+    delay = 0,
+    handleClose = null,
+    mouseOnly = false,
+    restMs = 0,
+    move = true
+  } = props;
+  const tree = useFloatingTree();
+  const parentId = useFloatingParentNodeId();
+  const handleCloseRef = useLatestRef(handleClose);
+  const delayRef = useLatestRef(delay);
+  const openRef = useLatestRef(open);
+  const restMsRef = useLatestRef(restMs);
+  const pointerTypeRef = React3.useRef();
+  const timeoutRef = React3.useRef(-1);
+  const handlerRef = React3.useRef();
+  const restTimeoutRef = React3.useRef(-1);
+  const blockMouseMoveRef = React3.useRef(true);
+  const performedPointerEventsMutationRef = React3.useRef(false);
+  const unbindMouseMoveRef = React3.useRef(() => {
+  });
+  const restTimeoutPendingRef = React3.useRef(false);
+  const isHoverOpen = useEffectEvent(() => {
+    var _dataRef$current$open;
+    const type = (_dataRef$current$open = dataRef.current.openEvent) == null ? void 0 : _dataRef$current$open.type;
+    return (type == null ? void 0 : type.includes("mouse")) && type !== "mousedown";
+  });
+  React3.useEffect(() => {
+    if (!enabled) return;
+    function onOpenChange2(_ref) {
+      let {
+        open: open2
+      } = _ref;
+      if (!open2) {
+        clearTimeoutIfSet(timeoutRef);
+        clearTimeoutIfSet(restTimeoutRef);
+        blockMouseMoveRef.current = true;
+        restTimeoutPendingRef.current = false;
+      }
+    }
+    events.on("openchange", onOpenChange2);
+    return () => {
+      events.off("openchange", onOpenChange2);
+    };
+  }, [enabled, events]);
+  React3.useEffect(() => {
+    if (!enabled) return;
+    if (!handleCloseRef.current) return;
+    if (!open) return;
+    function onLeave(event) {
+      if (isHoverOpen()) {
+        onOpenChange(false, event, "hover");
+      }
+    }
+    const html6 = getDocument(elements.floating).documentElement;
+    html6.addEventListener("mouseleave", onLeave);
+    return () => {
+      html6.removeEventListener("mouseleave", onLeave);
+    };
+  }, [elements.floating, open, onOpenChange, enabled, handleCloseRef, isHoverOpen]);
+  const closeWithDelay = React3.useCallback(function(event, runElseBranch, reason) {
+    if (runElseBranch === void 0) {
+      runElseBranch = true;
+    }
+    if (reason === void 0) {
+      reason = "hover";
+    }
+    const closeDelay = getDelay(delayRef.current, "close", pointerTypeRef.current);
+    if (closeDelay && !handlerRef.current) {
+      clearTimeoutIfSet(timeoutRef);
+      timeoutRef.current = window.setTimeout(() => onOpenChange(false, event, reason), closeDelay);
+    } else if (runElseBranch) {
+      clearTimeoutIfSet(timeoutRef);
+      onOpenChange(false, event, reason);
+    }
+  }, [delayRef, onOpenChange]);
+  const cleanupMouseMoveHandler = useEffectEvent(() => {
+    unbindMouseMoveRef.current();
+    handlerRef.current = void 0;
+  });
+  const clearPointerEvents = useEffectEvent(() => {
+    if (performedPointerEventsMutationRef.current) {
+      const body = getDocument(elements.floating).body;
+      body.style.pointerEvents = "";
+      body.removeAttribute(safePolygonIdentifier);
+      performedPointerEventsMutationRef.current = false;
+    }
+  });
+  const isClickLikeOpenEvent = useEffectEvent(() => {
+    return dataRef.current.openEvent ? ["click", "mousedown"].includes(dataRef.current.openEvent.type) : false;
+  });
+  React3.useEffect(() => {
+    if (!enabled) return;
+    function onReferenceMouseEnter(event) {
+      clearTimeoutIfSet(timeoutRef);
+      blockMouseMoveRef.current = false;
+      if (mouseOnly && !isMouseLikePointerType(pointerTypeRef.current) || getRestMs(restMsRef.current) > 0 && !getDelay(delayRef.current, "open")) {
+        return;
+      }
+      const openDelay = getDelay(delayRef.current, "open", pointerTypeRef.current);
+      if (openDelay) {
+        timeoutRef.current = window.setTimeout(() => {
+          if (!openRef.current) {
+            onOpenChange(true, event, "hover");
+          }
+        }, openDelay);
+      } else if (!open) {
+        onOpenChange(true, event, "hover");
+      }
+    }
+    function onReferenceMouseLeave(event) {
+      if (isClickLikeOpenEvent()) {
+        clearPointerEvents();
+        return;
+      }
+      unbindMouseMoveRef.current();
+      const doc4 = getDocument(elements.floating);
+      clearTimeoutIfSet(restTimeoutRef);
+      restTimeoutPendingRef.current = false;
+      if (handleCloseRef.current && dataRef.current.floatingContext) {
+        if (!open) {
+          clearTimeoutIfSet(timeoutRef);
+        }
+        handlerRef.current = handleCloseRef.current({
+          ...dataRef.current.floatingContext,
+          tree,
+          x: event.clientX,
+          y: event.clientY,
+          onClose() {
+            clearPointerEvents();
+            cleanupMouseMoveHandler();
+            if (!isClickLikeOpenEvent()) {
+              closeWithDelay(event, true, "safe-polygon");
+            }
+          }
+        });
+        const handler = handlerRef.current;
+        doc4.addEventListener("mousemove", handler);
+        unbindMouseMoveRef.current = () => {
+          doc4.removeEventListener("mousemove", handler);
+        };
+        return;
+      }
+      const shouldClose = pointerTypeRef.current === "touch" ? !contains2(elements.floating, event.relatedTarget) : true;
+      if (shouldClose) {
+        closeWithDelay(event);
+      }
+    }
+    function onScrollMouseLeave(event) {
+      if (isClickLikeOpenEvent()) return;
+      if (!dataRef.current.floatingContext) return;
+      handleCloseRef.current == null || handleCloseRef.current({
+        ...dataRef.current.floatingContext,
+        tree,
+        x: event.clientX,
+        y: event.clientY,
+        onClose() {
+          clearPointerEvents();
+          cleanupMouseMoveHandler();
+          if (!isClickLikeOpenEvent()) {
+            closeWithDelay(event);
+          }
+        }
+      })(event);
+    }
+    function onFloatingMouseEnter() {
+      clearTimeoutIfSet(timeoutRef);
+    }
+    function onFloatingMouseLeave(event) {
+      if (!isClickLikeOpenEvent()) {
+        closeWithDelay(event, false);
+      }
+    }
+    if (isElement(elements.domReference)) {
+      const reference2 = elements.domReference;
+      const floating = elements.floating;
+      if (open) {
+        reference2.addEventListener("mouseleave", onScrollMouseLeave);
+      }
+      if (move) {
+        reference2.addEventListener("mousemove", onReferenceMouseEnter, {
+          once: true
+        });
+      }
+      reference2.addEventListener("mouseenter", onReferenceMouseEnter);
+      reference2.addEventListener("mouseleave", onReferenceMouseLeave);
+      if (floating) {
+        floating.addEventListener("mouseleave", onScrollMouseLeave);
+        floating.addEventListener("mouseenter", onFloatingMouseEnter);
+        floating.addEventListener("mouseleave", onFloatingMouseLeave);
+      }
+      return () => {
+        if (open) {
+          reference2.removeEventListener("mouseleave", onScrollMouseLeave);
+        }
+        if (move) {
+          reference2.removeEventListener("mousemove", onReferenceMouseEnter);
+        }
+        reference2.removeEventListener("mouseenter", onReferenceMouseEnter);
+        reference2.removeEventListener("mouseleave", onReferenceMouseLeave);
+        if (floating) {
+          floating.removeEventListener("mouseleave", onScrollMouseLeave);
+          floating.removeEventListener("mouseenter", onFloatingMouseEnter);
+          floating.removeEventListener("mouseleave", onFloatingMouseLeave);
+        }
+      };
+    }
+  }, [elements, enabled, context, mouseOnly, move, closeWithDelay, cleanupMouseMoveHandler, clearPointerEvents, onOpenChange, open, openRef, tree, delayRef, handleCloseRef, dataRef, isClickLikeOpenEvent, restMsRef]);
+  index(() => {
+    var _handleCloseRef$curre;
+    if (!enabled) return;
+    if (open && (_handleCloseRef$curre = handleCloseRef.current) != null && (_handleCloseRef$curre = _handleCloseRef$curre.__options) != null && _handleCloseRef$curre.blockPointerEvents && isHoverOpen()) {
+      performedPointerEventsMutationRef.current = true;
+      const floatingEl = elements.floating;
+      if (isElement(elements.domReference) && floatingEl) {
+        var _tree$nodesRef$curren;
+        const body = getDocument(elements.floating).body;
+        body.setAttribute(safePolygonIdentifier, "");
+        const ref = elements.domReference;
+        const parentFloating = tree == null || (_tree$nodesRef$curren = tree.nodesRef.current.find((node2) => node2.id === parentId)) == null || (_tree$nodesRef$curren = _tree$nodesRef$curren.context) == null ? void 0 : _tree$nodesRef$curren.elements.floating;
+        if (parentFloating) {
+          parentFloating.style.pointerEvents = "";
+        }
+        body.style.pointerEvents = "none";
+        ref.style.pointerEvents = "auto";
+        floatingEl.style.pointerEvents = "auto";
+        return () => {
+          body.style.pointerEvents = "";
+          ref.style.pointerEvents = "";
+          floatingEl.style.pointerEvents = "";
+        };
+      }
+    }
+  }, [enabled, open, parentId, elements, tree, handleCloseRef, isHoverOpen]);
+  index(() => {
+    if (!open) {
+      pointerTypeRef.current = void 0;
+      restTimeoutPendingRef.current = false;
+      cleanupMouseMoveHandler();
+      clearPointerEvents();
+    }
+  }, [open, cleanupMouseMoveHandler, clearPointerEvents]);
+  React3.useEffect(() => {
+    return () => {
+      cleanupMouseMoveHandler();
+      clearTimeoutIfSet(timeoutRef);
+      clearTimeoutIfSet(restTimeoutRef);
+      clearPointerEvents();
+    };
+  }, [enabled, elements.domReference, cleanupMouseMoveHandler, clearPointerEvents]);
+  const reference = React3.useMemo(() => {
+    function setPointerRef(event) {
+      pointerTypeRef.current = event.pointerType;
+    }
+    return {
+      onPointerDown: setPointerRef,
+      onPointerEnter: setPointerRef,
+      onMouseMove(event) {
+        const {
+          nativeEvent
+        } = event;
+        function handleMouseMove2() {
+          if (!blockMouseMoveRef.current && !openRef.current) {
+            onOpenChange(true, nativeEvent, "hover");
+          }
+        }
+        if (mouseOnly && !isMouseLikePointerType(pointerTypeRef.current)) {
+          return;
+        }
+        if (open || getRestMs(restMsRef.current) === 0) {
+          return;
+        }
+        if (restTimeoutPendingRef.current && event.movementX ** 2 + event.movementY ** 2 < 2) {
+          return;
+        }
+        clearTimeoutIfSet(restTimeoutRef);
+        if (pointerTypeRef.current === "touch") {
+          handleMouseMove2();
+        } else {
+          restTimeoutPendingRef.current = true;
+          restTimeoutRef.current = window.setTimeout(handleMouseMove2, getRestMs(restMsRef.current));
+        }
+      }
+    };
+  }, [mouseOnly, onOpenChange, open, openRef, restMsRef]);
+  return React3.useMemo(() => enabled ? {
+    reference
+  } : {}, [enabled, reference]);
+}
+var NOOP = () => {
+};
+var FloatingDelayGroupContext = /* @__PURE__ */ React3.createContext({
+  delay: 0,
+  initialDelay: 0,
+  timeoutMs: 0,
+  currentId: null,
+  setCurrentId: NOOP,
+  setState: NOOP,
+  isInstantPhase: false
+});
+var useDelayGroupContext = () => React3.useContext(FloatingDelayGroupContext);
+function FloatingDelayGroup(props) {
+  const {
+    children,
+    delay,
+    timeoutMs = 0
+  } = props;
+  const [state, setState] = React3.useReducer((prev, next) => ({
+    ...prev,
+    ...next
+  }), {
+    delay,
+    timeoutMs,
+    initialDelay: delay,
+    currentId: null,
+    isInstantPhase: false
+  });
+  const initialCurrentIdRef = React3.useRef(null);
+  const setCurrentId = React3.useCallback((currentId) => {
+    setState({
+      currentId
+    });
+  }, []);
+  index(() => {
+    if (state.currentId) {
+      if (initialCurrentIdRef.current === null) {
+        initialCurrentIdRef.current = state.currentId;
+      } else if (!state.isInstantPhase) {
+        setState({
+          isInstantPhase: true
+        });
+      }
+    } else {
+      if (state.isInstantPhase) {
+        setState({
+          isInstantPhase: false
+        });
+      }
+      initialCurrentIdRef.current = null;
+    }
+  }, [state.currentId, state.isInstantPhase]);
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FloatingDelayGroupContext.Provider, {
+    value: React3.useMemo(() => ({
+      ...state,
+      setState,
+      setCurrentId
+    }), [state, setCurrentId]),
+    children
+  });
+}
+function useDelayGroup(context, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    open,
+    onOpenChange,
+    floatingId
+  } = context;
+  const {
+    id: optionId,
+    enabled = true
+  } = options;
+  const id3 = optionId != null ? optionId : floatingId;
+  const groupContext = useDelayGroupContext();
+  const {
+    currentId,
+    setCurrentId,
+    initialDelay,
+    setState,
+    timeoutMs
+  } = groupContext;
+  index(() => {
+    if (!enabled) return;
+    if (!currentId) return;
+    setState({
+      delay: {
+        open: 1,
+        close: getDelay(initialDelay, "close")
+      }
+    });
+    if (currentId !== id3) {
+      onOpenChange(false);
+    }
+  }, [enabled, id3, onOpenChange, setState, currentId, initialDelay]);
+  index(() => {
+    function unset() {
+      onOpenChange(false);
+      setState({
+        delay: initialDelay,
+        currentId: null
+      });
+    }
+    if (!enabled) return;
+    if (!currentId) return;
+    if (!open && currentId === id3) {
+      if (timeoutMs) {
+        const timeout2 = window.setTimeout(unset, timeoutMs);
+        return () => {
+          clearTimeout(timeout2);
+        };
+      }
+      unset();
+    }
+  }, [enabled, open, setState, currentId, id3, onOpenChange, initialDelay, timeoutMs]);
+  index(() => {
+    if (!enabled) return;
+    if (setCurrentId === NOOP || !open) return;
+    setCurrentId(id3);
+  }, [enabled, open, setCurrentId, id3]);
+  return groupContext;
+}
+var rafId = 0;
+function enqueueFocus(el, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    preventScroll = false,
+    cancelPrevious = true,
+    sync = false
+  } = options;
+  cancelPrevious && cancelAnimationFrame(rafId);
+  const exec = () => el == null ? void 0 : el.focus({
+    preventScroll
+  });
+  if (sync) {
+    exec();
+  } else {
+    rafId = requestAnimationFrame(exec);
+  }
+}
+function contains3(parent, child) {
+  if (!parent || !child) {
+    return false;
+  }
+  const rootNode = child.getRootNode == null ? void 0 : child.getRootNode();
+  if (parent.contains(child)) {
+    return true;
+  }
+  if (rootNode && isShadowRoot(rootNode)) {
+    let next = child;
+    while (next) {
+      if (parent === next) {
+        return true;
+      }
+      next = next.parentNode || next.host;
+    }
+  }
+  return false;
+}
+function getTarget2(event) {
+  if ("composedPath" in event) {
+    return event.composedPath()[0];
+  }
+  return event.target;
+}
+function getDocument2(node2) {
+  return (node2 == null ? void 0 : node2.ownerDocument) || document;
+}
+var counters = {
+  inert: /* @__PURE__ */ new WeakMap(),
+  "aria-hidden": /* @__PURE__ */ new WeakMap(),
+  none: /* @__PURE__ */ new WeakMap()
+};
+function getCounterMap(control) {
+  if (control === "inert") return counters.inert;
+  if (control === "aria-hidden") return counters["aria-hidden"];
+  return counters.none;
+}
+var uncontrolledElementsSet = /* @__PURE__ */ new WeakSet();
+var markerMap = {};
+var lockCount$1 = 0;
+var supportsInert = () => typeof HTMLElement !== "undefined" && "inert" in HTMLElement.prototype;
+function unwrapHost(node2) {
+  if (!node2) {
+    return null;
+  }
+  return isShadowRoot(node2) ? node2.host : unwrapHost(node2.parentNode);
+}
+var correctElements = (parent, targets) => targets.map((target) => {
+  if (parent.contains(target)) {
+    return target;
+  }
+  const correctedTarget = unwrapHost(target);
+  if (parent.contains(correctedTarget)) {
+    return correctedTarget;
+  }
+  return null;
+}).filter((x3) => x3 != null);
+function applyAttributeToOthers(uncorrectedAvoidElements, body, ariaHidden, inert) {
+  const markerName = "data-floating-ui-inert";
+  const controlAttribute = inert ? "inert" : ariaHidden ? "aria-hidden" : null;
+  const avoidElements = correctElements(body, uncorrectedAvoidElements);
+  const elementsToKeep = /* @__PURE__ */ new Set();
+  const elementsToStop = new Set(avoidElements);
+  const hiddenElements = [];
+  if (!markerMap[markerName]) {
+    markerMap[markerName] = /* @__PURE__ */ new WeakMap();
+  }
+  const markerCounter = markerMap[markerName];
+  avoidElements.forEach(keep);
+  deep(body);
+  elementsToKeep.clear();
+  function keep(el) {
+    if (!el || elementsToKeep.has(el)) {
+      return;
+    }
+    elementsToKeep.add(el);
+    el.parentNode && keep(el.parentNode);
+  }
+  function deep(parent) {
+    if (!parent || elementsToStop.has(parent)) {
+      return;
+    }
+    [].forEach.call(parent.children, (node2) => {
+      if (getNodeName(node2) === "script") return;
+      if (elementsToKeep.has(node2)) {
+        deep(node2);
+      } else {
+        const attr2 = controlAttribute ? node2.getAttribute(controlAttribute) : null;
+        const alreadyHidden = attr2 !== null && attr2 !== "false";
+        const counterMap = getCounterMap(controlAttribute);
+        const counterValue = (counterMap.get(node2) || 0) + 1;
+        const markerValue = (markerCounter.get(node2) || 0) + 1;
+        counterMap.set(node2, counterValue);
+        markerCounter.set(node2, markerValue);
+        hiddenElements.push(node2);
+        if (counterValue === 1 && alreadyHidden) {
+          uncontrolledElementsSet.add(node2);
+        }
+        if (markerValue === 1) {
+          node2.setAttribute(markerName, "");
+        }
+        if (!alreadyHidden && controlAttribute) {
+          node2.setAttribute(controlAttribute, controlAttribute === "inert" ? "" : "true");
+        }
+      }
+    });
+  }
+  lockCount$1++;
+  return () => {
+    hiddenElements.forEach((element3) => {
+      const counterMap = getCounterMap(controlAttribute);
+      const currentCounterValue = counterMap.get(element3) || 0;
+      const counterValue = currentCounterValue - 1;
+      const markerValue = (markerCounter.get(element3) || 0) - 1;
+      counterMap.set(element3, counterValue);
+      markerCounter.set(element3, markerValue);
+      if (!counterValue) {
+        if (!uncontrolledElementsSet.has(element3) && controlAttribute) {
+          element3.removeAttribute(controlAttribute);
+        }
+        uncontrolledElementsSet.delete(element3);
+      }
+      if (!markerValue) {
+        element3.removeAttribute(markerName);
+      }
+    });
+    lockCount$1--;
+    if (!lockCount$1) {
+      counters.inert = /* @__PURE__ */ new WeakMap();
+      counters["aria-hidden"] = /* @__PURE__ */ new WeakMap();
+      counters.none = /* @__PURE__ */ new WeakMap();
+      uncontrolledElementsSet = /* @__PURE__ */ new WeakSet();
+      markerMap = {};
+    }
+  };
+}
+function markOthers(avoidElements, ariaHidden, inert) {
+  if (ariaHidden === void 0) {
+    ariaHidden = false;
+  }
+  if (inert === void 0) {
+    inert = false;
+  }
+  const body = getDocument2(avoidElements[0]).body;
+  return applyAttributeToOthers(avoidElements.concat(Array.from(body.querySelectorAll('[aria-live],[role="status"],output'))), body, ariaHidden, inert);
+}
+var HIDDEN_STYLES = {
+  border: 0,
+  clip: "rect(0 0 0 0)",
+  height: "1px",
+  margin: "-1px",
+  overflow: "hidden",
+  padding: 0,
+  position: "fixed",
+  whiteSpace: "nowrap",
+  width: "1px",
+  top: 0,
+  left: 0
+};
+var FocusGuard = /* @__PURE__ */ React3.forwardRef(function FocusGuard2(props, ref) {
+  const [role, setRole] = React3.useState();
+  index(() => {
+    if (isSafari()) {
+      setRole("button");
+    }
+  }, []);
+  const restProps = {
+    ref,
+    tabIndex: 0,
+    // Role is only for VoiceOver
+    role,
+    "aria-hidden": role ? void 0 : true,
+    [createAttribute("focus-guard")]: "",
+    style: HIDDEN_STYLES
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+    ...props,
+    ...restProps
+  });
+});
+var HIDDEN_OWNER_STYLES = {
+  clipPath: "inset(50%)",
+  position: "fixed",
+  top: 0,
+  left: 0
+};
+var PortalContext = /* @__PURE__ */ React3.createContext(null);
+var attr = /* @__PURE__ */ createAttribute("portal");
+function useFloatingPortalNode(props) {
+  if (props === void 0) {
+    props = {};
+  }
+  const {
+    id: id3,
+    root: root4
+  } = props;
+  const uniqueId = useId();
+  const portalContext = usePortalContext();
+  const [portalNode, setPortalNode] = React3.useState(null);
+  const portalNodeRef = React3.useRef(null);
+  index(() => {
+    return () => {
+      portalNode == null || portalNode.remove();
+      queueMicrotask(() => {
+        portalNodeRef.current = null;
+      });
+    };
+  }, [portalNode]);
+  index(() => {
+    if (!uniqueId) return;
+    if (portalNodeRef.current) return;
+    const existingIdRoot = id3 ? document.getElementById(id3) : null;
+    if (!existingIdRoot) return;
+    const subRoot = document.createElement("div");
+    subRoot.id = uniqueId;
+    subRoot.setAttribute(attr, "");
+    existingIdRoot.appendChild(subRoot);
+    portalNodeRef.current = subRoot;
+    setPortalNode(subRoot);
+  }, [id3, uniqueId]);
+  index(() => {
+    if (root4 === null) return;
+    if (!uniqueId) return;
+    if (portalNodeRef.current) return;
+    let container = root4 || (portalContext == null ? void 0 : portalContext.portalNode);
+    if (container && !isNode(container)) container = container.current;
+    container = container || document.body;
+    let idWrapper = null;
+    if (id3) {
+      idWrapper = document.createElement("div");
+      idWrapper.id = id3;
+      container.appendChild(idWrapper);
+    }
+    const subRoot = document.createElement("div");
+    subRoot.id = uniqueId;
+    subRoot.setAttribute(attr, "");
+    container = idWrapper || container;
+    container.appendChild(subRoot);
+    portalNodeRef.current = subRoot;
+    setPortalNode(subRoot);
+  }, [id3, root4, uniqueId, portalContext]);
+  return portalNode;
+}
+function FloatingPortal(props) {
+  const {
+    children,
+    id: id3,
+    root: root4,
+    preserveTabOrder = true
+  } = props;
+  const portalNode = useFloatingPortalNode({
+    id: id3,
+    root: root4
+  });
+  const [focusManagerState, setFocusManagerState] = React3.useState(null);
+  const beforeOutsideRef = React3.useRef(null);
+  const afterOutsideRef = React3.useRef(null);
+  const beforeInsideRef = React3.useRef(null);
+  const afterInsideRef = React3.useRef(null);
+  const modal = focusManagerState == null ? void 0 : focusManagerState.modal;
+  const open = focusManagerState == null ? void 0 : focusManagerState.open;
+  const shouldRenderGuards = (
+    // The FocusManager and therefore floating element are currently open/
+    // rendered.
+    !!focusManagerState && // Guards are only for non-modal focus management.
+    !focusManagerState.modal && // Don't render if unmount is transitioning.
+    focusManagerState.open && preserveTabOrder && !!(root4 || portalNode)
+  );
+  React3.useEffect(() => {
+    if (!portalNode || !preserveTabOrder || modal) {
+      return;
+    }
+    function onFocus(event) {
+      if (portalNode && isOutsideEvent(event)) {
+        const focusing = event.type === "focusin";
+        const manageFocus = focusing ? enableFocusInside : disableFocusInside;
+        manageFocus(portalNode);
+      }
+    }
+    portalNode.addEventListener("focusin", onFocus, true);
+    portalNode.addEventListener("focusout", onFocus, true);
+    return () => {
+      portalNode.removeEventListener("focusin", onFocus, true);
+      portalNode.removeEventListener("focusout", onFocus, true);
+    };
+  }, [portalNode, preserveTabOrder, modal]);
+  React3.useEffect(() => {
+    if (!portalNode) return;
+    if (open) return;
+    enableFocusInside(portalNode);
+  }, [open, portalNode]);
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PortalContext.Provider, {
+    value: React3.useMemo(() => ({
+      preserveTabOrder,
+      beforeOutsideRef,
+      afterOutsideRef,
+      beforeInsideRef,
+      afterInsideRef,
+      portalNode,
+      setFocusManagerState
+    }), [preserveTabOrder, portalNode]),
+    children: [shouldRenderGuards && portalNode && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusGuard, {
+      "data-type": "outside",
+      ref: beforeOutsideRef,
+      onFocus: (event) => {
+        if (isOutsideEvent(event, portalNode)) {
+          var _beforeInsideRef$curr;
+          (_beforeInsideRef$curr = beforeInsideRef.current) == null || _beforeInsideRef$curr.focus();
+        } else {
+          const domReference = focusManagerState ? focusManagerState.domReference : null;
+          const prevTabbable = getPreviousTabbable(domReference);
+          prevTabbable == null || prevTabbable.focus();
+        }
+      }
+    }), shouldRenderGuards && portalNode && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+      "aria-owns": portalNode.id,
+      style: HIDDEN_OWNER_STYLES
+    }), portalNode && /* @__PURE__ */ ReactDOM2.createPortal(children, portalNode), shouldRenderGuards && portalNode && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusGuard, {
+      "data-type": "outside",
+      ref: afterOutsideRef,
+      onFocus: (event) => {
+        if (isOutsideEvent(event, portalNode)) {
+          var _afterInsideRef$curre;
+          (_afterInsideRef$curre = afterInsideRef.current) == null || _afterInsideRef$curre.focus();
+        } else {
+          const domReference = focusManagerState ? focusManagerState.domReference : null;
+          const nextTabbable = getNextTabbable(domReference);
+          nextTabbable == null || nextTabbable.focus();
+          (focusManagerState == null ? void 0 : focusManagerState.closeOnFocusOut) && (focusManagerState == null ? void 0 : focusManagerState.onOpenChange(false, event.nativeEvent, "focus-out"));
+        }
+      }
+    })]
+  });
+}
+var usePortalContext = () => React3.useContext(PortalContext);
+function useLiteMergeRefs(refs) {
+  return React3.useMemo(() => {
+    return (value) => {
+      refs.forEach((ref) => {
+        if (ref) {
+          ref.current = value;
+        }
+      });
+    };
+  }, refs);
+}
+var LIST_LIMIT = 20;
+var previouslyFocusedElements = [];
+function clearDisconnectedPreviouslyFocusedElements() {
+  previouslyFocusedElements = previouslyFocusedElements.filter((elementRef) => {
+    var _elementRef$deref;
+    return (_elementRef$deref = elementRef.deref()) == null ? void 0 : _elementRef$deref.isConnected;
+  });
+}
+function addPreviouslyFocusedElement(element3) {
+  clearDisconnectedPreviouslyFocusedElements();
+  if (element3 && getNodeName(element3) !== "body") {
+    previouslyFocusedElements.push(new WeakRef(element3));
+    if (previouslyFocusedElements.length > LIST_LIMIT) {
+      previouslyFocusedElements = previouslyFocusedElements.slice(-LIST_LIMIT);
+    }
+  }
+}
+function getPreviouslyFocusedElement() {
+  clearDisconnectedPreviouslyFocusedElements();
+  const elementRef = previouslyFocusedElements[previouslyFocusedElements.length - 1];
+  return elementRef == null ? void 0 : elementRef.deref();
+}
+function getFirstTabbableElement(container) {
+  const tabbableOptions = getTabbableOptions();
+  if (isTabbable(container, tabbableOptions)) {
+    return container;
+  }
+  return tabbable(container, tabbableOptions)[0] || container;
+}
+function handleTabIndex(floatingFocusElement, orderRef) {
+  var _floatingFocusElement;
+  if (!orderRef.current.includes("floating") && !((_floatingFocusElement = floatingFocusElement.getAttribute("role")) != null && _floatingFocusElement.includes("dialog"))) {
+    return;
+  }
+  const options = getTabbableOptions();
+  const focusableElements = focusable(floatingFocusElement, options);
+  const tabbableContent = focusableElements.filter((element3) => {
+    const dataTabIndex = element3.getAttribute("data-tabindex") || "";
+    return isTabbable(element3, options) || element3.hasAttribute("data-tabindex") && !dataTabIndex.startsWith("-");
+  });
+  const tabIndex = floatingFocusElement.getAttribute("tabindex");
+  if (orderRef.current.includes("floating") || tabbableContent.length === 0) {
+    if (tabIndex !== "0") {
+      floatingFocusElement.setAttribute("tabindex", "0");
+    }
+  } else if (tabIndex !== "-1" || floatingFocusElement.hasAttribute("data-tabindex") && floatingFocusElement.getAttribute("data-tabindex") !== "-1") {
+    floatingFocusElement.setAttribute("tabindex", "-1");
+    floatingFocusElement.setAttribute("data-tabindex", "-1");
+  }
+}
+var VisuallyHiddenDismiss = /* @__PURE__ */ React3.forwardRef(function VisuallyHiddenDismiss2(props, ref) {
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+    ...props,
+    type: "button",
+    ref,
+    tabIndex: -1,
+    style: HIDDEN_STYLES
+  });
+});
+function FloatingFocusManager(props) {
+  const {
+    context,
+    children,
+    disabled = false,
+    order: order2 = ["content"],
+    guards: _guards = true,
+    initialFocus = 0,
+    returnFocus = true,
+    restoreFocus = false,
+    modal = true,
+    visuallyHiddenDismiss = false,
+    closeOnFocusOut = true,
+    outsideElementsInert = false,
+    getInsideElements: _getInsideElements = () => []
+  } = props;
+  const {
+    open,
+    onOpenChange,
+    events,
+    dataRef,
+    elements: {
+      domReference,
+      floating
+    }
+  } = context;
+  const getNodeId = useEffectEvent(() => {
+    var _dataRef$current$floa;
+    return (_dataRef$current$floa = dataRef.current.floatingContext) == null ? void 0 : _dataRef$current$floa.nodeId;
+  });
+  const getInsideElements = useEffectEvent(_getInsideElements);
+  const ignoreInitialFocus = typeof initialFocus === "number" && initialFocus < 0;
+  const isUntrappedTypeableCombobox = isTypeableCombobox(domReference) && ignoreInitialFocus;
+  const inertSupported = supportsInert();
+  const guards = inertSupported ? _guards : true;
+  const useInert = !guards || inertSupported && outsideElementsInert;
+  const orderRef = useLatestRef(order2);
+  const initialFocusRef = useLatestRef(initialFocus);
+  const returnFocusRef = useLatestRef(returnFocus);
+  const tree = useFloatingTree();
+  const portalContext = usePortalContext();
+  const startDismissButtonRef = React3.useRef(null);
+  const endDismissButtonRef = React3.useRef(null);
+  const preventReturnFocusRef = React3.useRef(false);
+  const isPointerDownRef = React3.useRef(false);
+  const tabbableIndexRef = React3.useRef(-1);
+  const blurTimeoutRef = React3.useRef(-1);
+  const isInsidePortal = portalContext != null;
+  const floatingFocusElement = getFloatingFocusElement(floating);
+  const getTabbableContent = useEffectEvent(function(container) {
+    if (container === void 0) {
+      container = floatingFocusElement;
+    }
+    return container ? tabbable(container, getTabbableOptions()) : [];
+  });
+  const getTabbableElements = useEffectEvent((container) => {
+    const content4 = getTabbableContent(container);
+    return orderRef.current.map((type) => {
+      if (domReference && type === "reference") {
+        return domReference;
+      }
+      if (floatingFocusElement && type === "floating") {
+        return floatingFocusElement;
+      }
+      return content4;
+    }).filter(Boolean).flat();
+  });
+  React3.useEffect(() => {
+    if (disabled) return;
+    if (!modal) return;
+    function onKeyDown(event) {
+      if (event.key === "Tab") {
+        if (contains2(floatingFocusElement, activeElement(getDocument(floatingFocusElement))) && getTabbableContent().length === 0 && !isUntrappedTypeableCombobox) {
+          stopEvent(event);
+        }
+        const els = getTabbableElements();
+        const target = getTarget(event);
+        if (orderRef.current[0] === "reference" && target === domReference) {
+          stopEvent(event);
+          if (event.shiftKey) {
+            enqueueFocus(els[els.length - 1]);
+          } else {
+            enqueueFocus(els[1]);
+          }
+        }
+        if (orderRef.current[1] === "floating" && target === floatingFocusElement && event.shiftKey) {
+          stopEvent(event);
+          enqueueFocus(els[0]);
+        }
+      }
+    }
+    const doc4 = getDocument(floatingFocusElement);
+    doc4.addEventListener("keydown", onKeyDown);
+    return () => {
+      doc4.removeEventListener("keydown", onKeyDown);
+    };
+  }, [disabled, domReference, floatingFocusElement, modal, orderRef, isUntrappedTypeableCombobox, getTabbableContent, getTabbableElements]);
+  React3.useEffect(() => {
+    if (disabled) return;
+    if (!floating) return;
+    function handleFocusIn(event) {
+      const target = getTarget(event);
+      const tabbableContent = getTabbableContent();
+      const tabbableIndex = tabbableContent.indexOf(target);
+      if (tabbableIndex !== -1) {
+        tabbableIndexRef.current = tabbableIndex;
+      }
+    }
+    floating.addEventListener("focusin", handleFocusIn);
+    return () => {
+      floating.removeEventListener("focusin", handleFocusIn);
+    };
+  }, [disabled, floating, getTabbableContent]);
+  React3.useEffect(() => {
+    if (disabled) return;
+    if (!closeOnFocusOut) return;
+    function handlePointerDown() {
+      isPointerDownRef.current = true;
+      setTimeout(() => {
+        isPointerDownRef.current = false;
+      });
+    }
+    function handleFocusOutside(event) {
+      const relatedTarget = event.relatedTarget;
+      const currentTarget = event.currentTarget;
+      const target = getTarget(event);
+      queueMicrotask(() => {
+        const nodeId = getNodeId();
+        const movedToUnrelatedNode = !(contains2(domReference, relatedTarget) || contains2(floating, relatedTarget) || contains2(relatedTarget, floating) || contains2(portalContext == null ? void 0 : portalContext.portalNode, relatedTarget) || relatedTarget != null && relatedTarget.hasAttribute(createAttribute("focus-guard")) || tree && (getNodeChildren(tree.nodesRef.current, nodeId).find((node2) => {
+          var _node$context, _node$context2;
+          return contains2((_node$context = node2.context) == null ? void 0 : _node$context.elements.floating, relatedTarget) || contains2((_node$context2 = node2.context) == null ? void 0 : _node$context2.elements.domReference, relatedTarget);
+        }) || getNodeAncestors(tree.nodesRef.current, nodeId).find((node2) => {
+          var _node$context3, _node$context4, _node$context5;
+          return [(_node$context3 = node2.context) == null ? void 0 : _node$context3.elements.floating, getFloatingFocusElement((_node$context4 = node2.context) == null ? void 0 : _node$context4.elements.floating)].includes(relatedTarget) || ((_node$context5 = node2.context) == null ? void 0 : _node$context5.elements.domReference) === relatedTarget;
+        })));
+        if (currentTarget === domReference && floatingFocusElement) {
+          handleTabIndex(floatingFocusElement, orderRef);
+        }
+        if (restoreFocus && currentTarget !== domReference && !(target != null && target.isConnected) && activeElement(getDocument(floatingFocusElement)) === getDocument(floatingFocusElement).body) {
+          if (isHTMLElement(floatingFocusElement)) {
+            floatingFocusElement.focus();
+          }
+          const prevTabbableIndex = tabbableIndexRef.current;
+          const tabbableContent = getTabbableContent();
+          const nodeToFocus = tabbableContent[prevTabbableIndex] || tabbableContent[tabbableContent.length - 1] || floatingFocusElement;
+          if (isHTMLElement(nodeToFocus)) {
+            nodeToFocus.focus();
+          }
+        }
+        if (dataRef.current.insideReactTree) {
+          dataRef.current.insideReactTree = false;
+          return;
+        }
+        if ((isUntrappedTypeableCombobox ? true : !modal) && relatedTarget && movedToUnrelatedNode && !isPointerDownRef.current && // Fix React 18 Strict Mode returnFocus due to double rendering.
+        relatedTarget !== getPreviouslyFocusedElement()) {
+          preventReturnFocusRef.current = true;
+          onOpenChange(false, event, "focus-out");
+        }
+      });
+    }
+    const shouldHandleBlurCapture = Boolean(!tree && portalContext);
+    function markInsideReactTree() {
+      clearTimeoutIfSet(blurTimeoutRef);
+      dataRef.current.insideReactTree = true;
+      blurTimeoutRef.current = window.setTimeout(() => {
+        dataRef.current.insideReactTree = false;
+      });
+    }
+    if (floating && isHTMLElement(domReference)) {
+      domReference.addEventListener("focusout", handleFocusOutside);
+      domReference.addEventListener("pointerdown", handlePointerDown);
+      floating.addEventListener("focusout", handleFocusOutside);
+      if (shouldHandleBlurCapture) {
+        floating.addEventListener("focusout", markInsideReactTree, true);
+      }
+      return () => {
+        domReference.removeEventListener("focusout", handleFocusOutside);
+        domReference.removeEventListener("pointerdown", handlePointerDown);
+        floating.removeEventListener("focusout", handleFocusOutside);
+        if (shouldHandleBlurCapture) {
+          floating.removeEventListener("focusout", markInsideReactTree, true);
+        }
+      };
+    }
+  }, [disabled, domReference, floating, floatingFocusElement, modal, tree, portalContext, onOpenChange, closeOnFocusOut, restoreFocus, getTabbableContent, isUntrappedTypeableCombobox, getNodeId, orderRef, dataRef]);
+  const beforeGuardRef = React3.useRef(null);
+  const afterGuardRef = React3.useRef(null);
+  const mergedBeforeGuardRef = useLiteMergeRefs([beforeGuardRef, portalContext == null ? void 0 : portalContext.beforeInsideRef]);
+  const mergedAfterGuardRef = useLiteMergeRefs([afterGuardRef, portalContext == null ? void 0 : portalContext.afterInsideRef]);
+  React3.useEffect(() => {
+    var _portalContext$portal, _ancestors$find;
+    if (disabled) return;
+    if (!floating) return;
+    const portalNodes = Array.from((portalContext == null || (_portalContext$portal = portalContext.portalNode) == null ? void 0 : _portalContext$portal.querySelectorAll("[" + createAttribute("portal") + "]")) || []);
+    const ancestors = tree ? getNodeAncestors(tree.nodesRef.current, getNodeId()) : [];
+    const rootAncestorComboboxDomReference = (_ancestors$find = ancestors.find((node2) => {
+      var _node$context6;
+      return isTypeableCombobox(((_node$context6 = node2.context) == null ? void 0 : _node$context6.elements.domReference) || null);
+    })) == null || (_ancestors$find = _ancestors$find.context) == null ? void 0 : _ancestors$find.elements.domReference;
+    const insideElements = [floating, rootAncestorComboboxDomReference, ...portalNodes, ...getInsideElements(), startDismissButtonRef.current, endDismissButtonRef.current, beforeGuardRef.current, afterGuardRef.current, portalContext == null ? void 0 : portalContext.beforeOutsideRef.current, portalContext == null ? void 0 : portalContext.afterOutsideRef.current, orderRef.current.includes("reference") || isUntrappedTypeableCombobox ? domReference : null].filter((x3) => x3 != null);
+    const cleanup = modal || isUntrappedTypeableCombobox ? markOthers(insideElements, !useInert, useInert) : markOthers(insideElements);
+    return () => {
+      cleanup();
+    };
+  }, [disabled, domReference, floating, modal, orderRef, portalContext, isUntrappedTypeableCombobox, guards, useInert, tree, getNodeId, getInsideElements]);
+  index(() => {
+    if (disabled || !isHTMLElement(floatingFocusElement)) return;
+    const doc4 = getDocument(floatingFocusElement);
+    const previouslyFocusedElement = activeElement(doc4);
+    queueMicrotask(() => {
+      const focusableElements = getTabbableElements(floatingFocusElement);
+      const initialFocusValue = initialFocusRef.current;
+      const elToFocus = (typeof initialFocusValue === "number" ? focusableElements[initialFocusValue] : initialFocusValue.current) || floatingFocusElement;
+      const focusAlreadyInsideFloatingEl = contains2(floatingFocusElement, previouslyFocusedElement);
+      if (!ignoreInitialFocus && !focusAlreadyInsideFloatingEl && open) {
+        enqueueFocus(elToFocus, {
+          preventScroll: elToFocus === floatingFocusElement
+        });
+      }
+    });
+  }, [disabled, open, floatingFocusElement, ignoreInitialFocus, getTabbableElements, initialFocusRef]);
+  index(() => {
+    if (disabled || !floatingFocusElement) return;
+    const doc4 = getDocument(floatingFocusElement);
+    const previouslyFocusedElement = activeElement(doc4);
+    addPreviouslyFocusedElement(previouslyFocusedElement);
+    function onOpenChange2(_ref) {
+      let {
+        reason,
+        event,
+        nested
+      } = _ref;
+      if (["hover", "safe-polygon"].includes(reason) && event.type === "mouseleave") {
+        preventReturnFocusRef.current = true;
+      }
+      if (reason !== "outside-press") return;
+      if (nested) {
+        preventReturnFocusRef.current = false;
+      } else if (isVirtualClick(event) || isVirtualPointerEvent(event)) {
+        preventReturnFocusRef.current = false;
+      } else {
+        let isPreventScrollSupported = false;
+        document.createElement("div").focus({
+          get preventScroll() {
+            isPreventScrollSupported = true;
+            return false;
+          }
+        });
+        if (isPreventScrollSupported) {
+          preventReturnFocusRef.current = false;
+        } else {
+          preventReturnFocusRef.current = true;
+        }
+      }
+    }
+    events.on("openchange", onOpenChange2);
+    const fallbackEl = doc4.createElement("span");
+    fallbackEl.setAttribute("tabindex", "-1");
+    fallbackEl.setAttribute("aria-hidden", "true");
+    Object.assign(fallbackEl.style, HIDDEN_STYLES);
+    if (isInsidePortal && domReference) {
+      domReference.insertAdjacentElement("afterend", fallbackEl);
+    }
+    function getReturnElement() {
+      if (typeof returnFocusRef.current === "boolean") {
+        const el = domReference || getPreviouslyFocusedElement();
+        return el && el.isConnected ? el : fallbackEl;
+      }
+      return returnFocusRef.current.current || fallbackEl;
+    }
+    return () => {
+      events.off("openchange", onOpenChange2);
+      const activeEl = activeElement(doc4);
+      const isFocusInsideFloatingTree = contains2(floating, activeEl) || tree && getNodeChildren(tree.nodesRef.current, getNodeId(), false).some((node2) => {
+        var _node$context7;
+        return contains2((_node$context7 = node2.context) == null ? void 0 : _node$context7.elements.floating, activeEl);
+      });
+      const returnElement = getReturnElement();
+      queueMicrotask(() => {
+        const tabbableReturnElement = getFirstTabbableElement(returnElement);
+        if (
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          returnFocusRef.current && !preventReturnFocusRef.current && isHTMLElement(tabbableReturnElement) && // If the focus moved somewhere else after mount, avoid returning focus
+          // since it likely entered a different element which should be
+          // respected: https://github.com/floating-ui/floating-ui/issues/2607
+          (tabbableReturnElement !== activeEl && activeEl !== doc4.body ? isFocusInsideFloatingTree : true)
+        ) {
+          tabbableReturnElement.focus({
+            preventScroll: true
+          });
+        }
+        fallbackEl.remove();
+      });
+    };
+  }, [disabled, floating, floatingFocusElement, returnFocusRef, dataRef, events, tree, isInsidePortal, domReference, getNodeId]);
+  React3.useEffect(() => {
+    queueMicrotask(() => {
+      preventReturnFocusRef.current = false;
+    });
+    return () => {
+      queueMicrotask(clearDisconnectedPreviouslyFocusedElements);
+    };
+  }, [disabled]);
+  index(() => {
+    if (disabled) return;
+    if (!portalContext) return;
+    portalContext.setFocusManagerState({
+      modal,
+      closeOnFocusOut,
+      open,
+      onOpenChange,
+      domReference
+    });
+    return () => {
+      portalContext.setFocusManagerState(null);
+    };
+  }, [disabled, portalContext, modal, open, onOpenChange, closeOnFocusOut, domReference]);
+  index(() => {
+    if (disabled) return;
+    if (!floatingFocusElement) return;
+    handleTabIndex(floatingFocusElement, orderRef);
+  }, [disabled, floatingFocusElement, orderRef]);
+  function renderDismissButton(location) {
+    if (disabled || !visuallyHiddenDismiss || !modal) {
+      return null;
+    }
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(VisuallyHiddenDismiss, {
+      ref: location === "start" ? startDismissButtonRef : endDismissButtonRef,
+      onClick: (event) => onOpenChange(false, event.nativeEvent),
+      children: typeof visuallyHiddenDismiss === "string" ? visuallyHiddenDismiss : "Dismiss"
+    });
+  }
+  const shouldRenderGuards = !disabled && guards && (modal ? !isUntrappedTypeableCombobox : true) && (isInsidePortal || modal);
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, {
+    children: [shouldRenderGuards && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusGuard, {
+      "data-type": "inside",
+      ref: mergedBeforeGuardRef,
+      onFocus: (event) => {
+        if (modal) {
+          const els = getTabbableElements();
+          enqueueFocus(order2[0] === "reference" ? els[0] : els[els.length - 1]);
+        } else if (portalContext != null && portalContext.preserveTabOrder && portalContext.portalNode) {
+          preventReturnFocusRef.current = false;
+          if (isOutsideEvent(event, portalContext.portalNode)) {
+            const nextTabbable = getNextTabbable(domReference);
+            nextTabbable == null || nextTabbable.focus();
+          } else {
+            var _portalContext$before;
+            (_portalContext$before = portalContext.beforeOutsideRef.current) == null || _portalContext$before.focus();
+          }
+        }
+      }
+    }), !isUntrappedTypeableCombobox && renderDismissButton("start"), children, renderDismissButton("end"), shouldRenderGuards && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusGuard, {
+      "data-type": "inside",
+      ref: mergedAfterGuardRef,
+      onFocus: (event) => {
+        if (modal) {
+          enqueueFocus(getTabbableElements()[0]);
+        } else if (portalContext != null && portalContext.preserveTabOrder && portalContext.portalNode) {
+          if (closeOnFocusOut) {
+            preventReturnFocusRef.current = true;
+          }
+          if (isOutsideEvent(event, portalContext.portalNode)) {
+            const prevTabbable = getPreviousTabbable(domReference);
+            prevTabbable == null || prevTabbable.focus();
+          } else {
+            var _portalContext$afterO;
+            (_portalContext$afterO = portalContext.afterOutsideRef.current) == null || _portalContext$afterO.focus();
+          }
+        }
+      }
+    })]
+  });
+}
+var bubbleHandlerKeys = {
+  pointerdown: "onPointerDown",
+  mousedown: "onMouseDown",
+  click: "onClick"
+};
+var captureHandlerKeys = {
+  pointerdown: "onPointerDownCapture",
+  mousedown: "onMouseDownCapture",
+  click: "onClickCapture"
+};
+var normalizeProp = (normalizable) => {
+  var _normalizable$escapeK, _normalizable$outside;
+  return {
+    escapeKey: typeof normalizable === "boolean" ? normalizable : (_normalizable$escapeK = normalizable == null ? void 0 : normalizable.escapeKey) != null ? _normalizable$escapeK : false,
+    outsidePress: typeof normalizable === "boolean" ? normalizable : (_normalizable$outside = normalizable == null ? void 0 : normalizable.outsidePress) != null ? _normalizable$outside : true
+  };
+};
+function useDismiss(context, props) {
+  if (props === void 0) {
+    props = {};
+  }
+  const {
+    open,
+    onOpenChange,
+    elements,
+    dataRef
+  } = context;
+  const {
+    enabled = true,
+    escapeKey = true,
+    outsidePress: unstable_outsidePress = true,
+    outsidePressEvent = "pointerdown",
+    referencePress = false,
+    referencePressEvent = "pointerdown",
+    ancestorScroll = false,
+    bubbles,
+    capture
+  } = props;
+  const tree = useFloatingTree();
+  const outsidePressFn = useEffectEvent(typeof unstable_outsidePress === "function" ? unstable_outsidePress : () => false);
+  const outsidePress = typeof unstable_outsidePress === "function" ? outsidePressFn : unstable_outsidePress;
+  const endedOrStartedInsideRef = React3.useRef(false);
+  const {
+    escapeKey: escapeKeyBubbles,
+    outsidePress: outsidePressBubbles
+  } = normalizeProp(bubbles);
+  const {
+    escapeKey: escapeKeyCapture,
+    outsidePress: outsidePressCapture
+  } = normalizeProp(capture);
+  const isComposingRef = React3.useRef(false);
+  const closeOnEscapeKeyDown = useEffectEvent((event) => {
+    var _dataRef$current$floa;
+    if (!open || !enabled || !escapeKey || event.key !== "Escape") {
+      return;
+    }
+    if (isComposingRef.current) {
+      return;
+    }
+    const nodeId = (_dataRef$current$floa = dataRef.current.floatingContext) == null ? void 0 : _dataRef$current$floa.nodeId;
+    const children = tree ? getNodeChildren(tree.nodesRef.current, nodeId) : [];
+    if (!escapeKeyBubbles) {
+      event.stopPropagation();
+      if (children.length > 0) {
+        let shouldDismiss = true;
+        children.forEach((child) => {
+          var _child$context;
+          if ((_child$context = child.context) != null && _child$context.open && !child.context.dataRef.current.__escapeKeyBubbles) {
+            shouldDismiss = false;
+            return;
+          }
+        });
+        if (!shouldDismiss) {
+          return;
+        }
+      }
+    }
+    onOpenChange(false, isReactEvent(event) ? event.nativeEvent : event, "escape-key");
+  });
+  const closeOnEscapeKeyDownCapture = useEffectEvent((event) => {
+    var _getTarget2;
+    const callback = () => {
+      var _getTarget;
+      closeOnEscapeKeyDown(event);
+      (_getTarget = getTarget(event)) == null || _getTarget.removeEventListener("keydown", callback);
+    };
+    (_getTarget2 = getTarget(event)) == null || _getTarget2.addEventListener("keydown", callback);
+  });
+  const closeOnPressOutside = useEffectEvent((event) => {
+    var _dataRef$current$floa2;
+    const insideReactTree = dataRef.current.insideReactTree;
+    dataRef.current.insideReactTree = false;
+    const endedOrStartedInside = endedOrStartedInsideRef.current;
+    endedOrStartedInsideRef.current = false;
+    if (outsidePressEvent === "click" && endedOrStartedInside) {
+      return;
+    }
+    if (insideReactTree) {
+      return;
+    }
+    if (typeof outsidePress === "function" && !outsidePress(event)) {
+      return;
+    }
+    const target = getTarget(event);
+    const inertSelector = "[" + createAttribute("inert") + "]";
+    const markers = getDocument(elements.floating).querySelectorAll(inertSelector);
+    let targetRootAncestor = isElement(target) ? target : null;
+    while (targetRootAncestor && !isLastTraversableNode(targetRootAncestor)) {
+      const nextParent = getParentNode(targetRootAncestor);
+      if (isLastTraversableNode(nextParent) || !isElement(nextParent)) {
+        break;
+      }
+      targetRootAncestor = nextParent;
+    }
+    if (markers.length && isElement(target) && !isRootElement(target) && // Clicked on a direct ancestor (e.g. FloatingOverlay).
+    !contains2(target, elements.floating) && // If the target root element contains none of the markers, then the
+    // element was injected after the floating element rendered.
+    Array.from(markers).every((marker) => !contains2(targetRootAncestor, marker))) {
+      return;
+    }
+    if (isHTMLElement(target) && floating) {
+      const lastTraversableNode = isLastTraversableNode(target);
+      const style2 = getComputedStyle2(target);
+      const scrollRe = /auto|scroll/;
+      const isScrollableX = lastTraversableNode || scrollRe.test(style2.overflowX);
+      const isScrollableY = lastTraversableNode || scrollRe.test(style2.overflowY);
+      const canScrollX = isScrollableX && target.clientWidth > 0 && target.scrollWidth > target.clientWidth;
+      const canScrollY = isScrollableY && target.clientHeight > 0 && target.scrollHeight > target.clientHeight;
+      const isRTL2 = style2.direction === "rtl";
+      const pressedVerticalScrollbar = canScrollY && (isRTL2 ? event.offsetX <= target.offsetWidth - target.clientWidth : event.offsetX > target.clientWidth);
+      const pressedHorizontalScrollbar = canScrollX && event.offsetY > target.clientHeight;
+      if (pressedVerticalScrollbar || pressedHorizontalScrollbar) {
+        return;
+      }
+    }
+    const nodeId = (_dataRef$current$floa2 = dataRef.current.floatingContext) == null ? void 0 : _dataRef$current$floa2.nodeId;
+    const targetIsInsideChildren = tree && getNodeChildren(tree.nodesRef.current, nodeId).some((node2) => {
+      var _node$context;
+      return isEventTargetWithin(event, (_node$context = node2.context) == null ? void 0 : _node$context.elements.floating);
+    });
+    if (isEventTargetWithin(event, elements.floating) || isEventTargetWithin(event, elements.domReference) || targetIsInsideChildren) {
+      return;
+    }
+    const children = tree ? getNodeChildren(tree.nodesRef.current, nodeId) : [];
+    if (children.length > 0) {
+      let shouldDismiss = true;
+      children.forEach((child) => {
+        var _child$context2;
+        if ((_child$context2 = child.context) != null && _child$context2.open && !child.context.dataRef.current.__outsidePressBubbles) {
+          shouldDismiss = false;
+          return;
+        }
+      });
+      if (!shouldDismiss) {
+        return;
+      }
+    }
+    onOpenChange(false, event, "outside-press");
+  });
+  const closeOnPressOutsideCapture = useEffectEvent((event) => {
+    var _getTarget4;
+    const callback = () => {
+      var _getTarget3;
+      closeOnPressOutside(event);
+      (_getTarget3 = getTarget(event)) == null || _getTarget3.removeEventListener(outsidePressEvent, callback);
+    };
+    (_getTarget4 = getTarget(event)) == null || _getTarget4.addEventListener(outsidePressEvent, callback);
+  });
+  React3.useEffect(() => {
+    if (!open || !enabled) {
+      return;
+    }
+    dataRef.current.__escapeKeyBubbles = escapeKeyBubbles;
+    dataRef.current.__outsidePressBubbles = outsidePressBubbles;
+    let compositionTimeout = -1;
+    function onScroll(event) {
+      onOpenChange(false, event, "ancestor-scroll");
+    }
+    function handleCompositionStart() {
+      window.clearTimeout(compositionTimeout);
+      isComposingRef.current = true;
+    }
+    function handleCompositionEnd() {
+      compositionTimeout = window.setTimeout(
+        () => {
+          isComposingRef.current = false;
+        },
+        // 0ms or 1ms don't work in Safari. 5ms appears to consistently work.
+        // Only apply to WebKit for the test to remain 0ms.
+        isWebKit() ? 5 : 0
+      );
+    }
+    const doc4 = getDocument(elements.floating);
+    if (escapeKey) {
+      doc4.addEventListener("keydown", escapeKeyCapture ? closeOnEscapeKeyDownCapture : closeOnEscapeKeyDown, escapeKeyCapture);
+      doc4.addEventListener("compositionstart", handleCompositionStart);
+      doc4.addEventListener("compositionend", handleCompositionEnd);
+    }
+    outsidePress && doc4.addEventListener(outsidePressEvent, outsidePressCapture ? closeOnPressOutsideCapture : closeOnPressOutside, outsidePressCapture);
+    let ancestors = [];
+    if (ancestorScroll) {
+      if (isElement(elements.domReference)) {
+        ancestors = getOverflowAncestors(elements.domReference);
+      }
+      if (isElement(elements.floating)) {
+        ancestors = ancestors.concat(getOverflowAncestors(elements.floating));
+      }
+      if (!isElement(elements.reference) && elements.reference && elements.reference.contextElement) {
+        ancestors = ancestors.concat(getOverflowAncestors(elements.reference.contextElement));
+      }
+    }
+    ancestors = ancestors.filter((ancestor) => {
+      var _doc$defaultView;
+      return ancestor !== ((_doc$defaultView = doc4.defaultView) == null ? void 0 : _doc$defaultView.visualViewport);
+    });
+    ancestors.forEach((ancestor) => {
+      ancestor.addEventListener("scroll", onScroll);
+    });
+    return () => {
+      if (escapeKey) {
+        doc4.removeEventListener("keydown", escapeKeyCapture ? closeOnEscapeKeyDownCapture : closeOnEscapeKeyDown, escapeKeyCapture);
+        doc4.removeEventListener("compositionstart", handleCompositionStart);
+        doc4.removeEventListener("compositionend", handleCompositionEnd);
+      }
+      outsidePress && doc4.removeEventListener(outsidePressEvent, outsidePressCapture ? closeOnPressOutsideCapture : closeOnPressOutside, outsidePressCapture);
+      ancestors.forEach((ancestor) => {
+        ancestor.removeEventListener("scroll", onScroll);
+      });
+      window.clearTimeout(compositionTimeout);
+    };
+  }, [dataRef, elements, escapeKey, outsidePress, outsidePressEvent, open, onOpenChange, ancestorScroll, enabled, escapeKeyBubbles, outsidePressBubbles, closeOnEscapeKeyDown, escapeKeyCapture, closeOnEscapeKeyDownCapture, closeOnPressOutside, outsidePressCapture, closeOnPressOutsideCapture]);
+  React3.useEffect(() => {
+    dataRef.current.insideReactTree = false;
+  }, [dataRef, outsidePress, outsidePressEvent]);
+  const reference = React3.useMemo(() => ({
+    onKeyDown: closeOnEscapeKeyDown,
+    ...referencePress && {
+      [bubbleHandlerKeys[referencePressEvent]]: (event) => {
+        onOpenChange(false, event.nativeEvent, "reference-press");
+      },
+      ...referencePressEvent !== "click" && {
+        onClick(event) {
+          onOpenChange(false, event.nativeEvent, "reference-press");
+        }
+      }
+    }
+  }), [closeOnEscapeKeyDown, onOpenChange, referencePress, referencePressEvent]);
+  const floating = React3.useMemo(() => {
+    function setMouseDownOrUpInside(event) {
+      if (event.button !== 0) {
+        return;
+      }
+      endedOrStartedInsideRef.current = true;
+    }
+    return {
+      onKeyDown: closeOnEscapeKeyDown,
+      onMouseDown: setMouseDownOrUpInside,
+      onMouseUp: setMouseDownOrUpInside,
+      [captureHandlerKeys[outsidePressEvent]]: () => {
+        dataRef.current.insideReactTree = true;
+      }
+    };
+  }, [closeOnEscapeKeyDown, outsidePressEvent, dataRef]);
+  return React3.useMemo(() => enabled ? {
+    reference,
+    floating
+  } : {}, [enabled, reference, floating]);
+}
+function useFloatingRootContext(options) {
+  const {
+    open = false,
+    onOpenChange: onOpenChangeProp,
+    elements: elementsProp
+  } = options;
+  const floatingId = useId();
+  const dataRef = React3.useRef({});
+  const [events] = React3.useState(() => createEventEmitter());
+  const nested = useFloatingParentNodeId() != null;
+  if (true) {
+    const optionDomReference = elementsProp.reference;
+    if (optionDomReference && !isElement(optionDomReference)) {
+      error("Cannot pass a virtual element to the `elements.reference` option,", "as it must be a real DOM element. Use `refs.setPositionReference()`", "instead.");
+    }
+  }
+  const [positionReference, setPositionReference] = React3.useState(elementsProp.reference);
+  const onOpenChange = useEffectEvent((open2, event, reason) => {
+    dataRef.current.openEvent = open2 ? event : void 0;
+    events.emit("openchange", {
+      open: open2,
+      event,
+      reason,
+      nested
+    });
+    onOpenChangeProp == null || onOpenChangeProp(open2, event, reason);
+  });
+  const refs = React3.useMemo(() => ({
+    setPositionReference
+  }), []);
+  const elements = React3.useMemo(() => ({
+    reference: positionReference || elementsProp.reference || null,
+    floating: elementsProp.floating || null,
+    domReference: elementsProp.reference
+  }), [positionReference, elementsProp.reference, elementsProp.floating]);
+  return React3.useMemo(() => ({
+    dataRef,
+    open,
+    onOpenChange,
+    elements,
+    events,
+    floatingId,
+    refs
+  }), [open, onOpenChange, elements, events, floatingId, refs]);
+}
+function useFloating2(_temp) {
+  var _elementsOption$refer, _elementsOption$float;
+  let {
+    elements: elementsOption,
+    ...options
+  } = _temp === void 0 ? {} : _temp;
+  const {
+    nodeId
+  } = options;
+  const internalRootContext = useFloatingRootContext({
+    ...options,
+    elements: {
+      reference: (_elementsOption$refer = elementsOption == null ? void 0 : elementsOption.reference) != null ? _elementsOption$refer : null,
+      floating: (_elementsOption$float = elementsOption == null ? void 0 : elementsOption.floating) != null ? _elementsOption$float : null
+    }
+  });
+  const rootContext = options.rootContext || internalRootContext;
+  const computedElements = rootContext.elements;
+  const [_domReference, setDomReference] = React3.useState(null);
+  const [positionReference, _setPositionReference] = React3.useState(null);
+  const optionDomReference = computedElements == null ? void 0 : computedElements.domReference;
+  const domReference = optionDomReference || _domReference;
+  const domReferenceRef = React3.useRef(null);
+  const tree = useFloatingTree();
+  index(() => {
+    if (domReference) {
+      domReferenceRef.current = domReference;
+    }
+  }, [domReference]);
+  const position3 = useFloating({
+    ...options,
+    elements: {
+      ...computedElements,
+      ...positionReference && {
+        reference: positionReference
+      }
+    }
+  });
+  const setPositionReference = React3.useCallback((node2) => {
+    const computedPositionReference = isElement(node2) ? {
+      getBoundingClientRect: () => node2.getBoundingClientRect(),
+      getClientRects: () => node2.getClientRects(),
+      contextElement: node2
+    } : node2;
+    _setPositionReference(computedPositionReference);
+    position3.refs.setReference(computedPositionReference);
+  }, [position3.refs]);
+  const setReference = React3.useCallback((node2) => {
+    if (isElement(node2) || node2 === null) {
+      domReferenceRef.current = node2;
+      setDomReference(node2);
+    }
+    if (isElement(position3.refs.reference.current) || position3.refs.reference.current === null || // Don't allow setting virtual elements using the old technique back to
+    // `null` to support `positionReference` + an unstable `reference`
+    // callback ref.
+    node2 !== null && !isElement(node2)) {
+      position3.refs.setReference(node2);
+    }
+  }, [position3.refs]);
+  const refs = React3.useMemo(() => ({
+    ...position3.refs,
+    setReference,
+    setPositionReference,
+    domReference: domReferenceRef
+  }), [position3.refs, setReference, setPositionReference]);
+  const elements = React3.useMemo(() => ({
+    ...position3.elements,
+    domReference
+  }), [position3.elements, domReference]);
+  const context = React3.useMemo(() => ({
+    ...position3,
+    ...rootContext,
+    refs,
+    elements,
+    nodeId
+  }), [position3, refs, elements, nodeId, rootContext]);
+  index(() => {
+    rootContext.dataRef.current.floatingContext = context;
+    const node2 = tree == null ? void 0 : tree.nodesRef.current.find((node3) => node3.id === nodeId);
+    if (node2) {
+      node2.context = context;
+    }
+  });
+  return React3.useMemo(() => ({
+    ...position3,
+    context,
+    refs,
+    elements
+  }), [position3, refs, elements, context]);
+}
+function isMacSafari() {
+  return isMac() && isSafari();
+}
+function useFocus(context, props) {
+  if (props === void 0) {
+    props = {};
+  }
+  const {
+    open,
+    onOpenChange,
+    events,
+    dataRef,
+    elements
+  } = context;
+  const {
+    enabled = true,
+    visibleOnly = true
+  } = props;
+  const blockFocusRef = React3.useRef(false);
+  const timeoutRef = React3.useRef(-1);
+  const keyboardModalityRef = React3.useRef(true);
+  React3.useEffect(() => {
+    if (!enabled) return;
+    const win = getWindow(elements.domReference);
+    function onBlur() {
+      if (!open && isHTMLElement(elements.domReference) && elements.domReference === activeElement(getDocument(elements.domReference))) {
+        blockFocusRef.current = true;
+      }
+    }
+    function onKeyDown() {
+      keyboardModalityRef.current = true;
+    }
+    function onPointerDown() {
+      keyboardModalityRef.current = false;
+    }
+    win.addEventListener("blur", onBlur);
+    if (isMacSafari()) {
+      win.addEventListener("keydown", onKeyDown, true);
+      win.addEventListener("pointerdown", onPointerDown, true);
+    }
+    return () => {
+      win.removeEventListener("blur", onBlur);
+      if (isMacSafari()) {
+        win.removeEventListener("keydown", onKeyDown, true);
+        win.removeEventListener("pointerdown", onPointerDown, true);
+      }
+    };
+  }, [elements.domReference, open, enabled]);
+  React3.useEffect(() => {
+    if (!enabled) return;
+    function onOpenChange2(_ref) {
+      let {
+        reason
+      } = _ref;
+      if (reason === "reference-press" || reason === "escape-key") {
+        blockFocusRef.current = true;
+      }
+    }
+    events.on("openchange", onOpenChange2);
+    return () => {
+      events.off("openchange", onOpenChange2);
+    };
+  }, [events, enabled]);
+  React3.useEffect(() => {
+    return () => {
+      clearTimeoutIfSet(timeoutRef);
+    };
+  }, []);
+  const reference = React3.useMemo(() => ({
+    onMouseLeave() {
+      blockFocusRef.current = false;
+    },
+    onFocus(event) {
+      if (blockFocusRef.current) return;
+      const target = getTarget(event.nativeEvent);
+      if (visibleOnly && isElement(target)) {
+        if (isMacSafari() && !event.relatedTarget) {
+          if (!keyboardModalityRef.current && !isTypeableElement(target)) {
+            return;
+          }
+        } else if (!matchesFocusVisible(target)) {
+          return;
+        }
+      }
+      onOpenChange(true, event.nativeEvent, "focus");
+    },
+    onBlur(event) {
+      blockFocusRef.current = false;
+      const relatedTarget = event.relatedTarget;
+      const nativeEvent = event.nativeEvent;
+      const movedToFocusGuard = isElement(relatedTarget) && relatedTarget.hasAttribute(createAttribute("focus-guard")) && relatedTarget.getAttribute("data-type") === "outside";
+      timeoutRef.current = window.setTimeout(() => {
+        var _dataRef$current$floa;
+        const activeEl = activeElement(elements.domReference ? elements.domReference.ownerDocument : document);
+        if (!relatedTarget && activeEl === elements.domReference) return;
+        if (contains2((_dataRef$current$floa = dataRef.current.floatingContext) == null ? void 0 : _dataRef$current$floa.refs.floating.current, activeEl) || contains2(elements.domReference, activeEl) || movedToFocusGuard) {
+          return;
+        }
+        onOpenChange(false, nativeEvent, "focus");
+      });
+    }
+  }), [dataRef, elements.domReference, onOpenChange, visibleOnly]);
+  return React3.useMemo(() => enabled ? {
+    reference
+  } : {}, [enabled, reference]);
+}
+function mergeProps(userProps, propsList, elementKey) {
+  const map4 = /* @__PURE__ */ new Map();
+  const isItem = elementKey === "item";
+  let domUserProps = userProps;
+  if (isItem && userProps) {
+    const {
+      [ACTIVE_KEY]: _,
+      [SELECTED_KEY]: __,
+      ...validProps
+    } = userProps;
+    domUserProps = validProps;
+  }
+  return {
+    ...elementKey === "floating" && {
+      tabIndex: -1,
+      [FOCUSABLE_ATTRIBUTE2]: ""
+    },
+    ...domUserProps,
+    ...propsList.map((value) => {
+      const propsOrGetProps = value ? value[elementKey] : null;
+      if (typeof propsOrGetProps === "function") {
+        return userProps ? propsOrGetProps(userProps) : null;
+      }
+      return propsOrGetProps;
+    }).concat(userProps).reduce((acc, props) => {
+      if (!props) {
+        return acc;
+      }
+      Object.entries(props).forEach((_ref) => {
+        let [key, value] = _ref;
+        if (isItem && [ACTIVE_KEY, SELECTED_KEY].includes(key)) {
+          return;
+        }
+        if (key.indexOf("on") === 0) {
+          if (!map4.has(key)) {
+            map4.set(key, []);
+          }
+          if (typeof value === "function") {
+            var _map$get;
+            (_map$get = map4.get(key)) == null || _map$get.push(value);
+            acc[key] = function() {
+              var _map$get2;
+              for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+              }
+              return (_map$get2 = map4.get(key)) == null ? void 0 : _map$get2.map((fn5) => fn5(...args)).find((val) => val !== void 0);
+            };
+          }
+        } else {
+          acc[key] = value;
+        }
+      });
+      return acc;
+    }, {})
+  };
+}
+function useInteractions(propsList) {
+  if (propsList === void 0) {
+    propsList = [];
+  }
+  const referenceDeps = propsList.map((key) => key == null ? void 0 : key.reference);
+  const floatingDeps = propsList.map((key) => key == null ? void 0 : key.floating);
+  const itemDeps = propsList.map((key) => key == null ? void 0 : key.item);
+  const getReferenceProps = React3.useCallback(
+    (userProps) => mergeProps(userProps, propsList, "reference"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    referenceDeps
+  );
+  const getFloatingProps = React3.useCallback(
+    (userProps) => mergeProps(userProps, propsList, "floating"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    floatingDeps
+  );
+  const getItemProps = React3.useCallback(
+    (userProps) => mergeProps(userProps, propsList, "item"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    itemDeps
+  );
+  return React3.useMemo(() => ({
+    getReferenceProps,
+    getFloatingProps,
+    getItemProps
+  }), [getReferenceProps, getFloatingProps, getItemProps]);
+}
+var componentRoleToAriaRoleMap = /* @__PURE__ */ new Map([["select", "listbox"], ["combobox", "listbox"], ["label", false]]);
+function useRole(context, props) {
+  var _elements$domReferenc, _componentRoleToAriaR;
+  if (props === void 0) {
+    props = {};
+  }
+  const {
+    open,
+    elements,
+    floatingId: defaultFloatingId
+  } = context;
+  const {
+    enabled = true,
+    role = "dialog"
+  } = props;
+  const defaultReferenceId = useId();
+  const referenceId = ((_elements$domReferenc = elements.domReference) == null ? void 0 : _elements$domReferenc.id) || defaultReferenceId;
+  const floatingId = React3.useMemo(() => {
+    var _getFloatingFocusElem;
+    return ((_getFloatingFocusElem = getFloatingFocusElement(elements.floating)) == null ? void 0 : _getFloatingFocusElem.id) || defaultFloatingId;
+  }, [elements.floating, defaultFloatingId]);
+  const ariaRole = (_componentRoleToAriaR = componentRoleToAriaRoleMap.get(role)) != null ? _componentRoleToAriaR : role;
+  const parentId = useFloatingParentNodeId();
+  const isNested = parentId != null;
+  const reference = React3.useMemo(() => {
+    if (ariaRole === "tooltip" || role === "label") {
+      return {
+        ["aria-" + (role === "label" ? "labelledby" : "describedby")]: open ? floatingId : void 0
+      };
+    }
+    return {
+      "aria-expanded": open ? "true" : "false",
+      "aria-haspopup": ariaRole === "alertdialog" ? "dialog" : ariaRole,
+      "aria-controls": open ? floatingId : void 0,
+      ...ariaRole === "listbox" && {
+        role: "combobox"
+      },
+      ...ariaRole === "menu" && {
+        id: referenceId
+      },
+      ...ariaRole === "menu" && isNested && {
+        role: "menuitem"
+      },
+      ...role === "select" && {
+        "aria-autocomplete": "none"
+      },
+      ...role === "combobox" && {
+        "aria-autocomplete": "list"
+      }
+    };
+  }, [ariaRole, floatingId, isNested, open, referenceId, role]);
+  const floating = React3.useMemo(() => {
+    const floatingProps = {
+      id: floatingId,
+      ...ariaRole && {
+        role: ariaRole
+      }
+    };
+    if (ariaRole === "tooltip" || role === "label") {
+      return floatingProps;
+    }
+    return {
+      ...floatingProps,
+      ...ariaRole === "menu" && {
+        "aria-labelledby": referenceId
+      }
+    };
+  }, [ariaRole, floatingId, referenceId, role]);
+  const item = React3.useCallback((_ref) => {
+    let {
+      active,
+      selected
+    } = _ref;
+    const commonProps = {
+      role: "option",
+      ...active && {
+        id: floatingId + "-fui-option"
+      }
+    };
+    switch (role) {
+      case "select":
+      case "combobox":
+        return {
+          ...commonProps,
+          "aria-selected": selected
+        };
+    }
+    return {};
+  }, [floatingId, role]);
+  return React3.useMemo(() => enabled ? {
+    reference,
+    floating,
+    item
+  } : {}, [enabled, reference, floating, item]);
+}
+var camelCaseToKebabCase = (str) => str.replace(/[A-Z]+(?![a-z])|[A-Z]/g, ($7, ofs) => (ofs ? "-" : "") + $7.toLowerCase());
+function execWithArgsOrReturn(valueOrFn, args) {
+  return typeof valueOrFn === "function" ? valueOrFn(args) : valueOrFn;
+}
+function useDelayUnmount(open, durationMs) {
+  const [isMounted, setIsMounted] = React3.useState(open);
+  if (open && !isMounted) {
+    setIsMounted(true);
+  }
+  React3.useEffect(() => {
+    if (!open && isMounted) {
+      const timeout2 = setTimeout(() => setIsMounted(false), durationMs);
+      return () => clearTimeout(timeout2);
+    }
+  }, [open, isMounted, durationMs]);
+  return isMounted;
+}
+function useTransitionStatus(context, props) {
+  if (props === void 0) {
+    props = {};
+  }
+  const {
+    open,
+    elements: {
+      floating
+    }
+  } = context;
+  const {
+    duration = 250
+  } = props;
+  const isNumberDuration = typeof duration === "number";
+  const closeDuration = (isNumberDuration ? duration : duration.close) || 0;
+  const [status, setStatus] = React3.useState("unmounted");
+  const isMounted = useDelayUnmount(open, closeDuration);
+  if (!isMounted && status === "close") {
+    setStatus("unmounted");
+  }
+  index(() => {
+    if (!floating) return;
+    if (open) {
+      setStatus("initial");
+      const frame = requestAnimationFrame(() => {
+        ReactDOM2.flushSync(() => {
+          setStatus("open");
+        });
+      });
+      return () => {
+        cancelAnimationFrame(frame);
+      };
+    }
+    setStatus("close");
+  }, [open, floating]);
+  return {
+    isMounted,
+    status
+  };
+}
+function useTransitionStyles(context, props) {
+  if (props === void 0) {
+    props = {};
+  }
+  const {
+    initial: unstable_initial = {
+      opacity: 0
+    },
+    open: unstable_open,
+    close: unstable_close,
+    common: unstable_common,
+    duration = 250
+  } = props;
+  const placement = context.placement;
+  const side = placement.split("-")[0];
+  const fnArgs = React3.useMemo(() => ({
+    side,
+    placement
+  }), [side, placement]);
+  const isNumberDuration = typeof duration === "number";
+  const openDuration = (isNumberDuration ? duration : duration.open) || 0;
+  const closeDuration = (isNumberDuration ? duration : duration.close) || 0;
+  const [styles, setStyles] = React3.useState(() => ({
+    ...execWithArgsOrReturn(unstable_common, fnArgs),
+    ...execWithArgsOrReturn(unstable_initial, fnArgs)
+  }));
+  const {
+    isMounted,
+    status
+  } = useTransitionStatus(context, {
+    duration
+  });
+  const initialRef = useLatestRef(unstable_initial);
+  const openRef = useLatestRef(unstable_open);
+  const closeRef = useLatestRef(unstable_close);
+  const commonRef = useLatestRef(unstable_common);
+  index(() => {
+    const initialStyles = execWithArgsOrReturn(initialRef.current, fnArgs);
+    const closeStyles = execWithArgsOrReturn(closeRef.current, fnArgs);
+    const commonStyles = execWithArgsOrReturn(commonRef.current, fnArgs);
+    const openStyles = execWithArgsOrReturn(openRef.current, fnArgs) || Object.keys(initialStyles).reduce((acc, key) => {
+      acc[key] = "";
+      return acc;
+    }, {});
+    if (status === "initial") {
+      setStyles((styles2) => ({
+        transitionProperty: styles2.transitionProperty,
+        ...commonStyles,
+        ...initialStyles
+      }));
+    }
+    if (status === "open") {
+      setStyles({
+        transitionProperty: Object.keys(openStyles).map(camelCaseToKebabCase).join(","),
+        transitionDuration: openDuration + "ms",
+        ...commonStyles,
+        ...openStyles
+      });
+    }
+    if (status === "close") {
+      const styles2 = closeStyles || initialStyles;
+      setStyles({
+        transitionProperty: Object.keys(styles2).map(camelCaseToKebabCase).join(","),
+        transitionDuration: closeDuration + "ms",
+        ...commonStyles,
+        ...styles2
+      });
+    }
+  }, [closeDuration, closeRef, initialRef, openRef, commonRef, openDuration, status, fnArgs]);
+  return {
+    isMounted,
+    styles
+  };
+}
+function getNodeChildren2(nodes, id3, onlyOpenChildren) {
+  if (onlyOpenChildren === void 0) {
+    onlyOpenChildren = true;
+  }
+  const directChildren = nodes.filter((node2) => {
+    var _node$context;
+    return node2.parentId === id3 && (!onlyOpenChildren || ((_node$context = node2.context) == null ? void 0 : _node$context.open));
+  });
+  return directChildren.flatMap((child) => [child, ...getNodeChildren2(nodes, child.id, onlyOpenChildren)]);
+}
+function isPointInPolygon(point4, polygon) {
+  const [x3, y4] = point4;
+  let isInside2 = false;
+  const length = polygon.length;
+  for (let i3 = 0, j6 = length - 1; i3 < length; j6 = i3++) {
+    const [xi3, yi3] = polygon[i3] || [0, 0];
+    const [xj, yj] = polygon[j6] || [0, 0];
+    const intersect = yi3 >= y4 !== yj >= y4 && x3 <= (xj - xi3) * (y4 - yi3) / (yj - yi3) + xi3;
+    if (intersect) {
+      isInside2 = !isInside2;
+    }
+  }
+  return isInside2;
+}
+function isInside(point4, rect) {
+  return point4[0] >= rect.x && point4[0] <= rect.x + rect.width && point4[1] >= rect.y && point4[1] <= rect.y + rect.height;
+}
+function safePolygon(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    buffer = 0.5,
+    blockPointerEvents = false,
+    requireIntent = true
+  } = options;
+  const timeoutRef = {
+    current: -1
+  };
+  let hasLanded = false;
+  let lastX = null;
+  let lastY = null;
+  let lastCursorTime = typeof performance !== "undefined" ? performance.now() : 0;
+  function getCursorSpeed(x3, y4) {
+    const currentTime = performance.now();
+    const elapsedTime = currentTime - lastCursorTime;
+    if (lastX === null || lastY === null || elapsedTime === 0) {
+      lastX = x3;
+      lastY = y4;
+      lastCursorTime = currentTime;
+      return null;
+    }
+    const deltaX = x3 - lastX;
+    const deltaY = y4 - lastY;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    const speed = distance / elapsedTime;
+    lastX = x3;
+    lastY = y4;
+    lastCursorTime = currentTime;
+    return speed;
+  }
+  const fn5 = (_ref) => {
+    let {
+      x: x3,
+      y: y4,
+      placement,
+      elements,
+      onClose,
+      nodeId,
+      tree
+    } = _ref;
+    return function onMouseMove(event) {
+      function close2() {
+        clearTimeoutIfSet(timeoutRef);
+        onClose();
+      }
+      clearTimeoutIfSet(timeoutRef);
+      if (!elements.domReference || !elements.floating || placement == null || x3 == null || y4 == null) {
+        return;
+      }
+      const {
+        clientX,
+        clientY
+      } = event;
+      const clientPoint = [clientX, clientY];
+      const target = getTarget2(event);
+      const isLeave = event.type === "mouseleave";
+      const isOverFloatingEl = contains3(elements.floating, target);
+      const isOverReferenceEl = contains3(elements.domReference, target);
+      const refRect = elements.domReference.getBoundingClientRect();
+      const rect = elements.floating.getBoundingClientRect();
+      const side = placement.split("-")[0];
+      const cursorLeaveFromRight = x3 > rect.right - rect.width / 2;
+      const cursorLeaveFromBottom = y4 > rect.bottom - rect.height / 2;
+      const isOverReferenceRect = isInside(clientPoint, refRect);
+      const isFloatingWider = rect.width > refRect.width;
+      const isFloatingTaller = rect.height > refRect.height;
+      const left = (isFloatingWider ? refRect : rect).left;
+      const right = (isFloatingWider ? refRect : rect).right;
+      const top2 = (isFloatingTaller ? refRect : rect).top;
+      const bottom = (isFloatingTaller ? refRect : rect).bottom;
+      if (isOverFloatingEl) {
+        hasLanded = true;
+        if (!isLeave) {
+          return;
+        }
+      }
+      if (isOverReferenceEl) {
+        hasLanded = false;
+      }
+      if (isOverReferenceEl && !isLeave) {
+        hasLanded = true;
+        return;
+      }
+      if (isLeave && isElement(event.relatedTarget) && contains3(elements.floating, event.relatedTarget)) {
+        return;
+      }
+      if (tree && getNodeChildren2(tree.nodesRef.current, nodeId).length) {
+        return;
+      }
+      if (side === "top" && y4 >= refRect.bottom - 1 || side === "bottom" && y4 <= refRect.top + 1 || side === "left" && x3 >= refRect.right - 1 || side === "right" && x3 <= refRect.left + 1) {
+        return close2();
+      }
+      let rectPoly = [];
+      switch (side) {
+        case "top":
+          rectPoly = [[left, refRect.top + 1], [left, rect.bottom - 1], [right, rect.bottom - 1], [right, refRect.top + 1]];
+          break;
+        case "bottom":
+          rectPoly = [[left, rect.top + 1], [left, refRect.bottom - 1], [right, refRect.bottom - 1], [right, rect.top + 1]];
+          break;
+        case "left":
+          rectPoly = [[rect.right - 1, bottom], [rect.right - 1, top2], [refRect.left + 1, top2], [refRect.left + 1, bottom]];
+          break;
+        case "right":
+          rectPoly = [[refRect.right - 1, bottom], [refRect.right - 1, top2], [rect.left + 1, top2], [rect.left + 1, bottom]];
+          break;
+      }
+      function getPolygon(_ref2) {
+        let [x4, y5] = _ref2;
+        switch (side) {
+          case "top": {
+            const cursorPointOne = [isFloatingWider ? x4 + buffer / 2 : cursorLeaveFromRight ? x4 + buffer * 4 : x4 - buffer * 4, y5 + buffer + 1];
+            const cursorPointTwo = [isFloatingWider ? x4 - buffer / 2 : cursorLeaveFromRight ? x4 + buffer * 4 : x4 - buffer * 4, y5 + buffer + 1];
+            const commonPoints = [[rect.left, cursorLeaveFromRight ? rect.bottom - buffer : isFloatingWider ? rect.bottom - buffer : rect.top], [rect.right, cursorLeaveFromRight ? isFloatingWider ? rect.bottom - buffer : rect.top : rect.bottom - buffer]];
+            return [cursorPointOne, cursorPointTwo, ...commonPoints];
+          }
+          case "bottom": {
+            const cursorPointOne = [isFloatingWider ? x4 + buffer / 2 : cursorLeaveFromRight ? x4 + buffer * 4 : x4 - buffer * 4, y5 - buffer];
+            const cursorPointTwo = [isFloatingWider ? x4 - buffer / 2 : cursorLeaveFromRight ? x4 + buffer * 4 : x4 - buffer * 4, y5 - buffer];
+            const commonPoints = [[rect.left, cursorLeaveFromRight ? rect.top + buffer : isFloatingWider ? rect.top + buffer : rect.bottom], [rect.right, cursorLeaveFromRight ? isFloatingWider ? rect.top + buffer : rect.bottom : rect.top + buffer]];
+            return [cursorPointOne, cursorPointTwo, ...commonPoints];
+          }
+          case "left": {
+            const cursorPointOne = [x4 + buffer + 1, isFloatingTaller ? y5 + buffer / 2 : cursorLeaveFromBottom ? y5 + buffer * 4 : y5 - buffer * 4];
+            const cursorPointTwo = [x4 + buffer + 1, isFloatingTaller ? y5 - buffer / 2 : cursorLeaveFromBottom ? y5 + buffer * 4 : y5 - buffer * 4];
+            const commonPoints = [[cursorLeaveFromBottom ? rect.right - buffer : isFloatingTaller ? rect.right - buffer : rect.left, rect.top], [cursorLeaveFromBottom ? isFloatingTaller ? rect.right - buffer : rect.left : rect.right - buffer, rect.bottom]];
+            return [...commonPoints, cursorPointOne, cursorPointTwo];
+          }
+          case "right": {
+            const cursorPointOne = [x4 - buffer, isFloatingTaller ? y5 + buffer / 2 : cursorLeaveFromBottom ? y5 + buffer * 4 : y5 - buffer * 4];
+            const cursorPointTwo = [x4 - buffer, isFloatingTaller ? y5 - buffer / 2 : cursorLeaveFromBottom ? y5 + buffer * 4 : y5 - buffer * 4];
+            const commonPoints = [[cursorLeaveFromBottom ? rect.left + buffer : isFloatingTaller ? rect.left + buffer : rect.right, rect.top], [cursorLeaveFromBottom ? isFloatingTaller ? rect.left + buffer : rect.right : rect.left + buffer, rect.bottom]];
+            return [cursorPointOne, cursorPointTwo, ...commonPoints];
+          }
+        }
+      }
+      if (isPointInPolygon([clientX, clientY], rectPoly)) {
+        return;
+      }
+      if (hasLanded && !isOverReferenceRect) {
+        return close2();
+      }
+      if (!isLeave && requireIntent) {
+        const cursorSpeed = getCursorSpeed(event.clientX, event.clientY);
+        const cursorSpeedThreshold = 0.1;
+        if (cursorSpeed !== null && cursorSpeed < cursorSpeedThreshold) {
+          return close2();
+        }
+      }
+      if (!isPointInPolygon([clientX, clientY], getPolygon([x3, y4]))) {
+        close2();
+      } else if (!hasLanded && requireIntent) {
+        timeoutRef.current = window.setTimeout(close2, 40);
+      }
+    };
+  };
+  fn5.__options = {
+    blockPointerEvents
+  };
+  return fn5;
+}
 
 // node_modules/@tiptap/core/dist/rolldown-runtime-D7D4PA-g.js
 var __defProp2 = Object.defineProperty;
@@ -52593,7 +57729,7 @@ function surrogateLow3(ch) {
 function surrogateHigh3(ch) {
   return ch >= 55296 && ch < 56320;
 }
-var Fragment = class _Fragment {
+var Fragment2 = class _Fragment {
   /**
   @internal
   */
@@ -52885,7 +58021,7 @@ var Fragment = class _Fragment {
     throw new RangeError("Can not convert " + nodes + " to a Fragment" + (nodes.nodesBetween ? " (looks like multiple versions of prosemirror-model were loaded)" : ""));
   }
 };
-Fragment.empty = new Fragment([], 0);
+Fragment2.empty = new Fragment2([], 0);
 var found = { index: 0, offset: 0 };
 function retIndex(index4, offset4) {
   found.index = index4;
@@ -53110,7 +58246,7 @@ var Slice = class _Slice {
     let openStart = json.openStart || 0, openEnd = json.openEnd || 0;
     if (typeof openStart != "number" || typeof openEnd != "number")
       throw new RangeError("Invalid input for Slice.fromJSON");
-    return new _Slice(Fragment.fromJSON(schema2, json.content), openStart, openEnd);
+    return new _Slice(Fragment2.fromJSON(schema2, json.content), openStart, openEnd);
   }
   /**
   Create a slice from a fragment by taking the maximum possible
@@ -53125,7 +58261,7 @@ var Slice = class _Slice {
     return new _Slice(fragment, openStart, openEnd);
   }
 };
-Slice.empty = new Slice(Fragment.empty, 0, 0);
+Slice.empty = new Slice(Fragment2.empty, 0, 0);
 function removeRange(content4, from2, to) {
   let { index: index4, offset: offset4 } = content4.findIndex(from2), child = content4.maybeChild(index4);
   let { index: indexTo, offset: offsetTo } = content4.findIndex(to);
@@ -53224,7 +58360,7 @@ function replaceThreeWay($from, $start, $end, $to, depth) {
       addNode(close(openEnd, replaceTwoWay($end, $to, depth + 1)), content4);
   }
   addRange2($to, null, depth, content4);
-  return new Fragment(content4);
+  return new Fragment2(content4);
 }
 function replaceTwoWay($from, $to, depth) {
   let content4 = [];
@@ -53234,13 +58370,13 @@ function replaceTwoWay($from, $to, depth) {
     addNode(close(type, replaceTwoWay($from, $to, depth + 1)), content4);
   }
   addRange2($to, null, depth, content4);
-  return new Fragment(content4);
+  return new Fragment2(content4);
 }
 function prepareSliceForReplace(slice2, $along) {
   let extra = $along.depth - slice2.openStart, parent = $along.node(extra);
   let node2 = parent.copy(slice2.content);
   for (let i3 = extra - 1; i3 >= 0; i3--)
-    node2 = $along.node(i3).copy(Fragment.from(node2));
+    node2 = $along.node(i3).copy(Fragment2.from(node2));
   return {
     start: node2.resolveNoCache(slice2.openStart + extra),
     end: node2.resolveNoCache(node2.content.size - slice2.openEnd - extra)
@@ -53579,7 +58715,7 @@ var Node2 = class _Node {
     this.type = type;
     this.attrs = attrs;
     this.marks = marks2;
-    this.content = content4 || Fragment.empty;
+    this.content = content4 || Fragment2.empty;
   }
   /**
   The array of this node's child nodes.
@@ -53885,7 +59021,7 @@ var Node2 = class _Node {
   can optionally pass `start` and `end` indices into the
   replacement fragment.
   */
-  canReplace(from2, to, replacement = Fragment.empty, start2 = 0, end = replacement.childCount) {
+  canReplace(from2, to, replacement = Fragment2.empty, start2 = 0, end = replacement.childCount) {
     let one3 = this.contentMatchAt(from2).matchFragment(replacement, start2, end);
     let two = one3 && one3.matchFragment(this.content, to);
     if (!two || !two.validEnd)
@@ -53967,7 +59103,7 @@ var Node2 = class _Node {
         throw new RangeError("Invalid text node in JSON");
       return schema2.text(json.text, marks2);
     }
-    let content4 = Fragment.fromJSON(schema2, json.content);
+    let content4 = Fragment2.fromJSON(schema2, json.content);
     let node2 = schema2.nodeType(json.type).create(json.attrs, content4, marks2);
     node2.type.checkAttrs(node2.attrs);
     return node2;
@@ -54109,7 +59245,7 @@ var ContentMatch = class _ContentMatch {
     function search2(match, types2) {
       let finished = match.matchFragment(after, startIndex);
       if (finished && (!toEnd || finished.validEnd))
-        return Fragment.from(types2.map((tp) => tp.createAndFill()));
+        return Fragment2.from(types2.map((tp) => tp.createAndFill()));
       for (let i3 = 0; i3 < match.next.length; i3++) {
         let { type, next } = match.next[i3];
         if (!(type.isText || type.hasRequiredAttrs()) && seen.indexOf(next) == -1) {
@@ -54560,7 +59696,7 @@ var NodeType2 = class _NodeType {
   create(attrs = null, content4, marks2) {
     if (this.isText)
       throw new Error("NodeType.create can't construct text nodes");
-    return new Node2(this, this.computeAttrs(attrs), Fragment.from(content4), Mark.setFrom(marks2));
+    return new Node2(this, this.computeAttrs(attrs), Fragment2.from(content4), Mark.setFrom(marks2));
   }
   /**
   Like [`create`](https://prosemirror.net/docs/ref/#model.NodeType.create), but check the given content
@@ -54568,7 +59704,7 @@ var NodeType2 = class _NodeType {
   if it doesn't match.
   */
   createChecked(attrs = null, content4, marks2) {
-    content4 = Fragment.from(content4);
+    content4 = Fragment2.from(content4);
     this.checkContent(content4);
     return new Node2(this, this.computeAttrs(attrs), content4, Mark.setFrom(marks2));
   }
@@ -54582,7 +59718,7 @@ var NodeType2 = class _NodeType {
   */
   createAndFill(attrs = null, content4, marks2) {
     attrs = this.computeAttrs(attrs);
-    content4 = Fragment.from(content4);
+    content4 = Fragment2.from(content4);
     if (content4.size) {
       let before = this.contentMatch.fillBefore(content4);
       if (!before)
@@ -54590,7 +59726,7 @@ var NodeType2 = class _NodeType {
       content4 = before.append(content4);
     }
     let matched = this.contentMatch.matchFragment(content4);
-    let after = matched && matched.fillBefore(Fragment.empty, true);
+    let after = matched && matched.fillBefore(Fragment2.empty, true);
     if (!after)
       return null;
     return new Node2(this, attrs, content4.append(after), Mark.setFrom(marks2));
@@ -54914,7 +60050,7 @@ var DOMParser2 = class _DOMParser {
   matchTag(dom, context, after) {
     for (let i3 = after ? this.tags.indexOf(after) + 1 : 0; i3 < this.tags.length; i3++) {
       let rule = this.tags[i3];
-      if (matches(dom, rule.tag) && (rule.namespace === void 0 || dom.namespaceURI == rule.namespace) && (!rule.context || context.matchesContext(rule.context))) {
+      if (matches2(dom, rule.tag) && (rule.namespace === void 0 || dom.namespaceURI == rule.namespace) && (!rule.context || context.matchesContext(rule.context))) {
         if (rule.getAttrs) {
           let result = rule.getAttrs(dom);
           if (result === false)
@@ -55055,7 +60191,7 @@ var NodeContext = class {
     if (!this.match) {
       if (!this.type)
         return [];
-      let fill2 = this.type.contentMatch.fillBefore(Fragment.from(node2));
+      let fill2 = this.type.contentMatch.fillBefore(Fragment2.from(node2));
       if (fill2) {
         this.match = this.type.contentMatch.matchFragment(fill2);
       } else {
@@ -55081,9 +60217,9 @@ var NodeContext = class {
           this.content[this.content.length - 1] = text7.withText(text7.text.slice(0, text7.text.length - m2[0].length));
       }
     }
-    let content4 = Fragment.from(this.content);
+    let content4 = Fragment2.from(this.content);
     if (!openEnd && this.match)
-      content4 = content4.append(this.match.fillBefore(Fragment.empty, true));
+      content4 = content4.append(this.match.fillBefore(Fragment2.empty, true));
     return this.type ? this.type.create(this.attrs, content4, this.marks) : content4;
   }
   inlineContext(node2) {
@@ -55497,7 +60633,7 @@ function normalizeList(dom) {
     }
   }
 }
-function matches(dom, selector) {
+function matches2(dom, selector) {
   return (dom.matches || dom.msMatchesSelector || dom.webkitMatchesSelector || dom.mozMatchesSelector).call(dom, selector);
 }
 function copy(obj) {
@@ -56113,7 +61249,7 @@ function mapFragment(fragment, f2, parent) {
       child = f2(child, parent, i3);
     mapped.push(child);
   }
-  return Fragment.fromArray(mapped);
+  return Fragment2.fromArray(mapped);
 }
 var AddMarkStep = class _AddMarkStep extends Step {
   /**
@@ -56230,7 +61366,7 @@ var AddNodeMarkStep = class _AddNodeMarkStep extends Step {
     if (!node2)
       return StepResult.fail("No node at mark step's position");
     let updated = node2.type.create(node2.attrs, null, this.mark.addToSet(node2.marks));
-    return StepResult.fromReplace(doc4, this.pos, this.pos + 1, new Slice(Fragment.from(updated), 0, node2.isLeaf ? 0 : 1));
+    return StepResult.fromReplace(doc4, this.pos, this.pos + 1, new Slice(Fragment2.from(updated), 0, node2.isLeaf ? 0 : 1));
   }
   invert(doc4) {
     let node2 = doc4.nodeAt(this.pos);
@@ -56276,7 +61412,7 @@ var RemoveNodeMarkStep = class _RemoveNodeMarkStep extends Step {
     if (!node2)
       return StepResult.fail("No node at mark step's position");
     let updated = node2.type.create(node2.attrs, null, this.mark.removeFromSet(node2.marks));
-    return StepResult.fromReplace(doc4, this.pos, this.pos + 1, new Slice(Fragment.from(updated), 0, node2.isLeaf ? 0 : 1));
+    return StepResult.fromReplace(doc4, this.pos, this.pos + 1, new Slice(Fragment2.from(updated), 0, node2.isLeaf ? 0 : 1));
   }
   invert(doc4) {
     let node2 = doc4.nodeAt(this.pos);
@@ -56543,7 +61679,7 @@ function clearIncompatible(tr4, pos, parentType, match = parentType.contentMatch
         let m2, newline3 = /\r?\n|\r/g, slice2;
         while (m2 = newline3.exec(child.text)) {
           if (!slice2)
-            slice2 = new Slice(Fragment.from(parentType.schema.text(" ", parentType.allowedMarks(child.marks))), 0, 0);
+            slice2 = new Slice(Fragment2.from(parentType.schema.text(" ", parentType.allowedMarks(child.marks))), 0, 0);
           replSteps.push(new ReplaceStep(cur + m2.index, cur + m2.index + m2[0].length, slice2));
         }
       }
@@ -56551,7 +61687,7 @@ function clearIncompatible(tr4, pos, parentType, match = parentType.contentMatch
     cur = end;
   }
   if (!match.validEnd) {
-    let fill2 = match.fillBefore(Fragment.empty, true);
+    let fill2 = match.fillBefore(Fragment2.empty, true);
     tr4.replace(cur, cur, new Slice(fill2, 0, 0));
   }
   for (let i3 = replSteps.length - 1; i3 >= 0; i3--)
@@ -56581,20 +61717,20 @@ function lift(tr4, range2, target) {
   let { $from, $to, depth } = range2;
   let gapStart = $from.before(depth + 1), gapEnd = $to.after(depth + 1);
   let start2 = gapStart, end = gapEnd;
-  let before = Fragment.empty, openStart = 0;
+  let before = Fragment2.empty, openStart = 0;
   for (let d = depth, splitting = false; d > target; d--)
     if (splitting || $from.index(d) > 0) {
       splitting = true;
-      before = Fragment.from($from.node(d).copy(before));
+      before = Fragment2.from($from.node(d).copy(before));
       openStart++;
     } else {
       start2--;
     }
-  let after = Fragment.empty, openEnd = 0;
+  let after = Fragment2.empty, openEnd = 0;
   for (let d = depth, splitting = false; d > target; d--)
     if (splitting || $to.after(d + 1) < $to.end(d)) {
       splitting = true;
-      after = Fragment.from($to.node(d).copy(after));
+      after = Fragment2.from($to.node(d).copy(after));
       openEnd++;
     } else {
       end++;
@@ -56634,14 +61770,14 @@ function findWrappingInside(range2, type) {
   return inside;
 }
 function wrap(tr4, range2, wrappers) {
-  let content4 = Fragment.empty;
+  let content4 = Fragment2.empty;
   for (let i3 = wrappers.length - 1; i3 >= 0; i3--) {
     if (content4.size) {
       let match = wrappers[i3].type.contentMatch.matchFragment(content4);
       if (!match || !match.validEnd)
         throw new RangeError("Wrapper type given to Transform.wrap does not form valid content of its parent wrapper");
     }
-    content4 = Fragment.from(wrappers[i3].type.create(wrappers[i3].attrs, content4));
+    content4 = Fragment2.from(wrappers[i3].type.create(wrappers[i3].attrs, content4));
   }
   let start2 = range2.start, end = range2.end;
   tr4.step(new ReplaceAroundStep(start2, end, start2, end, new Slice(content4, 0, 0), wrappers.length, true));
@@ -56666,7 +61802,7 @@ function setBlockType(tr4, from2, to, type, attrs) {
       clearIncompatible(tr4, tr4.mapping.slice(mapFrom).map(pos, 1), type, void 0, convertNewlines === null);
       let mapping = tr4.mapping.slice(mapFrom);
       let startM = mapping.map(pos, 1), endM = mapping.map(pos + node2.nodeSize, 1);
-      tr4.step(new ReplaceAroundStep(startM, endM, startM + 1, endM - 1, new Slice(Fragment.from(type.create(attrsHere, null, node2.marks)), 0, 0), 1, true));
+      tr4.step(new ReplaceAroundStep(startM, endM, startM + 1, endM - 1, new Slice(Fragment2.from(type.create(attrsHere, null, node2.marks)), 0, 0), 1, true));
       if (convertNewlines === true)
         replaceNewlines(tr4, node2, pos, mapFrom);
       return false;
@@ -56707,7 +61843,7 @@ function setNodeMarkup(tr4, pos, type, attrs, marks2) {
     return tr4.replaceWith(pos, pos + node2.nodeSize, newNode);
   if (!type.validContent(node2.content))
     throw new RangeError("Invalid content for node type " + type.name);
-  tr4.step(new ReplaceAroundStep(pos, pos + node2.nodeSize, pos + 1, pos + node2.nodeSize - 1, new Slice(Fragment.from(newNode), 0, 0), 1, true));
+  tr4.step(new ReplaceAroundStep(pos, pos + node2.nodeSize, pos + 1, pos + node2.nodeSize - 1, new Slice(Fragment2.from(newNode), 0, 0), 1, true));
 }
 function canSplit(doc4, pos, depth = 1, typesAfter) {
   let $pos = doc4.resolve(pos), base2 = $pos.depth - depth;
@@ -56731,11 +61867,11 @@ function canSplit(doc4, pos, depth = 1, typesAfter) {
   return $pos.node(base2).canReplaceWith(index4, index4, baseType ? baseType.type : $pos.node(base2 + 1).type);
 }
 function split(tr4, pos, depth = 1, typesAfter) {
-  let $pos = tr4.doc.resolve(pos), before = Fragment.empty, after = Fragment.empty;
+  let $pos = tr4.doc.resolve(pos), before = Fragment2.empty, after = Fragment2.empty;
   for (let d = $pos.depth, e6 = $pos.depth - depth, i3 = depth - 1; d > e6; d--, i3--) {
-    before = Fragment.from($pos.node(d).copy(before));
+    before = Fragment2.from($pos.node(d).copy(before));
     let typeAfter = typesAfter && typesAfter[i3];
-    after = Fragment.from(typeAfter ? typeAfter.type.create(typeAfter.attrs, after) : $pos.node(d).copy(after));
+    after = Fragment2.from(typeAfter ? typeAfter.type.create(typeAfter.attrs, after) : $pos.node(d).copy(after));
   }
   tr4.step(new ReplaceStep(pos, pos, new Slice(before.append(after), depth, depth), true));
 }
@@ -56874,7 +62010,7 @@ var Fitter = class {
     this.$to = $to;
     this.unplaced = unplaced;
     this.frontier = [];
-    this.placed = Fragment.empty;
+    this.placed = Fragment2.empty;
     for (let i3 = 0; i3 <= $from.depth; i3++) {
       let node2 = $from.node(i3);
       this.frontier.push({
@@ -56883,7 +62019,7 @@ var Fitter = class {
       });
     }
     for (let i3 = $from.depth; i3 > 0; i3--)
-      this.placed = Fragment.from($from.node(i3).copy(this.placed));
+      this.placed = Fragment2.from($from.node(i3).copy(this.placed));
   }
   get depth() {
     return this.frontier.length - 1;
@@ -56940,7 +62076,7 @@ var Fitter = class {
         let first2 = fragment.firstChild;
         for (let frontierDepth = this.depth; frontierDepth >= 0; frontierDepth--) {
           let { type, match } = this.frontier[frontierDepth], wrap4, inject2 = null;
-          if (pass == 1 && (first2 ? match.matchType(first2.type) || (inject2 = match.fillBefore(Fragment.from(first2), false)) : parent && type.compatibleContent(parent.type)))
+          if (pass == 1 && (first2 ? match.matchType(first2.type) || (inject2 = match.fillBefore(Fragment2.from(first2), false)) : parent && type.compatibleContent(parent.type)))
             return { sliceDepth, frontierDepth, parent, inject: inject2 };
           else if (pass == 2 && first2 && (wrap4 = match.findWrapping(first2.type)))
             return { sliceDepth, frontierDepth, parent, wrap: wrap4 };
@@ -57001,7 +62137,7 @@ var Fitter = class {
     let toEnd = taken == fragment.childCount;
     if (!toEnd)
       openEndCount = -1;
-    this.placed = addToFragment(this.placed, frontierDepth, Fragment.from(add));
+    this.placed = addToFragment(this.placed, frontierDepth, Fragment2.from(add));
     this.frontier[frontierDepth].match = match;
     if (toEnd && openEndCount < 0 && parent && parent.type == this.frontier[this.depth].type && this.frontier.length > 1)
       this.closeFrontierNode();
@@ -57057,12 +62193,12 @@ var Fitter = class {
   openFrontierNode(type, attrs = null, content4) {
     let top2 = this.frontier[this.depth];
     top2.match = top2.match.matchType(type);
-    this.placed = addToFragment(this.placed, this.depth, Fragment.from(type.create(attrs, content4)));
+    this.placed = addToFragment(this.placed, this.depth, Fragment2.from(type.create(attrs, content4)));
     this.frontier.push({ type, match: type.contentMatch });
   }
   closeFrontierNode() {
     let open = this.frontier.pop();
-    let add = open.match.fillBefore(Fragment.empty, true);
+    let add = open.match.fillBefore(Fragment2.empty, true);
     if (add.childCount)
       this.placed = addToFragment(this.placed, this.frontier.length, add);
   }
@@ -57091,7 +62227,7 @@ function closeNodeStart(node2, openStart, openEnd) {
   if (openStart > 0) {
     frag = node2.type.contentMatch.fillBefore(frag).append(frag);
     if (openEnd <= 0)
-      frag = frag.append(node2.type.contentMatch.matchFragment(frag).fillBefore(Fragment.empty, true));
+      frag = frag.append(node2.type.contentMatch.matchFragment(frag).fillBefore(Fragment2.empty, true));
   }
   return node2.copy(frag);
 }
@@ -57191,7 +62327,7 @@ function closeFragment(fragment, depth, oldOpen, newOpen, parent) {
   if (depth > newOpen) {
     let match = parent.contentMatchAt(0);
     let start2 = match.fillBefore(fragment).append(fragment);
-    fragment = start2.append(match.matchFragment(start2).fillBefore(Fragment.empty, true));
+    fragment = start2.append(match.matchFragment(start2).fillBefore(Fragment2.empty, true));
   }
   return fragment;
 }
@@ -57201,7 +62337,7 @@ function replaceRangeWith(tr4, from2, to, node2) {
     if (point4 != null)
       from2 = to = point4;
   }
-  tr4.replaceRange(from2, to, new Slice(Fragment.from(node2), 0, 0));
+  tr4.replaceRange(from2, to, new Slice(Fragment2.from(node2), 0, 0));
 }
 function deleteRange(tr4, from2, to) {
   let $from = tr4.doc.resolve(from2), $to = tr4.doc.resolve(to);
@@ -57266,7 +62402,7 @@ var AttrStep = class _AttrStep extends Step {
       attrs[name3] = node2.attrs[name3];
     attrs[this.attr] = this.value;
     let updated = node2.type.create(attrs, null, node2.marks);
-    return StepResult.fromReplace(doc4, this.pos, this.pos + 1, new Slice(Fragment.from(updated), 0, node2.isLeaf ? 0 : 1));
+    return StepResult.fromReplace(doc4, this.pos, this.pos + 1, new Slice(Fragment2.from(updated), 0, node2.isLeaf ? 0 : 1));
   }
   getMap() {
     return StepMap.empty;
@@ -57422,7 +62558,7 @@ var Transform = class {
   fragment, node, or array of nodes.
   */
   replaceWith(from2, to, content4) {
-    return this.replace(from2, to, new Slice(Fragment.from(content4), 0, 0));
+    return this.replace(from2, to, new Slice(Fragment2.from(content4), 0, 0));
   }
   /**
   Delete the content between the given positions.
@@ -57924,7 +63060,7 @@ var NodeSelection = class _NodeSelection extends Selection {
     return new _NodeSelection($pos);
   }
   content() {
-    return new Slice(Fragment.from(this.node), 0, 0);
+    return new Slice(Fragment2.from(this.node), 0, 0);
   }
   eq(other) {
     return other instanceof _NodeSelection && other.anchor == this.anchor;
@@ -58926,10 +64062,10 @@ function deleteBarrier(state, $cut, dispatch, dir) {
   let canDelAfter = !isolated && $cut.parent.canReplace($cut.index(), $cut.index() + 1);
   if (canDelAfter && (conn = (match = before.contentMatchAt(before.childCount)).findWrapping(after.type)) && match.matchType(conn[0] || after.type).validEnd) {
     if (dispatch) {
-      let end = $cut.pos + after.nodeSize, wrap4 = Fragment.empty;
+      let end = $cut.pos + after.nodeSize, wrap4 = Fragment2.empty;
       for (let i3 = conn.length - 1; i3 >= 0; i3--)
-        wrap4 = Fragment.from(conn[i3].create(null, wrap4));
-      wrap4 = Fragment.from(before.copy(wrap4));
+        wrap4 = Fragment2.from(conn[i3].create(null, wrap4));
+      wrap4 = Fragment2.from(before.copy(wrap4));
       let tr4 = state.tr.step(new ReplaceAroundStep($cut.pos - 1, end, $cut.pos, end, new Slice(wrap4, 1, 0), conn.length, true));
       let $joinAt = tr4.doc.resolve(end + 2 * conn.length);
       if ($joinAt.nodeAfter && $joinAt.nodeAfter.type == before.type && canJoin(tr4.doc, $joinAt.pos))
@@ -58958,9 +64094,9 @@ function deleteBarrier(state, $cut, dispatch, dir) {
       afterDepth++;
     if (at4.canReplace(at4.childCount, at4.childCount, afterText.content)) {
       if (dispatch) {
-        let end = Fragment.empty;
+        let end = Fragment2.empty;
         for (let i3 = wrap4.length - 1; i3 >= 0; i3--)
-          end = Fragment.from(wrap4[i3].copy(end));
+          end = Fragment2.from(wrap4[i3].copy(end));
         let tr4 = state.tr.step(new ReplaceAroundStep($cut.pos - wrap4.length, $cut.pos + after.nodeSize, $cut.pos + afterDepth, $cut.pos + after.nodeSize - afterDepth, new Slice(end, wrap4.length, 0), 0, true));
         dispatch(tr4.scrollIntoView());
       }
@@ -59097,9 +64233,9 @@ function wrapRangeInList(tr4, range2, listType, attrs = null) {
   return true;
 }
 function doWrapInList(tr4, range2, wrappers, joinBefore, listType) {
-  let content4 = Fragment.empty;
+  let content4 = Fragment2.empty;
   for (let i3 = wrappers.length - 1; i3 >= 0; i3--)
-    content4 = Fragment.from(wrappers[i3].type.create(wrappers[i3].attrs, content4));
+    content4 = Fragment2.from(wrappers[i3].type.create(wrappers[i3].attrs, content4));
   tr4.step(new ReplaceAroundStep(range2.start - (joinBefore ? 2 : 0), range2.end, range2.start, range2.end, new Slice(content4, 0, 0), wrappers.length, true));
   let found2 = 0;
   for (let i3 = 0; i3 < wrappers.length; i3++)
@@ -59133,7 +64269,7 @@ function liftListItem(itemType) {
 function liftToOuterList(state, dispatch, itemType, range2) {
   let tr4 = state.tr, end = range2.end, endOfList = range2.$to.end(range2.depth);
   if (end < endOfList) {
-    tr4.step(new ReplaceAroundStep(end - 1, endOfList, end, endOfList, new Slice(Fragment.from(itemType.create(null, range2.parent.copy())), 1, 0), 1, true));
+    tr4.step(new ReplaceAroundStep(end - 1, endOfList, end, endOfList, new Slice(Fragment2.from(itemType.create(null, range2.parent.copy())), 1, 0), 1, true));
     range2 = new NodeRange(tr4.doc.resolve(range2.$from.pos), tr4.doc.resolve(endOfList), range2.depth);
   }
   const target = liftTarget(range2);
@@ -59157,10 +64293,10 @@ function liftOutOfList(state, dispatch, range2) {
     return false;
   let atStart = range2.startIndex == 0, atEnd = range2.endIndex == list4.childCount;
   let parent = $start.node(-1), indexBefore = $start.index(-1);
-  if (!parent.canReplace(indexBefore + (atStart ? 0 : 1), indexBefore + 1, item.content.append(atEnd ? Fragment.empty : Fragment.from(list4))))
+  if (!parent.canReplace(indexBefore + (atStart ? 0 : 1), indexBefore + 1, item.content.append(atEnd ? Fragment2.empty : Fragment2.from(list4))))
     return false;
   let start2 = $start.pos, end = start2 + item.nodeSize;
-  tr4.step(new ReplaceAroundStep(start2 - (atStart ? 1 : 0), end + (atEnd ? 1 : 0), start2 + 1, end - 1, new Slice((atStart ? Fragment.empty : Fragment.from(list4.copy(Fragment.empty))).append(atEnd ? Fragment.empty : Fragment.from(list4.copy(Fragment.empty))), atStart ? 0 : 1, atEnd ? 0 : 1), atStart ? 0 : 1));
+  tr4.step(new ReplaceAroundStep(start2 - (atStart ? 1 : 0), end + (atEnd ? 1 : 0), start2 + 1, end - 1, new Slice((atStart ? Fragment2.empty : Fragment2.from(list4.copy(Fragment2.empty))).append(atEnd ? Fragment2.empty : Fragment2.from(list4.copy(Fragment2.empty))), atStart ? 0 : 1, atEnd ? 0 : 1), atStart ? 0 : 1));
   dispatch(tr4.scrollIntoView());
   return true;
 }
@@ -59178,8 +64314,8 @@ function sinkListItem(itemType) {
       return false;
     if (dispatch) {
       let nestedBefore = nodeBefore.lastChild && nodeBefore.lastChild.type == parent.type;
-      let inner = Fragment.from(nestedBefore ? itemType.create() : null);
-      let slice2 = new Slice(Fragment.from(itemType.create(null, Fragment.from(parent.type.create(null, inner)))), nestedBefore ? 3 : 1, 0);
+      let inner = Fragment2.from(nestedBefore ? itemType.create() : null);
+      let slice2 = new Slice(Fragment2.from(itemType.create(null, Fragment2.from(parent.type.create(null, inner)))), nestedBefore ? 3 : 1, 0);
       let before = range2.start, after = range2.end;
       dispatch(state.tr.step(new ReplaceAroundStep(before - (nestedBefore ? 3 : 1), after, before, after, slice2, 1, true)).scrollIntoView());
     }
@@ -59363,7 +64499,7 @@ function windowRect2(doc4) {
     bottom: doc4.documentElement.clientHeight
   };
 }
-function getSide(value, side) {
+function getSide2(value, side) {
   return typeof value == "number" ? value : value[side];
 }
 function clientRect(node2) {
@@ -59393,14 +64529,14 @@ function scrollRectIntoView2(view, rect, startDOM) {
     let atTop = elt2 == doc4.body;
     let bounding = atTop ? windowRect2(doc4) : clientRect(elt2);
     let moveX = 0, moveY = 0;
-    if (rect.top < bounding.top + getSide(scrollThreshold, "top"))
-      moveY = -(bounding.top - rect.top + getSide(scrollMargin, "top"));
-    else if (rect.bottom > bounding.bottom - getSide(scrollThreshold, "bottom"))
-      moveY = rect.bottom - rect.top > bounding.bottom - bounding.top ? rect.top + getSide(scrollMargin, "top") - bounding.top : rect.bottom - bounding.bottom + getSide(scrollMargin, "bottom");
-    if (rect.left < bounding.left + getSide(scrollThreshold, "left"))
-      moveX = -(bounding.left - rect.left + getSide(scrollMargin, "left"));
-    else if (rect.right > bounding.right - getSide(scrollThreshold, "right"))
-      moveX = rect.right - bounding.right + getSide(scrollMargin, "right");
+    if (rect.top < bounding.top + getSide2(scrollThreshold, "top"))
+      moveY = -(bounding.top - rect.top + getSide2(scrollMargin, "top"));
+    else if (rect.bottom > bounding.bottom - getSide2(scrollThreshold, "bottom"))
+      moveY = rect.bottom - rect.top > bounding.bottom - bounding.top ? rect.top + getSide2(scrollMargin, "top") - bounding.top : rect.bottom - bounding.bottom + getSide2(scrollMargin, "bottom");
+    if (rect.left < bounding.left + getSide2(scrollThreshold, "left"))
+      moveX = -(bounding.left - rect.left + getSide2(scrollMargin, "left"));
+    else if (rect.right > bounding.right - getSide2(scrollThreshold, "right"))
+      moveX = rect.right - bounding.right + getSide2(scrollMargin, "right");
     if (moveX || moveY) {
       if (atTop) {
         doc4.defaultView.scrollBy(moveX, moveY);
@@ -60407,7 +65543,7 @@ var NodeViewDesc = class _NodeViewDesc extends ViewDesc {
         if (found2)
           rule.contentElement = found2;
         else
-          rule.getContent = () => Fragment.empty;
+          rule.getContent = () => Fragment2.empty;
       }
     }
     return rule;
@@ -61731,7 +66867,7 @@ function parseFromClipboard(view, text7, html6, plainText, $context) {
       text7 = f2(text7, inCode || plainText, view);
     });
     if (inCode) {
-      slice2 = new Slice(Fragment.from(view.state.schema.text(text7.replace(/\r\n?/g, "\n"))), 0, 0);
+      slice2 = new Slice(Fragment2.from(view.state.schema.text(text7.replace(/\r\n?/g, "\n"))), 0, 0);
       view.someProp("transformPasted", (f2) => {
         slice2 = f2(slice2, view, true);
       });
@@ -61825,13 +66961,13 @@ function normalizeSiblings(fragment, $context) {
       }
     });
     if (result)
-      return Fragment.from(result);
+      return Fragment2.from(result);
   }
   return fragment;
 }
 function withWrappers(node2, wrap4, from2 = 0) {
   for (let i3 = wrap4.length - 1; i3 >= from2; i3--)
-    node2 = wrap4[i3].create(null, Fragment.from(node2));
+    node2 = wrap4[i3].create(null, Fragment2.from(node2));
   return node2;
 }
 function addToSibling(wrap4, lastWrap, node2, sibling, depth) {
@@ -61841,14 +66977,14 @@ function addToSibling(wrap4, lastWrap, node2, sibling, depth) {
       return sibling.copy(sibling.content.replaceChild(sibling.childCount - 1, inner));
     let match = sibling.contentMatchAt(sibling.childCount);
     if (match.matchType(depth == wrap4.length - 1 ? node2.type : wrap4[depth + 1]))
-      return sibling.copy(sibling.content.append(Fragment.from(withWrappers(node2, wrap4, depth + 1))));
+      return sibling.copy(sibling.content.append(Fragment2.from(withWrappers(node2, wrap4, depth + 1))));
   }
 }
 function closeRight(node2, depth) {
   if (depth == 0)
     return node2;
   let fragment = node2.content.replaceChild(node2.childCount - 1, closeRight(node2.lastChild, depth - 1));
-  let fill2 = node2.contentMatchAt(node2.childCount).fillBefore(Fragment.empty, true);
+  let fill2 = node2.contentMatchAt(node2.childCount).fillBefore(Fragment2.empty, true);
   return node2.copy(fragment.append(fill2));
 }
 function closeRange(fragment, side, from2, to, depth, openEnd) {
@@ -61858,7 +66994,7 @@ function closeRange(fragment, side, from2, to, depth, openEnd) {
   if (depth < to - 1)
     inner = closeRange(inner, side, from2, to, depth + 1, openEnd);
   if (depth >= from2)
-    inner = side < 0 ? node2.contentMatchAt(0).fillBefore(inner, openEnd <= depth).append(inner) : inner.append(node2.contentMatchAt(node2.childCount).fillBefore(Fragment.empty, true));
+    inner = side < 0 ? node2.contentMatchAt(0).fillBefore(inner, openEnd <= depth).append(inner) : inner.append(node2.contentMatchAt(node2.childCount).fillBefore(Fragment2.empty, true));
   return fragment.replaceChild(side < 0 ? 0 : fragment.childCount - 1, node2.copy(inner));
 }
 function closeSlice(slice2, openStart, openEnd) {
@@ -61949,7 +67085,7 @@ function addContext(slice2, context) {
     } catch (e6) {
       break;
     }
-    content4 = Fragment.from(type.create(array[i3 + 1], content4));
+    content4 = Fragment2.from(type.create(array[i3 + 1], content4));
     openStart++;
     openEnd++;
   }
@@ -63920,7 +69056,7 @@ function isMarkChange(cur, prev) {
   let updated = [];
   for (let i3 = 0; i3 < prev.childCount; i3++)
     updated.push(update(prev.child(i3)));
-  if (Fragment.from(updated).eq(cur))
+  if (Fragment2.from(updated).eq(cur))
     return { mark: mark2, type };
 }
 function looksLikeBackspace(old, start2, end, $newStart, $newEnd) {
@@ -64948,7 +70084,7 @@ function resolveFocusPosition(doc4, position3 = null) {
   if (position3 === "all") return TextSelection.create(doc4, minMax(0, minPos, maxPos), minMax(doc4.content.size, minPos, maxPos));
   return TextSelection.create(doc4, minMax(position3, minPos, maxPos), minMax(position3, minPos, maxPos));
 }
-function isAndroid() {
+function isAndroid2() {
   return ["Android"].includes(navigator.platform) || /android/i.test(navigator.userAgent);
 }
 function isiOS() {
@@ -64961,7 +70097,7 @@ function isiOS() {
     "iPod"
   ].includes(navigator.platform) || navigator.userAgent.includes("Mac") && "ontouchend" in document;
 }
-function isSafari() {
+function isSafari2() {
   return typeof navigator !== "undefined" ? /^((?!chrome|android).)*safari/i.test(navigator.userAgent) : false;
 }
 var focus = (position3 = null, options = {}) => ({ editor, view, tr: tr4, dispatch }) => {
@@ -64970,8 +70106,8 @@ var focus = (position3 = null, options = {}) => ({ editor, view, tr: tr4, dispat
     ...options
   };
   const delayedFocus = () => {
-    if (isiOS() || isAndroid()) view.dom.focus();
-    if (isSafari() && !isiOS() && !isAndroid()) view.dom.focus({ preventScroll: true });
+    if (isiOS() || isAndroid2()) view.dom.focus();
+    if (isSafari2() && !isiOS() && !isAndroid2()) view.dom.focus({ preventScroll: true });
     requestAnimationFrame(() => {
       if (!editor.isDestroyed) {
         view.focus();
@@ -65037,7 +70173,7 @@ function createNodeFromContent(content4, schema2, options) {
   };
   const isTextContent = typeof content4 === "string";
   if (isJSONContent) try {
-    if (Array.isArray(content4) && content4.length > 0) return Fragment.fromArray(content4.map((item) => schema2.nodeFromJSON(item)));
+    if (Array.isArray(content4) && content4.length > 0) return Fragment2.fromArray(content4.map((item) => schema2.nodeFromJSON(item)));
     const node2 = schema2.nodeFromJSON(content4);
     if (options.errorOnInvalidContent) node2.check();
     return node2;
@@ -65165,7 +70301,7 @@ var insertContentAt = (position3, value, options) => ({ tr: tr4, dispatch, edito
       else newContent = value;
       tr4.insertText(newContent, from2, to);
     } else {
-      newContent = Fragment.from(nodes);
+      newContent = Fragment2.from(nodes);
       const $from = tr4.doc.resolve(from2);
       const $fromNode = $from.node();
       const fromSelectionAtStart = $from.parentOffset === 0;
@@ -66317,16 +71453,16 @@ var splitListItem = (typeOrName, overrideAttrs = {}) => ({ tr: tr4, state, dispa
     if ($from.depth === 2 || $from.node(-3).type !== type || $from.index(-2) !== $from.node(-2).childCount - 1) return false;
     if (dispatch) {
       var _type$contentMatch$de;
-      let wrap4 = Fragment.empty;
+      let wrap4 = Fragment2.empty;
       const depthBefore = $from.index(-1) ? 1 : $from.index(-2) ? 2 : 3;
-      for (let d = $from.depth - depthBefore; d >= $from.depth - 3; d -= 1) wrap4 = Fragment.from($from.node(d).copy(wrap4));
+      for (let d = $from.depth - depthBefore; d >= $from.depth - 3; d -= 1) wrap4 = Fragment2.from($from.node(d).copy(wrap4));
       const depthAfter = $from.indexAfter(-1) < $from.node(-2).childCount ? 1 : $from.indexAfter(-2) < $from.node(-3).childCount ? 2 : 3;
       const newNextTypeAttributes2 = {
         ...getSplittedAttributes(extensionAttributes, $from.node().type.name, $from.node().attrs),
         ...overrideAttrs
       };
       const nextType2 = ((_type$contentMatch$de = type.contentMatch.defaultType) === null || _type$contentMatch$de === void 0 ? void 0 : _type$contentMatch$de.createAndFill(newNextTypeAttributes2)) || void 0;
-      wrap4 = wrap4.append(Fragment.from(type.createAndFill(null, nextType2) || void 0));
+      wrap4 = wrap4.append(Fragment2.from(type.createAndFill(null, nextType2) || void 0));
       const start2 = $from.before($from.depth - (depthBefore - 1));
       tr4.replace(start2, $from.after(-depthAfter), new Slice(wrap4, 4 - depthBefore, 0));
       let sel = -1;
@@ -67337,7 +72473,7 @@ function inputRulesPlugin(props) {
         if (!!simulatedInputMeta) setTimeout(() => {
           let { text: text7 } = simulatedInputMeta;
           if (typeof text7 === "string") text7 = text7;
-          else text7 = getHTMLFromFragment(Fragment.from(text7), state.schema);
+          else text7 = getHTMLFromFragment(Fragment2.from(text7), state.schema);
           const { from: from2 } = simulatedInputMeta;
           const to = from2 + text7.length;
           run$1({
@@ -67629,7 +72765,7 @@ function pasteRulesPlugin(props) {
         if (isSimulatedPaste) {
           let { text: text7 } = simulatedPasteMeta;
           if (typeof text7 === "string") text7 = text7;
-          else text7 = getHTMLFromFragment(Fragment.from(text7), state.schema);
+          else text7 = getHTMLFromFragment(Fragment2.from(text7), state.schema);
           const { from: from3 } = simulatedPasteMeta;
           const to2 = from3 + text7.length;
           const pasteEvt = createClipboardPasteEvent(text7);
@@ -68320,7 +73456,7 @@ function warnOnDuplicatedProseMirrorModel(schema2) {
   } catch {
     return;
   }
-  if (content4 instanceof Fragment) return;
+  if (content4 instanceof Fragment2) return;
   console.warn("[tiptap warn]: prosemirror-model is loaded more than once. Wrapping and splitting nodes will fail. Deduplicate it in your lock file, or alias it to a single copy in your bundler.");
 }
 var NodePos = class NodePos2 {
@@ -69240,7 +74376,7 @@ var NodeView = class {
     if (typeof this.options.ignoreMutation === "function") return this.options.ignoreMutation({ mutation });
     if (this.node.isLeaf || this.node.isAtom) return true;
     if (mutation.type === "selection") return false;
-    if (this.contentDOM.contains(mutation.target) && mutation.type === "childList" && (isiOS() || isAndroid()) && this.editor.isFocused) {
+    if (this.contentDOM.contains(mutation.target) && mutation.type === "childList" && (isiOS() || isAndroid2()) && this.editor.isFocused) {
       if ([...Array.from(mutation.addedNodes), ...Array.from(mutation.removedNodes)].every((node2) => node2.isContentEditable)) return false;
     }
     if (this.contentDOM === mutation.target && mutation.type === "attributes") return true;
@@ -69759,10 +74895,10 @@ var CellSelection = class CellSelection2 extends Selection {
         }
         rowContent.push(cell);
       }
-      rows2.push(table2.child(row).copy(Fragment.from(rowContent)));
+      rows2.push(table2.child(row).copy(Fragment2.from(rowContent)));
     }
     const fragment = this.isColSelection() && this.isRowSelection() ? table2 : rows2;
-    return new Slice(Fragment.from(fragment), 1, 1);
+    return new Slice(Fragment2.from(fragment), 1, 1);
   }
   replace(tr4, content4 = Slice.empty) {
     const mapFrom = tr4.steps.length, ranges = this.ranges;
@@ -69774,7 +74910,7 @@ var CellSelection = class CellSelection2 extends Selection {
     if (sel) tr4.setSelection(sel);
   }
   replaceWith(tr4, node2) {
-    this.replace(tr4, new Slice(Fragment.from(node2), 0, 0));
+    this.replace(tr4, new Slice(Fragment2.from(node2), 0, 0));
   }
   forEachCell(f2) {
     const table2 = this.$anchorCell.node(-1);
@@ -70210,7 +75346,7 @@ function mergeCells(state, dispatch) {
   if (dispatch) {
     const tr4 = state.tr;
     const seen = {};
-    let content4 = Fragment.empty;
+    let content4 = Fragment2.empty;
     let mergedPos;
     let mergedCell;
     for (let row = rect.top; row < rect.bottom; row++) for (let col = rect.left; col < rect.right; col++) {
@@ -70460,12 +75596,12 @@ function ensureRectangular(schema2, rows2) {
   let width = 0;
   for (let r4 = 0; r4 < widths.length; r4++) width = Math.max(width, widths[r4]);
   for (let r4 = 0; r4 < widths.length; r4++) {
-    if (r4 >= rows2.length) rows2.push(Fragment.empty);
+    if (r4 >= rows2.length) rows2.push(Fragment2.empty);
     if (widths[r4] < width) {
       const empty4 = tableNodeTypes(schema2).cell.createAndFill();
       const cells = [];
       for (let i3 = widths[r4]; i3 < width; i3++) cells.push(empty4);
-      rows2[r4] = rows2[r4].append(Fragment.from(cells));
+      rows2[r4] = rows2[r4].append(Fragment2.from(cells));
     }
   }
   return {
@@ -70491,7 +75627,7 @@ function clipCells({ width, height, rows: rows2 }, newWidth, newHeight) {
         col += cell.attrs.colspan;
         for (let j6 = 1; j6 < cell.attrs.rowspan; j6++) added[row + j6] = (added[row + j6] || 0) + cell.attrs.colspan;
       }
-      newRows.push(Fragment.from(cells));
+      newRows.push(Fragment2.from(cells));
     }
     rows2 = newRows;
     width = newWidth;
@@ -70508,7 +75644,7 @@ function clipCells({ width, height, rows: rows2 }, newWidth, newHeight) {
         }, cell.content);
         cells.push(cell);
       }
-      newRows.push(Fragment.from(cells));
+      newRows.push(Fragment2.from(cells));
     }
     rows2 = newRows;
     height = newHeight;
@@ -70540,7 +75676,7 @@ function growTable(tr4, map4, table2, start2, width, height, mapFrom) {
       const header = i3 >= map4.width ? false : table2.nodeAt(map4.map[start$1 + i3]).type == types2.header_cell;
       cells.push(header ? emptyHead || (emptyHead = types2.header_cell.createAndFill()) : empty4 || (empty4 = types2.cell.createAndFill()));
     }
-    const emptyRow = types2.row.create(null, Fragment.from(cells)), rows2 = [];
+    const emptyRow = types2.row.create(null, Fragment2.from(cells)), rows2 = [];
     for (let i3 = map4.height; i3 < height; i3++) rows2.push(emptyRow);
     tr4.insert(tr4.mapping.slice(mapFrom).map(start2 + table2.nodeSize - 2), rows2);
   }
@@ -70613,10 +75749,10 @@ function insertCells(state, dispatch, tableStart, rect, cells) {
   dispatch(tr4);
 }
 var handleKeyDown = keydownHandler({
-  ArrowLeft: arrow("horiz", -1),
-  ArrowRight: arrow("horiz", 1),
-  ArrowUp: arrow("vert", -1),
-  ArrowDown: arrow("vert", 1),
+  ArrowLeft: arrow4("horiz", -1),
+  ArrowRight: arrow4("horiz", 1),
+  ArrowUp: arrow4("vert", -1),
+  ArrowDown: arrow4("vert", 1),
   "Shift-ArrowLeft": shiftArrow("horiz", -1),
   "Shift-ArrowRight": shiftArrow("horiz", 1),
   "Shift-ArrowUp": shiftArrow("vert", -1),
@@ -70631,7 +75767,7 @@ function maybeSetSelection(state, dispatch, selection) {
   if (dispatch) dispatch(state.tr.setSelection(selection).scrollIntoView());
   return true;
 }
-function arrow(axis, dir) {
+function arrow4(axis, dir) {
   return (state, dispatch, view) => {
     if (!view) return false;
     const sel = state.selection;
@@ -70681,7 +75817,7 @@ function handlePaste(view, _, slice2) {
     if (!cells) cells = {
       width: 1,
       height: 1,
-      rows: [Fragment.from(fitSlice(tableNodeTypes(view.state.schema).cell, slice2))]
+      rows: [Fragment2.from(fitSlice(tableNodeTypes(view.state.schema).cell, slice2))]
     };
     const table2 = sel.$anchorCell.node(-1);
     const start2 = sel.$anchorCell.start(-1);
@@ -71728,7 +76864,7 @@ var Ie = Extension.create({
                 id: null
               }, r4(e9.content), e9.marks);
               n4.push(i3);
-            }), Fragment.from(n4);
+            }), Fragment2.from(n4);
           };
           return n3 = false, new Slice(r4(e7.content), e7.openStart, e7.openEnd);
         }
@@ -72207,11 +77343,11 @@ function ft(e6, t4) {
               let n5 = t5.type === r4.linebreakReplacement ? "\n" : t5.textContent;
               n5 && e7.push(r4.text(n5, t5.marks));
             }
-          }), Fragment.fromArray(e7);
+          }), Fragment2.fromArray(e7);
         }
         return a3.content;
       }
-      return Fragment.empty;
+      return Fragment2.empty;
     } : void 0
   }), n3;
 }
@@ -72853,8 +77989,8 @@ function tn(e6, t4, n3, r4, o4, s4, c4) {
   if (u2 === "keep") rn(t4, o4.blockContent.beforePos, r4, { ...e6.props });
   else if (s4 !== void 0 || c4 !== void 0) {
     let n4 = an(t4, o4.blockContent.beforePos, r4, { ...e6.props }), l4 = n4 + 1 + (s4 ?? 0), d = n4 + 1 + (c4 ?? o4.blockContent.node.content.size), f2 = t4.doc.resolve(n4).depth, p2 = t4.doc.resolve(l4).depth, m2 = t4.doc.resolve(d).depth;
-    t4.replace(l4, d, new Slice(Fragment.from(u2), p2 - f2 - 1, m2 - f2 - 1));
-  } else r4 === n3 || r4.validContent(o4.blockContent.node.content) ? nn(t4, an(t4, o4.blockContent.beforePos, r4, { ...e6.props }), Fragment.from(u2)) : t4.replaceWith(o4.blockContent.beforePos, o4.blockContent.afterPos, r4.createChecked({
+    t4.replace(l4, d, new Slice(Fragment2.from(u2), p2 - f2 - 1, m2 - f2 - 1));
+  } else r4 === n3 || r4.validContent(o4.blockContent.node.content) ? nn(t4, an(t4, o4.blockContent.beforePos, r4, { ...e6.props }), Fragment2.from(u2)) : t4.replaceWith(o4.blockContent.beforePos, o4.blockContent.afterPos, r4.createChecked({
     ...o4.blockContent.node.attrs,
     ...e6.props
   }, u2));
@@ -72881,7 +78017,7 @@ function nn(e6, t4, n3) {
   for (let e7 = d; e7 < f2; e7++) h3 += s4.child(e7).nodeSize;
   let g = [];
   for (let e7 = d; e7 < p2; e7++) g.push(n3.child(e7));
-  e6.step(new ReplaceStep(m2, h3, new Slice(Fragment.from(g), 0, 0)));
+  e6.step(new ReplaceStep(m2, h3, new Slice(Fragment2.from(g), 0, 0)));
 }
 function rn(e6, t4, n3, r4) {
   let i3 = e6.doc.nodeAt(t4);
@@ -72909,7 +78045,7 @@ function on(e6, t4, n3) {
       let t5 = U(e7, r4);
       return t5.check(), t5;
     });
-    if (n3.childContainer) nn(t4, n3.childContainer.beforePos, Fragment.from(a3));
+    if (n3.childContainer) nn(t4, n3.childContainer.beforePos, Fragment2.from(a3));
     else {
       if (!n3.isBlockContainer) throw Error("impossible");
       t4.insert(n3.blockContent.afterPos, r4.nodes.blockGroup.createChecked({}, a3));
@@ -73407,7 +78543,7 @@ function Wn(e6, t4, n3) {
       topNode: t4.nodes.paragraph.create(),
       preserveWhitespace: true
     }).content;
-  } else s4 = Fragment.empty;
+  } else s4 = Fragment2.empty;
   let c4 = document.createElement("div");
   c4.setAttribute("data-node-type", "blockGroup");
   let l3 = false;
@@ -73733,7 +78869,7 @@ function cr(e6, t4, n3) {
   let c4 = a3.parse(s4, { topNode: t4.nodes.blockGroup.create() });
   c4.firstChild?.firstChild?.type.name === "checkListItem" && (c4 = c4.copy(c4.content.cut(c4.firstChild.firstChild.nodeSize + 2)));
   let l3 = c4.firstChild?.firstChild;
-  if (!l3?.isTextblock) return Fragment.from(c4);
+  if (!l3?.isTextblock) return Fragment2.from(c4);
   let u2 = t4.nodes[n3].create({}, l3.content), d = c4.content.cut(l3.nodeSize + 2);
   if (d.size > 0) {
     let e7 = c4.copy(d);
@@ -74401,7 +79537,7 @@ function Lr(e6, t4) {
   let n3 = DOMParser2.fromSchema(t4).parse(e6, { topNode: t4.nodes.blockGroup.create() }), a3 = [];
   return n3.content.descendants((e7) => {
     if (e7.isInline) return a3.push(e7), false;
-  }), Fragment.fromArray(a3);
+  }), Fragment2.fromArray(a3);
 }
 var Rr = () => ut({
   node: Pr,
@@ -75838,7 +80974,7 @@ function Ne2(e6, t4, r4, a3) {
     }
     c4.appendChild(n3);
   } else {
-    let e7 = r4.serializeFragment(Fragment.from([t5]), a3);
+    let e7 = r4.serializeFragment(Fragment2.from([t5]), a3);
     c4.appendChild(e7);
   }
   return c4.childNodes.length === 1 && c4.firstChild?.nodeType === 1 && Me2(c4.firstChild), c4;
@@ -76870,7 +82006,7 @@ var V2 = class e2 extends Selection {
     return new e2(t4.resolve(n3), t4.resolve(r4));
   }
   content() {
-    return new Slice(Fragment.from(this.nodes), 0, 0);
+    return new Slice(Fragment2.from(this.nodes), 0, 0);
   }
   eq(t4) {
     if (!(t4 instanceof e2) || this.nodes.length !== t4.nodes.length || this.from !== t4.from || this.to !== t4.to) return false;
@@ -78619,12 +83755,12 @@ function gapCursor() {
   });
 }
 var handleKeyDown2 = keydownHandler({
-  "ArrowLeft": arrow2("horiz", -1),
-  "ArrowRight": arrow2("horiz", 1),
-  "ArrowUp": arrow2("vert", -1),
-  "ArrowDown": arrow2("vert", 1)
+  "ArrowLeft": arrow5("horiz", -1),
+  "ArrowRight": arrow5("horiz", 1),
+  "ArrowUp": arrow5("vert", -1),
+  "ArrowDown": arrow5("vert", 1)
 });
-function arrow2(axis, dir) {
+function arrow5(axis, dir) {
   const dirStr = axis == "vert" ? dir > 0 ? "down" : "up" : dir > 0 ? "right" : "left";
   return function(state, dispatch, view) {
     let sel = state.selection;
@@ -78662,9 +83798,9 @@ function beforeinput(view, event) {
   let insert2 = $from.parent.contentMatchAt($from.index()).findWrapping(view.state.schema.nodes.text);
   if (!insert2)
     return false;
-  let frag = Fragment.empty;
+  let frag = Fragment2.empty;
   for (let i3 = insert2.length - 1; i3 >= 0; i3--)
-    frag = Fragment.from(insert2[i3].createAndFill(null, frag));
+    frag = Fragment2.from(insert2[i3].createAndFill(null, frag));
   let tr4 = view.state.tr.replace($from.pos, $from.pos, new Slice(frag, 0, 0));
   tr4.setSelection(TextSelection.near(tr4.doc.resolve($from.pos + 1)));
   view.dispatch(tr4);
@@ -78703,7 +83839,7 @@ function bt3(e6, t4, n3, r4 = "before") {
   }), c4 = Zt(i3, e6.doc);
   if (!c4) throw Error(`Block with ID ${i3} not found`);
   let l3 = c4.posBeforeNode;
-  return r4 === "after" && (l3 += c4.node.nodeSize), e6.step(new ReplaceStep(l3, l3, new Slice(Fragment.from(s4), 0, 0))), s4.map((t5) => N(t5, e6.doc));
+  return r4 === "after" && (l3 += c4.node.nodeSize), e6.step(new ReplaceStep(l3, l3, new Slice(Fragment2.from(s4), 0, 0))), s4.map((t5) => N(t5, e6.doc));
 }
 function z3(e6) {
   if (!e6 || e6.type.name !== "column") throw Error("Invalid columnPos: does not point to column node.");
@@ -78808,7 +83944,7 @@ function St3(e6, t4, n3, r4, i3) {
     }
     l3.appendChild(n4);
   } else {
-    let e7 = n3.serializeFragment(Fragment.from([t5]), i3);
+    let e7 = n3.serializeFragment(Fragment2.from([t5]), i3);
     l3.appendChild(e7);
   }
   return l3;
@@ -79015,7 +84151,7 @@ function qt3(e6, t4, n3) {
   if (o4 === 0) return false;
   let s4 = a3.parent.child(o4 - 1);
   if (s4.type !== t4) return false;
-  let c4 = s4.lastChild && s4.lastChild.type === n3, l3 = Fragment.from(c4 ? t4.create() : null), u2 = new Slice(Fragment.from(t4.create(null, Fragment.from(n3.create(null, l3)))), c4 ? 3 : 1, 0), d = a3.start, f2 = a3.end;
+  let c4 = s4.lastChild && s4.lastChild.type === n3, l3 = Fragment2.from(c4 ? t4.create() : null), u2 = new Slice(Fragment2.from(t4.create(null, Fragment2.from(n3.create(null, l3)))), c4 ? 3 : 1, 0), d = a3.start, f2 = a3.end;
   return e6.step(new ReplaceAroundStep(d - (c4 ? 3 : 1), f2, d, f2, u2, 1, true)).scrollIntoView(), true;
 }
 function Jt3(e6) {
@@ -79025,7 +84161,7 @@ function Yt3(e6, t4, n3, r4) {
   let i3 = r4.end, a3 = r4.$to.end(r4.depth);
   if (i3 < a3) {
     let o5 = r4.parent.child(r4.endIndex - 1), s5 = o5.lastChild && o5.lastChild.type === n3;
-    e6.step(new ReplaceAroundStep(i3 - (s5 ? 2 : 1), a3, i3, a3, new Slice(Fragment.from(t4.create(null, n3.create())), s5 ? 2 : 1, 0), +!s5, true)), r4 = new NodeRange(e6.doc.resolve(r4.$from.pos), e6.doc.resolve(a3), r4.depth);
+    e6.step(new ReplaceAroundStep(i3 - (s5 ? 2 : 1), a3, i3, a3, new Slice(Fragment2.from(t4.create(null, n3.create())), s5 ? 2 : 1, 0), +!s5, true)), r4 = new NodeRange(e6.doc.resolve(r4.$from.pos), e6.doc.resolve(a3), r4.depth);
   }
   let o4 = liftTarget(r4);
   if (o4 == null) return false;
@@ -80240,7 +85376,7 @@ var Br = Extension.create({
         if (!s4.isBlockContainer) return false;
         if (a3 && o4) {
           let n5 = s4.blockContent.node, a4 = n5.type.spec.content === "inline*", o5 = r4.node.type.spec.content === "inline*";
-          return e7().insertContentAt(s4.bnBlock.afterPos, s4.childContainer?.node.content || Fragment.empty).deleteRange(i3.node.childCount === 1 ? {
+          return e7().insertContentAt(s4.bnBlock.afterPos, s4.childContainer?.node.content || Fragment2.empty).deleteRange(i3.node.childCount === 1 ? {
             from: i3.beforePos,
             to: i3.afterPos
           } : {
@@ -80294,7 +85430,7 @@ var Br = Extension.create({
           }, a4 = i4(t6.doc, n4.bnBlock.beforePos);
           if (!a4 || !a4.isBlockContainer) return false;
           let o4 = a4.blockContent.node, s4 = o4.type.spec.content === "inline*", c4 = r4.node.type.spec.content === "inline*";
-          return e7().insertContentAt(a4.bnBlock.afterPos, a4.childContainer?.node.content || Fragment.empty).deleteRange({
+          return e7().insertContentAt(a4.bnBlock.afterPos, a4.childContainer?.node.content || Fragment2.empty).deleteRange({
             from: a4.bnBlock.beforePos,
             to: a4.bnBlock.afterPos
           }).insertContentAt(t6.selection.from, s4 && c4 ? o4.content : null).setTextSelection(t6.selection.from).scrollIntoView().run();
@@ -81373,7 +86509,7 @@ function Ii(e6) {
   return findParentNodeClosestToPos(e6.state.selection.$from, (e7) => e7.type.name === "tableCell" || e7.type.name === "tableHeader") !== void 0;
 }
 function Li(e6, t4) {
-  let n3 = t4.nodes.hardBreak, r4 = Fragment.empty;
+  let n3 = t4.nodes.hardBreak, r4 = Fragment2.empty;
   return e6.forEach((e7) => {
     e7.isTextblock && e7.childCount > 0 ? (r4 = r4.append(e7.content), r4 = r4.addToEnd(n3.create())) : e7.isText ? r4 = r4.addToEnd(e7) : e7.isBlock && e7.childCount > 0 && (r4 = r4.append(Li(e7.content, t4)), r4 = r4.addToEnd(n3.create()));
   }), r4.lastChild?.type === n3 && (r4 = r4.cut(0, r4.size - 1)), r4;
@@ -81382,7 +86518,7 @@ function Ri(e6, t4) {
   let n3 = [];
   return e6.forEach((e7, r4, i3) => {
     i3 !== t4 && n3.push(e7);
-  }), Fragment.from(n3);
+  }), Fragment2.from(n3);
 }
 function zi(e6, t4) {
   let n3 = [];
@@ -81395,10 +86531,10 @@ function zi(e6, t4) {
       n3.push(i3);
     }
   } else n3.push(e6.child(r4));
-  return e6 = Fragment.from(n3), e6;
+  return e6 = Fragment2.from(n3), e6;
 }
 function Bi(e6, t4) {
-  let n3 = Fragment.from(e6.content);
+  let n3 = Fragment2.from(e6.content);
   n3 = zi(n3, t4.state.schema);
   let r4 = Vi(n3, t4, e6);
   if (r4) return r4;
@@ -82288,5110 +87424,6 @@ var b2 = {
 
 // node_modules/@blocknote/react/dist/confirmDiscardUnsavedComment-D1Q3ha7c.js
 var import_react3 = require("react");
-
-// node_modules/@floating-ui/react/dist/floating-ui.react.mjs
-var React3 = __toESM(require("react"), 1);
-
-// node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs
-function hasWindow() {
-  return typeof window !== "undefined";
-}
-function getNodeName(node2) {
-  if (isNode(node2)) {
-    return (node2.nodeName || "").toLowerCase();
-  }
-  return "#document";
-}
-function getWindow(node2) {
-  var _node$ownerDocument;
-  return (node2 == null || (_node$ownerDocument = node2.ownerDocument) == null ? void 0 : _node$ownerDocument.defaultView) || window;
-}
-function getDocumentElement(node2) {
-  var _ref;
-  return (_ref = (isNode(node2) ? node2.ownerDocument : node2.document) || window.document) == null ? void 0 : _ref.documentElement;
-}
-function isNode(value) {
-  if (!hasWindow()) {
-    return false;
-  }
-  return value instanceof Node || value instanceof getWindow(value).Node;
-}
-function isElement(value) {
-  if (!hasWindow()) {
-    return false;
-  }
-  return value instanceof Element || value instanceof getWindow(value).Element;
-}
-function isHTMLElement(value) {
-  if (!hasWindow()) {
-    return false;
-  }
-  return value instanceof HTMLElement || value instanceof getWindow(value).HTMLElement;
-}
-function isShadowRoot(value) {
-  if (!hasWindow() || typeof ShadowRoot === "undefined") {
-    return false;
-  }
-  return value instanceof ShadowRoot || value instanceof getWindow(value).ShadowRoot;
-}
-function isOverflowElement(element3) {
-  const {
-    overflow,
-    overflowX,
-    overflowY,
-    display
-  } = getComputedStyle2(element3);
-  return /auto|scroll|overlay|hidden|clip/.test(overflow + overflowY + overflowX) && display !== "inline" && display !== "contents";
-}
-function isTableElement(element3) {
-  return /^(table|td|th)$/.test(getNodeName(element3));
-}
-function isTopLayer(element3) {
-  try {
-    if (element3.matches(":popover-open")) {
-      return true;
-    }
-  } catch (_e2) {
-  }
-  try {
-    return element3.matches(":modal");
-  } catch (_e2) {
-    return false;
-  }
-}
-var willChangeRe = /transform|translate|scale|rotate|perspective|filter/;
-var containRe = /paint|layout|strict|content/;
-var isNotNone = (value) => !!value && value !== "none";
-var isWebKitValue;
-function isContainingBlock(elementOrCss) {
-  const css2 = isElement(elementOrCss) ? getComputedStyle2(elementOrCss) : elementOrCss;
-  return isNotNone(css2.transform) || isNotNone(css2.translate) || isNotNone(css2.scale) || isNotNone(css2.rotate) || isNotNone(css2.perspective) || !isWebKit() && (isNotNone(css2.backdropFilter) || isNotNone(css2.filter)) || willChangeRe.test(css2.willChange || "") || containRe.test(css2.contain || "");
-}
-function getContainingBlock(element3) {
-  let currentNode = getParentNode(element3);
-  while (isHTMLElement(currentNode) && !isLastTraversableNode(currentNode)) {
-    if (isContainingBlock(currentNode)) {
-      return currentNode;
-    } else if (isTopLayer(currentNode)) {
-      return null;
-    }
-    currentNode = getParentNode(currentNode);
-  }
-  return null;
-}
-function isWebKit() {
-  if (isWebKitValue == null) {
-    isWebKitValue = typeof CSS !== "undefined" && CSS.supports && CSS.supports("-webkit-backdrop-filter", "none");
-  }
-  return isWebKitValue;
-}
-function isLastTraversableNode(node2) {
-  return /^(html|body|#document)$/.test(getNodeName(node2));
-}
-function getComputedStyle2(element3) {
-  return getWindow(element3).getComputedStyle(element3);
-}
-function getNodeScroll(element3) {
-  if (isElement(element3)) {
-    return {
-      scrollLeft: element3.scrollLeft,
-      scrollTop: element3.scrollTop
-    };
-  }
-  return {
-    scrollLeft: element3.scrollX,
-    scrollTop: element3.scrollY
-  };
-}
-function getParentNode(node2) {
-  if (getNodeName(node2) === "html") {
-    return node2;
-  }
-  const result = (
-    // Step into the shadow DOM of the parent of a slotted node.
-    node2.assignedSlot || // DOM Element detected.
-    node2.parentNode || // ShadowRoot detected.
-    isShadowRoot(node2) && node2.host || // Fallback.
-    getDocumentElement(node2)
-  );
-  return isShadowRoot(result) ? result.host : result;
-}
-function getNearestOverflowAncestor(node2) {
-  const parentNode2 = getParentNode(node2);
-  if (isLastTraversableNode(parentNode2)) {
-    return (node2.ownerDocument || node2).body;
-  }
-  if (isHTMLElement(parentNode2) && isOverflowElement(parentNode2)) {
-    return parentNode2;
-  }
-  return getNearestOverflowAncestor(parentNode2);
-}
-function getOverflowAncestors(node2, list4, traverseIframes) {
-  var _node$ownerDocument2;
-  if (list4 === void 0) {
-    list4 = [];
-  }
-  if (traverseIframes === void 0) {
-    traverseIframes = true;
-  }
-  const scrollableAncestor = getNearestOverflowAncestor(node2);
-  const isBody = scrollableAncestor === ((_node$ownerDocument2 = node2.ownerDocument) == null ? void 0 : _node$ownerDocument2.body);
-  const win = getWindow(scrollableAncestor);
-  if (isBody) {
-    const frameElement = getFrameElement(win);
-    return list4.concat(win, win.visualViewport || [], isOverflowElement(scrollableAncestor) ? scrollableAncestor : [], frameElement && traverseIframes ? getOverflowAncestors(frameElement) : []);
-  } else {
-    return list4.concat(scrollableAncestor, getOverflowAncestors(scrollableAncestor, [], traverseIframes));
-  }
-}
-function getFrameElement(win) {
-  return win.parent && Object.getPrototypeOf(win.parent) ? win.frameElement : null;
-}
-
-// node_modules/@floating-ui/react/dist/floating-ui.react.utils.mjs
-var React = __toESM(require("react"), 1);
-var import_react = require("react");
-
-// node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs
-var sides = ["top", "right", "bottom", "left"];
-var alignments = ["start", "end"];
-var placements = /* @__PURE__ */ sides.reduce((acc, side) => acc.concat(side, side + "-" + alignments[0], side + "-" + alignments[1]), []);
-var min = Math.min;
-var max = Math.max;
-var round = Math.round;
-var floor = Math.floor;
-var createCoords = (v) => ({
-  x: v,
-  y: v
-});
-var oppositeSideMap = {
-  left: "right",
-  right: "left",
-  bottom: "top",
-  top: "bottom"
-};
-function clamp(start2, value, end) {
-  return max(start2, min(value, end));
-}
-function evaluate(value, param) {
-  return typeof value === "function" ? value(param) : value;
-}
-function getSide2(placement) {
-  return placement.split("-")[0];
-}
-function getAlignment(placement) {
-  return placement.split("-")[1];
-}
-function getOppositeAxis(axis) {
-  return axis === "x" ? "y" : "x";
-}
-function getAxisLength(axis) {
-  return axis === "y" ? "height" : "width";
-}
-function getSideAxis(placement) {
-  const firstChar = placement[0];
-  return firstChar === "t" || firstChar === "b" ? "y" : "x";
-}
-function getAlignmentAxis(placement) {
-  return getOppositeAxis(getSideAxis(placement));
-}
-function getAlignmentSides(placement, rects, rtl) {
-  if (rtl === void 0) {
-    rtl = false;
-  }
-  const alignment = getAlignment(placement);
-  const alignmentAxis = getAlignmentAxis(placement);
-  const length = getAxisLength(alignmentAxis);
-  let mainAlignmentSide = alignmentAxis === "x" ? alignment === (rtl ? "end" : "start") ? "right" : "left" : alignment === "start" ? "bottom" : "top";
-  if (rects.reference[length] > rects.floating[length]) {
-    mainAlignmentSide = getOppositePlacement(mainAlignmentSide);
-  }
-  return [mainAlignmentSide, getOppositePlacement(mainAlignmentSide)];
-}
-function getExpandedPlacements(placement) {
-  const oppositePlacement = getOppositePlacement(placement);
-  return [getOppositeAlignmentPlacement(placement), oppositePlacement, getOppositeAlignmentPlacement(oppositePlacement)];
-}
-function getOppositeAlignmentPlacement(placement) {
-  return placement.includes("start") ? placement.replace("start", "end") : placement.replace("end", "start");
-}
-var lrPlacement = ["left", "right"];
-var rlPlacement = ["right", "left"];
-var tbPlacement = ["top", "bottom"];
-var btPlacement = ["bottom", "top"];
-function getSideList(side, isStart, rtl) {
-  switch (side) {
-    case "top":
-    case "bottom":
-      if (rtl) return isStart ? rlPlacement : lrPlacement;
-      return isStart ? lrPlacement : rlPlacement;
-    case "left":
-    case "right":
-      return isStart ? tbPlacement : btPlacement;
-    default:
-      return [];
-  }
-}
-function getOppositeAxisPlacements(placement, flipAlignment, direction, rtl) {
-  const alignment = getAlignment(placement);
-  let list4 = getSideList(getSide2(placement), direction === "start", rtl);
-  if (alignment) {
-    list4 = list4.map((side) => side + "-" + alignment);
-    if (flipAlignment) {
-      list4 = list4.concat(list4.map(getOppositeAlignmentPlacement));
-    }
-  }
-  return list4;
-}
-function getOppositePlacement(placement) {
-  const side = getSide2(placement);
-  return oppositeSideMap[side] + placement.slice(side.length);
-}
-function expandPaddingObject(padding) {
-  var _padding$top, _padding$right, _padding$bottom, _padding$left;
-  return {
-    top: (_padding$top = padding.top) != null ? _padding$top : 0,
-    right: (_padding$right = padding.right) != null ? _padding$right : 0,
-    bottom: (_padding$bottom = padding.bottom) != null ? _padding$bottom : 0,
-    left: (_padding$left = padding.left) != null ? _padding$left : 0
-  };
-}
-function getPaddingObject(padding) {
-  return typeof padding !== "number" ? expandPaddingObject(padding) : {
-    top: padding,
-    right: padding,
-    bottom: padding,
-    left: padding
-  };
-}
-function rectToClientRect(rect) {
-  const {
-    x: x3,
-    y: y4,
-    width,
-    height
-  } = rect;
-  return {
-    width,
-    height,
-    top: y4,
-    left: x3,
-    right: x3 + width,
-    bottom: y4 + height,
-    x: x3,
-    y: y4
-  };
-}
-
-// node_modules/tabbable/dist/index.esm.js
-/*!
-* tabbable 6.5.0
-* @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
-*/
-var candidateSelectors = ["input:not([inert]):not([inert] *)", "select:not([inert]):not([inert] *)", "textarea:not([inert]):not([inert] *)", "a[href]:not([inert]):not([inert] *)", "area[href]:not([inert]):not([inert] *)", "button:not([inert]):not([inert] *)", "[tabindex]:not(slot):not([inert]):not([inert] *)", "audio[controls]:not([inert]):not([inert] *)", "video[controls]:not([inert]):not([inert] *)", '[contenteditable]:not([contenteditable="false"]):not([inert]):not([inert] *)', "details>summary:first-of-type:not([inert]):not([inert] *)", "details:not([inert]):not([inert] *)"];
-var candidateSelector = /* @__PURE__ */ candidateSelectors.join(",");
-var NoElement = typeof Element === "undefined";
-var matches2 = NoElement ? function() {
-} : Element.prototype.matches || Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
-var getRootNode = !NoElement && Element.prototype.getRootNode ? function(element3) {
-  var _element$getRootNode;
-  return element3 === null || element3 === void 0 ? void 0 : (_element$getRootNode = element3.getRootNode) === null || _element$getRootNode === void 0 ? void 0 : _element$getRootNode.call(element3);
-} : function(element3) {
-  return element3 === null || element3 === void 0 ? void 0 : element3.ownerDocument;
-};
-var _isInert = function isInert(node2, lookUp) {
-  var _node$getAttribute;
-  if (lookUp === void 0) {
-    lookUp = true;
-  }
-  var inertAtt = node2 === null || node2 === void 0 ? void 0 : (_node$getAttribute = node2.getAttribute) === null || _node$getAttribute === void 0 ? void 0 : _node$getAttribute.call(node2, "inert");
-  var inert = inertAtt === "" || inertAtt === "true";
-  var result = inert || lookUp && node2 && // closest does not exist on shadow roots, so we fall back to a manual
-  // lookup upward, in case it is not defined.
-  (typeof node2.closest === "function" ? node2.closest("[inert]") : _isInert(node2.parentNode));
-  return result;
-};
-var isContentEditable = function isContentEditable2(node2) {
-  var _node$getAttribute2;
-  var attValue = node2 === null || node2 === void 0 ? void 0 : (_node$getAttribute2 = node2.getAttribute) === null || _node$getAttribute2 === void 0 ? void 0 : _node$getAttribute2.call(node2, "contenteditable");
-  return attValue === "" || attValue === "true";
-};
-var getCandidates = function getCandidates2(el, includeContainer, filter) {
-  if (_isInert(el)) {
-    return [];
-  }
-  var candidates = Array.prototype.slice.apply(el.querySelectorAll(candidateSelector));
-  if (includeContainer && matches2.call(el, candidateSelector)) {
-    candidates.unshift(el);
-  }
-  candidates = candidates.filter(filter);
-  return candidates;
-};
-var _getCandidatesIteratively = function getCandidatesIteratively(elements, includeContainer, options) {
-  var candidates = [];
-  var elementsToCheck = Array.from(elements);
-  while (elementsToCheck.length) {
-    var element3 = elementsToCheck.shift();
-    if (_isInert(element3, false)) {
-      continue;
-    }
-    if (element3.tagName === "SLOT") {
-      var assigned = element3.assignedElements();
-      var content4 = assigned.length ? assigned : element3.children;
-      var nestedCandidates = _getCandidatesIteratively(content4, true, options);
-      if (options.flatten) {
-        candidates.push.apply(candidates, nestedCandidates);
-      } else {
-        candidates.push({
-          scopeParent: element3,
-          candidates: nestedCandidates
-        });
-      }
-    } else {
-      var validCandidate = matches2.call(element3, candidateSelector);
-      if (validCandidate && options.filter(element3) && (includeContainer || !elements.includes(element3))) {
-        candidates.push(element3);
-      }
-      var shadowRoot = element3.shadowRoot || // check for an undisclosed shadow
-      typeof options.getShadowRoot === "function" && options.getShadowRoot(element3);
-      var validShadowRoot = !_isInert(shadowRoot, false) && (!options.shadowRootFilter || options.shadowRootFilter(element3));
-      if (shadowRoot && validShadowRoot) {
-        var _nestedCandidates = _getCandidatesIteratively(shadowRoot === true ? element3.children : shadowRoot.children, true, options);
-        if (options.flatten) {
-          candidates.push.apply(candidates, _nestedCandidates);
-        } else {
-          candidates.push({
-            scopeParent: element3,
-            candidates: _nestedCandidates
-          });
-        }
-      } else {
-        elementsToCheck.unshift.apply(elementsToCheck, element3.children);
-      }
-    }
-  }
-  return candidates;
-};
-var hasTabIndex = function hasTabIndex2(node2) {
-  return !isNaN(parseInt(node2.getAttribute("tabindex"), 10));
-};
-var getTabIndex = function getTabIndex2(node2) {
-  if (!node2) {
-    throw new Error("No node provided");
-  }
-  if (node2.tabIndex < 0) {
-    if ((/^(AUDIO|VIDEO|DETAILS)$/.test(node2.tagName) || isContentEditable(node2)) && !hasTabIndex(node2)) {
-      return 0;
-    }
-  }
-  return node2.tabIndex;
-};
-var getSortOrderTabIndex = function getSortOrderTabIndex2(node2, isScope) {
-  var tabIndex = getTabIndex(node2);
-  if (tabIndex < 0 && isScope && !hasTabIndex(node2)) {
-    return 0;
-  }
-  return tabIndex;
-};
-var sortOrderedTabbables = function sortOrderedTabbables2(a3, b4) {
-  return a3.tabIndex === b4.tabIndex ? a3.documentOrder - b4.documentOrder : a3.tabIndex - b4.tabIndex;
-};
-var isInput = function isInput2(node2) {
-  return node2.tagName === "INPUT";
-};
-var isHiddenInput = function isHiddenInput2(node2) {
-  return isInput(node2) && node2.type === "hidden";
-};
-var isDetailsWithSummary = function isDetailsWithSummary2(node2) {
-  var r4 = node2.tagName === "DETAILS" && Array.prototype.slice.apply(node2.children).some(function(child) {
-    return child.tagName === "SUMMARY";
-  });
-  return r4;
-};
-var getCheckedRadio = function getCheckedRadio2(nodes, form) {
-  for (var i3 = 0; i3 < nodes.length; i3++) {
-    if (nodes[i3].checked && nodes[i3].form === form) {
-      return nodes[i3];
-    }
-  }
-};
-var isTabbableRadio = function isTabbableRadio2(node2) {
-  if (!node2.name) {
-    return true;
-  }
-  var radioScope = node2.form || getRootNode(node2);
-  var queryRadios = function queryRadios2(name3) {
-    return radioScope.querySelectorAll('input[type="radio"][name="' + name3 + '"]');
-  };
-  var radioSet;
-  if (typeof window !== "undefined" && typeof window.CSS !== "undefined" && typeof window.CSS.escape === "function") {
-    radioSet = queryRadios(window.CSS.escape(node2.name));
-  } else {
-    try {
-      radioSet = queryRadios(node2.name);
-    } catch (err) {
-      console.error("Looks like you have a radio button with a name attribute containing invalid CSS selector characters and need the CSS.escape polyfill: %s", err.message);
-      return false;
-    }
-  }
-  var checked = getCheckedRadio(radioSet, node2.form);
-  return !checked || checked === node2;
-};
-var isRadio = function isRadio2(node2) {
-  return isInput(node2) && node2.type === "radio";
-};
-var isNonTabbableRadio = function isNonTabbableRadio2(node2) {
-  return isRadio(node2) && !isTabbableRadio(node2);
-};
-var isNodeAttached = function isNodeAttached2(node2) {
-  var _nodeRoot;
-  var nodeRoot = node2 && getRootNode(node2);
-  var nodeRootHost = (_nodeRoot = nodeRoot) === null || _nodeRoot === void 0 ? void 0 : _nodeRoot.host;
-  var attached = false;
-  if (nodeRoot && nodeRoot !== node2) {
-    var _nodeRootHost, _nodeRootHost$ownerDo, _node$ownerDocument;
-    attached = !!((_nodeRootHost = nodeRootHost) !== null && _nodeRootHost !== void 0 && (_nodeRootHost$ownerDo = _nodeRootHost.ownerDocument) !== null && _nodeRootHost$ownerDo !== void 0 && _nodeRootHost$ownerDo.contains(nodeRootHost) || node2 !== null && node2 !== void 0 && (_node$ownerDocument = node2.ownerDocument) !== null && _node$ownerDocument !== void 0 && _node$ownerDocument.contains(node2));
-    while (!attached && nodeRootHost) {
-      var _nodeRoot2, _nodeRootHost2, _nodeRootHost2$ownerD;
-      nodeRoot = getRootNode(nodeRootHost);
-      nodeRootHost = (_nodeRoot2 = nodeRoot) === null || _nodeRoot2 === void 0 ? void 0 : _nodeRoot2.host;
-      attached = !!((_nodeRootHost2 = nodeRootHost) !== null && _nodeRootHost2 !== void 0 && (_nodeRootHost2$ownerD = _nodeRootHost2.ownerDocument) !== null && _nodeRootHost2$ownerD !== void 0 && _nodeRootHost2$ownerD.contains(nodeRootHost));
-    }
-  }
-  return attached;
-};
-var isZeroArea = function isZeroArea2(node2) {
-  var _node$getBoundingClie = node2.getBoundingClientRect(), width = _node$getBoundingClie.width, height = _node$getBoundingClie.height;
-  return width === 0 && height === 0;
-};
-var isHidden = function isHidden2(node2, _ref) {
-  var displayCheck = _ref.displayCheck, getShadowRoot = _ref.getShadowRoot;
-  if (displayCheck === "full-native") {
-    if ("checkVisibility" in node2) {
-      var visible2 = node2.checkVisibility({
-        // Checking opacity might be desirable for some use cases, but natively,
-        // opacity zero elements _are_ focusable and tabbable.
-        checkOpacity: false,
-        opacityProperty: false,
-        contentVisibilityAuto: true,
-        visibilityProperty: true,
-        // This is an alias for `visibilityProperty`. Contemporary browsers
-        // support both. However, this alias has wider browser support (Chrome
-        // >= 105 and Firefox >= 106, vs. Chrome >= 121 and Firefox >= 122), so
-        // we include it anyway.
-        checkVisibilityCSS: true
-      });
-      return !visible2;
-    }
-  }
-  var _getComputedStyle = getComputedStyle(node2), visibility = _getComputedStyle.visibility;
-  if (visibility === "hidden" || visibility === "collapse") {
-    return true;
-  }
-  var isDirectSummary = matches2.call(node2, "details>summary:first-of-type");
-  var nodeUnderDetails = isDirectSummary ? node2.parentElement : node2;
-  if (matches2.call(nodeUnderDetails, "details:not([open]) *")) {
-    return true;
-  }
-  if (!displayCheck || displayCheck === "full" || // full-native can run this branch when it falls through in case
-  // Element#checkVisibility is unsupported
-  displayCheck === "full-native" || displayCheck === "legacy-full") {
-    if (typeof getShadowRoot === "function") {
-      var originalNode = node2;
-      while (node2) {
-        var parentElement = node2.parentElement;
-        var rootNode = getRootNode(node2);
-        if (parentElement && !parentElement.shadowRoot && getShadowRoot(parentElement) === true) {
-          return isZeroArea(node2);
-        } else if (node2.assignedSlot) {
-          node2 = node2.assignedSlot;
-        } else if (!parentElement && rootNode !== node2.ownerDocument) {
-          node2 = rootNode.host;
-        } else {
-          node2 = parentElement;
-        }
-      }
-      node2 = originalNode;
-    }
-    if (isNodeAttached(node2)) {
-      return !node2.getClientRects().length;
-    }
-    if (displayCheck !== "legacy-full") {
-      return true;
-    }
-  } else if (displayCheck === "non-zero-area") {
-    return isZeroArea(node2);
-  }
-  return false;
-};
-var isDisabledFromFieldset = function isDisabledFromFieldset2(node2) {
-  if (/^(INPUT|BUTTON|SELECT|TEXTAREA)$/.test(node2.tagName)) {
-    var parentNode2 = node2.parentElement;
-    while (parentNode2) {
-      if (parentNode2.tagName === "FIELDSET" && parentNode2.disabled) {
-        for (var i3 = 0; i3 < parentNode2.children.length; i3++) {
-          var child = parentNode2.children.item(i3);
-          if (child.tagName === "LEGEND") {
-            return matches2.call(parentNode2, "fieldset[disabled] *") ? true : !child.contains(node2);
-          }
-        }
-        return true;
-      }
-      parentNode2 = parentNode2.parentElement;
-    }
-  }
-  return false;
-};
-var isNodeMatchingSelectorFocusable = function isNodeMatchingSelectorFocusable2(options, node2) {
-  if (node2.disabled || isHiddenInput(node2) || isHidden(node2, options) || // For a details element with a summary, the summary element gets the focus
-  isDetailsWithSummary(node2) || isDisabledFromFieldset(node2)) {
-    return false;
-  }
-  return true;
-};
-var isNodeMatchingSelectorTabbable = function isNodeMatchingSelectorTabbable2(options, node2) {
-  if (isNonTabbableRadio(node2) || getTabIndex(node2) < 0 || !isNodeMatchingSelectorFocusable(options, node2)) {
-    return false;
-  }
-  return true;
-};
-var isShadowRootTabbable = function isShadowRootTabbable2(shadowHostNode) {
-  var tabIndex = parseInt(shadowHostNode.getAttribute("tabindex"), 10);
-  if (isNaN(tabIndex) || tabIndex >= 0) {
-    return true;
-  }
-  return false;
-};
-var _sortByOrder = function sortByOrder(candidates) {
-  var regularTabbables = [];
-  var orderedTabbables = [];
-  candidates.forEach(function(item, i3) {
-    var isScope = !!item.scopeParent;
-    var element3 = isScope ? item.scopeParent : item;
-    var candidateTabindex = getSortOrderTabIndex(element3, isScope);
-    var elements = isScope ? _sortByOrder(item.candidates) : element3;
-    if (candidateTabindex === 0) {
-      isScope ? regularTabbables.push.apply(regularTabbables, elements) : regularTabbables.push(element3);
-    } else {
-      orderedTabbables.push({
-        documentOrder: i3,
-        tabIndex: candidateTabindex,
-        item,
-        isScope,
-        content: elements
-      });
-    }
-  });
-  return orderedTabbables.sort(sortOrderedTabbables).reduce(function(acc, sortable) {
-    sortable.isScope ? acc.push.apply(acc, sortable.content) : acc.push(sortable.content);
-    return acc;
-  }, []).concat(regularTabbables);
-};
-var tabbable = function tabbable2(container, options) {
-  options = options || {};
-  var candidates;
-  if (options.getShadowRoot) {
-    candidates = _getCandidatesIteratively([container], options.includeContainer, {
-      filter: isNodeMatchingSelectorTabbable.bind(null, options),
-      flatten: false,
-      getShadowRoot: options.getShadowRoot,
-      shadowRootFilter: isShadowRootTabbable
-    });
-  } else {
-    candidates = getCandidates(container, options.includeContainer, isNodeMatchingSelectorTabbable.bind(null, options));
-  }
-  return _sortByOrder(candidates);
-};
-var focusable = function focusable2(container, options) {
-  options = options || {};
-  var candidates;
-  if (options.getShadowRoot) {
-    candidates = _getCandidatesIteratively([container], options.includeContainer, {
-      filter: isNodeMatchingSelectorFocusable.bind(null, options),
-      flatten: true,
-      getShadowRoot: options.getShadowRoot
-    });
-  } else {
-    candidates = getCandidates(container, options.includeContainer, isNodeMatchingSelectorFocusable.bind(null, options));
-  }
-  return candidates;
-};
-var isTabbable = function isTabbable2(node2, options) {
-  options = options || {};
-  if (!node2) {
-    throw new Error("No node provided");
-  }
-  if (matches2.call(node2, candidateSelector) === false) {
-    return false;
-  }
-  return isNodeMatchingSelectorTabbable(options, node2);
-};
-
-// node_modules/@floating-ui/react/dist/floating-ui.react.utils.mjs
-function getPlatform() {
-  const uaData = navigator.userAgentData;
-  if (uaData != null && uaData.platform) {
-    return uaData.platform;
-  }
-  return navigator.platform;
-}
-function getUserAgent() {
-  const uaData = navigator.userAgentData;
-  if (uaData && Array.isArray(uaData.brands)) {
-    return uaData.brands.map((_ref) => {
-      let {
-        brand,
-        version: version2
-      } = _ref;
-      return brand + "/" + version2;
-    }).join(" ");
-  }
-  return navigator.userAgent;
-}
-function isSafari2() {
-  return /apple/i.test(navigator.vendor);
-}
-function isAndroid2() {
-  const re2 = /android/i;
-  return re2.test(getPlatform()) || re2.test(getUserAgent());
-}
-function isMac() {
-  return getPlatform().toLowerCase().startsWith("mac") && !navigator.maxTouchPoints;
-}
-function isJSDOM() {
-  return getUserAgent().includes("jsdom/");
-}
-var FOCUSABLE_ATTRIBUTE = "data-floating-ui-focusable";
-var TYPEABLE_SELECTOR = "input:not([type='hidden']):not([disabled]),[contenteditable]:not([contenteditable='false']),textarea:not([disabled])";
-function activeElement(doc4) {
-  let activeElement2 = doc4.activeElement;
-  while (((_activeElement = activeElement2) == null || (_activeElement = _activeElement.shadowRoot) == null ? void 0 : _activeElement.activeElement) != null) {
-    var _activeElement;
-    activeElement2 = activeElement2.shadowRoot.activeElement;
-  }
-  return activeElement2;
-}
-function contains2(parent, child) {
-  if (!parent || !child) {
-    return false;
-  }
-  const rootNode = child.getRootNode == null ? void 0 : child.getRootNode();
-  if (parent.contains(child)) {
-    return true;
-  }
-  if (rootNode && isShadowRoot(rootNode)) {
-    let next = child;
-    while (next) {
-      if (parent === next) {
-        return true;
-      }
-      next = next.parentNode || next.host;
-    }
-  }
-  return false;
-}
-function getTarget(event) {
-  if ("composedPath" in event) {
-    return event.composedPath()[0];
-  }
-  return event.target;
-}
-function isEventTargetWithin(event, node2) {
-  if (node2 == null) {
-    return false;
-  }
-  if ("composedPath" in event) {
-    return event.composedPath().includes(node2);
-  }
-  const e6 = event;
-  return e6.target != null && node2.contains(e6.target);
-}
-function isRootElement(element3) {
-  return element3.matches("html,body");
-}
-function getDocument(node2) {
-  return (node2 == null ? void 0 : node2.ownerDocument) || document;
-}
-function isTypeableElement(element3) {
-  return isHTMLElement(element3) && element3.matches(TYPEABLE_SELECTOR);
-}
-function isTypeableCombobox(element3) {
-  if (!element3) return false;
-  return element3.getAttribute("role") === "combobox" && isTypeableElement(element3);
-}
-function matchesFocusVisible(element3) {
-  if (!element3 || isJSDOM()) return true;
-  try {
-    return element3.matches(":focus-visible");
-  } catch (_e2) {
-    return true;
-  }
-}
-function getFloatingFocusElement(floatingElement) {
-  if (!floatingElement) {
-    return null;
-  }
-  return floatingElement.hasAttribute(FOCUSABLE_ATTRIBUTE) ? floatingElement : floatingElement.querySelector("[" + FOCUSABLE_ATTRIBUTE + "]") || floatingElement;
-}
-function getNodeChildren(nodes, id3, onlyOpenChildren) {
-  if (onlyOpenChildren === void 0) {
-    onlyOpenChildren = true;
-  }
-  const directChildren = nodes.filter((node2) => {
-    var _node$context;
-    return node2.parentId === id3 && (!onlyOpenChildren || ((_node$context = node2.context) == null ? void 0 : _node$context.open));
-  });
-  return directChildren.flatMap((child) => [child, ...getNodeChildren(nodes, child.id, onlyOpenChildren)]);
-}
-function getNodeAncestors(nodes, id3) {
-  var _nodes$find;
-  let allAncestors = [];
-  let currentParentId = (_nodes$find = nodes.find((node2) => node2.id === id3)) == null ? void 0 : _nodes$find.parentId;
-  while (currentParentId) {
-    const currentNode = nodes.find((node2) => node2.id === currentParentId);
-    currentParentId = currentNode == null ? void 0 : currentNode.parentId;
-    if (currentNode) {
-      allAncestors = allAncestors.concat(currentNode);
-    }
-  }
-  return allAncestors;
-}
-function stopEvent(event) {
-  event.preventDefault();
-  event.stopPropagation();
-}
-function isReactEvent(event) {
-  return "nativeEvent" in event;
-}
-function isVirtualClick(event) {
-  if (event.mozInputSource === 0 && event.isTrusted) {
-    return true;
-  }
-  if (isAndroid2() && event.pointerType) {
-    return event.type === "click" && event.buttons === 1;
-  }
-  return event.detail === 0 && !event.pointerType;
-}
-function isVirtualPointerEvent(event) {
-  if (isJSDOM()) return false;
-  return !isAndroid2() && event.width === 0 && event.height === 0 || isAndroid2() && event.width === 1 && event.height === 1 && event.pressure === 0 && event.detail === 0 && event.pointerType === "mouse" || // iOS VoiceOver returns 0.333• for width/height.
-  event.width < 1 && event.height < 1 && event.pressure === 0 && event.detail === 0 && event.pointerType === "touch";
-}
-function isMouseLikePointerType(pointerType, strict) {
-  const values4 = ["mouse", "pen"];
-  if (!strict) {
-    values4.push("", void 0);
-  }
-  return values4.includes(pointerType);
-}
-var isClient = typeof document !== "undefined";
-var noop = function noop2() {
-};
-var index = isClient ? import_react.useLayoutEffect : noop;
-var SafeReact = {
-  ...React
-};
-function useLatestRef(value) {
-  const ref = React.useRef(value);
-  index(() => {
-    ref.current = value;
-  });
-  return ref;
-}
-var useInsertionEffect = SafeReact.useInsertionEffect;
-var useSafeInsertionEffect = useInsertionEffect || ((fn5) => fn5());
-function useEffectEvent(callback) {
-  const ref = React.useRef(() => {
-    if (true) {
-      throw new Error("Cannot call an event handler while rendering.");
-    }
-  });
-  useSafeInsertionEffect(() => {
-    ref.current = callback;
-  });
-  return React.useCallback(function() {
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-    return ref.current == null ? void 0 : ref.current(...args);
-  }, []);
-}
-var getTabbableOptions = () => ({
-  getShadowRoot: true,
-  displayCheck: (
-    // JSDOM does not support the `tabbable` library. To solve this we can
-    // check if `ResizeObserver` is a real function (not polyfilled), which
-    // determines if the current environment is JSDOM-like.
-    typeof ResizeObserver === "function" && ResizeObserver.toString().includes("[native code]") ? "full" : "none"
-  )
-});
-function getTabbableIn(container, dir) {
-  const list4 = tabbable(container, getTabbableOptions());
-  const len = list4.length;
-  if (len === 0) return;
-  const active = activeElement(getDocument(container));
-  const index4 = list4.indexOf(active);
-  const nextIndex = index4 === -1 ? dir === 1 ? 0 : len - 1 : index4 + dir;
-  return list4[nextIndex];
-}
-function getNextTabbable(referenceElement) {
-  return getTabbableIn(getDocument(referenceElement).body, 1) || referenceElement;
-}
-function getPreviousTabbable(referenceElement) {
-  return getTabbableIn(getDocument(referenceElement).body, -1) || referenceElement;
-}
-function isOutsideEvent(event, container) {
-  const containerElement = container || event.currentTarget;
-  const relatedTarget = event.relatedTarget;
-  return !relatedTarget || !contains2(containerElement, relatedTarget);
-}
-function disableFocusInside(container) {
-  const tabbableElements = tabbable(container, getTabbableOptions());
-  tabbableElements.forEach((element3) => {
-    element3.dataset.tabindex = element3.getAttribute("tabindex") || "";
-    element3.setAttribute("tabindex", "-1");
-  });
-}
-function enableFocusInside(container) {
-  const elements = container.querySelectorAll("[data-tabindex]");
-  elements.forEach((element3) => {
-    const tabindex = element3.dataset.tabindex;
-    delete element3.dataset.tabindex;
-    if (tabindex) {
-      element3.setAttribute("tabindex", tabindex);
-    } else {
-      element3.removeAttribute("tabindex");
-    }
-  });
-}
-
-// node_modules/@floating-ui/react/dist/floating-ui.react.mjs
-var import_jsx_runtime2 = require("react/jsx-runtime");
-var ReactDOM2 = __toESM(require("react-dom"), 1);
-
-// node_modules/@floating-ui/core/dist/floating-ui.core.mjs
-function computeCoordsFromPlacement(_ref, placement, rtl) {
-  let {
-    reference,
-    floating
-  } = _ref;
-  const sideAxis = getSideAxis(placement);
-  const alignmentAxis = getAlignmentAxis(placement);
-  const alignLength = getAxisLength(alignmentAxis);
-  const side = getSide2(placement);
-  const isVertical = sideAxis === "y";
-  const commonX = reference.x + reference.width / 2 - floating.width / 2;
-  const commonY = reference.y + reference.height / 2 - floating.height / 2;
-  const commonAlign = reference[alignLength] / 2 - floating[alignLength] / 2;
-  let coords;
-  switch (side) {
-    case "top":
-      coords = {
-        x: commonX,
-        y: reference.y - floating.height
-      };
-      break;
-    case "bottom":
-      coords = {
-        x: commonX,
-        y: reference.y + reference.height
-      };
-      break;
-    case "right":
-      coords = {
-        x: reference.x + reference.width,
-        y: commonY
-      };
-      break;
-    case "left":
-      coords = {
-        x: reference.x - floating.width,
-        y: commonY
-      };
-      break;
-    default:
-      coords = {
-        x: reference.x,
-        y: reference.y
-      };
-  }
-  const alignment = getAlignment(placement);
-  if (alignment) {
-    coords[alignmentAxis] += commonAlign * (alignment === "end" ? 1 : -1) * (rtl && isVertical ? -1 : 1);
-  }
-  return coords;
-}
-async function detectOverflow(state, options) {
-  var _await$platform$isEle;
-  if (options === void 0) {
-    options = {};
-  }
-  const {
-    x: x3,
-    y: y4,
-    platform: platform2,
-    rects,
-    elements,
-    strategy
-  } = state;
-  const {
-    boundary = "clippingAncestors",
-    rootBoundary = "viewport",
-    elementContext: elementContext2 = "floating",
-    altBoundary = false,
-    padding = 0
-  } = evaluate(options, state);
-  const paddingObject = getPaddingObject(padding);
-  const altContext = elementContext2 === "floating" ? "reference" : "floating";
-  const element3 = elements[altBoundary ? altContext : elementContext2];
-  const clippingClientRect = rectToClientRect(await platform2.getClippingRect({
-    element: ((_await$platform$isEle = await (platform2.isElement == null ? void 0 : platform2.isElement(element3))) != null ? _await$platform$isEle : true) ? element3 : element3.contextElement || await (platform2.getDocumentElement == null ? void 0 : platform2.getDocumentElement(elements.floating)),
-    boundary,
-    rootBoundary,
-    strategy
-  }));
-  const rect = elementContext2 === "floating" ? {
-    x: x3,
-    y: y4,
-    width: rects.floating.width,
-    height: rects.floating.height
-  } : rects.reference;
-  const offsetParent = await (platform2.getOffsetParent == null ? void 0 : platform2.getOffsetParent(elements.floating));
-  const offsetScale = await (platform2.isElement == null ? void 0 : platform2.isElement(offsetParent)) && await (platform2.getScale == null ? void 0 : platform2.getScale(offsetParent)) || {
-    x: 1,
-    y: 1
-  };
-  const elementClientRect = rectToClientRect(platform2.convertOffsetParentRelativeRectToViewportRelativeRect ? await platform2.convertOffsetParentRelativeRectToViewportRelativeRect({
-    elements,
-    rect,
-    offsetParent,
-    strategy
-  }) : rect);
-  return {
-    top: (clippingClientRect.top - elementClientRect.top + paddingObject.top) / offsetScale.y,
-    bottom: (elementClientRect.bottom - clippingClientRect.bottom + paddingObject.bottom) / offsetScale.y,
-    left: (clippingClientRect.left - elementClientRect.left + paddingObject.left) / offsetScale.x,
-    right: (elementClientRect.right - clippingClientRect.right + paddingObject.right) / offsetScale.x
-  };
-}
-var MAX_RESET_COUNT = 50;
-var computePosition = async (reference, floating, config) => {
-  const {
-    placement = "bottom",
-    strategy = "absolute",
-    middleware = [],
-    platform: platform2
-  } = config;
-  const platformWithDetectOverflow = platform2.detectOverflow ? platform2 : {
-    ...platform2,
-    detectOverflow
-  };
-  const rtl = await (platform2.isRTL == null ? void 0 : platform2.isRTL(floating));
-  let rects = await platform2.getElementRects({
-    reference,
-    floating,
-    strategy
-  });
-  let {
-    x: x3,
-    y: y4
-  } = computeCoordsFromPlacement(rects, placement, rtl);
-  let statefulPlacement = placement;
-  let resetCount = 0;
-  const middlewareData = {};
-  for (let i3 = 0; i3 < middleware.length; i3++) {
-    const currentMiddleware = middleware[i3];
-    if (!currentMiddleware) {
-      continue;
-    }
-    const {
-      name: name3,
-      fn: fn5
-    } = currentMiddleware;
-    const {
-      x: nextX,
-      y: nextY,
-      data: data2,
-      reset
-    } = await fn5({
-      x: x3,
-      y: y4,
-      initialPlacement: placement,
-      placement: statefulPlacement,
-      strategy,
-      middlewareData,
-      rects,
-      platform: platformWithDetectOverflow,
-      elements: {
-        reference,
-        floating
-      }
-    });
-    x3 = nextX != null ? nextX : x3;
-    y4 = nextY != null ? nextY : y4;
-    middlewareData[name3] = {
-      ...middlewareData[name3],
-      ...data2
-    };
-    if (reset && resetCount < MAX_RESET_COUNT) {
-      resetCount++;
-      if (typeof reset === "object") {
-        if (reset.placement) {
-          statefulPlacement = reset.placement;
-        }
-        if (reset.rects) {
-          rects = reset.rects === true ? await platform2.getElementRects({
-            reference,
-            floating,
-            strategy
-          }) : reset.rects;
-        }
-        ({
-          x: x3,
-          y: y4
-        } = computeCoordsFromPlacement(rects, statefulPlacement, rtl));
-      }
-      i3 = -1;
-    }
-  }
-  return {
-    x: x3,
-    y: y4,
-    placement: statefulPlacement,
-    strategy,
-    middlewareData
-  };
-};
-var arrow3 = (options) => ({
-  name: "arrow",
-  options,
-  async fn(state) {
-    const {
-      x: x3,
-      y: y4,
-      placement,
-      rects,
-      platform: platform2,
-      elements,
-      middlewareData
-    } = state;
-    const {
-      element: element3,
-      padding = 0
-    } = evaluate(options, state) || {};
-    if (element3 == null) {
-      return {};
-    }
-    const paddingObject = getPaddingObject(padding);
-    const coords = {
-      x: x3,
-      y: y4
-    };
-    const axis = getAlignmentAxis(placement);
-    const length = getAxisLength(axis);
-    const arrowDimensions = await platform2.getDimensions(element3);
-    const isYAxis = axis === "y";
-    const minProp = isYAxis ? "top" : "left";
-    const maxProp = isYAxis ? "bottom" : "right";
-    const clientProp = isYAxis ? "clientHeight" : "clientWidth";
-    const endDiff = rects.reference[length] + rects.reference[axis] - coords[axis] - rects.floating[length];
-    const startDiff = coords[axis] - rects.reference[axis];
-    const arrowOffsetParent = await (platform2.getOffsetParent == null ? void 0 : platform2.getOffsetParent(element3));
-    let clientSize = arrowOffsetParent ? arrowOffsetParent[clientProp] : 0;
-    if (!clientSize || !await (platform2.isElement == null ? void 0 : platform2.isElement(arrowOffsetParent))) {
-      clientSize = elements.floating[clientProp] || rects.floating[length];
-    }
-    const centerToReference = endDiff / 2 - startDiff / 2;
-    const largestPossiblePadding = clientSize / 2 - arrowDimensions[length] / 2 - 1;
-    const minPadding = min(paddingObject[minProp], largestPossiblePadding);
-    const maxPadding = min(paddingObject[maxProp], largestPossiblePadding);
-    const max2 = clientSize - arrowDimensions[length] - maxPadding;
-    const center = clientSize / 2 - arrowDimensions[length] / 2 + centerToReference;
-    const offset4 = clamp(minPadding, center, max2);
-    const shouldAddOffset = !middlewareData.arrow && getAlignment(placement) != null && center !== offset4 && rects.reference[length] / 2 - (center < minPadding ? minPadding : maxPadding) - arrowDimensions[length] / 2 < 0;
-    const alignmentOffset = shouldAddOffset ? center < minPadding ? center - minPadding : center - max2 : 0;
-    return {
-      [axis]: coords[axis] + alignmentOffset,
-      data: {
-        [axis]: offset4,
-        centerOffset: center - offset4 - alignmentOffset,
-        ...shouldAddOffset && {
-          alignmentOffset
-        }
-      },
-      reset: shouldAddOffset
-    };
-  }
-});
-function getPlacementList(alignment, autoAlignment, allowedPlacements) {
-  const allowedPlacementsSortedByAlignment = alignment ? [...allowedPlacements.filter((placement) => getAlignment(placement) === alignment), ...allowedPlacements.filter((placement) => getAlignment(placement) !== alignment)] : allowedPlacements.filter((placement) => getSide2(placement) === placement);
-  return allowedPlacementsSortedByAlignment.filter((placement) => {
-    if (alignment) {
-      return getAlignment(placement) === alignment || (autoAlignment ? getOppositeAlignmentPlacement(placement) !== placement : false);
-    }
-    return true;
-  });
-}
-var autoPlacement = function(options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    name: "autoPlacement",
-    options,
-    async fn(state) {
-      var _middlewareData$autoP, _middlewareData$autoP2, _placementsThatFitOnE;
-      const {
-        rects,
-        middlewareData,
-        placement,
-        platform: platform2,
-        elements
-      } = state;
-      const {
-        crossAxis = false,
-        alignment,
-        allowedPlacements = placements,
-        autoAlignment = true,
-        ...detectOverflowOptions
-      } = evaluate(options, state);
-      const placements$1 = alignment !== void 0 || allowedPlacements === placements ? getPlacementList(alignment || null, autoAlignment, allowedPlacements) : allowedPlacements;
-      const currentIndex = ((_middlewareData$autoP = middlewareData.autoPlacement) == null ? void 0 : _middlewareData$autoP.index) || 0;
-      const currentPlacement = placements$1[currentIndex];
-      if (currentPlacement == null) {
-        return {};
-      }
-      if (placement !== currentPlacement) {
-        return {
-          reset: {
-            placement: placements$1[0]
-          }
-        };
-      }
-      const overflow = await platform2.detectOverflow(state, detectOverflowOptions);
-      const alignmentSides = getAlignmentSides(currentPlacement, rects, await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating)));
-      const currentOverflows = [overflow[getSide2(currentPlacement)], overflow[alignmentSides[0]], overflow[alignmentSides[1]]];
-      const allOverflows = [...((_middlewareData$autoP2 = middlewareData.autoPlacement) == null ? void 0 : _middlewareData$autoP2.overflows) || [], {
-        placement: currentPlacement,
-        overflows: currentOverflows
-      }];
-      const nextPlacement = placements$1[currentIndex + 1];
-      if (nextPlacement) {
-        return {
-          data: {
-            index: currentIndex + 1,
-            overflows: allOverflows
-          },
-          reset: {
-            placement: nextPlacement
-          }
-        };
-      }
-      const placementsSortedByMostSpace = allOverflows.map((d) => {
-        const alignment2 = getAlignment(d.placement);
-        return [d.placement, alignment2 && crossAxis ? (
-          // Check along the mainAxis and main crossAxis side.
-          d.overflows.slice(0, 2).reduce((acc, v) => acc + v, 0)
-        ) : (
-          // Check only the mainAxis.
-          d.overflows[0]
-        ), d.overflows];
-      }).sort((a3, b4) => a3[1] - b4[1]);
-      const placementsThatFitOnEachSide = placementsSortedByMostSpace.filter((d) => d[2].slice(
-        0,
-        // Aligned placements should not check their opposite crossAxis
-        // side.
-        getAlignment(d[0]) ? 2 : 3
-      ).every((v) => v <= 0));
-      const resetPlacement = ((_placementsThatFitOnE = placementsThatFitOnEachSide[0]) == null ? void 0 : _placementsThatFitOnE[0]) || placementsSortedByMostSpace[0][0];
-      if (resetPlacement !== placement) {
-        return {
-          data: {
-            index: currentIndex + 1,
-            overflows: allOverflows
-          },
-          reset: {
-            placement: resetPlacement
-          }
-        };
-      }
-      return {};
-    }
-  };
-};
-var flip = function(options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    name: "flip",
-    options,
-    async fn(state) {
-      var _middlewareData$arrow, _middlewareData$flip;
-      const {
-        placement,
-        middlewareData,
-        rects,
-        initialPlacement,
-        platform: platform2,
-        elements
-      } = state;
-      const {
-        mainAxis: checkMainAxis = true,
-        crossAxis: checkCrossAxis = true,
-        fallbackPlacements: specifiedFallbackPlacements,
-        fallbackStrategy = "bestFit",
-        fallbackAxisSideDirection = "none",
-        flipAlignment = true,
-        ...detectOverflowOptions
-      } = evaluate(options, state);
-      if ((_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
-        return {};
-      }
-      const side = getSide2(placement);
-      const initialSideAxis = getSideAxis(initialPlacement);
-      const isBasePlacement = getSide2(initialPlacement) === initialPlacement;
-      const rtl = await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating));
-      const fallbackPlacements = specifiedFallbackPlacements || (isBasePlacement || !flipAlignment ? [getOppositePlacement(initialPlacement)] : getExpandedPlacements(initialPlacement));
-      const hasFallbackAxisSideDirection = fallbackAxisSideDirection !== "none";
-      if (!specifiedFallbackPlacements && hasFallbackAxisSideDirection) {
-        fallbackPlacements.push(...getOppositeAxisPlacements(initialPlacement, flipAlignment, fallbackAxisSideDirection, rtl));
-      }
-      const placements2 = [initialPlacement, ...fallbackPlacements];
-      const overflow = await platform2.detectOverflow(state, detectOverflowOptions);
-      const overflows = [];
-      let overflowsData = ((_middlewareData$flip = middlewareData.flip) == null ? void 0 : _middlewareData$flip.overflows) || [];
-      if (checkMainAxis) {
-        overflows.push(overflow[side]);
-      }
-      if (checkCrossAxis) {
-        const sides2 = getAlignmentSides(placement, rects, rtl);
-        overflows.push(overflow[sides2[0]], overflow[sides2[1]]);
-      }
-      overflowsData = [...overflowsData, {
-        placement,
-        overflows
-      }];
-      if (!overflows.every((side2) => side2 <= 0)) {
-        var _middlewareData$flip2, _overflowsData$filter;
-        const nextIndex = (((_middlewareData$flip2 = middlewareData.flip) == null ? void 0 : _middlewareData$flip2.index) || 0) + 1;
-        const nextPlacement = placements2[nextIndex];
-        if (nextPlacement) {
-          const ignoreCrossAxisOverflow = checkCrossAxis === "alignment" ? initialSideAxis !== getSideAxis(nextPlacement) : false;
-          if (!ignoreCrossAxisOverflow || // We leave the current main axis only if every placement on that axis
-          // overflows the main axis.
-          overflowsData.every((d) => getSideAxis(d.placement) === initialSideAxis ? d.overflows[0] > 0 : true)) {
-            return {
-              data: {
-                index: nextIndex,
-                overflows: overflowsData
-              },
-              reset: {
-                placement: nextPlacement
-              }
-            };
-          }
-        }
-        let resetPlacement = (_overflowsData$filter = overflowsData.filter((d) => d.overflows[0] <= 0).sort((a3, b4) => a3.overflows[1] - b4.overflows[1])[0]) == null ? void 0 : _overflowsData$filter.placement;
-        if (!resetPlacement) {
-          switch (fallbackStrategy) {
-            case "bestFit": {
-              var _overflowsData$filter2;
-              const placement2 = (_overflowsData$filter2 = overflowsData.filter((d) => {
-                if (hasFallbackAxisSideDirection) {
-                  const currentSideAxis = getSideAxis(d.placement);
-                  return currentSideAxis === initialSideAxis || // Create a bias to the `y` side axis due to horizontal
-                  // reading directions favoring greater width.
-                  currentSideAxis === "y";
-                }
-                return true;
-              }).map((d) => [d.placement, d.overflows.filter((overflow2) => overflow2 > 0).reduce((acc, overflow2) => acc + overflow2, 0)]).sort((a3, b4) => a3[1] - b4[1])[0]) == null ? void 0 : _overflowsData$filter2[0];
-              if (placement2) {
-                resetPlacement = placement2;
-              }
-              break;
-            }
-            case "initialPlacement":
-              resetPlacement = initialPlacement;
-              break;
-          }
-        }
-        if (placement !== resetPlacement) {
-          return {
-            reset: {
-              placement: resetPlacement
-            }
-          };
-        }
-      }
-      return {};
-    }
-  };
-};
-function getSideOffsets(overflow, rect) {
-  return {
-    top: overflow.top - rect.height,
-    right: overflow.right - rect.width,
-    bottom: overflow.bottom - rect.height,
-    left: overflow.left - rect.width
-  };
-}
-function isAnySideFullyClipped(overflow) {
-  return sides.some((side) => overflow[side] >= 0);
-}
-var hide = function(options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    name: "hide",
-    options,
-    async fn(state) {
-      const {
-        rects,
-        platform: platform2
-      } = state;
-      const {
-        strategy = "referenceHidden",
-        ...detectOverflowOptions
-      } = evaluate(options, state);
-      switch (strategy) {
-        case "referenceHidden": {
-          const overflow = await platform2.detectOverflow(state, {
-            ...detectOverflowOptions,
-            elementContext: "reference"
-          });
-          const offsets = getSideOffsets(overflow, rects.reference);
-          return {
-            data: {
-              referenceHiddenOffsets: offsets,
-              referenceHidden: isAnySideFullyClipped(offsets)
-            }
-          };
-        }
-        case "escaped": {
-          const overflow = await platform2.detectOverflow(state, {
-            ...detectOverflowOptions,
-            altBoundary: true
-          });
-          const offsets = getSideOffsets(overflow, rects.floating);
-          return {
-            data: {
-              escapedOffsets: offsets,
-              escaped: isAnySideFullyClipped(offsets)
-            }
-          };
-        }
-        default: {
-          return {};
-        }
-      }
-    }
-  };
-};
-function getBoundingRect(rects) {
-  const minX = min(...rects.map((rect) => rect.left));
-  const minY = min(...rects.map((rect) => rect.top));
-  const maxX = max(...rects.map((rect) => rect.right));
-  const maxY = max(...rects.map((rect) => rect.bottom));
-  return {
-    x: minX,
-    y: minY,
-    width: maxX - minX,
-    height: maxY - minY
-  };
-}
-function getRectsByLine(rects) {
-  const sortedRects = rects.slice().sort((a3, b4) => a3.y - b4.y);
-  const groups = [];
-  let prevRect = null;
-  for (let i3 = 0; i3 < sortedRects.length; i3++) {
-    const rect = sortedRects[i3];
-    if (!prevRect || rect.y - prevRect.y > prevRect.height / 2) {
-      groups.push([rect]);
-    } else {
-      groups[groups.length - 1].push(rect);
-    }
-    prevRect = rect;
-  }
-  return groups.map((rect) => rectToClientRect(getBoundingRect(rect)));
-}
-var inline = function(options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    name: "inline",
-    options,
-    async fn(state) {
-      const {
-        placement,
-        elements,
-        rects,
-        platform: platform2,
-        strategy
-      } = state;
-      const {
-        padding = 2,
-        x: x3,
-        y: y4
-      } = evaluate(options, state);
-      const nativeClientRects = Array.from(await (platform2.getClientRects == null ? void 0 : platform2.getClientRects(elements.reference)) || []);
-      if (!nativeClientRects.length) {
-        return {};
-      }
-      const clientRects = getRectsByLine(nativeClientRects);
-      const fallback = rectToClientRect(getBoundingRect(nativeClientRects));
-      const paddingObject = getPaddingObject(padding);
-      function getBoundingClientRect2() {
-        if (clientRects.length === 2 && (clientRects[0].left > clientRects[1].right || clientRects[1].left > clientRects[0].right) && x3 != null && y4 != null) {
-          return clientRects.find((rect) => x3 > rect.left - paddingObject.left && x3 < rect.right + paddingObject.right && y4 > rect.top - paddingObject.top && y4 < rect.bottom + paddingObject.bottom) || fallback;
-        }
-        if (clientRects.length >= 2) {
-          if (getSideAxis(placement) === "y") {
-            const firstRect = clientRects[0];
-            const lastRect = clientRects[clientRects.length - 1];
-            const isTop = getSide2(placement) === "top";
-            const top3 = firstRect.top;
-            const bottom2 = lastRect.bottom;
-            const left = isTop ? firstRect.left : lastRect.left;
-            const right = isTop ? firstRect.right : lastRect.right;
-            return rectToClientRect({
-              x: left,
-              y: top3,
-              width: right - left,
-              height: bottom2 - top3
-            });
-          }
-          const isLeftSide = getSide2(placement) === "left";
-          const maxRight = max(...clientRects.map((rect) => rect.right));
-          const minLeft = min(...clientRects.map((rect) => rect.left));
-          const measureRects = clientRects.filter((rect) => isLeftSide ? rect.left === minLeft : rect.right === maxRight);
-          const top2 = measureRects[0].top;
-          const bottom = measureRects[measureRects.length - 1].bottom;
-          return rectToClientRect({
-            x: minLeft,
-            y: top2,
-            width: maxRight - minLeft,
-            height: bottom - top2
-          });
-        }
-        return fallback;
-      }
-      const resetRects = await platform2.getElementRects({
-        reference: {
-          getBoundingClientRect: getBoundingClientRect2
-        },
-        floating: elements.floating,
-        strategy
-      });
-      if (rects.reference.x !== resetRects.reference.x || rects.reference.y !== resetRects.reference.y || rects.reference.width !== resetRects.reference.width || rects.reference.height !== resetRects.reference.height) {
-        return {
-          reset: {
-            rects: resetRects
-          }
-        };
-      }
-      return {};
-    }
-  };
-};
-var originSides = /* @__PURE__ */ new Set(["left", "top"]);
-async function convertValueToCoords(state, options) {
-  const {
-    placement,
-    platform: platform2,
-    elements
-  } = state;
-  const rtl = await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating));
-  const side = getSide2(placement);
-  const alignment = getAlignment(placement);
-  const isVertical = getSideAxis(placement) === "y";
-  const mainAxisMulti = originSides.has(side) ? -1 : 1;
-  const crossAxisMulti = rtl && isVertical ? -1 : 1;
-  const rawValue = evaluate(options, state);
-  let {
-    mainAxis,
-    crossAxis,
-    alignmentAxis
-  } = typeof rawValue === "number" ? {
-    mainAxis: rawValue,
-    crossAxis: 0,
-    alignmentAxis: null
-  } : {
-    mainAxis: rawValue.mainAxis || 0,
-    crossAxis: rawValue.crossAxis || 0,
-    alignmentAxis: rawValue.alignmentAxis
-  };
-  if (alignment && typeof alignmentAxis === "number") {
-    crossAxis = alignment === "end" ? alignmentAxis * -1 : alignmentAxis;
-  }
-  return isVertical ? {
-    x: crossAxis * crossAxisMulti,
-    y: mainAxis * mainAxisMulti
-  } : {
-    x: mainAxis * mainAxisMulti,
-    y: crossAxis * crossAxisMulti
-  };
-}
-var offset = function(options) {
-  if (options === void 0) {
-    options = 0;
-  }
-  return {
-    name: "offset",
-    options,
-    async fn(state) {
-      var _middlewareData$offse, _middlewareData$arrow;
-      const {
-        x: x3,
-        y: y4,
-        placement,
-        middlewareData
-      } = state;
-      const diffCoords = await convertValueToCoords(state, options);
-      if (placement === ((_middlewareData$offse = middlewareData.offset) == null ? void 0 : _middlewareData$offse.placement) && (_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
-        return {};
-      }
-      return {
-        x: x3 + diffCoords.x,
-        y: y4 + diffCoords.y,
-        data: {
-          ...diffCoords,
-          placement
-        }
-      };
-    }
-  };
-};
-var shift2 = function(options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    name: "shift",
-    options,
-    async fn(state) {
-      const {
-        x: x3,
-        y: y4,
-        placement,
-        platform: platform2
-      } = state;
-      const {
-        mainAxis: checkMainAxis = true,
-        crossAxis: checkCrossAxis = false,
-        limiter = {
-          fn: (_ref) => {
-            let {
-              x: x4,
-              y: y5
-            } = _ref;
-            return {
-              x: x4,
-              y: y5
-            };
-          }
-        },
-        ...detectOverflowOptions
-      } = evaluate(options, state);
-      const coords = {
-        x: x3,
-        y: y4
-      };
-      const overflow = await platform2.detectOverflow(state, detectOverflowOptions);
-      const crossAxis = getSideAxis(placement);
-      const mainAxis = getOppositeAxis(crossAxis);
-      let mainAxisCoord = coords[mainAxis];
-      let crossAxisCoord = coords[crossAxis];
-      const clampCoord = (axis, coord) => clamp(coord + overflow[axis === "y" ? "top" : "left"], coord, coord - overflow[axis === "y" ? "bottom" : "right"]);
-      if (checkMainAxis) {
-        mainAxisCoord = clampCoord(mainAxis, mainAxisCoord);
-      }
-      if (checkCrossAxis) {
-        crossAxisCoord = clampCoord(crossAxis, crossAxisCoord);
-      }
-      const limitedCoords = limiter.fn({
-        ...state,
-        [mainAxis]: mainAxisCoord,
-        [crossAxis]: crossAxisCoord
-      });
-      return {
-        ...limitedCoords,
-        data: {
-          x: limitedCoords.x - x3,
-          y: limitedCoords.y - y4,
-          enabled: {
-            [mainAxis]: checkMainAxis,
-            [crossAxis]: checkCrossAxis
-          }
-        }
-      };
-    }
-  };
-};
-var limitShift = function(options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    options,
-    fn(state) {
-      var _rawOffset$mainAxis, _rawOffset$crossAxis;
-      const {
-        x: x3,
-        y: y4,
-        placement,
-        rects,
-        middlewareData
-      } = state;
-      const {
-        offset: offset4 = 0,
-        mainAxis: checkMainAxis = true,
-        crossAxis: checkCrossAxis = true
-      } = evaluate(options, state);
-      const coords = {
-        x: x3,
-        y: y4
-      };
-      const crossAxis = getSideAxis(placement);
-      const mainAxis = getOppositeAxis(crossAxis);
-      let mainAxisCoord = coords[mainAxis];
-      let crossAxisCoord = coords[crossAxis];
-      const rawOffset = evaluate(offset4, state);
-      const computedOffset = typeof rawOffset === "number" ? {
-        mainAxis: rawOffset,
-        crossAxis: 0
-      } : {
-        mainAxis: (_rawOffset$mainAxis = rawOffset.mainAxis) != null ? _rawOffset$mainAxis : 0,
-        crossAxis: (_rawOffset$crossAxis = rawOffset.crossAxis) != null ? _rawOffset$crossAxis : 0
-      };
-      if (checkMainAxis) {
-        const len = mainAxis === "y" ? "height" : "width";
-        const limitMin = rects.reference[mainAxis] - rects.floating[len] + computedOffset.mainAxis;
-        const limitMax = rects.reference[mainAxis] + rects.reference[len] - computedOffset.mainAxis;
-        if (mainAxisCoord < limitMin) {
-          mainAxisCoord = limitMin;
-        } else if (mainAxisCoord > limitMax) {
-          mainAxisCoord = limitMax;
-        }
-      }
-      if (checkCrossAxis) {
-        var _middlewareData$offse, _middlewareData$offse2;
-        const len = mainAxis === "y" ? "width" : "height";
-        const isOriginSide = originSides.has(getSide2(placement));
-        const limitMin = rects.reference[crossAxis] - rects.floating[len] + (isOriginSide ? ((_middlewareData$offse = middlewareData.offset) == null ? void 0 : _middlewareData$offse[crossAxis]) || 0 : 0) + (isOriginSide ? 0 : computedOffset.crossAxis);
-        const limitMax = rects.reference[crossAxis] + rects.reference[len] + (isOriginSide ? 0 : ((_middlewareData$offse2 = middlewareData.offset) == null ? void 0 : _middlewareData$offse2[crossAxis]) || 0) - (isOriginSide ? computedOffset.crossAxis : 0);
-        if (crossAxisCoord < limitMin) {
-          crossAxisCoord = limitMin;
-        } else if (crossAxisCoord > limitMax) {
-          crossAxisCoord = limitMax;
-        }
-      }
-      return {
-        [mainAxis]: mainAxisCoord,
-        [crossAxis]: crossAxisCoord
-      };
-    }
-  };
-};
-var size = function(options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    name: "size",
-    options,
-    async fn(state) {
-      const {
-        placement,
-        rects,
-        platform: platform2,
-        elements
-      } = state;
-      const {
-        apply: apply5 = () => {
-        },
-        ...detectOverflowOptions
-      } = evaluate(options, state);
-      const overflow = await platform2.detectOverflow(state, detectOverflowOptions);
-      const side = getSide2(placement);
-      const alignment = getAlignment(placement);
-      const isYAxis = getSideAxis(placement) === "y";
-      const {
-        width,
-        height
-      } = rects.floating;
-      let heightSide;
-      let widthSide;
-      if (side === "top" || side === "bottom") {
-        heightSide = side;
-        widthSide = alignment === (await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating)) ? "start" : "end") ? "left" : "right";
-      } else {
-        widthSide = side;
-        heightSide = alignment === "end" ? "top" : "bottom";
-      }
-      const maximumClippingHeight = height - overflow.top - overflow.bottom;
-      const maximumClippingWidth = width - overflow.left - overflow.right;
-      const overflowAvailableHeight = min(height - overflow[heightSide], maximumClippingHeight);
-      const overflowAvailableWidth = min(width - overflow[widthSide], maximumClippingWidth);
-      const shiftData = state.middlewareData.shift;
-      const noShift = !shiftData;
-      let availableHeight = overflowAvailableHeight;
-      let availableWidth = overflowAvailableWidth;
-      if (shiftData != null && shiftData.enabled.x) {
-        availableWidth = maximumClippingWidth;
-      }
-      if (shiftData != null && shiftData.enabled.y) {
-        availableHeight = maximumClippingHeight;
-      }
-      if (noShift && !alignment) {
-        if (isYAxis) {
-          availableWidth = width - 2 * max(overflow.left, overflow.right);
-        } else {
-          availableHeight = height - 2 * max(overflow.top, overflow.bottom);
-        }
-      }
-      await apply5({
-        ...state,
-        availableWidth,
-        availableHeight
-      });
-      const nextDimensions = await platform2.getDimensions(elements.floating);
-      if (width !== nextDimensions.width || height !== nextDimensions.height) {
-        return {
-          reset: {
-            rects: true
-          }
-        };
-      }
-      return {};
-    }
-  };
-};
-
-// node_modules/@floating-ui/dom/dist/floating-ui.dom.mjs
-function getCssDimensions(element3) {
-  const css2 = getComputedStyle2(element3);
-  let width = parseFloat(css2.width) || 0;
-  let height = parseFloat(css2.height) || 0;
-  const hasOffset = isHTMLElement(element3);
-  const offsetWidth = hasOffset ? element3.offsetWidth : width;
-  const offsetHeight = hasOffset ? element3.offsetHeight : height;
-  const shouldFallback = round(width) !== offsetWidth || round(height) !== offsetHeight;
-  if (shouldFallback) {
-    width = offsetWidth;
-    height = offsetHeight;
-  }
-  return {
-    width,
-    height,
-    $: shouldFallback
-  };
-}
-function unwrapElement(element3) {
-  return !isElement(element3) ? element3.contextElement : element3;
-}
-function getScale2(element3) {
-  const domElement = unwrapElement(element3);
-  if (!isHTMLElement(domElement)) {
-    return createCoords(1);
-  }
-  const rect = domElement.getBoundingClientRect();
-  const {
-    width,
-    height,
-    $: $7
-  } = getCssDimensions(domElement);
-  let x3 = ($7 ? round(rect.width) : rect.width) / width;
-  let y4 = ($7 ? round(rect.height) : rect.height) / height;
-  if (!x3 || !Number.isFinite(x3)) {
-    x3 = 1;
-  }
-  if (!y4 || !Number.isFinite(y4)) {
-    y4 = 1;
-  }
-  return {
-    x: x3,
-    y: y4
-  };
-}
-var noOffsets = /* @__PURE__ */ createCoords(0);
-function getVisualOffsets(element3) {
-  const win = getWindow(element3);
-  if (!isWebKit() || !win.visualViewport) {
-    return noOffsets;
-  }
-  return {
-    x: win.visualViewport.offsetLeft,
-    y: win.visualViewport.offsetTop
-  };
-}
-function shouldAddVisualOffsets(element3, isFixed, floatingOffsetParent) {
-  if (isFixed === void 0) {
-    isFixed = false;
-  }
-  return !!floatingOffsetParent && isFixed && floatingOffsetParent === getWindow(element3);
-}
-function getBoundingClientRect(element3, includeScale, isFixedStrategy, offsetParent) {
-  if (includeScale === void 0) {
-    includeScale = false;
-  }
-  if (isFixedStrategy === void 0) {
-    isFixedStrategy = false;
-  }
-  const clientRect2 = element3.getBoundingClientRect();
-  const domElement = unwrapElement(element3);
-  let scale2 = createCoords(1);
-  if (includeScale) {
-    if (offsetParent) {
-      if (isElement(offsetParent)) {
-        scale2 = getScale2(offsetParent);
-      }
-    } else {
-      scale2 = getScale2(element3);
-    }
-  }
-  const visualOffsets = shouldAddVisualOffsets(domElement, isFixedStrategy, offsetParent) ? getVisualOffsets(domElement) : createCoords(0);
-  let x3 = (clientRect2.left + visualOffsets.x) / scale2.x;
-  let y4 = (clientRect2.top + visualOffsets.y) / scale2.y;
-  let width = clientRect2.width / scale2.x;
-  let height = clientRect2.height / scale2.y;
-  if (domElement && offsetParent) {
-    const win = getWindow(domElement);
-    const offsetWin = isElement(offsetParent) ? getWindow(offsetParent) : offsetParent;
-    let currentWin = win;
-    let currentIFrame = getFrameElement(currentWin);
-    while (currentIFrame && offsetWin !== currentWin) {
-      const iframeScale = getScale2(currentIFrame);
-      const iframeRect = currentIFrame.getBoundingClientRect();
-      const css2 = getComputedStyle2(currentIFrame);
-      const left = iframeRect.left + (currentIFrame.clientLeft + parseFloat(css2.paddingLeft)) * iframeScale.x;
-      const top2 = iframeRect.top + (currentIFrame.clientTop + parseFloat(css2.paddingTop)) * iframeScale.y;
-      x3 *= iframeScale.x;
-      y4 *= iframeScale.y;
-      width *= iframeScale.x;
-      height *= iframeScale.y;
-      x3 += left;
-      y4 += top2;
-      currentWin = getWindow(currentIFrame);
-      currentIFrame = getFrameElement(currentWin);
-    }
-  }
-  return rectToClientRect({
-    width,
-    height,
-    x: x3,
-    y: y4
-  });
-}
-function getWindowScrollBarX(element3, rect) {
-  const leftScroll = getNodeScroll(element3).scrollLeft;
-  if (!rect) {
-    return getBoundingClientRect(getDocumentElement(element3)).left + leftScroll;
-  }
-  return rect.left + leftScroll;
-}
-function getHTMLOffset(documentElement, scroll) {
-  const htmlRect = documentElement.getBoundingClientRect();
-  const x3 = htmlRect.left + scroll.scrollLeft - getWindowScrollBarX(documentElement, htmlRect);
-  const y4 = htmlRect.top + scroll.scrollTop;
-  return {
-    x: x3,
-    y: y4
-  };
-}
-function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
-  let {
-    elements,
-    rect,
-    offsetParent,
-    strategy
-  } = _ref;
-  const isFixed = strategy === "fixed";
-  const documentElement = getDocumentElement(offsetParent);
-  const topLayer = elements ? isTopLayer(elements.floating) : false;
-  if (offsetParent === documentElement || topLayer && isFixed) {
-    return rect;
-  }
-  let scroll = {
-    scrollLeft: 0,
-    scrollTop: 0
-  };
-  let scale2 = createCoords(1);
-  const offsets = createCoords(0);
-  const isOffsetParentAnElement = isHTMLElement(offsetParent);
-  if (isOffsetParentAnElement || !isFixed) {
-    if (getNodeName(offsetParent) !== "body" || isOverflowElement(documentElement)) {
-      scroll = getNodeScroll(offsetParent);
-    }
-    if (isOffsetParentAnElement) {
-      const offsetRect = getBoundingClientRect(offsetParent);
-      scale2 = getScale2(offsetParent);
-      offsets.x = offsetRect.x + offsetParent.clientLeft;
-      offsets.y = offsetRect.y + offsetParent.clientTop;
-    }
-  }
-  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : createCoords(0);
-  return {
-    width: rect.width * scale2.x,
-    height: rect.height * scale2.y,
-    x: rect.x * scale2.x - scroll.scrollLeft * scale2.x + offsets.x + htmlOffset.x,
-    y: rect.y * scale2.y - scroll.scrollTop * scale2.y + offsets.y + htmlOffset.y
-  };
-}
-function getClientRects(element3) {
-  return element3.getClientRects ? Array.from(element3.getClientRects()) : [];
-}
-function getDocumentRect(html6) {
-  const scroll = getNodeScroll(html6);
-  const body = html6.ownerDocument.body;
-  const width = max(html6.scrollWidth, html6.clientWidth, body.scrollWidth, body.clientWidth);
-  const height = max(html6.scrollHeight, html6.clientHeight, body.scrollHeight, body.clientHeight);
-  let x3 = -scroll.scrollLeft + getWindowScrollBarX(html6);
-  const y4 = -scroll.scrollTop;
-  if (getComputedStyle2(body).direction === "rtl") {
-    x3 += max(html6.clientWidth, body.clientWidth) - width;
-  }
-  return {
-    width,
-    height,
-    x: x3,
-    y: y4
-  };
-}
-var SCROLLBAR_MAX = 25;
-function getViewportRect(element3, strategy, rootBoundary) {
-  if (rootBoundary === void 0) {
-    rootBoundary = "viewport";
-  }
-  const isLayoutViewport = rootBoundary === "layoutViewport";
-  const win = getWindow(element3);
-  const html6 = getDocumentElement(element3);
-  const visualViewport = win.visualViewport;
-  let width = html6.clientWidth;
-  let height = html6.clientHeight;
-  let x3 = 0;
-  let y4 = 0;
-  if (visualViewport) {
-    const layoutRelativeClientCoords = !isWebKit() || strategy === "fixed";
-    if (isLayoutViewport) {
-      if (!layoutRelativeClientCoords) {
-        x3 = -visualViewport.offsetLeft;
-        y4 = -visualViewport.offsetTop;
-      }
-    } else {
-      width = visualViewport.width;
-      height = visualViewport.height;
-      if (layoutRelativeClientCoords) {
-        x3 = visualViewport.offsetLeft;
-        y4 = visualViewport.offsetTop;
-      }
-    }
-  }
-  const windowScrollbarX = getWindowScrollBarX(html6);
-  if (windowScrollbarX <= 0) {
-    const doc4 = html6.ownerDocument;
-    const body = doc4.body;
-    const bodyStyles = getComputedStyle(body);
-    const bodyMarginInline = doc4.compatMode === "CSS1Compat" ? parseFloat(bodyStyles.marginLeft) + parseFloat(bodyStyles.marginRight) || 0 : 0;
-    const reservedWidth = Math.abs(html6.clientWidth - body.clientWidth - bodyMarginInline);
-    const gutter2 = getComputedStyle(html6).scrollbarGutter === "stable both-edges" ? reservedWidth / 2 : reservedWidth;
-    if (gutter2 <= SCROLLBAR_MAX) {
-      width -= gutter2;
-    }
-  }
-  return {
-    width,
-    height,
-    x: x3,
-    y: y4
-  };
-}
-function getInnerBoundingClientRect(element3, strategy) {
-  const clientRect2 = getBoundingClientRect(element3, true, strategy === "fixed");
-  const top2 = clientRect2.top + element3.clientTop;
-  const left = clientRect2.left + element3.clientLeft;
-  const scale2 = getScale2(element3);
-  const width = element3.clientWidth * scale2.x;
-  const height = element3.clientHeight * scale2.y;
-  const x3 = left * scale2.x;
-  const y4 = top2 * scale2.y;
-  return {
-    width,
-    height,
-    x: x3,
-    y: y4
-  };
-}
-function getClientRectFromClippingAncestor(element3, clippingAncestor, strategy) {
-  let rect;
-  if (clippingAncestor === "viewport" || clippingAncestor === "layoutViewport") {
-    rect = getViewportRect(element3, strategy, clippingAncestor);
-  } else if (clippingAncestor === "document") {
-    rect = getDocumentRect(getDocumentElement(element3));
-  } else if (isElement(clippingAncestor)) {
-    rect = getInnerBoundingClientRect(clippingAncestor, strategy);
-  } else {
-    const visualOffsets = getVisualOffsets(element3);
-    rect = {
-      x: clippingAncestor.x - visualOffsets.x,
-      y: clippingAncestor.y - visualOffsets.y,
-      width: clippingAncestor.width,
-      height: clippingAncestor.height
-    };
-  }
-  return rectToClientRect(rect);
-}
-function getClippingElementAncestors(element3, cache2) {
-  const cachedResult2 = cache2.get(element3);
-  if (cachedResult2) {
-    return cachedResult2;
-  }
-  let result = getOverflowAncestors(element3, [], false).filter((el) => isElement(el) && getNodeName(el) !== "body");
-  let lastKeptComputedStyle = null;
-  const elementIsFixed = getComputedStyle2(element3).position === "fixed";
-  let currentNode = elementIsFixed ? getParentNode(element3) : element3;
-  while (isElement(currentNode) && !isLastTraversableNode(currentNode)) {
-    const computedStyle = getComputedStyle2(currentNode);
-    const currentNodeIsContaining = isContainingBlock(currentNode);
-    const lastPosition = lastKeptComputedStyle ? lastKeptComputedStyle.position : elementIsFixed ? "fixed" : "";
-    const shouldDropCurrentNode = !currentNodeIsContaining && (lastPosition === "fixed" || lastPosition === "absolute" && computedStyle.position === "static");
-    if (shouldDropCurrentNode) {
-      result = result.filter((ancestor) => ancestor !== currentNode);
-    } else {
-      lastKeptComputedStyle = computedStyle;
-    }
-    currentNode = getParentNode(currentNode);
-  }
-  cache2.set(element3, result);
-  return result;
-}
-function getClippingRect(_ref) {
-  let {
-    element: element3,
-    boundary,
-    rootBoundary,
-    strategy
-  } = _ref;
-  const elementClippingAncestors = boundary === "clippingAncestors" ? isTopLayer(element3) ? [] : getClippingElementAncestors(element3, this._c) : [].concat(boundary);
-  const clippingAncestors = [...elementClippingAncestors, rootBoundary];
-  const firstRect = getClientRectFromClippingAncestor(element3, clippingAncestors[0], strategy);
-  let top2 = firstRect.top;
-  let right = firstRect.right;
-  let bottom = firstRect.bottom;
-  let left = firstRect.left;
-  for (let i3 = 1; i3 < clippingAncestors.length; i3++) {
-    const rect = getClientRectFromClippingAncestor(element3, clippingAncestors[i3], strategy);
-    top2 = max(rect.top, top2);
-    right = min(rect.right, right);
-    bottom = min(rect.bottom, bottom);
-    left = max(rect.left, left);
-  }
-  return {
-    width: right - left,
-    height: bottom - top2,
-    x: left,
-    y: top2
-  };
-}
-function getDimensions(element3) {
-  const {
-    width,
-    height
-  } = getCssDimensions(element3);
-  return {
-    width,
-    height
-  };
-}
-function getRectRelativeToOffsetParent(element3, offsetParent, strategy) {
-  const isOffsetParentAnElement = isHTMLElement(offsetParent);
-  const documentElement = getDocumentElement(offsetParent);
-  const isFixed = strategy === "fixed";
-  const rect = getBoundingClientRect(element3, true, isFixed, offsetParent);
-  let scroll = {
-    scrollLeft: 0,
-    scrollTop: 0
-  };
-  const offsets = createCoords(0);
-  if (isOffsetParentAnElement || !isFixed) {
-    if (getNodeName(offsetParent) !== "body" || isOverflowElement(documentElement)) {
-      scroll = getNodeScroll(offsetParent);
-    }
-    if (isOffsetParentAnElement) {
-      const offsetRect = getBoundingClientRect(offsetParent, true, isFixed, offsetParent);
-      offsets.x = offsetRect.x + offsetParent.clientLeft;
-      offsets.y = offsetRect.y + offsetParent.clientTop;
-    }
-  }
-  if (!isOffsetParentAnElement && documentElement) {
-    offsets.x = getWindowScrollBarX(documentElement);
-  }
-  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : createCoords(0);
-  const x3 = rect.left + scroll.scrollLeft - offsets.x - htmlOffset.x;
-  const y4 = rect.top + scroll.scrollTop - offsets.y - htmlOffset.y;
-  return {
-    x: x3,
-    y: y4,
-    width: rect.width,
-    height: rect.height
-  };
-}
-function isStaticPositioned(element3) {
-  return getComputedStyle2(element3).position === "static";
-}
-function getTrueOffsetParent(element3, polyfill) {
-  if (!isHTMLElement(element3) || getComputedStyle2(element3).position === "fixed") {
-    return null;
-  }
-  if (polyfill) {
-    return polyfill(element3);
-  }
-  let rawOffsetParent = element3.offsetParent;
-  if (getDocumentElement(element3) === rawOffsetParent) {
-    rawOffsetParent = rawOffsetParent.ownerDocument.body;
-  }
-  return rawOffsetParent;
-}
-function getOffsetParent(element3, polyfill) {
-  const win = getWindow(element3);
-  if (isTopLayer(element3)) {
-    return win;
-  }
-  if (!isHTMLElement(element3)) {
-    let svgOffsetParent = getParentNode(element3);
-    while (svgOffsetParent && !isLastTraversableNode(svgOffsetParent)) {
-      if (isElement(svgOffsetParent) && !isStaticPositioned(svgOffsetParent)) {
-        return svgOffsetParent;
-      }
-      svgOffsetParent = getParentNode(svgOffsetParent);
-    }
-    return win;
-  }
-  let offsetParent = getTrueOffsetParent(element3, polyfill);
-  while (offsetParent && isTableElement(offsetParent) && isStaticPositioned(offsetParent)) {
-    offsetParent = getTrueOffsetParent(offsetParent, polyfill);
-  }
-  if (offsetParent && isLastTraversableNode(offsetParent) && isStaticPositioned(offsetParent) && !isContainingBlock(offsetParent)) {
-    return win;
-  }
-  return offsetParent || getContainingBlock(element3) || win;
-}
-var getElementRects = async function(data2) {
-  const getOffsetParentFn = this.getOffsetParent || getOffsetParent;
-  const getDimensionsFn = this.getDimensions;
-  const floatingDimensions = await getDimensionsFn(data2.floating);
-  return {
-    reference: getRectRelativeToOffsetParent(data2.reference, await getOffsetParentFn(data2.floating), data2.strategy),
-    floating: {
-      x: 0,
-      y: 0,
-      width: floatingDimensions.width,
-      height: floatingDimensions.height
-    }
-  };
-};
-function isRTL(element3) {
-  return getComputedStyle2(element3).direction === "rtl";
-}
-var platform = {
-  convertOffsetParentRelativeRectToViewportRelativeRect,
-  getDocumentElement,
-  getClippingRect,
-  getOffsetParent,
-  getElementRects,
-  getClientRects,
-  getDimensions,
-  getScale: getScale2,
-  isElement,
-  isRTL
-};
-function rectsAreEqual(a3, b4) {
-  return a3.x === b4.x && a3.y === b4.y && a3.width === b4.width && a3.height === b4.height;
-}
-function observeMove(element3, onMove, ancestorResize) {
-  let io = null;
-  let timeoutId;
-  const root4 = getDocumentElement(element3);
-  function cleanup() {
-    var _io;
-    clearTimeout(timeoutId);
-    (_io = io) == null || _io.disconnect();
-    io = null;
-  }
-  function refresh(skip, threshold) {
-    if (skip === void 0) {
-      skip = false;
-    }
-    if (threshold === void 0) {
-      threshold = 1;
-    }
-    cleanup();
-    const elementRectForRootMargin = element3.getBoundingClientRect();
-    const {
-      left,
-      top: top2,
-      width,
-      height
-    } = elementRectForRootMargin;
-    if (!skip) {
-      onMove();
-    }
-    if (!width || !height) {
-      return;
-    }
-    const insetTop = floor(top2);
-    const insetRight = floor(root4.clientWidth - (left + width));
-    const insetBottom = floor(root4.clientHeight - (top2 + height));
-    const insetLeft = floor(left);
-    const rootMargin = -insetTop + "px " + -insetRight + "px " + -insetBottom + "px " + -insetLeft + "px";
-    const options = {
-      rootMargin,
-      threshold: max(0, min(1, threshold)) || 1
-    };
-    let isFirstUpdate = true;
-    function handleObserve(entries) {
-      const ratio = entries[0].intersectionRatio;
-      if (!rectsAreEqual(elementRectForRootMargin, element3.getBoundingClientRect())) {
-        return refresh();
-      }
-      if (ratio !== threshold) {
-        if (!isFirstUpdate) {
-          return refresh();
-        }
-        if (!ratio) {
-          timeoutId = setTimeout(() => {
-            refresh(false, 1e-7);
-          }, 1e3);
-        } else {
-          refresh(false, ratio);
-        }
-      }
-      isFirstUpdate = false;
-    }
-    try {
-      io = new IntersectionObserver(handleObserve, {
-        ...options,
-        // Handle <iframe>s
-        root: root4.ownerDocument
-      });
-    } catch (_e2) {
-      io = new IntersectionObserver(handleObserve, options);
-    }
-    io.observe(element3);
-  }
-  const win = getWindow(element3);
-  const handleResize = () => refresh(ancestorResize);
-  win.addEventListener("resize", handleResize);
-  refresh(true);
-  return () => {
-    win.removeEventListener("resize", handleResize);
-    cleanup();
-  };
-}
-function autoUpdate(reference, floating, update, options) {
-  if (options === void 0) {
-    options = {};
-  }
-  const {
-    ancestorScroll = true,
-    ancestorResize = true,
-    elementResize = typeof ResizeObserver === "function",
-    layoutShift = typeof IntersectionObserver === "function",
-    animationFrame = false
-  } = options;
-  const referenceEl = unwrapElement(reference);
-  const ancestors = ancestorScroll || ancestorResize ? [...referenceEl ? getOverflowAncestors(referenceEl) : [], ...floating ? getOverflowAncestors(floating) : []] : [];
-  ancestors.forEach((ancestor) => {
-    ancestorScroll && ancestor.addEventListener("scroll", update);
-    ancestorResize && ancestor.addEventListener("resize", update);
-  });
-  const cleanupIo = referenceEl && layoutShift ? observeMove(referenceEl, update, ancestorResize) : null;
-  let reobserveFrame = -1;
-  let resizeObserver = null;
-  if (elementResize) {
-    resizeObserver = new ResizeObserver((_ref) => {
-      let [firstEntry] = _ref;
-      if (firstEntry && firstEntry.target === referenceEl && resizeObserver && floating) {
-        resizeObserver.unobserve(floating);
-        cancelAnimationFrame(reobserveFrame);
-        reobserveFrame = requestAnimationFrame(() => {
-          var _resizeObserver;
-          (_resizeObserver = resizeObserver) == null || _resizeObserver.observe(floating);
-        });
-      }
-      update();
-    });
-    if (referenceEl && !animationFrame) {
-      resizeObserver.observe(referenceEl);
-    }
-    if (floating) {
-      resizeObserver.observe(floating);
-    }
-  }
-  let frameId;
-  let prevRefRect = animationFrame ? getBoundingClientRect(reference) : null;
-  if (animationFrame) {
-    frameLoop();
-  }
-  function frameLoop() {
-    const nextRefRect = getBoundingClientRect(reference);
-    if (prevRefRect && !rectsAreEqual(prevRefRect, nextRefRect)) {
-      update();
-    }
-    prevRefRect = nextRefRect;
-    frameId = requestAnimationFrame(frameLoop);
-  }
-  update();
-  return () => {
-    var _resizeObserver2;
-    ancestors.forEach((ancestor) => {
-      ancestorScroll && ancestor.removeEventListener("scroll", update);
-      ancestorResize && ancestor.removeEventListener("resize", update);
-    });
-    cleanupIo == null || cleanupIo();
-    (_resizeObserver2 = resizeObserver) == null || _resizeObserver2.disconnect();
-    resizeObserver = null;
-    if (animationFrame) {
-      cancelAnimationFrame(frameId);
-    }
-  };
-}
-var offset2 = offset;
-var autoPlacement2 = autoPlacement;
-var shift3 = shift2;
-var flip2 = flip;
-var size2 = size;
-var hide2 = hide;
-var arrow4 = arrow3;
-var inline2 = inline;
-var limitShift2 = limitShift;
-var computePosition2 = (reference, floating, options) => {
-  const cache2 = /* @__PURE__ */ new Map();
-  const mergedOptions = options != null ? options : {};
-  const platformWithCache = {
-    ...platform,
-    ...mergedOptions.platform,
-    _c: cache2
-  };
-  return computePosition(reference, floating, {
-    ...mergedOptions,
-    platform: platformWithCache
-  });
-};
-
-// node_modules/@floating-ui/react-dom/dist/floating-ui.react-dom.mjs
-var React2 = __toESM(require("react"), 1);
-var import_react2 = require("react");
-var ReactDOM = __toESM(require("react-dom"), 1);
-var isClient2 = typeof document !== "undefined";
-var noop3 = function noop4() {
-};
-var index2 = isClient2 ? import_react2.useLayoutEffect : noop3;
-function deepEqual(a3, b4) {
-  if (a3 === b4) {
-    return true;
-  }
-  if (typeof a3 !== typeof b4) {
-    return false;
-  }
-  if (typeof a3 === "function" && a3.toString() === b4.toString()) {
-    return true;
-  }
-  let length;
-  let i3;
-  let keys4;
-  if (a3 && b4 && typeof a3 === "object") {
-    if (Array.isArray(a3)) {
-      length = a3.length;
-      if (length !== b4.length) return false;
-      for (i3 = length; i3-- !== 0; ) {
-        if (!deepEqual(a3[i3], b4[i3])) {
-          return false;
-        }
-      }
-      return true;
-    }
-    keys4 = Object.keys(a3);
-    length = keys4.length;
-    if (length !== Object.keys(b4).length) {
-      return false;
-    }
-    for (i3 = length; i3-- !== 0; ) {
-      if (!{}.hasOwnProperty.call(b4, keys4[i3])) {
-        return false;
-      }
-    }
-    for (i3 = length; i3-- !== 0; ) {
-      const key = keys4[i3];
-      if (key === "_owner" && a3.$$typeof) {
-        continue;
-      }
-      if (!deepEqual(a3[key], b4[key])) {
-        return false;
-      }
-    }
-    return true;
-  }
-  return a3 !== a3 && b4 !== b4;
-}
-function getDPR(element3) {
-  if (typeof window === "undefined") {
-    return 1;
-  }
-  const win = element3.ownerDocument.defaultView || window;
-  return win.devicePixelRatio || 1;
-}
-function roundByDPR(element3, value) {
-  const dpr = getDPR(element3);
-  return Math.round(value * dpr) / dpr;
-}
-function useLatestRef2(value) {
-  const ref = React2.useRef(value);
-  index2(() => {
-    ref.current = value;
-  });
-  return ref;
-}
-function useFloating(options) {
-  if (options === void 0) {
-    options = {};
-  }
-  const {
-    placement = "bottom",
-    strategy = "absolute",
-    middleware = [],
-    platform: platform2,
-    elements: {
-      reference: externalReference,
-      floating: externalFloating
-    } = {},
-    transform = true,
-    whileElementsMounted,
-    open
-  } = options;
-  const [data2, setData] = React2.useState({
-    x: 0,
-    y: 0,
-    strategy,
-    placement,
-    middlewareData: {},
-    isPositioned: false
-  });
-  const [latestMiddleware, setLatestMiddleware] = React2.useState(middleware);
-  if (!deepEqual(latestMiddleware, middleware)) {
-    setLatestMiddleware(middleware);
-  }
-  const [_reference, _setReference] = React2.useState(null);
-  const [_floating, _setFloating] = React2.useState(null);
-  const setReference = React2.useCallback((node2) => {
-    if (node2 !== referenceRef.current) {
-      referenceRef.current = node2;
-      _setReference(node2);
-    }
-  }, []);
-  const setFloating = React2.useCallback((node2) => {
-    if (node2 !== floatingRef.current) {
-      floatingRef.current = node2;
-      _setFloating(node2);
-    }
-  }, []);
-  const referenceEl = externalReference || _reference;
-  const floatingEl = externalFloating || _floating;
-  const referenceRef = React2.useRef(null);
-  const floatingRef = React2.useRef(null);
-  const dataRef = React2.useRef(data2);
-  const hasWhileElementsMounted = whileElementsMounted != null;
-  const whileElementsMountedRef = useLatestRef2(whileElementsMounted);
-  const platformRef = useLatestRef2(platform2);
-  const openRef = useLatestRef2(open);
-  const update = React2.useCallback(() => {
-    if (!referenceRef.current || !floatingRef.current) {
-      return;
-    }
-    const config = {
-      placement,
-      strategy,
-      middleware: latestMiddleware
-    };
-    if (platformRef.current) {
-      config.platform = platformRef.current;
-    }
-    computePosition2(referenceRef.current, floatingRef.current, config).then((data3) => {
-      const fullData = {
-        ...data3,
-        // The floating element's position may be recomputed while it's closed
-        // but still mounted (such as when transitioning out). To ensure
-        // `isPositioned` will be `false` initially on the next open, avoid
-        // setting it to `true` when `open === false` (must be specified).
-        isPositioned: openRef.current !== false
-      };
-      if (isMountedRef.current && !deepEqual(dataRef.current, fullData)) {
-        dataRef.current = fullData;
-        ReactDOM.flushSync(() => {
-          setData(fullData);
-        });
-      }
-    });
-  }, [latestMiddleware, placement, strategy, platformRef, openRef]);
-  index2(() => {
-    if (open === false && dataRef.current.isPositioned) {
-      dataRef.current.isPositioned = false;
-      setData((data3) => ({
-        ...data3,
-        isPositioned: false
-      }));
-    }
-  }, [open]);
-  const isMountedRef = React2.useRef(false);
-  index2(() => {
-    isMountedRef.current = true;
-    return () => {
-      isMountedRef.current = false;
-    };
-  }, []);
-  index2(() => {
-    if (referenceEl) referenceRef.current = referenceEl;
-    if (floatingEl) floatingRef.current = floatingEl;
-    if (referenceEl && floatingEl) {
-      if (whileElementsMountedRef.current) {
-        return whileElementsMountedRef.current(referenceEl, floatingEl, update);
-      }
-      update();
-    }
-  }, [referenceEl, floatingEl, update, whileElementsMountedRef, hasWhileElementsMounted]);
-  const refs = React2.useMemo(() => ({
-    reference: referenceRef,
-    floating: floatingRef,
-    setReference,
-    setFloating
-  }), [setReference, setFloating]);
-  const elements = React2.useMemo(() => ({
-    reference: referenceEl,
-    floating: floatingEl
-  }), [referenceEl, floatingEl]);
-  const floatingStyles = React2.useMemo(() => {
-    const initialStyles = {
-      position: strategy,
-      left: 0,
-      top: 0
-    };
-    if (!elements.floating) {
-      return initialStyles;
-    }
-    const x3 = roundByDPR(elements.floating, data2.x);
-    const y4 = roundByDPR(elements.floating, data2.y);
-    if (transform) {
-      return {
-        ...initialStyles,
-        transform: "translate(" + x3 + "px, " + y4 + "px)",
-        ...getDPR(elements.floating) >= 1.5 && {
-          willChange: "transform"
-        }
-      };
-    }
-    return {
-      position: strategy,
-      left: x3,
-      top: y4
-    };
-  }, [strategy, transform, elements.floating, data2.x, data2.y]);
-  return React2.useMemo(() => ({
-    ...data2,
-    update,
-    refs,
-    elements,
-    floatingStyles
-  }), [data2, update, refs, elements, floatingStyles]);
-}
-var arrow$1 = (options) => {
-  function isRef(value) {
-    return {}.hasOwnProperty.call(value, "current");
-  }
-  return {
-    name: "arrow",
-    options,
-    fn(state) {
-      const {
-        element: element3,
-        padding
-      } = typeof options === "function" ? options(state) : options;
-      if (element3 && isRef(element3)) {
-        if (element3.current != null) {
-          return arrow4({
-            element: element3.current,
-            padding
-          }).fn(state);
-        }
-        return {};
-      }
-      if (element3) {
-        return arrow4({
-          element: element3,
-          padding
-        }).fn(state);
-      }
-      return {};
-    }
-  };
-};
-var offset3 = (options, deps) => {
-  const result = offset2(options);
-  return {
-    name: result.name,
-    fn: result.fn,
-    options: [options, deps]
-  };
-};
-var shift4 = (options, deps) => {
-  const result = shift3(options);
-  return {
-    name: result.name,
-    fn: result.fn,
-    options: [options, deps]
-  };
-};
-var limitShift3 = (options, deps) => {
-  const result = limitShift2(options);
-  return {
-    fn: result.fn,
-    options: [options, deps]
-  };
-};
-var flip3 = (options, deps) => {
-  const result = flip2(options);
-  return {
-    name: result.name,
-    fn: result.fn,
-    options: [options, deps]
-  };
-};
-var size3 = (options, deps) => {
-  const result = size2(options);
-  return {
-    name: result.name,
-    fn: result.fn,
-    options: [options, deps]
-  };
-};
-var autoPlacement3 = (options, deps) => {
-  const result = autoPlacement2(options);
-  return {
-    name: result.name,
-    fn: result.fn,
-    options: [options, deps]
-  };
-};
-var hide3 = (options, deps) => {
-  const result = hide2(options);
-  return {
-    name: result.name,
-    fn: result.fn,
-    options: [options, deps]
-  };
-};
-var inline3 = (options, deps) => {
-  const result = inline2(options);
-  return {
-    name: result.name,
-    fn: result.fn,
-    options: [options, deps]
-  };
-};
-var arrow5 = (options, deps) => {
-  const result = arrow$1(options);
-  return {
-    name: result.name,
-    fn: result.fn,
-    options: [options, deps]
-  };
-};
-
-// node_modules/@floating-ui/react/dist/floating-ui.react.mjs
-function useMergeRefs(refs) {
-  const cleanupRef = React3.useRef(void 0);
-  const refEffect = React3.useCallback((instance) => {
-    const cleanups = refs.map((ref) => {
-      if (ref == null) {
-        return;
-      }
-      if (typeof ref === "function") {
-        const refCallback = ref;
-        const refCleanup = refCallback(instance);
-        return typeof refCleanup === "function" ? refCleanup : () => {
-          refCallback(null);
-        };
-      }
-      ref.current = instance;
-      return () => {
-        ref.current = null;
-      };
-    });
-    return () => {
-      cleanups.forEach((refCleanup) => refCleanup == null ? void 0 : refCleanup());
-    };
-  }, refs);
-  return React3.useMemo(() => {
-    if (refs.every((ref) => ref == null)) {
-      return null;
-    }
-    return (value) => {
-      if (cleanupRef.current) {
-        cleanupRef.current();
-        cleanupRef.current = void 0;
-      }
-      if (value != null) {
-        cleanupRef.current = refEffect(value);
-      }
-    };
-  }, refs);
-}
-var FOCUSABLE_ATTRIBUTE2 = "data-floating-ui-focusable";
-var ACTIVE_KEY = "active";
-var SELECTED_KEY = "selected";
-var ARROW_LEFT = "ArrowLeft";
-var ARROW_RIGHT = "ArrowRight";
-var ARROW_UP = "ArrowUp";
-var ARROW_DOWN = "ArrowDown";
-var horizontalKeys = [ARROW_LEFT, ARROW_RIGHT];
-var verticalKeys = [ARROW_UP, ARROW_DOWN];
-var allKeys = [...horizontalKeys, ...verticalKeys];
-var SafeReact2 = {
-  ...React3
-};
-var serverHandoffComplete = false;
-var count2 = 0;
-var genId = () => (
-  // Ensure the id is unique with multiple independent versions of Floating UI
-  // on <React 18
-  "floating-ui-" + Math.random().toString(36).slice(2, 6) + count2++
-);
-function useFloatingId() {
-  const [id3, setId] = React3.useState(() => serverHandoffComplete ? genId() : void 0);
-  index(() => {
-    if (id3 == null) {
-      setId(genId());
-    }
-  }, []);
-  React3.useEffect(() => {
-    serverHandoffComplete = true;
-  }, []);
-  return id3;
-}
-var useReactId = SafeReact2.useId;
-var useId = useReactId || useFloatingId;
-var devMessageSet;
-if (true) {
-  devMessageSet = /* @__PURE__ */ new Set();
-}
-function error() {
-  var _devMessageSet3;
-  for (var _len2 = arguments.length, messages = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-    messages[_key2] = arguments[_key2];
-  }
-  const message = "Floating UI: " + messages.join(" ");
-  if (!((_devMessageSet3 = devMessageSet) != null && _devMessageSet3.has(message))) {
-    var _devMessageSet4;
-    (_devMessageSet4 = devMessageSet) == null || _devMessageSet4.add(message);
-    console.error(message);
-  }
-}
-function createEventEmitter() {
-  const map4 = /* @__PURE__ */ new Map();
-  return {
-    emit(event, data2) {
-      var _map$get;
-      (_map$get = map4.get(event)) == null || _map$get.forEach((listener) => listener(data2));
-    },
-    on(event, listener) {
-      if (!map4.has(event)) {
-        map4.set(event, /* @__PURE__ */ new Set());
-      }
-      map4.get(event).add(listener);
-    },
-    off(event, listener) {
-      var _map$get2;
-      (_map$get2 = map4.get(event)) == null || _map$get2.delete(listener);
-    }
-  };
-}
-var FloatingNodeContext = /* @__PURE__ */ React3.createContext(null);
-var FloatingTreeContext = /* @__PURE__ */ React3.createContext(null);
-var useFloatingParentNodeId = () => {
-  var _React$useContext;
-  return ((_React$useContext = React3.useContext(FloatingNodeContext)) == null ? void 0 : _React$useContext.id) || null;
-};
-var useFloatingTree = () => React3.useContext(FloatingTreeContext);
-function createAttribute(name3) {
-  return "data-floating-ui-" + name3;
-}
-function clearTimeoutIfSet(timeoutRef) {
-  if (timeoutRef.current !== -1) {
-    clearTimeout(timeoutRef.current);
-    timeoutRef.current = -1;
-  }
-}
-var safePolygonIdentifier = /* @__PURE__ */ createAttribute("safe-polygon");
-function getDelay(value, prop, pointerType) {
-  if (pointerType && !isMouseLikePointerType(pointerType)) {
-    return 0;
-  }
-  if (typeof value === "number") {
-    return value;
-  }
-  if (typeof value === "function") {
-    const result = value();
-    if (typeof result === "number") {
-      return result;
-    }
-    return result == null ? void 0 : result[prop];
-  }
-  return value == null ? void 0 : value[prop];
-}
-function getRestMs(value) {
-  if (typeof value === "function") {
-    return value();
-  }
-  return value;
-}
-function useHover(context, props) {
-  if (props === void 0) {
-    props = {};
-  }
-  const {
-    open,
-    onOpenChange,
-    dataRef,
-    events,
-    elements
-  } = context;
-  const {
-    enabled = true,
-    delay = 0,
-    handleClose = null,
-    mouseOnly = false,
-    restMs = 0,
-    move = true
-  } = props;
-  const tree = useFloatingTree();
-  const parentId = useFloatingParentNodeId();
-  const handleCloseRef = useLatestRef(handleClose);
-  const delayRef = useLatestRef(delay);
-  const openRef = useLatestRef(open);
-  const restMsRef = useLatestRef(restMs);
-  const pointerTypeRef = React3.useRef();
-  const timeoutRef = React3.useRef(-1);
-  const handlerRef = React3.useRef();
-  const restTimeoutRef = React3.useRef(-1);
-  const blockMouseMoveRef = React3.useRef(true);
-  const performedPointerEventsMutationRef = React3.useRef(false);
-  const unbindMouseMoveRef = React3.useRef(() => {
-  });
-  const restTimeoutPendingRef = React3.useRef(false);
-  const isHoverOpen = useEffectEvent(() => {
-    var _dataRef$current$open;
-    const type = (_dataRef$current$open = dataRef.current.openEvent) == null ? void 0 : _dataRef$current$open.type;
-    return (type == null ? void 0 : type.includes("mouse")) && type !== "mousedown";
-  });
-  React3.useEffect(() => {
-    if (!enabled) return;
-    function onOpenChange2(_ref) {
-      let {
-        open: open2
-      } = _ref;
-      if (!open2) {
-        clearTimeoutIfSet(timeoutRef);
-        clearTimeoutIfSet(restTimeoutRef);
-        blockMouseMoveRef.current = true;
-        restTimeoutPendingRef.current = false;
-      }
-    }
-    events.on("openchange", onOpenChange2);
-    return () => {
-      events.off("openchange", onOpenChange2);
-    };
-  }, [enabled, events]);
-  React3.useEffect(() => {
-    if (!enabled) return;
-    if (!handleCloseRef.current) return;
-    if (!open) return;
-    function onLeave(event) {
-      if (isHoverOpen()) {
-        onOpenChange(false, event, "hover");
-      }
-    }
-    const html6 = getDocument(elements.floating).documentElement;
-    html6.addEventListener("mouseleave", onLeave);
-    return () => {
-      html6.removeEventListener("mouseleave", onLeave);
-    };
-  }, [elements.floating, open, onOpenChange, enabled, handleCloseRef, isHoverOpen]);
-  const closeWithDelay = React3.useCallback(function(event, runElseBranch, reason) {
-    if (runElseBranch === void 0) {
-      runElseBranch = true;
-    }
-    if (reason === void 0) {
-      reason = "hover";
-    }
-    const closeDelay = getDelay(delayRef.current, "close", pointerTypeRef.current);
-    if (closeDelay && !handlerRef.current) {
-      clearTimeoutIfSet(timeoutRef);
-      timeoutRef.current = window.setTimeout(() => onOpenChange(false, event, reason), closeDelay);
-    } else if (runElseBranch) {
-      clearTimeoutIfSet(timeoutRef);
-      onOpenChange(false, event, reason);
-    }
-  }, [delayRef, onOpenChange]);
-  const cleanupMouseMoveHandler = useEffectEvent(() => {
-    unbindMouseMoveRef.current();
-    handlerRef.current = void 0;
-  });
-  const clearPointerEvents = useEffectEvent(() => {
-    if (performedPointerEventsMutationRef.current) {
-      const body = getDocument(elements.floating).body;
-      body.style.pointerEvents = "";
-      body.removeAttribute(safePolygonIdentifier);
-      performedPointerEventsMutationRef.current = false;
-    }
-  });
-  const isClickLikeOpenEvent = useEffectEvent(() => {
-    return dataRef.current.openEvent ? ["click", "mousedown"].includes(dataRef.current.openEvent.type) : false;
-  });
-  React3.useEffect(() => {
-    if (!enabled) return;
-    function onReferenceMouseEnter(event) {
-      clearTimeoutIfSet(timeoutRef);
-      blockMouseMoveRef.current = false;
-      if (mouseOnly && !isMouseLikePointerType(pointerTypeRef.current) || getRestMs(restMsRef.current) > 0 && !getDelay(delayRef.current, "open")) {
-        return;
-      }
-      const openDelay = getDelay(delayRef.current, "open", pointerTypeRef.current);
-      if (openDelay) {
-        timeoutRef.current = window.setTimeout(() => {
-          if (!openRef.current) {
-            onOpenChange(true, event, "hover");
-          }
-        }, openDelay);
-      } else if (!open) {
-        onOpenChange(true, event, "hover");
-      }
-    }
-    function onReferenceMouseLeave(event) {
-      if (isClickLikeOpenEvent()) {
-        clearPointerEvents();
-        return;
-      }
-      unbindMouseMoveRef.current();
-      const doc4 = getDocument(elements.floating);
-      clearTimeoutIfSet(restTimeoutRef);
-      restTimeoutPendingRef.current = false;
-      if (handleCloseRef.current && dataRef.current.floatingContext) {
-        if (!open) {
-          clearTimeoutIfSet(timeoutRef);
-        }
-        handlerRef.current = handleCloseRef.current({
-          ...dataRef.current.floatingContext,
-          tree,
-          x: event.clientX,
-          y: event.clientY,
-          onClose() {
-            clearPointerEvents();
-            cleanupMouseMoveHandler();
-            if (!isClickLikeOpenEvent()) {
-              closeWithDelay(event, true, "safe-polygon");
-            }
-          }
-        });
-        const handler = handlerRef.current;
-        doc4.addEventListener("mousemove", handler);
-        unbindMouseMoveRef.current = () => {
-          doc4.removeEventListener("mousemove", handler);
-        };
-        return;
-      }
-      const shouldClose = pointerTypeRef.current === "touch" ? !contains2(elements.floating, event.relatedTarget) : true;
-      if (shouldClose) {
-        closeWithDelay(event);
-      }
-    }
-    function onScrollMouseLeave(event) {
-      if (isClickLikeOpenEvent()) return;
-      if (!dataRef.current.floatingContext) return;
-      handleCloseRef.current == null || handleCloseRef.current({
-        ...dataRef.current.floatingContext,
-        tree,
-        x: event.clientX,
-        y: event.clientY,
-        onClose() {
-          clearPointerEvents();
-          cleanupMouseMoveHandler();
-          if (!isClickLikeOpenEvent()) {
-            closeWithDelay(event);
-          }
-        }
-      })(event);
-    }
-    function onFloatingMouseEnter() {
-      clearTimeoutIfSet(timeoutRef);
-    }
-    function onFloatingMouseLeave(event) {
-      if (!isClickLikeOpenEvent()) {
-        closeWithDelay(event, false);
-      }
-    }
-    if (isElement(elements.domReference)) {
-      const reference2 = elements.domReference;
-      const floating = elements.floating;
-      if (open) {
-        reference2.addEventListener("mouseleave", onScrollMouseLeave);
-      }
-      if (move) {
-        reference2.addEventListener("mousemove", onReferenceMouseEnter, {
-          once: true
-        });
-      }
-      reference2.addEventListener("mouseenter", onReferenceMouseEnter);
-      reference2.addEventListener("mouseleave", onReferenceMouseLeave);
-      if (floating) {
-        floating.addEventListener("mouseleave", onScrollMouseLeave);
-        floating.addEventListener("mouseenter", onFloatingMouseEnter);
-        floating.addEventListener("mouseleave", onFloatingMouseLeave);
-      }
-      return () => {
-        if (open) {
-          reference2.removeEventListener("mouseleave", onScrollMouseLeave);
-        }
-        if (move) {
-          reference2.removeEventListener("mousemove", onReferenceMouseEnter);
-        }
-        reference2.removeEventListener("mouseenter", onReferenceMouseEnter);
-        reference2.removeEventListener("mouseleave", onReferenceMouseLeave);
-        if (floating) {
-          floating.removeEventListener("mouseleave", onScrollMouseLeave);
-          floating.removeEventListener("mouseenter", onFloatingMouseEnter);
-          floating.removeEventListener("mouseleave", onFloatingMouseLeave);
-        }
-      };
-    }
-  }, [elements, enabled, context, mouseOnly, move, closeWithDelay, cleanupMouseMoveHandler, clearPointerEvents, onOpenChange, open, openRef, tree, delayRef, handleCloseRef, dataRef, isClickLikeOpenEvent, restMsRef]);
-  index(() => {
-    var _handleCloseRef$curre;
-    if (!enabled) return;
-    if (open && (_handleCloseRef$curre = handleCloseRef.current) != null && (_handleCloseRef$curre = _handleCloseRef$curre.__options) != null && _handleCloseRef$curre.blockPointerEvents && isHoverOpen()) {
-      performedPointerEventsMutationRef.current = true;
-      const floatingEl = elements.floating;
-      if (isElement(elements.domReference) && floatingEl) {
-        var _tree$nodesRef$curren;
-        const body = getDocument(elements.floating).body;
-        body.setAttribute(safePolygonIdentifier, "");
-        const ref = elements.domReference;
-        const parentFloating = tree == null || (_tree$nodesRef$curren = tree.nodesRef.current.find((node2) => node2.id === parentId)) == null || (_tree$nodesRef$curren = _tree$nodesRef$curren.context) == null ? void 0 : _tree$nodesRef$curren.elements.floating;
-        if (parentFloating) {
-          parentFloating.style.pointerEvents = "";
-        }
-        body.style.pointerEvents = "none";
-        ref.style.pointerEvents = "auto";
-        floatingEl.style.pointerEvents = "auto";
-        return () => {
-          body.style.pointerEvents = "";
-          ref.style.pointerEvents = "";
-          floatingEl.style.pointerEvents = "";
-        };
-      }
-    }
-  }, [enabled, open, parentId, elements, tree, handleCloseRef, isHoverOpen]);
-  index(() => {
-    if (!open) {
-      pointerTypeRef.current = void 0;
-      restTimeoutPendingRef.current = false;
-      cleanupMouseMoveHandler();
-      clearPointerEvents();
-    }
-  }, [open, cleanupMouseMoveHandler, clearPointerEvents]);
-  React3.useEffect(() => {
-    return () => {
-      cleanupMouseMoveHandler();
-      clearTimeoutIfSet(timeoutRef);
-      clearTimeoutIfSet(restTimeoutRef);
-      clearPointerEvents();
-    };
-  }, [enabled, elements.domReference, cleanupMouseMoveHandler, clearPointerEvents]);
-  const reference = React3.useMemo(() => {
-    function setPointerRef(event) {
-      pointerTypeRef.current = event.pointerType;
-    }
-    return {
-      onPointerDown: setPointerRef,
-      onPointerEnter: setPointerRef,
-      onMouseMove(event) {
-        const {
-          nativeEvent
-        } = event;
-        function handleMouseMove2() {
-          if (!blockMouseMoveRef.current && !openRef.current) {
-            onOpenChange(true, nativeEvent, "hover");
-          }
-        }
-        if (mouseOnly && !isMouseLikePointerType(pointerTypeRef.current)) {
-          return;
-        }
-        if (open || getRestMs(restMsRef.current) === 0) {
-          return;
-        }
-        if (restTimeoutPendingRef.current && event.movementX ** 2 + event.movementY ** 2 < 2) {
-          return;
-        }
-        clearTimeoutIfSet(restTimeoutRef);
-        if (pointerTypeRef.current === "touch") {
-          handleMouseMove2();
-        } else {
-          restTimeoutPendingRef.current = true;
-          restTimeoutRef.current = window.setTimeout(handleMouseMove2, getRestMs(restMsRef.current));
-        }
-      }
-    };
-  }, [mouseOnly, onOpenChange, open, openRef, restMsRef]);
-  return React3.useMemo(() => enabled ? {
-    reference
-  } : {}, [enabled, reference]);
-}
-var NOOP = () => {
-};
-var FloatingDelayGroupContext = /* @__PURE__ */ React3.createContext({
-  delay: 0,
-  initialDelay: 0,
-  timeoutMs: 0,
-  currentId: null,
-  setCurrentId: NOOP,
-  setState: NOOP,
-  isInstantPhase: false
-});
-var useDelayGroupContext = () => React3.useContext(FloatingDelayGroupContext);
-function FloatingDelayGroup(props) {
-  const {
-    children,
-    delay,
-    timeoutMs = 0
-  } = props;
-  const [state, setState] = React3.useReducer((prev, next) => ({
-    ...prev,
-    ...next
-  }), {
-    delay,
-    timeoutMs,
-    initialDelay: delay,
-    currentId: null,
-    isInstantPhase: false
-  });
-  const initialCurrentIdRef = React3.useRef(null);
-  const setCurrentId = React3.useCallback((currentId) => {
-    setState({
-      currentId
-    });
-  }, []);
-  index(() => {
-    if (state.currentId) {
-      if (initialCurrentIdRef.current === null) {
-        initialCurrentIdRef.current = state.currentId;
-      } else if (!state.isInstantPhase) {
-        setState({
-          isInstantPhase: true
-        });
-      }
-    } else {
-      if (state.isInstantPhase) {
-        setState({
-          isInstantPhase: false
-        });
-      }
-      initialCurrentIdRef.current = null;
-    }
-  }, [state.currentId, state.isInstantPhase]);
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(FloatingDelayGroupContext.Provider, {
-    value: React3.useMemo(() => ({
-      ...state,
-      setState,
-      setCurrentId
-    }), [state, setCurrentId]),
-    children
-  });
-}
-function useDelayGroup(context, options) {
-  if (options === void 0) {
-    options = {};
-  }
-  const {
-    open,
-    onOpenChange,
-    floatingId
-  } = context;
-  const {
-    id: optionId,
-    enabled = true
-  } = options;
-  const id3 = optionId != null ? optionId : floatingId;
-  const groupContext = useDelayGroupContext();
-  const {
-    currentId,
-    setCurrentId,
-    initialDelay,
-    setState,
-    timeoutMs
-  } = groupContext;
-  index(() => {
-    if (!enabled) return;
-    if (!currentId) return;
-    setState({
-      delay: {
-        open: 1,
-        close: getDelay(initialDelay, "close")
-      }
-    });
-    if (currentId !== id3) {
-      onOpenChange(false);
-    }
-  }, [enabled, id3, onOpenChange, setState, currentId, initialDelay]);
-  index(() => {
-    function unset() {
-      onOpenChange(false);
-      setState({
-        delay: initialDelay,
-        currentId: null
-      });
-    }
-    if (!enabled) return;
-    if (!currentId) return;
-    if (!open && currentId === id3) {
-      if (timeoutMs) {
-        const timeout2 = window.setTimeout(unset, timeoutMs);
-        return () => {
-          clearTimeout(timeout2);
-        };
-      }
-      unset();
-    }
-  }, [enabled, open, setState, currentId, id3, onOpenChange, initialDelay, timeoutMs]);
-  index(() => {
-    if (!enabled) return;
-    if (setCurrentId === NOOP || !open) return;
-    setCurrentId(id3);
-  }, [enabled, open, setCurrentId, id3]);
-  return groupContext;
-}
-var rafId = 0;
-function enqueueFocus(el, options) {
-  if (options === void 0) {
-    options = {};
-  }
-  const {
-    preventScroll = false,
-    cancelPrevious = true,
-    sync = false
-  } = options;
-  cancelPrevious && cancelAnimationFrame(rafId);
-  const exec = () => el == null ? void 0 : el.focus({
-    preventScroll
-  });
-  if (sync) {
-    exec();
-  } else {
-    rafId = requestAnimationFrame(exec);
-  }
-}
-function contains3(parent, child) {
-  if (!parent || !child) {
-    return false;
-  }
-  const rootNode = child.getRootNode == null ? void 0 : child.getRootNode();
-  if (parent.contains(child)) {
-    return true;
-  }
-  if (rootNode && isShadowRoot(rootNode)) {
-    let next = child;
-    while (next) {
-      if (parent === next) {
-        return true;
-      }
-      next = next.parentNode || next.host;
-    }
-  }
-  return false;
-}
-function getTarget2(event) {
-  if ("composedPath" in event) {
-    return event.composedPath()[0];
-  }
-  return event.target;
-}
-function getDocument2(node2) {
-  return (node2 == null ? void 0 : node2.ownerDocument) || document;
-}
-var counters = {
-  inert: /* @__PURE__ */ new WeakMap(),
-  "aria-hidden": /* @__PURE__ */ new WeakMap(),
-  none: /* @__PURE__ */ new WeakMap()
-};
-function getCounterMap(control) {
-  if (control === "inert") return counters.inert;
-  if (control === "aria-hidden") return counters["aria-hidden"];
-  return counters.none;
-}
-var uncontrolledElementsSet = /* @__PURE__ */ new WeakSet();
-var markerMap = {};
-var lockCount$1 = 0;
-var supportsInert = () => typeof HTMLElement !== "undefined" && "inert" in HTMLElement.prototype;
-function unwrapHost(node2) {
-  if (!node2) {
-    return null;
-  }
-  return isShadowRoot(node2) ? node2.host : unwrapHost(node2.parentNode);
-}
-var correctElements = (parent, targets) => targets.map((target) => {
-  if (parent.contains(target)) {
-    return target;
-  }
-  const correctedTarget = unwrapHost(target);
-  if (parent.contains(correctedTarget)) {
-    return correctedTarget;
-  }
-  return null;
-}).filter((x3) => x3 != null);
-function applyAttributeToOthers(uncorrectedAvoidElements, body, ariaHidden, inert) {
-  const markerName = "data-floating-ui-inert";
-  const controlAttribute = inert ? "inert" : ariaHidden ? "aria-hidden" : null;
-  const avoidElements = correctElements(body, uncorrectedAvoidElements);
-  const elementsToKeep = /* @__PURE__ */ new Set();
-  const elementsToStop = new Set(avoidElements);
-  const hiddenElements = [];
-  if (!markerMap[markerName]) {
-    markerMap[markerName] = /* @__PURE__ */ new WeakMap();
-  }
-  const markerCounter = markerMap[markerName];
-  avoidElements.forEach(keep);
-  deep(body);
-  elementsToKeep.clear();
-  function keep(el) {
-    if (!el || elementsToKeep.has(el)) {
-      return;
-    }
-    elementsToKeep.add(el);
-    el.parentNode && keep(el.parentNode);
-  }
-  function deep(parent) {
-    if (!parent || elementsToStop.has(parent)) {
-      return;
-    }
-    [].forEach.call(parent.children, (node2) => {
-      if (getNodeName(node2) === "script") return;
-      if (elementsToKeep.has(node2)) {
-        deep(node2);
-      } else {
-        const attr2 = controlAttribute ? node2.getAttribute(controlAttribute) : null;
-        const alreadyHidden = attr2 !== null && attr2 !== "false";
-        const counterMap = getCounterMap(controlAttribute);
-        const counterValue = (counterMap.get(node2) || 0) + 1;
-        const markerValue = (markerCounter.get(node2) || 0) + 1;
-        counterMap.set(node2, counterValue);
-        markerCounter.set(node2, markerValue);
-        hiddenElements.push(node2);
-        if (counterValue === 1 && alreadyHidden) {
-          uncontrolledElementsSet.add(node2);
-        }
-        if (markerValue === 1) {
-          node2.setAttribute(markerName, "");
-        }
-        if (!alreadyHidden && controlAttribute) {
-          node2.setAttribute(controlAttribute, controlAttribute === "inert" ? "" : "true");
-        }
-      }
-    });
-  }
-  lockCount$1++;
-  return () => {
-    hiddenElements.forEach((element3) => {
-      const counterMap = getCounterMap(controlAttribute);
-      const currentCounterValue = counterMap.get(element3) || 0;
-      const counterValue = currentCounterValue - 1;
-      const markerValue = (markerCounter.get(element3) || 0) - 1;
-      counterMap.set(element3, counterValue);
-      markerCounter.set(element3, markerValue);
-      if (!counterValue) {
-        if (!uncontrolledElementsSet.has(element3) && controlAttribute) {
-          element3.removeAttribute(controlAttribute);
-        }
-        uncontrolledElementsSet.delete(element3);
-      }
-      if (!markerValue) {
-        element3.removeAttribute(markerName);
-      }
-    });
-    lockCount$1--;
-    if (!lockCount$1) {
-      counters.inert = /* @__PURE__ */ new WeakMap();
-      counters["aria-hidden"] = /* @__PURE__ */ new WeakMap();
-      counters.none = /* @__PURE__ */ new WeakMap();
-      uncontrolledElementsSet = /* @__PURE__ */ new WeakSet();
-      markerMap = {};
-    }
-  };
-}
-function markOthers(avoidElements, ariaHidden, inert) {
-  if (ariaHidden === void 0) {
-    ariaHidden = false;
-  }
-  if (inert === void 0) {
-    inert = false;
-  }
-  const body = getDocument2(avoidElements[0]).body;
-  return applyAttributeToOthers(avoidElements.concat(Array.from(body.querySelectorAll('[aria-live],[role="status"],output'))), body, ariaHidden, inert);
-}
-var HIDDEN_STYLES = {
-  border: 0,
-  clip: "rect(0 0 0 0)",
-  height: "1px",
-  margin: "-1px",
-  overflow: "hidden",
-  padding: 0,
-  position: "fixed",
-  whiteSpace: "nowrap",
-  width: "1px",
-  top: 0,
-  left: 0
-};
-var FocusGuard = /* @__PURE__ */ React3.forwardRef(function FocusGuard2(props, ref) {
-  const [role, setRole] = React3.useState();
-  index(() => {
-    if (isSafari2()) {
-      setRole("button");
-    }
-  }, []);
-  const restProps = {
-    ref,
-    tabIndex: 0,
-    // Role is only for VoiceOver
-    role,
-    "aria-hidden": role ? void 0 : true,
-    [createAttribute("focus-guard")]: "",
-    style: HIDDEN_STYLES
-  };
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", {
-    ...props,
-    ...restProps
-  });
-});
-var HIDDEN_OWNER_STYLES = {
-  clipPath: "inset(50%)",
-  position: "fixed",
-  top: 0,
-  left: 0
-};
-var PortalContext = /* @__PURE__ */ React3.createContext(null);
-var attr = /* @__PURE__ */ createAttribute("portal");
-function useFloatingPortalNode(props) {
-  if (props === void 0) {
-    props = {};
-  }
-  const {
-    id: id3,
-    root: root4
-  } = props;
-  const uniqueId = useId();
-  const portalContext = usePortalContext();
-  const [portalNode, setPortalNode] = React3.useState(null);
-  const portalNodeRef = React3.useRef(null);
-  index(() => {
-    return () => {
-      portalNode == null || portalNode.remove();
-      queueMicrotask(() => {
-        portalNodeRef.current = null;
-      });
-    };
-  }, [portalNode]);
-  index(() => {
-    if (!uniqueId) return;
-    if (portalNodeRef.current) return;
-    const existingIdRoot = id3 ? document.getElementById(id3) : null;
-    if (!existingIdRoot) return;
-    const subRoot = document.createElement("div");
-    subRoot.id = uniqueId;
-    subRoot.setAttribute(attr, "");
-    existingIdRoot.appendChild(subRoot);
-    portalNodeRef.current = subRoot;
-    setPortalNode(subRoot);
-  }, [id3, uniqueId]);
-  index(() => {
-    if (root4 === null) return;
-    if (!uniqueId) return;
-    if (portalNodeRef.current) return;
-    let container = root4 || (portalContext == null ? void 0 : portalContext.portalNode);
-    if (container && !isNode(container)) container = container.current;
-    container = container || document.body;
-    let idWrapper = null;
-    if (id3) {
-      idWrapper = document.createElement("div");
-      idWrapper.id = id3;
-      container.appendChild(idWrapper);
-    }
-    const subRoot = document.createElement("div");
-    subRoot.id = uniqueId;
-    subRoot.setAttribute(attr, "");
-    container = idWrapper || container;
-    container.appendChild(subRoot);
-    portalNodeRef.current = subRoot;
-    setPortalNode(subRoot);
-  }, [id3, root4, uniqueId, portalContext]);
-  return portalNode;
-}
-function FloatingPortal(props) {
-  const {
-    children,
-    id: id3,
-    root: root4,
-    preserveTabOrder = true
-  } = props;
-  const portalNode = useFloatingPortalNode({
-    id: id3,
-    root: root4
-  });
-  const [focusManagerState, setFocusManagerState] = React3.useState(null);
-  const beforeOutsideRef = React3.useRef(null);
-  const afterOutsideRef = React3.useRef(null);
-  const beforeInsideRef = React3.useRef(null);
-  const afterInsideRef = React3.useRef(null);
-  const modal = focusManagerState == null ? void 0 : focusManagerState.modal;
-  const open = focusManagerState == null ? void 0 : focusManagerState.open;
-  const shouldRenderGuards = (
-    // The FocusManager and therefore floating element are currently open/
-    // rendered.
-    !!focusManagerState && // Guards are only for non-modal focus management.
-    !focusManagerState.modal && // Don't render if unmount is transitioning.
-    focusManagerState.open && preserveTabOrder && !!(root4 || portalNode)
-  );
-  React3.useEffect(() => {
-    if (!portalNode || !preserveTabOrder || modal) {
-      return;
-    }
-    function onFocus(event) {
-      if (portalNode && isOutsideEvent(event)) {
-        const focusing = event.type === "focusin";
-        const manageFocus = focusing ? enableFocusInside : disableFocusInside;
-        manageFocus(portalNode);
-      }
-    }
-    portalNode.addEventListener("focusin", onFocus, true);
-    portalNode.addEventListener("focusout", onFocus, true);
-    return () => {
-      portalNode.removeEventListener("focusin", onFocus, true);
-      portalNode.removeEventListener("focusout", onFocus, true);
-    };
-  }, [portalNode, preserveTabOrder, modal]);
-  React3.useEffect(() => {
-    if (!portalNode) return;
-    if (open) return;
-    enableFocusInside(portalNode);
-  }, [open, portalNode]);
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(PortalContext.Provider, {
-    value: React3.useMemo(() => ({
-      preserveTabOrder,
-      beforeOutsideRef,
-      afterOutsideRef,
-      beforeInsideRef,
-      afterInsideRef,
-      portalNode,
-      setFocusManagerState
-    }), [preserveTabOrder, portalNode]),
-    children: [shouldRenderGuards && portalNode && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(FocusGuard, {
-      "data-type": "outside",
-      ref: beforeOutsideRef,
-      onFocus: (event) => {
-        if (isOutsideEvent(event, portalNode)) {
-          var _beforeInsideRef$curr;
-          (_beforeInsideRef$curr = beforeInsideRef.current) == null || _beforeInsideRef$curr.focus();
-        } else {
-          const domReference = focusManagerState ? focusManagerState.domReference : null;
-          const prevTabbable = getPreviousTabbable(domReference);
-          prevTabbable == null || prevTabbable.focus();
-        }
-      }
-    }), shouldRenderGuards && portalNode && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", {
-      "aria-owns": portalNode.id,
-      style: HIDDEN_OWNER_STYLES
-    }), portalNode && /* @__PURE__ */ ReactDOM2.createPortal(children, portalNode), shouldRenderGuards && portalNode && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(FocusGuard, {
-      "data-type": "outside",
-      ref: afterOutsideRef,
-      onFocus: (event) => {
-        if (isOutsideEvent(event, portalNode)) {
-          var _afterInsideRef$curre;
-          (_afterInsideRef$curre = afterInsideRef.current) == null || _afterInsideRef$curre.focus();
-        } else {
-          const domReference = focusManagerState ? focusManagerState.domReference : null;
-          const nextTabbable = getNextTabbable(domReference);
-          nextTabbable == null || nextTabbable.focus();
-          (focusManagerState == null ? void 0 : focusManagerState.closeOnFocusOut) && (focusManagerState == null ? void 0 : focusManagerState.onOpenChange(false, event.nativeEvent, "focus-out"));
-        }
-      }
-    })]
-  });
-}
-var usePortalContext = () => React3.useContext(PortalContext);
-function useLiteMergeRefs(refs) {
-  return React3.useMemo(() => {
-    return (value) => {
-      refs.forEach((ref) => {
-        if (ref) {
-          ref.current = value;
-        }
-      });
-    };
-  }, refs);
-}
-var LIST_LIMIT = 20;
-var previouslyFocusedElements = [];
-function clearDisconnectedPreviouslyFocusedElements() {
-  previouslyFocusedElements = previouslyFocusedElements.filter((elementRef) => {
-    var _elementRef$deref;
-    return (_elementRef$deref = elementRef.deref()) == null ? void 0 : _elementRef$deref.isConnected;
-  });
-}
-function addPreviouslyFocusedElement(element3) {
-  clearDisconnectedPreviouslyFocusedElements();
-  if (element3 && getNodeName(element3) !== "body") {
-    previouslyFocusedElements.push(new WeakRef(element3));
-    if (previouslyFocusedElements.length > LIST_LIMIT) {
-      previouslyFocusedElements = previouslyFocusedElements.slice(-LIST_LIMIT);
-    }
-  }
-}
-function getPreviouslyFocusedElement() {
-  clearDisconnectedPreviouslyFocusedElements();
-  const elementRef = previouslyFocusedElements[previouslyFocusedElements.length - 1];
-  return elementRef == null ? void 0 : elementRef.deref();
-}
-function getFirstTabbableElement(container) {
-  const tabbableOptions = getTabbableOptions();
-  if (isTabbable(container, tabbableOptions)) {
-    return container;
-  }
-  return tabbable(container, tabbableOptions)[0] || container;
-}
-function handleTabIndex(floatingFocusElement, orderRef) {
-  var _floatingFocusElement;
-  if (!orderRef.current.includes("floating") && !((_floatingFocusElement = floatingFocusElement.getAttribute("role")) != null && _floatingFocusElement.includes("dialog"))) {
-    return;
-  }
-  const options = getTabbableOptions();
-  const focusableElements = focusable(floatingFocusElement, options);
-  const tabbableContent = focusableElements.filter((element3) => {
-    const dataTabIndex = element3.getAttribute("data-tabindex") || "";
-    return isTabbable(element3, options) || element3.hasAttribute("data-tabindex") && !dataTabIndex.startsWith("-");
-  });
-  const tabIndex = floatingFocusElement.getAttribute("tabindex");
-  if (orderRef.current.includes("floating") || tabbableContent.length === 0) {
-    if (tabIndex !== "0") {
-      floatingFocusElement.setAttribute("tabindex", "0");
-    }
-  } else if (tabIndex !== "-1" || floatingFocusElement.hasAttribute("data-tabindex") && floatingFocusElement.getAttribute("data-tabindex") !== "-1") {
-    floatingFocusElement.setAttribute("tabindex", "-1");
-    floatingFocusElement.setAttribute("data-tabindex", "-1");
-  }
-}
-var VisuallyHiddenDismiss = /* @__PURE__ */ React3.forwardRef(function VisuallyHiddenDismiss2(props, ref) {
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", {
-    ...props,
-    type: "button",
-    ref,
-    tabIndex: -1,
-    style: HIDDEN_STYLES
-  });
-});
-function FloatingFocusManager(props) {
-  const {
-    context,
-    children,
-    disabled = false,
-    order: order2 = ["content"],
-    guards: _guards = true,
-    initialFocus = 0,
-    returnFocus = true,
-    restoreFocus = false,
-    modal = true,
-    visuallyHiddenDismiss = false,
-    closeOnFocusOut = true,
-    outsideElementsInert = false,
-    getInsideElements: _getInsideElements = () => []
-  } = props;
-  const {
-    open,
-    onOpenChange,
-    events,
-    dataRef,
-    elements: {
-      domReference,
-      floating
-    }
-  } = context;
-  const getNodeId = useEffectEvent(() => {
-    var _dataRef$current$floa;
-    return (_dataRef$current$floa = dataRef.current.floatingContext) == null ? void 0 : _dataRef$current$floa.nodeId;
-  });
-  const getInsideElements = useEffectEvent(_getInsideElements);
-  const ignoreInitialFocus = typeof initialFocus === "number" && initialFocus < 0;
-  const isUntrappedTypeableCombobox = isTypeableCombobox(domReference) && ignoreInitialFocus;
-  const inertSupported = supportsInert();
-  const guards = inertSupported ? _guards : true;
-  const useInert = !guards || inertSupported && outsideElementsInert;
-  const orderRef = useLatestRef(order2);
-  const initialFocusRef = useLatestRef(initialFocus);
-  const returnFocusRef = useLatestRef(returnFocus);
-  const tree = useFloatingTree();
-  const portalContext = usePortalContext();
-  const startDismissButtonRef = React3.useRef(null);
-  const endDismissButtonRef = React3.useRef(null);
-  const preventReturnFocusRef = React3.useRef(false);
-  const isPointerDownRef = React3.useRef(false);
-  const tabbableIndexRef = React3.useRef(-1);
-  const blurTimeoutRef = React3.useRef(-1);
-  const isInsidePortal = portalContext != null;
-  const floatingFocusElement = getFloatingFocusElement(floating);
-  const getTabbableContent = useEffectEvent(function(container) {
-    if (container === void 0) {
-      container = floatingFocusElement;
-    }
-    return container ? tabbable(container, getTabbableOptions()) : [];
-  });
-  const getTabbableElements = useEffectEvent((container) => {
-    const content4 = getTabbableContent(container);
-    return orderRef.current.map((type) => {
-      if (domReference && type === "reference") {
-        return domReference;
-      }
-      if (floatingFocusElement && type === "floating") {
-        return floatingFocusElement;
-      }
-      return content4;
-    }).filter(Boolean).flat();
-  });
-  React3.useEffect(() => {
-    if (disabled) return;
-    if (!modal) return;
-    function onKeyDown(event) {
-      if (event.key === "Tab") {
-        if (contains2(floatingFocusElement, activeElement(getDocument(floatingFocusElement))) && getTabbableContent().length === 0 && !isUntrappedTypeableCombobox) {
-          stopEvent(event);
-        }
-        const els = getTabbableElements();
-        const target = getTarget(event);
-        if (orderRef.current[0] === "reference" && target === domReference) {
-          stopEvent(event);
-          if (event.shiftKey) {
-            enqueueFocus(els[els.length - 1]);
-          } else {
-            enqueueFocus(els[1]);
-          }
-        }
-        if (orderRef.current[1] === "floating" && target === floatingFocusElement && event.shiftKey) {
-          stopEvent(event);
-          enqueueFocus(els[0]);
-        }
-      }
-    }
-    const doc4 = getDocument(floatingFocusElement);
-    doc4.addEventListener("keydown", onKeyDown);
-    return () => {
-      doc4.removeEventListener("keydown", onKeyDown);
-    };
-  }, [disabled, domReference, floatingFocusElement, modal, orderRef, isUntrappedTypeableCombobox, getTabbableContent, getTabbableElements]);
-  React3.useEffect(() => {
-    if (disabled) return;
-    if (!floating) return;
-    function handleFocusIn(event) {
-      const target = getTarget(event);
-      const tabbableContent = getTabbableContent();
-      const tabbableIndex = tabbableContent.indexOf(target);
-      if (tabbableIndex !== -1) {
-        tabbableIndexRef.current = tabbableIndex;
-      }
-    }
-    floating.addEventListener("focusin", handleFocusIn);
-    return () => {
-      floating.removeEventListener("focusin", handleFocusIn);
-    };
-  }, [disabled, floating, getTabbableContent]);
-  React3.useEffect(() => {
-    if (disabled) return;
-    if (!closeOnFocusOut) return;
-    function handlePointerDown() {
-      isPointerDownRef.current = true;
-      setTimeout(() => {
-        isPointerDownRef.current = false;
-      });
-    }
-    function handleFocusOutside(event) {
-      const relatedTarget = event.relatedTarget;
-      const currentTarget = event.currentTarget;
-      const target = getTarget(event);
-      queueMicrotask(() => {
-        const nodeId = getNodeId();
-        const movedToUnrelatedNode = !(contains2(domReference, relatedTarget) || contains2(floating, relatedTarget) || contains2(relatedTarget, floating) || contains2(portalContext == null ? void 0 : portalContext.portalNode, relatedTarget) || relatedTarget != null && relatedTarget.hasAttribute(createAttribute("focus-guard")) || tree && (getNodeChildren(tree.nodesRef.current, nodeId).find((node2) => {
-          var _node$context, _node$context2;
-          return contains2((_node$context = node2.context) == null ? void 0 : _node$context.elements.floating, relatedTarget) || contains2((_node$context2 = node2.context) == null ? void 0 : _node$context2.elements.domReference, relatedTarget);
-        }) || getNodeAncestors(tree.nodesRef.current, nodeId).find((node2) => {
-          var _node$context3, _node$context4, _node$context5;
-          return [(_node$context3 = node2.context) == null ? void 0 : _node$context3.elements.floating, getFloatingFocusElement((_node$context4 = node2.context) == null ? void 0 : _node$context4.elements.floating)].includes(relatedTarget) || ((_node$context5 = node2.context) == null ? void 0 : _node$context5.elements.domReference) === relatedTarget;
-        })));
-        if (currentTarget === domReference && floatingFocusElement) {
-          handleTabIndex(floatingFocusElement, orderRef);
-        }
-        if (restoreFocus && currentTarget !== domReference && !(target != null && target.isConnected) && activeElement(getDocument(floatingFocusElement)) === getDocument(floatingFocusElement).body) {
-          if (isHTMLElement(floatingFocusElement)) {
-            floatingFocusElement.focus();
-          }
-          const prevTabbableIndex = tabbableIndexRef.current;
-          const tabbableContent = getTabbableContent();
-          const nodeToFocus = tabbableContent[prevTabbableIndex] || tabbableContent[tabbableContent.length - 1] || floatingFocusElement;
-          if (isHTMLElement(nodeToFocus)) {
-            nodeToFocus.focus();
-          }
-        }
-        if (dataRef.current.insideReactTree) {
-          dataRef.current.insideReactTree = false;
-          return;
-        }
-        if ((isUntrappedTypeableCombobox ? true : !modal) && relatedTarget && movedToUnrelatedNode && !isPointerDownRef.current && // Fix React 18 Strict Mode returnFocus due to double rendering.
-        relatedTarget !== getPreviouslyFocusedElement()) {
-          preventReturnFocusRef.current = true;
-          onOpenChange(false, event, "focus-out");
-        }
-      });
-    }
-    const shouldHandleBlurCapture = Boolean(!tree && portalContext);
-    function markInsideReactTree() {
-      clearTimeoutIfSet(blurTimeoutRef);
-      dataRef.current.insideReactTree = true;
-      blurTimeoutRef.current = window.setTimeout(() => {
-        dataRef.current.insideReactTree = false;
-      });
-    }
-    if (floating && isHTMLElement(domReference)) {
-      domReference.addEventListener("focusout", handleFocusOutside);
-      domReference.addEventListener("pointerdown", handlePointerDown);
-      floating.addEventListener("focusout", handleFocusOutside);
-      if (shouldHandleBlurCapture) {
-        floating.addEventListener("focusout", markInsideReactTree, true);
-      }
-      return () => {
-        domReference.removeEventListener("focusout", handleFocusOutside);
-        domReference.removeEventListener("pointerdown", handlePointerDown);
-        floating.removeEventListener("focusout", handleFocusOutside);
-        if (shouldHandleBlurCapture) {
-          floating.removeEventListener("focusout", markInsideReactTree, true);
-        }
-      };
-    }
-  }, [disabled, domReference, floating, floatingFocusElement, modal, tree, portalContext, onOpenChange, closeOnFocusOut, restoreFocus, getTabbableContent, isUntrappedTypeableCombobox, getNodeId, orderRef, dataRef]);
-  const beforeGuardRef = React3.useRef(null);
-  const afterGuardRef = React3.useRef(null);
-  const mergedBeforeGuardRef = useLiteMergeRefs([beforeGuardRef, portalContext == null ? void 0 : portalContext.beforeInsideRef]);
-  const mergedAfterGuardRef = useLiteMergeRefs([afterGuardRef, portalContext == null ? void 0 : portalContext.afterInsideRef]);
-  React3.useEffect(() => {
-    var _portalContext$portal, _ancestors$find;
-    if (disabled) return;
-    if (!floating) return;
-    const portalNodes = Array.from((portalContext == null || (_portalContext$portal = portalContext.portalNode) == null ? void 0 : _portalContext$portal.querySelectorAll("[" + createAttribute("portal") + "]")) || []);
-    const ancestors = tree ? getNodeAncestors(tree.nodesRef.current, getNodeId()) : [];
-    const rootAncestorComboboxDomReference = (_ancestors$find = ancestors.find((node2) => {
-      var _node$context6;
-      return isTypeableCombobox(((_node$context6 = node2.context) == null ? void 0 : _node$context6.elements.domReference) || null);
-    })) == null || (_ancestors$find = _ancestors$find.context) == null ? void 0 : _ancestors$find.elements.domReference;
-    const insideElements = [floating, rootAncestorComboboxDomReference, ...portalNodes, ...getInsideElements(), startDismissButtonRef.current, endDismissButtonRef.current, beforeGuardRef.current, afterGuardRef.current, portalContext == null ? void 0 : portalContext.beforeOutsideRef.current, portalContext == null ? void 0 : portalContext.afterOutsideRef.current, orderRef.current.includes("reference") || isUntrappedTypeableCombobox ? domReference : null].filter((x3) => x3 != null);
-    const cleanup = modal || isUntrappedTypeableCombobox ? markOthers(insideElements, !useInert, useInert) : markOthers(insideElements);
-    return () => {
-      cleanup();
-    };
-  }, [disabled, domReference, floating, modal, orderRef, portalContext, isUntrappedTypeableCombobox, guards, useInert, tree, getNodeId, getInsideElements]);
-  index(() => {
-    if (disabled || !isHTMLElement(floatingFocusElement)) return;
-    const doc4 = getDocument(floatingFocusElement);
-    const previouslyFocusedElement = activeElement(doc4);
-    queueMicrotask(() => {
-      const focusableElements = getTabbableElements(floatingFocusElement);
-      const initialFocusValue = initialFocusRef.current;
-      const elToFocus = (typeof initialFocusValue === "number" ? focusableElements[initialFocusValue] : initialFocusValue.current) || floatingFocusElement;
-      const focusAlreadyInsideFloatingEl = contains2(floatingFocusElement, previouslyFocusedElement);
-      if (!ignoreInitialFocus && !focusAlreadyInsideFloatingEl && open) {
-        enqueueFocus(elToFocus, {
-          preventScroll: elToFocus === floatingFocusElement
-        });
-      }
-    });
-  }, [disabled, open, floatingFocusElement, ignoreInitialFocus, getTabbableElements, initialFocusRef]);
-  index(() => {
-    if (disabled || !floatingFocusElement) return;
-    const doc4 = getDocument(floatingFocusElement);
-    const previouslyFocusedElement = activeElement(doc4);
-    addPreviouslyFocusedElement(previouslyFocusedElement);
-    function onOpenChange2(_ref) {
-      let {
-        reason,
-        event,
-        nested
-      } = _ref;
-      if (["hover", "safe-polygon"].includes(reason) && event.type === "mouseleave") {
-        preventReturnFocusRef.current = true;
-      }
-      if (reason !== "outside-press") return;
-      if (nested) {
-        preventReturnFocusRef.current = false;
-      } else if (isVirtualClick(event) || isVirtualPointerEvent(event)) {
-        preventReturnFocusRef.current = false;
-      } else {
-        let isPreventScrollSupported = false;
-        document.createElement("div").focus({
-          get preventScroll() {
-            isPreventScrollSupported = true;
-            return false;
-          }
-        });
-        if (isPreventScrollSupported) {
-          preventReturnFocusRef.current = false;
-        } else {
-          preventReturnFocusRef.current = true;
-        }
-      }
-    }
-    events.on("openchange", onOpenChange2);
-    const fallbackEl = doc4.createElement("span");
-    fallbackEl.setAttribute("tabindex", "-1");
-    fallbackEl.setAttribute("aria-hidden", "true");
-    Object.assign(fallbackEl.style, HIDDEN_STYLES);
-    if (isInsidePortal && domReference) {
-      domReference.insertAdjacentElement("afterend", fallbackEl);
-    }
-    function getReturnElement() {
-      if (typeof returnFocusRef.current === "boolean") {
-        const el = domReference || getPreviouslyFocusedElement();
-        return el && el.isConnected ? el : fallbackEl;
-      }
-      return returnFocusRef.current.current || fallbackEl;
-    }
-    return () => {
-      events.off("openchange", onOpenChange2);
-      const activeEl = activeElement(doc4);
-      const isFocusInsideFloatingTree = contains2(floating, activeEl) || tree && getNodeChildren(tree.nodesRef.current, getNodeId(), false).some((node2) => {
-        var _node$context7;
-        return contains2((_node$context7 = node2.context) == null ? void 0 : _node$context7.elements.floating, activeEl);
-      });
-      const returnElement = getReturnElement();
-      queueMicrotask(() => {
-        const tabbableReturnElement = getFirstTabbableElement(returnElement);
-        if (
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-          returnFocusRef.current && !preventReturnFocusRef.current && isHTMLElement(tabbableReturnElement) && // If the focus moved somewhere else after mount, avoid returning focus
-          // since it likely entered a different element which should be
-          // respected: https://github.com/floating-ui/floating-ui/issues/2607
-          (tabbableReturnElement !== activeEl && activeEl !== doc4.body ? isFocusInsideFloatingTree : true)
-        ) {
-          tabbableReturnElement.focus({
-            preventScroll: true
-          });
-        }
-        fallbackEl.remove();
-      });
-    };
-  }, [disabled, floating, floatingFocusElement, returnFocusRef, dataRef, events, tree, isInsidePortal, domReference, getNodeId]);
-  React3.useEffect(() => {
-    queueMicrotask(() => {
-      preventReturnFocusRef.current = false;
-    });
-    return () => {
-      queueMicrotask(clearDisconnectedPreviouslyFocusedElements);
-    };
-  }, [disabled]);
-  index(() => {
-    if (disabled) return;
-    if (!portalContext) return;
-    portalContext.setFocusManagerState({
-      modal,
-      closeOnFocusOut,
-      open,
-      onOpenChange,
-      domReference
-    });
-    return () => {
-      portalContext.setFocusManagerState(null);
-    };
-  }, [disabled, portalContext, modal, open, onOpenChange, closeOnFocusOut, domReference]);
-  index(() => {
-    if (disabled) return;
-    if (!floatingFocusElement) return;
-    handleTabIndex(floatingFocusElement, orderRef);
-  }, [disabled, floatingFocusElement, orderRef]);
-  function renderDismissButton(location) {
-    if (disabled || !visuallyHiddenDismiss || !modal) {
-      return null;
-    }
-    return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(VisuallyHiddenDismiss, {
-      ref: location === "start" ? startDismissButtonRef : endDismissButtonRef,
-      onClick: (event) => onOpenChange(false, event.nativeEvent),
-      children: typeof visuallyHiddenDismiss === "string" ? visuallyHiddenDismiss : "Dismiss"
-    });
-  }
-  const shouldRenderGuards = !disabled && guards && (modal ? !isUntrappedTypeableCombobox : true) && (isInsidePortal || modal);
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_jsx_runtime2.Fragment, {
-    children: [shouldRenderGuards && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(FocusGuard, {
-      "data-type": "inside",
-      ref: mergedBeforeGuardRef,
-      onFocus: (event) => {
-        if (modal) {
-          const els = getTabbableElements();
-          enqueueFocus(order2[0] === "reference" ? els[0] : els[els.length - 1]);
-        } else if (portalContext != null && portalContext.preserveTabOrder && portalContext.portalNode) {
-          preventReturnFocusRef.current = false;
-          if (isOutsideEvent(event, portalContext.portalNode)) {
-            const nextTabbable = getNextTabbable(domReference);
-            nextTabbable == null || nextTabbable.focus();
-          } else {
-            var _portalContext$before;
-            (_portalContext$before = portalContext.beforeOutsideRef.current) == null || _portalContext$before.focus();
-          }
-        }
-      }
-    }), !isUntrappedTypeableCombobox && renderDismissButton("start"), children, renderDismissButton("end"), shouldRenderGuards && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(FocusGuard, {
-      "data-type": "inside",
-      ref: mergedAfterGuardRef,
-      onFocus: (event) => {
-        if (modal) {
-          enqueueFocus(getTabbableElements()[0]);
-        } else if (portalContext != null && portalContext.preserveTabOrder && portalContext.portalNode) {
-          if (closeOnFocusOut) {
-            preventReturnFocusRef.current = true;
-          }
-          if (isOutsideEvent(event, portalContext.portalNode)) {
-            const prevTabbable = getPreviousTabbable(domReference);
-            prevTabbable == null || prevTabbable.focus();
-          } else {
-            var _portalContext$afterO;
-            (_portalContext$afterO = portalContext.afterOutsideRef.current) == null || _portalContext$afterO.focus();
-          }
-        }
-      }
-    })]
-  });
-}
-var bubbleHandlerKeys = {
-  pointerdown: "onPointerDown",
-  mousedown: "onMouseDown",
-  click: "onClick"
-};
-var captureHandlerKeys = {
-  pointerdown: "onPointerDownCapture",
-  mousedown: "onMouseDownCapture",
-  click: "onClickCapture"
-};
-var normalizeProp = (normalizable) => {
-  var _normalizable$escapeK, _normalizable$outside;
-  return {
-    escapeKey: typeof normalizable === "boolean" ? normalizable : (_normalizable$escapeK = normalizable == null ? void 0 : normalizable.escapeKey) != null ? _normalizable$escapeK : false,
-    outsidePress: typeof normalizable === "boolean" ? normalizable : (_normalizable$outside = normalizable == null ? void 0 : normalizable.outsidePress) != null ? _normalizable$outside : true
-  };
-};
-function useDismiss(context, props) {
-  if (props === void 0) {
-    props = {};
-  }
-  const {
-    open,
-    onOpenChange,
-    elements,
-    dataRef
-  } = context;
-  const {
-    enabled = true,
-    escapeKey = true,
-    outsidePress: unstable_outsidePress = true,
-    outsidePressEvent = "pointerdown",
-    referencePress = false,
-    referencePressEvent = "pointerdown",
-    ancestorScroll = false,
-    bubbles,
-    capture
-  } = props;
-  const tree = useFloatingTree();
-  const outsidePressFn = useEffectEvent(typeof unstable_outsidePress === "function" ? unstable_outsidePress : () => false);
-  const outsidePress = typeof unstable_outsidePress === "function" ? outsidePressFn : unstable_outsidePress;
-  const endedOrStartedInsideRef = React3.useRef(false);
-  const {
-    escapeKey: escapeKeyBubbles,
-    outsidePress: outsidePressBubbles
-  } = normalizeProp(bubbles);
-  const {
-    escapeKey: escapeKeyCapture,
-    outsidePress: outsidePressCapture
-  } = normalizeProp(capture);
-  const isComposingRef = React3.useRef(false);
-  const closeOnEscapeKeyDown = useEffectEvent((event) => {
-    var _dataRef$current$floa;
-    if (!open || !enabled || !escapeKey || event.key !== "Escape") {
-      return;
-    }
-    if (isComposingRef.current) {
-      return;
-    }
-    const nodeId = (_dataRef$current$floa = dataRef.current.floatingContext) == null ? void 0 : _dataRef$current$floa.nodeId;
-    const children = tree ? getNodeChildren(tree.nodesRef.current, nodeId) : [];
-    if (!escapeKeyBubbles) {
-      event.stopPropagation();
-      if (children.length > 0) {
-        let shouldDismiss = true;
-        children.forEach((child) => {
-          var _child$context;
-          if ((_child$context = child.context) != null && _child$context.open && !child.context.dataRef.current.__escapeKeyBubbles) {
-            shouldDismiss = false;
-            return;
-          }
-        });
-        if (!shouldDismiss) {
-          return;
-        }
-      }
-    }
-    onOpenChange(false, isReactEvent(event) ? event.nativeEvent : event, "escape-key");
-  });
-  const closeOnEscapeKeyDownCapture = useEffectEvent((event) => {
-    var _getTarget2;
-    const callback = () => {
-      var _getTarget;
-      closeOnEscapeKeyDown(event);
-      (_getTarget = getTarget(event)) == null || _getTarget.removeEventListener("keydown", callback);
-    };
-    (_getTarget2 = getTarget(event)) == null || _getTarget2.addEventListener("keydown", callback);
-  });
-  const closeOnPressOutside = useEffectEvent((event) => {
-    var _dataRef$current$floa2;
-    const insideReactTree = dataRef.current.insideReactTree;
-    dataRef.current.insideReactTree = false;
-    const endedOrStartedInside = endedOrStartedInsideRef.current;
-    endedOrStartedInsideRef.current = false;
-    if (outsidePressEvent === "click" && endedOrStartedInside) {
-      return;
-    }
-    if (insideReactTree) {
-      return;
-    }
-    if (typeof outsidePress === "function" && !outsidePress(event)) {
-      return;
-    }
-    const target = getTarget(event);
-    const inertSelector = "[" + createAttribute("inert") + "]";
-    const markers = getDocument(elements.floating).querySelectorAll(inertSelector);
-    let targetRootAncestor = isElement(target) ? target : null;
-    while (targetRootAncestor && !isLastTraversableNode(targetRootAncestor)) {
-      const nextParent = getParentNode(targetRootAncestor);
-      if (isLastTraversableNode(nextParent) || !isElement(nextParent)) {
-        break;
-      }
-      targetRootAncestor = nextParent;
-    }
-    if (markers.length && isElement(target) && !isRootElement(target) && // Clicked on a direct ancestor (e.g. FloatingOverlay).
-    !contains2(target, elements.floating) && // If the target root element contains none of the markers, then the
-    // element was injected after the floating element rendered.
-    Array.from(markers).every((marker) => !contains2(targetRootAncestor, marker))) {
-      return;
-    }
-    if (isHTMLElement(target) && floating) {
-      const lastTraversableNode = isLastTraversableNode(target);
-      const style2 = getComputedStyle2(target);
-      const scrollRe = /auto|scroll/;
-      const isScrollableX = lastTraversableNode || scrollRe.test(style2.overflowX);
-      const isScrollableY = lastTraversableNode || scrollRe.test(style2.overflowY);
-      const canScrollX = isScrollableX && target.clientWidth > 0 && target.scrollWidth > target.clientWidth;
-      const canScrollY = isScrollableY && target.clientHeight > 0 && target.scrollHeight > target.clientHeight;
-      const isRTL2 = style2.direction === "rtl";
-      const pressedVerticalScrollbar = canScrollY && (isRTL2 ? event.offsetX <= target.offsetWidth - target.clientWidth : event.offsetX > target.clientWidth);
-      const pressedHorizontalScrollbar = canScrollX && event.offsetY > target.clientHeight;
-      if (pressedVerticalScrollbar || pressedHorizontalScrollbar) {
-        return;
-      }
-    }
-    const nodeId = (_dataRef$current$floa2 = dataRef.current.floatingContext) == null ? void 0 : _dataRef$current$floa2.nodeId;
-    const targetIsInsideChildren = tree && getNodeChildren(tree.nodesRef.current, nodeId).some((node2) => {
-      var _node$context;
-      return isEventTargetWithin(event, (_node$context = node2.context) == null ? void 0 : _node$context.elements.floating);
-    });
-    if (isEventTargetWithin(event, elements.floating) || isEventTargetWithin(event, elements.domReference) || targetIsInsideChildren) {
-      return;
-    }
-    const children = tree ? getNodeChildren(tree.nodesRef.current, nodeId) : [];
-    if (children.length > 0) {
-      let shouldDismiss = true;
-      children.forEach((child) => {
-        var _child$context2;
-        if ((_child$context2 = child.context) != null && _child$context2.open && !child.context.dataRef.current.__outsidePressBubbles) {
-          shouldDismiss = false;
-          return;
-        }
-      });
-      if (!shouldDismiss) {
-        return;
-      }
-    }
-    onOpenChange(false, event, "outside-press");
-  });
-  const closeOnPressOutsideCapture = useEffectEvent((event) => {
-    var _getTarget4;
-    const callback = () => {
-      var _getTarget3;
-      closeOnPressOutside(event);
-      (_getTarget3 = getTarget(event)) == null || _getTarget3.removeEventListener(outsidePressEvent, callback);
-    };
-    (_getTarget4 = getTarget(event)) == null || _getTarget4.addEventListener(outsidePressEvent, callback);
-  });
-  React3.useEffect(() => {
-    if (!open || !enabled) {
-      return;
-    }
-    dataRef.current.__escapeKeyBubbles = escapeKeyBubbles;
-    dataRef.current.__outsidePressBubbles = outsidePressBubbles;
-    let compositionTimeout = -1;
-    function onScroll(event) {
-      onOpenChange(false, event, "ancestor-scroll");
-    }
-    function handleCompositionStart() {
-      window.clearTimeout(compositionTimeout);
-      isComposingRef.current = true;
-    }
-    function handleCompositionEnd() {
-      compositionTimeout = window.setTimeout(
-        () => {
-          isComposingRef.current = false;
-        },
-        // 0ms or 1ms don't work in Safari. 5ms appears to consistently work.
-        // Only apply to WebKit for the test to remain 0ms.
-        isWebKit() ? 5 : 0
-      );
-    }
-    const doc4 = getDocument(elements.floating);
-    if (escapeKey) {
-      doc4.addEventListener("keydown", escapeKeyCapture ? closeOnEscapeKeyDownCapture : closeOnEscapeKeyDown, escapeKeyCapture);
-      doc4.addEventListener("compositionstart", handleCompositionStart);
-      doc4.addEventListener("compositionend", handleCompositionEnd);
-    }
-    outsidePress && doc4.addEventListener(outsidePressEvent, outsidePressCapture ? closeOnPressOutsideCapture : closeOnPressOutside, outsidePressCapture);
-    let ancestors = [];
-    if (ancestorScroll) {
-      if (isElement(elements.domReference)) {
-        ancestors = getOverflowAncestors(elements.domReference);
-      }
-      if (isElement(elements.floating)) {
-        ancestors = ancestors.concat(getOverflowAncestors(elements.floating));
-      }
-      if (!isElement(elements.reference) && elements.reference && elements.reference.contextElement) {
-        ancestors = ancestors.concat(getOverflowAncestors(elements.reference.contextElement));
-      }
-    }
-    ancestors = ancestors.filter((ancestor) => {
-      var _doc$defaultView;
-      return ancestor !== ((_doc$defaultView = doc4.defaultView) == null ? void 0 : _doc$defaultView.visualViewport);
-    });
-    ancestors.forEach((ancestor) => {
-      ancestor.addEventListener("scroll", onScroll);
-    });
-    return () => {
-      if (escapeKey) {
-        doc4.removeEventListener("keydown", escapeKeyCapture ? closeOnEscapeKeyDownCapture : closeOnEscapeKeyDown, escapeKeyCapture);
-        doc4.removeEventListener("compositionstart", handleCompositionStart);
-        doc4.removeEventListener("compositionend", handleCompositionEnd);
-      }
-      outsidePress && doc4.removeEventListener(outsidePressEvent, outsidePressCapture ? closeOnPressOutsideCapture : closeOnPressOutside, outsidePressCapture);
-      ancestors.forEach((ancestor) => {
-        ancestor.removeEventListener("scroll", onScroll);
-      });
-      window.clearTimeout(compositionTimeout);
-    };
-  }, [dataRef, elements, escapeKey, outsidePress, outsidePressEvent, open, onOpenChange, ancestorScroll, enabled, escapeKeyBubbles, outsidePressBubbles, closeOnEscapeKeyDown, escapeKeyCapture, closeOnEscapeKeyDownCapture, closeOnPressOutside, outsidePressCapture, closeOnPressOutsideCapture]);
-  React3.useEffect(() => {
-    dataRef.current.insideReactTree = false;
-  }, [dataRef, outsidePress, outsidePressEvent]);
-  const reference = React3.useMemo(() => ({
-    onKeyDown: closeOnEscapeKeyDown,
-    ...referencePress && {
-      [bubbleHandlerKeys[referencePressEvent]]: (event) => {
-        onOpenChange(false, event.nativeEvent, "reference-press");
-      },
-      ...referencePressEvent !== "click" && {
-        onClick(event) {
-          onOpenChange(false, event.nativeEvent, "reference-press");
-        }
-      }
-    }
-  }), [closeOnEscapeKeyDown, onOpenChange, referencePress, referencePressEvent]);
-  const floating = React3.useMemo(() => {
-    function setMouseDownOrUpInside(event) {
-      if (event.button !== 0) {
-        return;
-      }
-      endedOrStartedInsideRef.current = true;
-    }
-    return {
-      onKeyDown: closeOnEscapeKeyDown,
-      onMouseDown: setMouseDownOrUpInside,
-      onMouseUp: setMouseDownOrUpInside,
-      [captureHandlerKeys[outsidePressEvent]]: () => {
-        dataRef.current.insideReactTree = true;
-      }
-    };
-  }, [closeOnEscapeKeyDown, outsidePressEvent, dataRef]);
-  return React3.useMemo(() => enabled ? {
-    reference,
-    floating
-  } : {}, [enabled, reference, floating]);
-}
-function useFloatingRootContext(options) {
-  const {
-    open = false,
-    onOpenChange: onOpenChangeProp,
-    elements: elementsProp
-  } = options;
-  const floatingId = useId();
-  const dataRef = React3.useRef({});
-  const [events] = React3.useState(() => createEventEmitter());
-  const nested = useFloatingParentNodeId() != null;
-  if (true) {
-    const optionDomReference = elementsProp.reference;
-    if (optionDomReference && !isElement(optionDomReference)) {
-      error("Cannot pass a virtual element to the `elements.reference` option,", "as it must be a real DOM element. Use `refs.setPositionReference()`", "instead.");
-    }
-  }
-  const [positionReference, setPositionReference] = React3.useState(elementsProp.reference);
-  const onOpenChange = useEffectEvent((open2, event, reason) => {
-    dataRef.current.openEvent = open2 ? event : void 0;
-    events.emit("openchange", {
-      open: open2,
-      event,
-      reason,
-      nested
-    });
-    onOpenChangeProp == null || onOpenChangeProp(open2, event, reason);
-  });
-  const refs = React3.useMemo(() => ({
-    setPositionReference
-  }), []);
-  const elements = React3.useMemo(() => ({
-    reference: positionReference || elementsProp.reference || null,
-    floating: elementsProp.floating || null,
-    domReference: elementsProp.reference
-  }), [positionReference, elementsProp.reference, elementsProp.floating]);
-  return React3.useMemo(() => ({
-    dataRef,
-    open,
-    onOpenChange,
-    elements,
-    events,
-    floatingId,
-    refs
-  }), [open, onOpenChange, elements, events, floatingId, refs]);
-}
-function useFloating2(_temp) {
-  var _elementsOption$refer, _elementsOption$float;
-  let {
-    elements: elementsOption,
-    ...options
-  } = _temp === void 0 ? {} : _temp;
-  const {
-    nodeId
-  } = options;
-  const internalRootContext = useFloatingRootContext({
-    ...options,
-    elements: {
-      reference: (_elementsOption$refer = elementsOption == null ? void 0 : elementsOption.reference) != null ? _elementsOption$refer : null,
-      floating: (_elementsOption$float = elementsOption == null ? void 0 : elementsOption.floating) != null ? _elementsOption$float : null
-    }
-  });
-  const rootContext = options.rootContext || internalRootContext;
-  const computedElements = rootContext.elements;
-  const [_domReference, setDomReference] = React3.useState(null);
-  const [positionReference, _setPositionReference] = React3.useState(null);
-  const optionDomReference = computedElements == null ? void 0 : computedElements.domReference;
-  const domReference = optionDomReference || _domReference;
-  const domReferenceRef = React3.useRef(null);
-  const tree = useFloatingTree();
-  index(() => {
-    if (domReference) {
-      domReferenceRef.current = domReference;
-    }
-  }, [domReference]);
-  const position3 = useFloating({
-    ...options,
-    elements: {
-      ...computedElements,
-      ...positionReference && {
-        reference: positionReference
-      }
-    }
-  });
-  const setPositionReference = React3.useCallback((node2) => {
-    const computedPositionReference = isElement(node2) ? {
-      getBoundingClientRect: () => node2.getBoundingClientRect(),
-      getClientRects: () => node2.getClientRects(),
-      contextElement: node2
-    } : node2;
-    _setPositionReference(computedPositionReference);
-    position3.refs.setReference(computedPositionReference);
-  }, [position3.refs]);
-  const setReference = React3.useCallback((node2) => {
-    if (isElement(node2) || node2 === null) {
-      domReferenceRef.current = node2;
-      setDomReference(node2);
-    }
-    if (isElement(position3.refs.reference.current) || position3.refs.reference.current === null || // Don't allow setting virtual elements using the old technique back to
-    // `null` to support `positionReference` + an unstable `reference`
-    // callback ref.
-    node2 !== null && !isElement(node2)) {
-      position3.refs.setReference(node2);
-    }
-  }, [position3.refs]);
-  const refs = React3.useMemo(() => ({
-    ...position3.refs,
-    setReference,
-    setPositionReference,
-    domReference: domReferenceRef
-  }), [position3.refs, setReference, setPositionReference]);
-  const elements = React3.useMemo(() => ({
-    ...position3.elements,
-    domReference
-  }), [position3.elements, domReference]);
-  const context = React3.useMemo(() => ({
-    ...position3,
-    ...rootContext,
-    refs,
-    elements,
-    nodeId
-  }), [position3, refs, elements, nodeId, rootContext]);
-  index(() => {
-    rootContext.dataRef.current.floatingContext = context;
-    const node2 = tree == null ? void 0 : tree.nodesRef.current.find((node3) => node3.id === nodeId);
-    if (node2) {
-      node2.context = context;
-    }
-  });
-  return React3.useMemo(() => ({
-    ...position3,
-    context,
-    refs,
-    elements
-  }), [position3, refs, elements, context]);
-}
-function isMacSafari() {
-  return isMac() && isSafari2();
-}
-function useFocus(context, props) {
-  if (props === void 0) {
-    props = {};
-  }
-  const {
-    open,
-    onOpenChange,
-    events,
-    dataRef,
-    elements
-  } = context;
-  const {
-    enabled = true,
-    visibleOnly = true
-  } = props;
-  const blockFocusRef = React3.useRef(false);
-  const timeoutRef = React3.useRef(-1);
-  const keyboardModalityRef = React3.useRef(true);
-  React3.useEffect(() => {
-    if (!enabled) return;
-    const win = getWindow(elements.domReference);
-    function onBlur() {
-      if (!open && isHTMLElement(elements.domReference) && elements.domReference === activeElement(getDocument(elements.domReference))) {
-        blockFocusRef.current = true;
-      }
-    }
-    function onKeyDown() {
-      keyboardModalityRef.current = true;
-    }
-    function onPointerDown() {
-      keyboardModalityRef.current = false;
-    }
-    win.addEventListener("blur", onBlur);
-    if (isMacSafari()) {
-      win.addEventListener("keydown", onKeyDown, true);
-      win.addEventListener("pointerdown", onPointerDown, true);
-    }
-    return () => {
-      win.removeEventListener("blur", onBlur);
-      if (isMacSafari()) {
-        win.removeEventListener("keydown", onKeyDown, true);
-        win.removeEventListener("pointerdown", onPointerDown, true);
-      }
-    };
-  }, [elements.domReference, open, enabled]);
-  React3.useEffect(() => {
-    if (!enabled) return;
-    function onOpenChange2(_ref) {
-      let {
-        reason
-      } = _ref;
-      if (reason === "reference-press" || reason === "escape-key") {
-        blockFocusRef.current = true;
-      }
-    }
-    events.on("openchange", onOpenChange2);
-    return () => {
-      events.off("openchange", onOpenChange2);
-    };
-  }, [events, enabled]);
-  React3.useEffect(() => {
-    return () => {
-      clearTimeoutIfSet(timeoutRef);
-    };
-  }, []);
-  const reference = React3.useMemo(() => ({
-    onMouseLeave() {
-      blockFocusRef.current = false;
-    },
-    onFocus(event) {
-      if (blockFocusRef.current) return;
-      const target = getTarget(event.nativeEvent);
-      if (visibleOnly && isElement(target)) {
-        if (isMacSafari() && !event.relatedTarget) {
-          if (!keyboardModalityRef.current && !isTypeableElement(target)) {
-            return;
-          }
-        } else if (!matchesFocusVisible(target)) {
-          return;
-        }
-      }
-      onOpenChange(true, event.nativeEvent, "focus");
-    },
-    onBlur(event) {
-      blockFocusRef.current = false;
-      const relatedTarget = event.relatedTarget;
-      const nativeEvent = event.nativeEvent;
-      const movedToFocusGuard = isElement(relatedTarget) && relatedTarget.hasAttribute(createAttribute("focus-guard")) && relatedTarget.getAttribute("data-type") === "outside";
-      timeoutRef.current = window.setTimeout(() => {
-        var _dataRef$current$floa;
-        const activeEl = activeElement(elements.domReference ? elements.domReference.ownerDocument : document);
-        if (!relatedTarget && activeEl === elements.domReference) return;
-        if (contains2((_dataRef$current$floa = dataRef.current.floatingContext) == null ? void 0 : _dataRef$current$floa.refs.floating.current, activeEl) || contains2(elements.domReference, activeEl) || movedToFocusGuard) {
-          return;
-        }
-        onOpenChange(false, nativeEvent, "focus");
-      });
-    }
-  }), [dataRef, elements.domReference, onOpenChange, visibleOnly]);
-  return React3.useMemo(() => enabled ? {
-    reference
-  } : {}, [enabled, reference]);
-}
-function mergeProps(userProps, propsList, elementKey) {
-  const map4 = /* @__PURE__ */ new Map();
-  const isItem = elementKey === "item";
-  let domUserProps = userProps;
-  if (isItem && userProps) {
-    const {
-      [ACTIVE_KEY]: _,
-      [SELECTED_KEY]: __,
-      ...validProps
-    } = userProps;
-    domUserProps = validProps;
-  }
-  return {
-    ...elementKey === "floating" && {
-      tabIndex: -1,
-      [FOCUSABLE_ATTRIBUTE2]: ""
-    },
-    ...domUserProps,
-    ...propsList.map((value) => {
-      const propsOrGetProps = value ? value[elementKey] : null;
-      if (typeof propsOrGetProps === "function") {
-        return userProps ? propsOrGetProps(userProps) : null;
-      }
-      return propsOrGetProps;
-    }).concat(userProps).reduce((acc, props) => {
-      if (!props) {
-        return acc;
-      }
-      Object.entries(props).forEach((_ref) => {
-        let [key, value] = _ref;
-        if (isItem && [ACTIVE_KEY, SELECTED_KEY].includes(key)) {
-          return;
-        }
-        if (key.indexOf("on") === 0) {
-          if (!map4.has(key)) {
-            map4.set(key, []);
-          }
-          if (typeof value === "function") {
-            var _map$get;
-            (_map$get = map4.get(key)) == null || _map$get.push(value);
-            acc[key] = function() {
-              var _map$get2;
-              for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-                args[_key] = arguments[_key];
-              }
-              return (_map$get2 = map4.get(key)) == null ? void 0 : _map$get2.map((fn5) => fn5(...args)).find((val) => val !== void 0);
-            };
-          }
-        } else {
-          acc[key] = value;
-        }
-      });
-      return acc;
-    }, {})
-  };
-}
-function useInteractions(propsList) {
-  if (propsList === void 0) {
-    propsList = [];
-  }
-  const referenceDeps = propsList.map((key) => key == null ? void 0 : key.reference);
-  const floatingDeps = propsList.map((key) => key == null ? void 0 : key.floating);
-  const itemDeps = propsList.map((key) => key == null ? void 0 : key.item);
-  const getReferenceProps = React3.useCallback(
-    (userProps) => mergeProps(userProps, propsList, "reference"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    referenceDeps
-  );
-  const getFloatingProps = React3.useCallback(
-    (userProps) => mergeProps(userProps, propsList, "floating"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    floatingDeps
-  );
-  const getItemProps = React3.useCallback(
-    (userProps) => mergeProps(userProps, propsList, "item"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    itemDeps
-  );
-  return React3.useMemo(() => ({
-    getReferenceProps,
-    getFloatingProps,
-    getItemProps
-  }), [getReferenceProps, getFloatingProps, getItemProps]);
-}
-var componentRoleToAriaRoleMap = /* @__PURE__ */ new Map([["select", "listbox"], ["combobox", "listbox"], ["label", false]]);
-function useRole(context, props) {
-  var _elements$domReferenc, _componentRoleToAriaR;
-  if (props === void 0) {
-    props = {};
-  }
-  const {
-    open,
-    elements,
-    floatingId: defaultFloatingId
-  } = context;
-  const {
-    enabled = true,
-    role = "dialog"
-  } = props;
-  const defaultReferenceId = useId();
-  const referenceId = ((_elements$domReferenc = elements.domReference) == null ? void 0 : _elements$domReferenc.id) || defaultReferenceId;
-  const floatingId = React3.useMemo(() => {
-    var _getFloatingFocusElem;
-    return ((_getFloatingFocusElem = getFloatingFocusElement(elements.floating)) == null ? void 0 : _getFloatingFocusElem.id) || defaultFloatingId;
-  }, [elements.floating, defaultFloatingId]);
-  const ariaRole = (_componentRoleToAriaR = componentRoleToAriaRoleMap.get(role)) != null ? _componentRoleToAriaR : role;
-  const parentId = useFloatingParentNodeId();
-  const isNested = parentId != null;
-  const reference = React3.useMemo(() => {
-    if (ariaRole === "tooltip" || role === "label") {
-      return {
-        ["aria-" + (role === "label" ? "labelledby" : "describedby")]: open ? floatingId : void 0
-      };
-    }
-    return {
-      "aria-expanded": open ? "true" : "false",
-      "aria-haspopup": ariaRole === "alertdialog" ? "dialog" : ariaRole,
-      "aria-controls": open ? floatingId : void 0,
-      ...ariaRole === "listbox" && {
-        role: "combobox"
-      },
-      ...ariaRole === "menu" && {
-        id: referenceId
-      },
-      ...ariaRole === "menu" && isNested && {
-        role: "menuitem"
-      },
-      ...role === "select" && {
-        "aria-autocomplete": "none"
-      },
-      ...role === "combobox" && {
-        "aria-autocomplete": "list"
-      }
-    };
-  }, [ariaRole, floatingId, isNested, open, referenceId, role]);
-  const floating = React3.useMemo(() => {
-    const floatingProps = {
-      id: floatingId,
-      ...ariaRole && {
-        role: ariaRole
-      }
-    };
-    if (ariaRole === "tooltip" || role === "label") {
-      return floatingProps;
-    }
-    return {
-      ...floatingProps,
-      ...ariaRole === "menu" && {
-        "aria-labelledby": referenceId
-      }
-    };
-  }, [ariaRole, floatingId, referenceId, role]);
-  const item = React3.useCallback((_ref) => {
-    let {
-      active,
-      selected
-    } = _ref;
-    const commonProps = {
-      role: "option",
-      ...active && {
-        id: floatingId + "-fui-option"
-      }
-    };
-    switch (role) {
-      case "select":
-      case "combobox":
-        return {
-          ...commonProps,
-          "aria-selected": selected
-        };
-    }
-    return {};
-  }, [floatingId, role]);
-  return React3.useMemo(() => enabled ? {
-    reference,
-    floating,
-    item
-  } : {}, [enabled, reference, floating, item]);
-}
-var camelCaseToKebabCase = (str) => str.replace(/[A-Z]+(?![a-z])|[A-Z]/g, ($7, ofs) => (ofs ? "-" : "") + $7.toLowerCase());
-function execWithArgsOrReturn(valueOrFn, args) {
-  return typeof valueOrFn === "function" ? valueOrFn(args) : valueOrFn;
-}
-function useDelayUnmount(open, durationMs) {
-  const [isMounted, setIsMounted] = React3.useState(open);
-  if (open && !isMounted) {
-    setIsMounted(true);
-  }
-  React3.useEffect(() => {
-    if (!open && isMounted) {
-      const timeout2 = setTimeout(() => setIsMounted(false), durationMs);
-      return () => clearTimeout(timeout2);
-    }
-  }, [open, isMounted, durationMs]);
-  return isMounted;
-}
-function useTransitionStatus(context, props) {
-  if (props === void 0) {
-    props = {};
-  }
-  const {
-    open,
-    elements: {
-      floating
-    }
-  } = context;
-  const {
-    duration = 250
-  } = props;
-  const isNumberDuration = typeof duration === "number";
-  const closeDuration = (isNumberDuration ? duration : duration.close) || 0;
-  const [status, setStatus] = React3.useState("unmounted");
-  const isMounted = useDelayUnmount(open, closeDuration);
-  if (!isMounted && status === "close") {
-    setStatus("unmounted");
-  }
-  index(() => {
-    if (!floating) return;
-    if (open) {
-      setStatus("initial");
-      const frame = requestAnimationFrame(() => {
-        ReactDOM2.flushSync(() => {
-          setStatus("open");
-        });
-      });
-      return () => {
-        cancelAnimationFrame(frame);
-      };
-    }
-    setStatus("close");
-  }, [open, floating]);
-  return {
-    isMounted,
-    status
-  };
-}
-function useTransitionStyles(context, props) {
-  if (props === void 0) {
-    props = {};
-  }
-  const {
-    initial: unstable_initial = {
-      opacity: 0
-    },
-    open: unstable_open,
-    close: unstable_close,
-    common: unstable_common,
-    duration = 250
-  } = props;
-  const placement = context.placement;
-  const side = placement.split("-")[0];
-  const fnArgs = React3.useMemo(() => ({
-    side,
-    placement
-  }), [side, placement]);
-  const isNumberDuration = typeof duration === "number";
-  const openDuration = (isNumberDuration ? duration : duration.open) || 0;
-  const closeDuration = (isNumberDuration ? duration : duration.close) || 0;
-  const [styles, setStyles] = React3.useState(() => ({
-    ...execWithArgsOrReturn(unstable_common, fnArgs),
-    ...execWithArgsOrReturn(unstable_initial, fnArgs)
-  }));
-  const {
-    isMounted,
-    status
-  } = useTransitionStatus(context, {
-    duration
-  });
-  const initialRef = useLatestRef(unstable_initial);
-  const openRef = useLatestRef(unstable_open);
-  const closeRef = useLatestRef(unstable_close);
-  const commonRef = useLatestRef(unstable_common);
-  index(() => {
-    const initialStyles = execWithArgsOrReturn(initialRef.current, fnArgs);
-    const closeStyles = execWithArgsOrReturn(closeRef.current, fnArgs);
-    const commonStyles = execWithArgsOrReturn(commonRef.current, fnArgs);
-    const openStyles = execWithArgsOrReturn(openRef.current, fnArgs) || Object.keys(initialStyles).reduce((acc, key) => {
-      acc[key] = "";
-      return acc;
-    }, {});
-    if (status === "initial") {
-      setStyles((styles2) => ({
-        transitionProperty: styles2.transitionProperty,
-        ...commonStyles,
-        ...initialStyles
-      }));
-    }
-    if (status === "open") {
-      setStyles({
-        transitionProperty: Object.keys(openStyles).map(camelCaseToKebabCase).join(","),
-        transitionDuration: openDuration + "ms",
-        ...commonStyles,
-        ...openStyles
-      });
-    }
-    if (status === "close") {
-      const styles2 = closeStyles || initialStyles;
-      setStyles({
-        transitionProperty: Object.keys(styles2).map(camelCaseToKebabCase).join(","),
-        transitionDuration: closeDuration + "ms",
-        ...commonStyles,
-        ...styles2
-      });
-    }
-  }, [closeDuration, closeRef, initialRef, openRef, commonRef, openDuration, status, fnArgs]);
-  return {
-    isMounted,
-    styles
-  };
-}
-function getNodeChildren2(nodes, id3, onlyOpenChildren) {
-  if (onlyOpenChildren === void 0) {
-    onlyOpenChildren = true;
-  }
-  const directChildren = nodes.filter((node2) => {
-    var _node$context;
-    return node2.parentId === id3 && (!onlyOpenChildren || ((_node$context = node2.context) == null ? void 0 : _node$context.open));
-  });
-  return directChildren.flatMap((child) => [child, ...getNodeChildren2(nodes, child.id, onlyOpenChildren)]);
-}
-function isPointInPolygon(point4, polygon) {
-  const [x3, y4] = point4;
-  let isInside2 = false;
-  const length = polygon.length;
-  for (let i3 = 0, j6 = length - 1; i3 < length; j6 = i3++) {
-    const [xi3, yi3] = polygon[i3] || [0, 0];
-    const [xj, yj] = polygon[j6] || [0, 0];
-    const intersect = yi3 >= y4 !== yj >= y4 && x3 <= (xj - xi3) * (y4 - yi3) / (yj - yi3) + xi3;
-    if (intersect) {
-      isInside2 = !isInside2;
-    }
-  }
-  return isInside2;
-}
-function isInside(point4, rect) {
-  return point4[0] >= rect.x && point4[0] <= rect.x + rect.width && point4[1] >= rect.y && point4[1] <= rect.y + rect.height;
-}
-function safePolygon(options) {
-  if (options === void 0) {
-    options = {};
-  }
-  const {
-    buffer = 0.5,
-    blockPointerEvents = false,
-    requireIntent = true
-  } = options;
-  const timeoutRef = {
-    current: -1
-  };
-  let hasLanded = false;
-  let lastX = null;
-  let lastY = null;
-  let lastCursorTime = typeof performance !== "undefined" ? performance.now() : 0;
-  function getCursorSpeed(x3, y4) {
-    const currentTime = performance.now();
-    const elapsedTime = currentTime - lastCursorTime;
-    if (lastX === null || lastY === null || elapsedTime === 0) {
-      lastX = x3;
-      lastY = y4;
-      lastCursorTime = currentTime;
-      return null;
-    }
-    const deltaX = x3 - lastX;
-    const deltaY = y4 - lastY;
-    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-    const speed = distance / elapsedTime;
-    lastX = x3;
-    lastY = y4;
-    lastCursorTime = currentTime;
-    return speed;
-  }
-  const fn5 = (_ref) => {
-    let {
-      x: x3,
-      y: y4,
-      placement,
-      elements,
-      onClose,
-      nodeId,
-      tree
-    } = _ref;
-    return function onMouseMove(event) {
-      function close2() {
-        clearTimeoutIfSet(timeoutRef);
-        onClose();
-      }
-      clearTimeoutIfSet(timeoutRef);
-      if (!elements.domReference || !elements.floating || placement == null || x3 == null || y4 == null) {
-        return;
-      }
-      const {
-        clientX,
-        clientY
-      } = event;
-      const clientPoint = [clientX, clientY];
-      const target = getTarget2(event);
-      const isLeave = event.type === "mouseleave";
-      const isOverFloatingEl = contains3(elements.floating, target);
-      const isOverReferenceEl = contains3(elements.domReference, target);
-      const refRect = elements.domReference.getBoundingClientRect();
-      const rect = elements.floating.getBoundingClientRect();
-      const side = placement.split("-")[0];
-      const cursorLeaveFromRight = x3 > rect.right - rect.width / 2;
-      const cursorLeaveFromBottom = y4 > rect.bottom - rect.height / 2;
-      const isOverReferenceRect = isInside(clientPoint, refRect);
-      const isFloatingWider = rect.width > refRect.width;
-      const isFloatingTaller = rect.height > refRect.height;
-      const left = (isFloatingWider ? refRect : rect).left;
-      const right = (isFloatingWider ? refRect : rect).right;
-      const top2 = (isFloatingTaller ? refRect : rect).top;
-      const bottom = (isFloatingTaller ? refRect : rect).bottom;
-      if (isOverFloatingEl) {
-        hasLanded = true;
-        if (!isLeave) {
-          return;
-        }
-      }
-      if (isOverReferenceEl) {
-        hasLanded = false;
-      }
-      if (isOverReferenceEl && !isLeave) {
-        hasLanded = true;
-        return;
-      }
-      if (isLeave && isElement(event.relatedTarget) && contains3(elements.floating, event.relatedTarget)) {
-        return;
-      }
-      if (tree && getNodeChildren2(tree.nodesRef.current, nodeId).length) {
-        return;
-      }
-      if (side === "top" && y4 >= refRect.bottom - 1 || side === "bottom" && y4 <= refRect.top + 1 || side === "left" && x3 >= refRect.right - 1 || side === "right" && x3 <= refRect.left + 1) {
-        return close2();
-      }
-      let rectPoly = [];
-      switch (side) {
-        case "top":
-          rectPoly = [[left, refRect.top + 1], [left, rect.bottom - 1], [right, rect.bottom - 1], [right, refRect.top + 1]];
-          break;
-        case "bottom":
-          rectPoly = [[left, rect.top + 1], [left, refRect.bottom - 1], [right, refRect.bottom - 1], [right, rect.top + 1]];
-          break;
-        case "left":
-          rectPoly = [[rect.right - 1, bottom], [rect.right - 1, top2], [refRect.left + 1, top2], [refRect.left + 1, bottom]];
-          break;
-        case "right":
-          rectPoly = [[refRect.right - 1, bottom], [refRect.right - 1, top2], [rect.left + 1, top2], [rect.left + 1, bottom]];
-          break;
-      }
-      function getPolygon(_ref2) {
-        let [x4, y5] = _ref2;
-        switch (side) {
-          case "top": {
-            const cursorPointOne = [isFloatingWider ? x4 + buffer / 2 : cursorLeaveFromRight ? x4 + buffer * 4 : x4 - buffer * 4, y5 + buffer + 1];
-            const cursorPointTwo = [isFloatingWider ? x4 - buffer / 2 : cursorLeaveFromRight ? x4 + buffer * 4 : x4 - buffer * 4, y5 + buffer + 1];
-            const commonPoints = [[rect.left, cursorLeaveFromRight ? rect.bottom - buffer : isFloatingWider ? rect.bottom - buffer : rect.top], [rect.right, cursorLeaveFromRight ? isFloatingWider ? rect.bottom - buffer : rect.top : rect.bottom - buffer]];
-            return [cursorPointOne, cursorPointTwo, ...commonPoints];
-          }
-          case "bottom": {
-            const cursorPointOne = [isFloatingWider ? x4 + buffer / 2 : cursorLeaveFromRight ? x4 + buffer * 4 : x4 - buffer * 4, y5 - buffer];
-            const cursorPointTwo = [isFloatingWider ? x4 - buffer / 2 : cursorLeaveFromRight ? x4 + buffer * 4 : x4 - buffer * 4, y5 - buffer];
-            const commonPoints = [[rect.left, cursorLeaveFromRight ? rect.top + buffer : isFloatingWider ? rect.top + buffer : rect.bottom], [rect.right, cursorLeaveFromRight ? isFloatingWider ? rect.top + buffer : rect.bottom : rect.top + buffer]];
-            return [cursorPointOne, cursorPointTwo, ...commonPoints];
-          }
-          case "left": {
-            const cursorPointOne = [x4 + buffer + 1, isFloatingTaller ? y5 + buffer / 2 : cursorLeaveFromBottom ? y5 + buffer * 4 : y5 - buffer * 4];
-            const cursorPointTwo = [x4 + buffer + 1, isFloatingTaller ? y5 - buffer / 2 : cursorLeaveFromBottom ? y5 + buffer * 4 : y5 - buffer * 4];
-            const commonPoints = [[cursorLeaveFromBottom ? rect.right - buffer : isFloatingTaller ? rect.right - buffer : rect.left, rect.top], [cursorLeaveFromBottom ? isFloatingTaller ? rect.right - buffer : rect.left : rect.right - buffer, rect.bottom]];
-            return [...commonPoints, cursorPointOne, cursorPointTwo];
-          }
-          case "right": {
-            const cursorPointOne = [x4 - buffer, isFloatingTaller ? y5 + buffer / 2 : cursorLeaveFromBottom ? y5 + buffer * 4 : y5 - buffer * 4];
-            const cursorPointTwo = [x4 - buffer, isFloatingTaller ? y5 - buffer / 2 : cursorLeaveFromBottom ? y5 + buffer * 4 : y5 - buffer * 4];
-            const commonPoints = [[cursorLeaveFromBottom ? rect.left + buffer : isFloatingTaller ? rect.left + buffer : rect.right, rect.top], [cursorLeaveFromBottom ? isFloatingTaller ? rect.left + buffer : rect.right : rect.left + buffer, rect.bottom]];
-            return [cursorPointOne, cursorPointTwo, ...commonPoints];
-          }
-        }
-      }
-      if (isPointInPolygon([clientX, clientY], rectPoly)) {
-        return;
-      }
-      if (hasLanded && !isOverReferenceRect) {
-        return close2();
-      }
-      if (!isLeave && requireIntent) {
-        const cursorSpeed = getCursorSpeed(event.clientX, event.clientY);
-        const cursorSpeedThreshold = 0.1;
-        if (cursorSpeed !== null && cursorSpeed < cursorSpeedThreshold) {
-          return close2();
-        }
-      }
-      if (!isPointInPolygon([clientX, clientY], getPolygon([x3, y4]))) {
-        close2();
-      } else if (!hasLanded && requireIntent) {
-        timeoutRef.current = window.setTimeout(close2, 40);
-      }
-    };
-  };
-  fn5.__options = {
-    blockPointerEvents
-  };
-  return fn5;
-}
-
-// node_modules/@blocknote/react/dist/confirmDiscardUnsavedComment-D1Q3ha7c.js
 var import_with_selector = __toESM(require_with_selector(), 1);
 var import_jsx_runtime3 = require("react/jsx-runtime");
 var import_react5 = __toESM(require_react(), 1);
@@ -97202,7 +97234,7 @@ function getPopoverMiddlewares(options, getFloating, env2) {
       typeof middlewaresOptions.inline === "boolean" ? inline3() : inline3(middlewaresOptions.inline)
     );
   }
-  middlewares.push(arrow5({ element: options.arrowRef, padding: options.arrowOffset }));
+  middlewares.push(arrow3({ element: options.arrowRef, padding: options.arrowOffset }));
   if (middlewaresOptions.size || options.width === "target") {
     middlewares.push(
       size3({
@@ -100964,7 +100996,7 @@ function getTooltipMiddlewares(settings) {
       typeof middlewaresOptions.flip === "boolean" ? flip3() : flip3(middlewaresOptions.flip)
     );
   }
-  middlewares.push(arrow5({ element: settings.arrowRef, padding: settings.arrowOffset }));
+  middlewares.push(arrow3({ element: settings.arrowRef, padding: settings.arrowOffset }));
   if (middlewaresOptions.inline) {
     middlewares.push(
       typeof middlewaresOptions.inline === "boolean" ? inline3() : inline3(middlewaresOptions.inline)
@@ -102799,7 +102831,7 @@ var ht4 = {
 };
 
 // packages/report-review/src/editor-ai/style.css
-var style_default = ".bn-combobox {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 4px;\r\n  width: 100%;\r\n}\r\n\r\n.bn-combobox-items {\r\n  max-width: 50%;\r\n}\r\n\r\n.bn-combobox-items:empty {\r\n  display: none;\r\n}\r\n\r\n/* AI \u7F16\u8F91\u5BA1\u9605\u6001\uFF1A\u5220\u9664\u7684\u65E7\u6587\u5B57 = \u7EA2\u8272\u5220\u9664\u7EBF + \u6D45\u7EA2\u5E95 + \u659C\u4F53\uFF0C\u660E\u663E\u533A\u522B\u4E8E\u6B63\u6587\uFF1B\r\n * \u63D2\u5165\u7684\u65B0\u6587\u5B57 = \u4E3B\u9898\u8272\u6D45\u5E95\uFF0C\u53BB\u6389\u9ED8\u8BA4\u4E0B\u5212\u7EBF\u3002\u4E8C\u8005\u5F62\u6210\u7ECF\u5178 diff \u5BF9\u6BD4\u3002 */\r\n.rr-block-editor .bn-editor del {\r\n  text-decoration: line-through;\r\n  text-decoration-thickness: 1.5px;\r\n  text-decoration-color: var(--rr-danger, #d64545);\r\n  color: var(--rr-danger, #d64545);\r\n  background: color-mix(in srgb, var(--rr-danger, #d64545) 10%, transparent);\r\n  font-style: italic;\r\n}\r\n.rr-block-editor .bn-editor ins {\r\n  text-decoration: none;\r\n  color: var(--rr-accent, #2f7d5f);\r\n  background: color-mix(in srgb, var(--rr-accent, #2f7d5f) 12%, transparent);\r\n  border-radius: 2px;\r\n}\r\n";
+var style_default = ".bn-combobox {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 4px;\r\n  width: 100%;\r\n}\r\n\r\n.bn-combobox-items {\r\n  max-width: 50%;\r\n}\r\n\r\n.bn-combobox-items:empty {\r\n  display: none;\r\n}\r\n\r\n/* AI \u7F16\u8F91\u5BA1\u9605\u6001\uFF1A\u5220\u9664\u7684\u65E7\u6587\u5B57 = \u7EA2\u8272\u5220\u9664\u7EBF + \u6D45\u7EA2\u5E95 + \u659C\u4F53\uFF0C\u660E\u663E\u533A\u522B\u4E8E\u6B63\u6587\uFF1B\r\n * \u63D2\u5165\u7684\u65B0\u6587\u5B57 = \u4E3B\u9898\u8272\u6D45\u5E95\uFF0C\u53BB\u6389\u9ED8\u8BA4\u4E0B\u5212\u7EBF\u3002\u4E8C\u8005\u5F62\u6210\u7ECF\u5178 diff \u5BF9\u6BD4\u3002 */\r\n.rr-block-editor .bn-editor del {\r\n  text-decoration: line-through;\r\n  text-decoration-thickness: 1.5px;\r\n  text-decoration-color: var(--rr-danger, #d64545);\r\n  color: var(--rr-danger, #d64545);\r\n  background: color-mix(in srgb, var(--rr-danger, #d64545) 10%, transparent);\r\n  font-style: italic;\r\n}\r\n.rr-block-editor .bn-editor ins {\r\n  text-decoration: none;\r\n  color: var(--rr-accent, #2f7d5f);\r\n  background: color-mix(in srgb, var(--rr-accent, #2f7d5f) 12%, transparent);\r\n  border-radius: 2px;\r\n}\r\n\r\n/* \u8BED\u97F3\u8F93\u5165\uFF1A\u8D34\u5408\u8F93\u5165\u6846\u53F3\u7F18\u7684\u7D27\u51D1\u9AD8\u7EA7\u8BDD\u7B80\uFF08\u53F3 Alt \u540C\u6B3E\u5207\u6362\uFF09\u3002\r\n * \u7A7A\u95F2 = \u5FAE\u6E10\u53D8\u5706\u5F62\u8BDD\u7B80\uFF1B\u5F55\u97F3 = \u5706\u5F62\u5185\u5D4C\u52A8\u6001\u97F3\u6D6A + \u547C\u5438\u5149\u6655\uFF1B\u201C\u6B63\u5728\u8046\u542C\u201D\u7531 input \u5360\u4F4D\u6587\u5B57\u627F\u62C5\u3002 */\r\n.rr-ai-voice {\r\n  position: relative;\r\n  display: inline-flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n.rr-ai-mic {\r\n  position: relative;\r\n  display: inline-flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  width: 28px;\r\n  height: 28px;\r\n  padding: 0;\r\n  border: 1px solid color-mix(in srgb, var(--rr-accent, #2f7d5f) 30%, var(--rr-border, #cfd5dd));\r\n  border-radius: 999px;\r\n  background: linear-gradient(\r\n    145deg,\r\n    color-mix(in srgb, var(--rr-accent, #2f7d5f) 7%, transparent),\r\n    color-mix(in srgb, var(--rr-accent, #2f7d5f) 15%, transparent)\r\n  );\r\n  color: var(--rr-accent, #2f7d5f);\r\n  cursor: pointer;\r\n  font-size: 14px;\r\n  line-height: 1;\r\n  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease,\r\n    background .18s ease, color .18s ease;\r\n}\r\n.rr-ai-mic:hover:not(:disabled) {\r\n  border-color: var(--rr-accent, #2f7d5f);\r\n  background: linear-gradient(\r\n    145deg,\r\n    color-mix(in srgb, var(--rr-accent, #2f7d5f) 14%, transparent),\r\n    color-mix(in srgb, var(--rr-accent, #2f7d5f) 26%, transparent)\r\n  );\r\n  transform: translateY(-1px) scale(1.05);\r\n  box-shadow: 0 3px 12px color-mix(in srgb, var(--rr-accent, #2f7d5f) 28%, transparent);\r\n}\r\n.rr-ai-mic:disabled {\r\n  opacity: .55;\r\n  cursor: not-allowed;\r\n}\r\n/* \u5F55\u97F3\u6001\uFF1A\u4FDD\u6301\u5706\u5F62\uFF0Caccent \u6E10\u53D8\u5E95\u3001\u767D\u97F3\u6D6A\u3001\u547C\u5438\u5149\u6655 */\r\n.rr-ai-mic--live {\r\n  border-color: transparent;\r\n  background: linear-gradient(\r\n    145deg,\r\n    color-mix(in srgb, var(--rr-accent, #2f7d5f) 82%, #0a0a0a 18%),\r\n    var(--rr-accent, #2f7d5f)\r\n  );\r\n  color: #fff;\r\n  animation: rr-pulse 1.6s ease-in-out infinite;\r\n}\r\n.rr-ai-mic--live:hover:not(:disabled) {\r\n  transform: scale(1.05);\r\n}\r\n.rr-ai-mic--busy {\r\n  cursor: progress;\r\n}\r\n/* \u52A8\u6001\u97F3\u6D6A equalizer\uFF08\u653E\u8FDB\u5706\u94AE\u5185\uFF09 */\r\n.rr-ai-eq {\r\n  display: inline-flex;\r\n  align-items: center;\r\n  gap: 2px;\r\n  height: 12px;\r\n}\r\n.rr-ai-eq i {\r\n  width: 2px;\r\n  height: 4px;\r\n  border-radius: 2px;\r\n  background: currentColor;\r\n  animation: rr-eq 0.85s ease-in-out infinite;\r\n}\r\n.rr-ai-eq i:nth-child(2) { animation-delay: 0.11s; }\r\n.rr-ai-eq i:nth-child(3) { animation-delay: 0.22s; }\r\n.rr-ai-eq i:nth-child(4) { animation-delay: 0.33s; }\r\n.rr-ai-eq i:nth-child(5) { animation-delay: 0.44s; }\r\n/* \u8BC6\u522B\u4E2D\uFF1A\u7EC6\u65CB\u8F6C\u5708 */\r\n.rr-ai-spin {\r\n  width: 13px;\r\n  height: 13px;\r\n  border: 2px solid color-mix(in srgb, currentColor 30%, transparent);\r\n  border-top-color: currentColor;\r\n  border-radius: 999px;\r\n  animation: rr-spin 0.8s linear infinite;\r\n}\r\n@keyframes rr-eq {\r\n  0%, 100% { height: 4px; }\r\n  50% { height: 12px; }\r\n}\r\n@keyframes rr-pulse {\r\n  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--rr-accent, #2f7d5f) 38%, transparent); }\r\n  50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--rr-accent, #2f7d5f) 0%, transparent); }\r\n}\r\n@keyframes rr-spin {\r\n  to { transform: rotate(360deg); }\r\n}\r\n/* \u8BED\u97F3\u9519\u8BEF\u63D0\u793A\uFF1A\u8DDF\u968F mic \u7684\u4E0B\u65B9\u6D6E\u5C42\u6C14\u6CE1\uFF0C\u4E0D\u6491\u5BBD rightSection \u683C\u5B50 */\r\n.rr-ai-asr-error {\r\n  position: absolute;\r\n  top: calc(100% + 6px);\r\n  right: 0;\r\n  z-index: 5;\r\n  display: inline-flex;\r\n  align-items: flex-start;\r\n  gap: 6px;\r\n  max-width: min(320px, 60vw);\r\n  padding: 7px 10px 7px 12px;\r\n  border: 1px solid color-mix(in srgb, var(--rr-danger, #a52f35) 40%, var(--rr-border, #cfd5dd));\r\n  border-radius: 8px;\r\n  background: color-mix(in srgb, var(--rr-danger, #a52f35) 7%, var(--rr-paper, #fff));\r\n  color: var(--rr-danger, #a52f35);\r\n  font-size: 12px;\r\n  line-height: 1.4;\r\n  white-space: normal;\r\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);\r\n  animation: rr-fade-in 0.16s ease;\r\n}\r\n.rr-ai-asr-error-x {\r\n  flex: none;\r\n  width: 16px;\r\n  height: 16px;\r\n  display: inline-flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  padding: 0;\r\n  border: none;\r\n  border-radius: 4px;\r\n  background: transparent;\r\n  color: inherit;\r\n  font-size: 14px;\r\n  line-height: 1;\r\n  cursor: pointer;\r\n  opacity: 0.7;\r\n}\r\n.rr-ai-asr-error-x:hover {\r\n  opacity: 1;\r\n  background: color-mix(in srgb, var(--rr-danger, #a52f35) 12%, transparent);\r\n}\r\n@keyframes rr-fade-in {\r\n  from { opacity: 0; transform: translateY(-3px); }\r\n  to { opacity: 1; transform: translateY(0); }\r\n}\r\n";
 
 // packages/report-review/src/editor-ai/ai-shim.ts
 var Chat = void 0;
@@ -103258,6 +103290,10 @@ function createStreamToolsArraySchema(streamTools) {
   return {
     type: "object",
     properties: {
+      reportId: {
+        type: "string",
+        description: "\u5F53\u524D\u62A5\u544A ID\u3002\u5FC5\u987B\u7B49\u4E8E\u4F1A\u8BDD\u63D0\u793A\u4E2D\u7ED9\u51FA\u7684\u5F53\u524D\u62A5\u544A ID\u3002\u82E5\u4E0E\u5F53\u524D\u62A5\u544A\u4E0D\u4E00\u81F4\uFF0C\u8C03\u7528\u4F1A\u88AB\u62D2\u7EDD\uFF0C\u4EE5\u9632\u8BEF\u6539\u5176\u4ED6\u62A5\u544A\u3002"
+      },
       operations: {
         //description:
         // "Operations to apply to the document. Put all operations in this array in ONE tool call / function call. DO NOT use multiple operation arrays with parallel tool calls.",
@@ -106045,7 +106081,7 @@ var AIExtension = l(
           tr4.replace(
             0,
             tr4.doc.content.size,
-            new Slice(Fragment.from(markedUpDocument), 0, 0)
+            new Slice(Fragment2.from(markedUpDocument), 0, 0)
           );
           const nextState = state.apply(tr4);
           return applySuggestions(nextState, (resultTr) => {
@@ -106053,7 +106089,7 @@ var AIExtension = l(
               tr4.replace(
                 0,
                 tr4.doc.content.size,
-                new Slice(Fragment.from(resultTr.doc), 0, 0)
+                new Slice(Fragment2.from(resultTr.doc), 0, 0)
               )
             );
           });
@@ -106273,7 +106309,7 @@ var AIExtension = l(
 );
 
 // packages/report-review/src/editor-ai/components/AIMenu/AIMenu.tsx
-var import_react159 = require("react");
+var import_react160 = require("react");
 
 // node_modules/react-icons/lib/iconBase.mjs
 var import_react154 = __toESM(require("react"), 1);
@@ -106406,6 +106442,9 @@ function RiCheckLine(props) {
 function RiCheckFill(props) {
   return GenIcon({ "tag": "svg", "attr": { "viewBox": "0 0 24 24", "fill": "currentColor" }, "child": [{ "tag": "path", "attr": { "d": "M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z" }, "child": [] }] })(props);
 }
+function RiMicFill(props) {
+  return GenIcon({ "tag": "svg", "attr": { "viewBox": "0 0 24 24", "fill": "currentColor" }, "child": [{ "tag": "path", "attr": { "d": "M11.9998 1C14.7612 1 16.9998 3.23858 16.9998 6V10C16.9998 12.7614 14.7612 15 11.9998 15C9.23833 15 6.99976 12.7614 6.99976 10V6C6.99976 3.23858 9.23833 1 11.9998 1ZM3.05469 11H5.07065C5.55588 14.3923 8.47329 17 11.9998 17C15.5262 17 18.4436 14.3923 18.9289 11H20.9448C20.4837 15.1716 17.1714 18.4839 12.9998 18.9451V23H10.9998V18.9451C6.82814 18.4839 3.51584 15.1716 3.05469 11Z" }, "child": [] }] })(props);
+}
 function RiText(props) {
   return GenIcon({ "tag": "svg", "attr": { "viewBox": "0 0 24 24", "fill": "currentColor" }, "child": [{ "tag": "path", "attr": { "d": "M13 6V21H11V6H5V4H19V6H13Z" }, "child": [] }] })(props);
 }
@@ -106439,15 +106478,47 @@ function useAIDictionary() {
   return getAIDictionary(ctx.editor);
 }
 
+// packages/report-review/src/editor-ai/hooks/useVoicePrefs.ts
+var import_react156 = require("react");
+var ENABLED_KEY = "rr_voice_polish_enabled";
+var DEFAULT_ENABLED = true;
+function readEnabled() {
+  try {
+    const raw = globalThis.localStorage?.getItem(ENABLED_KEY);
+    if (raw == null) return DEFAULT_ENABLED;
+    return raw === "1";
+  } catch {
+    return DEFAULT_ENABLED;
+  }
+}
+function systemLang() {
+  try {
+    return navigator?.language || "zh-CN";
+  } catch {
+    return "zh-CN";
+  }
+}
+function useVoicePrefs() {
+  const [enabled, setEnabledState] = (0, import_react156.useState)(readEnabled);
+  const setEnabled = (0, import_react156.useCallback)((next) => {
+    setEnabledState(next);
+    try {
+      globalThis.localStorage?.setItem(ENABLED_KEY, next ? "1" : "0");
+    } catch {
+    }
+  }, []);
+  return { enabled, lang: systemLang(), setEnabled };
+}
+
 // packages/report-review/src/editor-ai/components/AIMenu/PromptSuggestionMenu.tsx
-var import_react157 = require("react");
+var import_react158 = require("react");
 var import_jsx_runtime121 = require("react/jsx-runtime");
 var PromptSuggestionMenu = (props) => {
   const Components = V4();
   const { onManualPromptSubmit, promptText, onPromptTextChange, disabled } = props;
-  const [internalPromptText, setInternalPromptText] = (0, import_react157.useState)("");
+  const [internalPromptText, setInternalPromptText] = (0, import_react158.useState)("");
   const promptTextToUse = promptText || internalPromptText;
-  const handleEnter = (0, import_react157.useCallback)(
+  const handleEnter = (0, import_react158.useCallback)(
     async (event) => {
       if (event.key === "Enter" && !event.nativeEvent.isComposing) {
         onManualPromptSubmit(promptTextToUse);
@@ -106455,7 +106526,7 @@ var PromptSuggestionMenu = (props) => {
     },
     [promptTextToUse, onManualPromptSubmit]
   );
-  const handleChange = (0, import_react157.useCallback)(
+  const handleChange = (0, import_react158.useCallback)(
     (event) => {
       const newValue = event.currentTarget.value;
       if (onPromptTextChange) {
@@ -106467,12 +106538,12 @@ var PromptSuggestionMenu = (props) => {
     },
     [onPromptTextChange, setInternalPromptText, promptText]
   );
-  const items = (0, import_react157.useMemo)(() => {
+  const items = (0, import_react158.useMemo)(() => {
     return $r(props.items, promptTextToUse);
   }, [promptTextToUse, props.items]);
   const { selectedIndex, setSelectedIndex, handler } = Wr3(items, (item) => item.onItemClick());
   const activeDescendantId = items.length > 0 && selectedIndex >= 0 && selectedIndex < items.length ? `bn-suggestion-menu-item-${selectedIndex}` : void 0;
-  const handleKeyDown3 = (0, import_react157.useCallback)(
+  const handleKeyDown3 = (0, import_react158.useCallback)(
     (event) => {
       if (event.key === "Enter" && !event.nativeEvent.isComposing) {
         if (items.length > 0) {
@@ -106486,12 +106557,12 @@ var PromptSuggestionMenu = (props) => {
     },
     [handleEnter, handler, items.length]
   );
-  (0, import_react157.useEffect)(() => {
+  (0, import_react158.useEffect)(() => {
     setSelectedIndex(0);
   }, [promptTextToUse, setSelectedIndex]);
-  const inputRef = (0, import_react157.useRef)(null);
-  const hasBeenDisabled = (0, import_react157.useRef)(disabled);
-  (0, import_react157.useEffect)(() => {
+  const inputRef = (0, import_react158.useRef)(null);
+  const hasBeenDisabled = (0, import_react158.useRef)(disabled);
+  (0, import_react158.useEffect)(() => {
     if (inputRef.current && hasBeenDisabled.current && !disabled) {
       inputRef.current.focus();
     }
@@ -106775,19 +106846,86 @@ function getDefaultAIMenuItems(editor, aiResponseStatus) {
   }
 }
 
+// packages/report-review/src/editor-ai/voiceBus.ts
+var voiceBus = {
+  menuOpen: false,
+  autoStartPending: false
+};
+function markVoiceAutoStart() {
+  voiceBus.autoStartPending = true;
+}
+function consumeVoiceAutoStart() {
+  const pending = voiceBus.autoStartPending;
+  voiceBus.autoStartPending = false;
+  return pending;
+}
+var VOICE_TOGGLE_EVENT = "dsh-ai-voice-toggle";
+
 // packages/report-review/src/editor-ai/components/AIMenu/AIMenu.tsx
 var import_jsx_runtime123 = require("react/jsx-runtime");
+async function blobToWav(src) {
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  try {
+    const arrayBuf = await src.arrayBuffer();
+    const audioBuffer = await audioCtx.decodeAudioData(arrayBuf);
+    const numCh = Math.min(audioBuffer.numberOfChannels, 2);
+    const sr4 = audioBuffer.sampleRate;
+    const len = audioBuffer.length;
+    const bytesPerSample = 2;
+    const blockAlign = numCh * bytesPerSample;
+    const dataSize = len * blockAlign;
+    const out = new ArrayBuffer(44 + dataSize);
+    const view = new DataView(out);
+    const wStr = (o4, s4) => {
+      for (let i3 = 0; i3 < s4.length; i3++) view.setUint8(o4 + i3, s4.charCodeAt(i3));
+    };
+    wStr(0, "RIFF");
+    view.setUint32(4, 36 + dataSize, true);
+    wStr(8, "WAVE");
+    wStr(12, "fmt ");
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true);
+    view.setUint16(22, numCh, true);
+    view.setUint32(24, sr4, true);
+    view.setUint32(28, sr4 * blockAlign, true);
+    view.setUint16(32, blockAlign, true);
+    view.setUint16(34, 16, true);
+    wStr(36, "data");
+    view.setUint32(40, dataSize, true);
+    let offset4 = 44;
+    const channels = [];
+    for (let c4 = 0; c4 < numCh; c4++) channels.push(audioBuffer.getChannelData(c4));
+    for (let i3 = 0; i3 < len; i3++) {
+      for (let c4 = 0; c4 < numCh; c4++) {
+        const s4 = Math.max(-1, Math.min(1, channels[c4][i3]));
+        view.setInt16(offset4, s4 < 0 ? s4 * 32768 : s4 * 32767, true);
+        offset4 += 2;
+      }
+    }
+    return new Blob([out], { type: "audio/wav" });
+  } finally {
+    audioCtx.close().catch(() => {
+    });
+  }
+}
 var AIMenu = (props) => {
   const editor = j3();
-  const [prompt, setPrompt] = (0, import_react159.useState)("");
+  const [prompt, setPrompt] = (0, import_react160.useState)("");
+  const [voiceOn, setVoiceOn] = (0, import_react160.useState)(false);
+  const [asrBusy, setAsrBusy] = (0, import_react160.useState)(false);
+  const [asrError, setAsrError] = (0, import_react160.useState)(null);
+  const recorderRef = (0, import_react160.useRef)(null);
+  const streamRef = (0, import_react160.useRef)(null);
+  const chunksRef = (0, import_react160.useRef)([]);
   const dict = useAIDictionary();
+  const voicePrefs = useVoicePrefs();
   const Components = V4();
   const ai4 = F3(AIExtension);
   const aiResponseStatus = I3(AIExtension, {
     selector: (state) => state.aiMenuState !== "closed" ? state.aiMenuState.status : "closed"
   });
   const { items: externalItems } = props;
-  const items = (0, import_react159.useMemo)(() => {
+  const items = (0, import_react160.useMemo)(() => {
     let items2 = [];
     if (externalItems) {
       items2 = externalItems(editor, aiResponseStatus);
@@ -106803,7 +106941,7 @@ var AIMenu = (props) => {
       };
     });
   }, [externalItems, aiResponseStatus, editor]);
-  const onManualPromptSubmitDefault = (0, import_react159.useCallback)(
+  const onManualPromptSubmitDefault = (0, import_react160.useCallback)(
     async (userPrompt) => {
       await ai4.invokeAI({
         userPrompt,
@@ -106812,12 +106950,160 @@ var AIMenu = (props) => {
     },
     [ai4, editor]
   );
-  (0, import_react159.useEffect)(() => {
+  const transcribe = (0, import_react160.useCallback)(async (blob) => {
+    setAsrBusy(true);
+    try {
+      let payload = blob;
+      const mime = (blob.type || "").toLowerCase();
+      if (mime.includes("webm") || mime.includes("ogg") || mime.includes("opus")) {
+        payload = await blobToWav(blob);
+      }
+      const transport = globalThis?.__DSH_TRANSPORT__;
+      const send = transport?.fetch || globalThis.fetch;
+      const res = await send("/api/run19/asr", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": payload.type || "audio/wav" },
+        body: payload
+      });
+      if (!res.ok) {
+        const d2 = await res.json().catch(() => ({}));
+        throw new Error(d2?.error?.message || `\u8BED\u97F3\u8BC6\u522B\u5931\u8D25 (${res.status})`);
+      }
+      const d = await res.json();
+      const text7 = (d?.text || "").trim();
+      if (!text7) {
+        setAsrError("\u672A\u80FD\u8BC6\u522B\u5230\u5185\u5BB9");
+        return;
+      }
+      setPrompt((prev) => {
+        if (!prev) return text7;
+        return /[\s。！？，、.!?,;；]$/.test(prev) ? `${prev}${text7}` : `${prev} ${text7}`;
+      });
+      setAsrError(null);
+      if (voicePrefs.enabled) {
+        try {
+          const selectionText = editor.getSelection() !== void 0 ? editor.getSelectedText?.()?.slice(0, 2e3) || "" : "";
+          const pr4 = await send("/api/run19/asr-polish", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              text: text7,
+              lang: voicePrefs.lang,
+              selection: selectionText
+            })
+          });
+          const pj = await pr4.json().catch(() => ({}));
+          if (pr4.ok && pj?.ok && typeof pj?.polished === "string" && pj.polished.trim()) {
+            const polished = pj.polished.trim();
+            if (polished !== text7) setPrompt(polished);
+          }
+        } catch (e6) {
+          console.error("[run19-asr-polish]", e6);
+        }
+      }
+    } catch (e6) {
+      const msg = e6?.message || String(e6);
+      setAsrError(`\u8BED\u97F3\u8BC6\u522B\u5931\u8D25\uFF1A${msg}`);
+      console.error("[run19-asr]", e6);
+    } finally {
+      setAsrBusy(false);
+    }
+  }, [setPrompt, voicePrefs.enabled, voicePrefs.lang, editor]);
+  const startVoice = (0, import_react160.useCallback)(async () => {
+    try {
+      if (!navigator?.mediaDevices?.getUserMedia) {
+        setAsrError("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u9EA6\u514B\u98CE\uFF08mediaDevices \u4E0D\u53EF\u7528\uFF09");
+        return;
+      }
+      const stream2 = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const rec = new MediaRecorder(stream2);
+      chunksRef.current = [];
+      rec.ondataavailable = (e6) => {
+        if (e6.data && e6.data.size > 0) chunksRef.current.push(e6.data);
+      };
+      rec.start();
+      recorderRef.current = rec;
+      streamRef.current = stream2;
+      setAsrError(null);
+      setVoiceOn(true);
+    } catch (e6) {
+      const err = e6;
+      const name3 = err?.name || "";
+      const hint = name3 === "NotAllowedError" ? "\u9EA6\u514B\u98CE\u6743\u9650\u88AB\u62D2\u7EDD\uFF0C\u8BF7\u5728\u7CFB\u7EDF/\u6D4F\u89C8\u5668\u8BBE\u7F6E\u4E2D\u5141\u8BB8" : name3 === "NotFoundError" ? "\u627E\u4E0D\u5230\u9EA6\u514B\u98CE\u8BBE\u5907" : name3 === "NotReadableError" ? "\u9EA6\u514B\u98CE\u88AB\u5176\u4ED6\u7A0B\u5E8F\u5360\u7528" : name3 === "SecurityError" ? "\u9875\u9762\u672A\u6388\u6743\u8BBF\u95EE\u9EA6\u514B\u98CE" : err?.message || String(e6);
+      setAsrError(`\u65E0\u6CD5\u5F55\u97F3\uFF1A${hint}`);
+      console.error("[run19-asr] \u9EA6\u514B\u98CE\u4E0D\u53EF\u7528", e6);
+      setVoiceOn(false);
+    }
+  }, []);
+  const stopVoice = (0, import_react160.useCallback)(async () => {
+    const rec = recorderRef.current;
+    if (!rec) {
+      setVoiceOn(false);
+      return;
+    }
+    const stopped = new Promise((resolve) => {
+      rec.addEventListener("stop", () => resolve(), { once: true });
+    });
+    rec.stop();
+    await stopped;
+    const blob = new Blob(chunksRef.current, { type: rec.mimeType || "audio/webm" });
+    chunksRef.current = [];
+    streamRef.current?.getTracks().forEach((t4) => t4.stop());
+    streamRef.current = null;
+    recorderRef.current = null;
+    setVoiceOn(false);
+    if (blob.size > 0) await transcribe(blob);
+  }, [transcribe]);
+  const toggleVoice = (0, import_react160.useCallback)(() => {
+    if (aiResponseStatus !== "user-input" || asrBusy) return;
+    if (voiceOn) {
+      void stopVoice();
+    } else {
+      void startVoice();
+    }
+  }, [aiResponseStatus, asrBusy, voiceOn, startVoice, stopVoice]);
+  const startVoiceRef = (0, import_react160.useRef)(startVoice);
+  const toggleVoiceRef = (0, import_react160.useRef)(toggleVoice);
+  (0, import_react160.useEffect)(() => {
+    startVoiceRef.current = startVoice;
+    toggleVoiceRef.current = toggleVoice;
+  }, [startVoice, toggleVoice]);
+  (0, import_react160.useEffect)(() => {
+    voiceBus.menuOpen = true;
+    if (consumeVoiceAutoStart()) {
+      void startVoiceRef.current();
+    }
+    const onToggle = () => toggleVoiceRef.current();
+    window.addEventListener(VOICE_TOGGLE_EVENT, onToggle);
+    return () => {
+      voiceBus.menuOpen = false;
+      window.removeEventListener(VOICE_TOGGLE_EVENT, onToggle);
+      const rec = recorderRef.current;
+      if (rec) {
+        try {
+          rec.stop();
+        } catch {
+        }
+      }
+      streamRef.current?.getTracks().forEach((t4) => t4.stop());
+      streamRef.current = null;
+      recorderRef.current = null;
+      chunksRef.current = [];
+    };
+  }, []);
+  (0, import_react160.useEffect)(() => {
     if (aiResponseStatus === "ai-writing" || aiResponseStatus === "user-reviewing" || aiResponseStatus === "error") {
       setPrompt("");
     }
   }, [aiResponseStatus]);
-  const placeholder = (0, import_react159.useMemo)(() => {
+  const placeholder = (0, import_react160.useMemo)(() => {
+    if (voiceOn) {
+      return "\u6B63\u5728\u8046\u542C\u2026 \u6309\u53F3 Alt \u6216\u70B9\u8BDD\u7B52\u7ED3\u675F";
+    } else if (asrBusy) {
+      return "\u8BC6\u522B\u4E2D\u2026";
+    }
     if (aiResponseStatus === "thinking") {
       return dict.ai_menu.status.thinking;
     } else if (aiResponseStatus === "ai-writing") {
@@ -106826,8 +107112,8 @@ var AIMenu = (props) => {
       return dict.ai_menu.status.error;
     }
     return dict.ai_menu.input_placeholder;
-  }, [aiResponseStatus, dict]);
-  const rightSection = (0, import_react159.useMemo)(() => {
+  }, [aiResponseStatus, dict, voiceOn, asrBusy]);
+  const rightSection = (0, import_react160.useMemo)(() => {
     if (aiResponseStatus === "thinking" || aiResponseStatus === "ai-writing") {
       return /* @__PURE__ */ (0, import_jsx_runtime123.jsx)(
         Components.SuggestionMenu.Loader,
@@ -106848,8 +107134,41 @@ var AIMenu = (props) => {
         }
       ) });
     }
-    return void 0;
-  }, [Components, aiResponseStatus]);
+    return /* @__PURE__ */ (0, import_jsx_runtime123.jsxs)("div", { className: "bn-combobox-right-section rr-ai-voice", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime123.jsx)(
+        "button",
+        {
+          type: "button",
+          className: "rr-ai-mic" + (voiceOn ? " rr-ai-mic--live" : "") + (asrBusy ? " rr-ai-mic--busy" : ""),
+          title: voiceOn ? "\u7ED3\u675F\u5E76\u8BC6\u522B\uFF08\u53F3 Alt\uFF09" : "\u8BED\u97F3\u8F93\u5165\uFF08\u53F3 Alt\uFF09",
+          "aria-pressed": voiceOn,
+          "aria-label": voiceOn ? "\u7ED3\u675F\u8BED\u97F3\u8F93\u5165" : "\u5F00\u59CB\u8BED\u97F3\u8F93\u5165",
+          disabled: asrBusy,
+          onClick: toggleVoice,
+          children: voiceOn && !asrBusy ? /* @__PURE__ */ (0, import_jsx_runtime123.jsxs)("span", { className: "rr-ai-eq", "aria-hidden": "true", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("i", {}),
+            /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("i", {}),
+            /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("i", {}),
+            /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("i", {}),
+            /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("i", {})
+          ] }) : voiceOn && asrBusy ? /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("span", { className: "rr-ai-spin", "aria-hidden": "true" }) : /* @__PURE__ */ (0, import_jsx_runtime123.jsx)(RiMicFill, {})
+        }
+      ),
+      asrError && /* @__PURE__ */ (0, import_jsx_runtime123.jsxs)("div", { className: "rr-ai-asr-error", role: "status", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime123.jsx)(
+          "button",
+          {
+            type: "button",
+            className: "rr-ai-asr-error-x",
+            "aria-label": "\u5173\u95ED\u8BED\u97F3\u9519\u8BEF\u63D0\u793A",
+            onClick: () => setAsrError(null),
+            children: "\xD7"
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime123.jsx)("span", { children: asrError })
+      ] })
+    ] });
+  }, [Components, aiResponseStatus, voiceOn, asrBusy, asrError, toggleVoice]);
   return /* @__PURE__ */ (0, import_jsx_runtime123.jsx)(
     PromptSuggestionMenu,
     {
@@ -106866,7 +107185,7 @@ var AIMenu = (props) => {
 };
 
 // packages/report-review/src/editor-ai/components/AIMenu/AIMenuController.tsx
-var import_react162 = require("react");
+var import_react163 = require("react");
 var import_jsx_runtime124 = require("react/jsx-runtime");
 var AIMenuController = (props) => {
   const editor = j3();
@@ -106876,7 +107195,7 @@ var AIMenuController = (props) => {
     selector: (state) => state.aiMenuState
   });
   const blockId = aiMenuState === "closed" ? void 0 : aiMenuState.blockId;
-  const floatingUIOptions = (0, import_react162.useMemo)(
+  const floatingUIOptions = (0, import_react163.useMemo)(
     () => ({
       ...props.floatingUIOptions,
       useFloatingOptions: {
@@ -107088,7 +107407,7 @@ var zh = {
 };
 
 // packages/report-review/src/report-image.jsx
-var import_react164 = __toESM(require("react"), 1);
+var import_react165 = __toESM(require("react"), 1);
 init_demo_content();
 var import_jsx_runtime127 = require("react/jsx-runtime");
 function ReportImage({ url, caption, readOnly: readOnly2, onChange }) {
@@ -107216,7 +107535,10 @@ function createDshLlmModel(opts) {
       system: dshSystem,
       tools: dshTools,
       temperature: typeof temperature === "number" ? temperature : void 0,
-      maxTokens: typeof maxTokens === "number" ? maxTokens : void 0
+      maxTokens: typeof maxTokens === "number" ? maxTokens : void 0,
+      // Route the edit call to a real DSH session (context/telemetry/replay) when one is
+      // provided. Omitted for one-shot / demo / non-session callers.
+      ...opts.sessionId ? { sessionId: opts.sessionId } : {}
     };
     try {
       console.error("[dsh-ai] >>> request tools=", (dshTools || []).map((t4) => t4.name).join(","), "msgs=", dshMessages.length, "provider=", opts.provider ?? "(host-default)", "model=", opts.model ?? "(host-default)");
@@ -107433,10 +107755,22 @@ The cursor is BETWEEN two blocks as indicated by cursor: true.
     return [message];
   });
 }
+function extractMessageText(msg) {
+  if (!msg) return "";
+  const raw = msg.content ?? msg.parts;
+  if (typeof raw === "string") return raw;
+  if (Array.isArray(raw)) return raw.filter((p2) => p2?.type === "text").map((p2) => p2?.text ?? "").join("");
+  if (raw && typeof raw === "object") return typeof raw.text === "string" ? raw.text : "";
+  return "";
+}
 function createNativeChat(opts) {
   const model = createDshLlmModel(opts);
+  const reportId = typeof opts?.reportId === "string" && opts.reportId.length > 0 ? opts.reportId : null;
   const state = {
     messages: [],
+    // Full user/assistant exchange used to give the model conversation context across
+    // turns. `messages`/`lastMessage` keep the xl-ai UIMessage shape for the executor.
+    convo: [],
     lastMessage: null,
     status: "ready",
     // 'ready' | 'submitted' | 'error'
@@ -107506,16 +107840,23 @@ function createNativeChat(opts) {
         description: def.description,
         inputSchema: def.inputSchema
       }));
-      const injected = injectDocumentStateMessages([message]).map(
+      const userText = extractMessageText(message);
+      state.convo = [...state.convo, { role: "user", text: userText, reportId }];
+      const history3 = state.convo.slice(0, -1).filter((m2) => m2 && typeof m2.text === "string" && m2.text.length > 0 && (reportId == null || m2.reportId == null || m2.reportId === reportId)).map((m2) => ({ role: m2.role, content: [{ type: "text", text: m2.text }] }));
+      const injected = injectDocumentStateMessages([...history3, message]).map(
         (m2) => m2 && Array.isArray(m2.parts) ? { role: m2.role, id: m2.id, content: m2.parts } : m2
       );
       setStatus("submitted");
       let stream2;
       try {
+        const system = [
+          opts.system,
+          reportId ? `\u5F53\u524D\u62A5\u544A ID\uFF1A${reportId}\u3002\u4F60\u6B63\u5728\u7F16\u8F91\u8FD9\u4EFD\u62A5\u544A\u3002\u8C03\u7528 applyDocumentOperations \u65F6\u5FC5\u987B\u5728\u9876\u5C42\u4F20\u5165 reportId \u5B57\u6BB5\uFF0C\u5176\u503C\u5FC5\u987B\u7B49\u4E8E ${reportId}\uFF0C\u5426\u5219\u4F1A\u88AB\u62D2\u7EDD\u3002` : ""
+        ].filter(Boolean).join("\n");
         ({ stream: stream2 } = await model.doStream({
           prompt: injected,
           tools: tools2,
-          system: opts.system,
+          system: system || void 0,
           abortSignal: state.abortController.signal
         }));
       } catch (e6) {
@@ -107545,7 +107886,15 @@ function createNativeChat(opts) {
               } catch {
               }
             }
-            parts.push({ type: "tool-applyDocumentOperations", state: "input-available", toolCallId: String(value.id), input });
+            const stamp = input && typeof input === "object" ? input.reportId : void 0;
+            if (reportId && typeof stamp === "string" && stamp !== reportId) {
+              const err = new Error(`AI \u5C1D\u8BD5\u7F16\u8F91\u5176\u4ED6\u62A5\u544A\uFF08reportId=${stamp}\uFF09\uFF0C\u4E3A\u4FDD\u62A4\u5F53\u524D\u62A5\u544A\u5DF2\u62D2\u7EDD\u672C\u6B21\u4FEE\u6539\u3002`);
+              emitDiag({ tools: (tools2 || []).map((t4) => t4.name), toolCalls: 1, finishReason: "error", error: String(err.message) });
+              setError(err);
+              break;
+            }
+            const safeInput = input && typeof input === "object" && Array.isArray(input.operations) ? { operations: input.operations } : input;
+            parts.push({ type: "tool-applyDocumentOperations", state: "input-available", toolCallId: String(value.id), input: safeInput });
             setLastMessage({ role: "assistant", parts: [...parts] });
           } else if (value.type === "finish") {
             break;
@@ -107557,6 +107906,7 @@ function createNativeChat(opts) {
       } catch (e6) {
         setError(e6);
       }
+      if (curText?.text) state.convo = [...state.convo, { role: "assistant", text: curText.text, reportId }];
       if (state.status !== "error") {
         setLastMessage({ role: "assistant", parts: [...parts] });
         setStatus("ready");
@@ -107576,7 +107926,7 @@ function createNativeChat(opts) {
 var block_editor_styles_default = '.m_d57069b5{--scrollarea-scrollbar-size: 12px;position:relative;overflow:hidden}.m_d57069b5:where([data-autosize]) .m_b1336c6{min-width:min-content}.m_c0783ff9{scrollbar-width:none;overscroll-behavior:var(--scrollarea-over-scroll-behavior);-ms-overflow-style:none;-webkit-overflow-scrolling:touch;width:100%;height:100%}.m_c0783ff9::-webkit-scrollbar{display:none}.m_c0783ff9:where([data-scrollbars=xy],[data-scrollbars=y]):where([data-offset-scrollbars=xy],[data-offset-scrollbars=y],[data-offset-scrollbars=present]):where([data-vertical-hidden]){padding-inline-end:0;padding-inline-start:0}.m_c0783ff9:where([data-scrollbars=xy],[data-scrollbars=y]):where([data-offset-scrollbars=xy],[data-offset-scrollbars=y],[data-offset-scrollbars=present]):not([data-vertical-hidden]){padding-inline-end:var(--scrollarea-scrollbar-size);padding-inline-start:unset}.m_c0783ff9:where([data-scrollbars=xy],[data-scrollbars=x]):where([data-offset-scrollbars=xy],[data-offset-scrollbars=x],[data-offset-scrollbars=present]):where([data-horizontal-hidden]){padding-bottom:0}.m_c0783ff9:where([data-scrollbars=xy],[data-scrollbars=x]):where([data-offset-scrollbars=xy],[data-offset-scrollbars=x],[data-offset-scrollbars=present]):not([data-horizontal-hidden]){padding-bottom:var(--scrollarea-scrollbar-size)}.m_f8f631dd{min-width:100%;display:table}.m_c44ba933{user-select:none;touch-action:none;box-sizing:border-box;transition:background-color .15s ease,opacity .15s ease;padding:calc(var(--scrollarea-scrollbar-size) / 5);display:flex;background-color:transparent;flex-direction:row}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_c44ba933:hover{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=light]) .m_c44ba933:hover>.m_d8b5e363{background-color:#00000080}:where([data-mantine-color-scheme=dark]) .m_c44ba933:hover{background-color:var(--mantine-color-dark-8)}:where([data-mantine-color-scheme=dark]) .m_c44ba933:hover>.m_d8b5e363{background-color:#ffffff80}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_c44ba933:active{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=light]) .m_c44ba933:active>.m_d8b5e363{background-color:#00000080}:where([data-mantine-color-scheme=dark]) .m_c44ba933:active{background-color:var(--mantine-color-dark-8)}:where([data-mantine-color-scheme=dark]) .m_c44ba933:active>.m_d8b5e363{background-color:#ffffff80}}.m_c44ba933:where([data-hidden],[data-state=hidden]){display:none}.m_c44ba933:where([data-orientation=vertical]){width:var(--scrollarea-scrollbar-size);top:0;bottom:var(--sa-corner-width);inset-inline-end:0}.m_c44ba933:where([data-orientation=horizontal]){height:var(--scrollarea-scrollbar-size);flex-direction:column;bottom:0;inset-inline-start:0;inset-inline-end:var(--sa-corner-width)}.m_d8b5e363{flex:1;border-radius:var(--scrollarea-scrollbar-size);position:relative;transition:background-color .15s ease;overflow:hidden;opacity:var(--thumb-opacity)}.m_d8b5e363:before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:100%;min-width:44px;min-height:44px}:where([data-mantine-color-scheme=light]) .m_d8b5e363{background-color:#0006}:where([data-mantine-color-scheme=dark]) .m_d8b5e363{background-color:#fff6}.m_21657268{position:absolute;opacity:0;transition:opacity .15s ease;display:block;inset-inline-end:0;bottom:0}:where([data-mantine-color-scheme=light]) .m_21657268{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_21657268{background-color:var(--mantine-color-dark-8)}.m_21657268:where([data-hovered]){opacity:1}.m_21657268:where([data-hidden]){display:none}.m_b1336c6{min-width:100%}.m_87cf2631{background-color:transparent;cursor:pointer;border:0;padding:0;appearance:none;font-size:var(--mantine-font-size-md);text-align:left;text-decoration:none;color:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent}:where([dir=rtl]) .m_87cf2631{text-align:right}.m_515a97f8{border:0;clip:rect(0 0 0 0);height:1px;width:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;white-space:nowrap}.m_1b7284a3{--paper-radius: var(--mantine-radius-default);outline:0;-webkit-tap-highlight-color:transparent;display:block;touch-action:manipulation;text-decoration:none;border-radius:var(--paper-radius);box-shadow:var(--paper-shadow);background-color:var(--mantine-color-body)}[data-mantine-color-scheme=light] .m_1b7284a3{--paper-border-color: var(--mantine-color-gray-3)}[data-mantine-color-scheme=dark] .m_1b7284a3{--paper-border-color: var(--mantine-color-dark-4)}.m_1b7284a3:where([data-with-border]){border:calc(.0625rem * var(--mantine-scale)) solid var(--paper-border-color)}.m_38a85659{position:absolute;border:1px solid var(--popover-border-color);padding:var(--mantine-spacing-sm) var(--mantine-spacing-md);box-shadow:var(--popover-shadow, none);border-radius:var(--popover-radius, var(--mantine-radius-default))}.m_38a85659:where([data-fixed]){position:fixed}.m_38a85659:focus{outline:none}:where([data-mantine-color-scheme=light]) .m_38a85659{--popover-border-color: var(--mantine-color-gray-2);background-color:var(--mantine-color-white)}:where([data-mantine-color-scheme=dark]) .m_38a85659{--popover-border-color: var(--mantine-color-dark-4);background-color:var(--mantine-color-dark-6)}.m_a31dc6c1{background-color:inherit;border:1px solid var(--popover-border-color);z-index:1}.m_3d7bc908{position:fixed;inset:0}.m_86a44da5{--cb-size-xs: 18px;--cb-size-sm: 22px;--cb-size-md: 28px;--cb-size-lg: 34px;--cb-size-xl: 44px;--cb-size: var(--cb-size-md);--cb-icon-size: 70%;--cb-radius: var(--mantine-radius-default);line-height:1;display:inline-flex;align-items:center;justify-content:center;position:relative;user-select:none;width:var(--cb-size);height:var(--cb-size);min-width:var(--cb-size);min-height:var(--cb-size);border-radius:var(--cb-radius)}:where([data-mantine-color-scheme=light]) .m_86a44da5{color:var(--mantine-color-gray-7)}:where([data-mantine-color-scheme=dark]) .m_86a44da5{color:var(--mantine-color-dark-1)}.m_86a44da5[data-disabled],.m_86a44da5:disabled{cursor:not-allowed;opacity:.6}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_220c80f2:where(:not([data-disabled],:disabled)):hover{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_220c80f2:where(:not([data-disabled],:disabled)):hover{background-color:var(--mantine-color-dark-6)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_220c80f2:where(:not([data-disabled],:disabled)):active{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_220c80f2:where(:not([data-disabled],:disabled)):active{background-color:var(--mantine-color-dark-6)}}.m_4081bf90{display:flex;flex-direction:row;flex-wrap:var(--group-wrap, wrap);justify-content:var(--group-justify, flex-start);align-items:var(--group-align, center);gap:var(--group-gap, var(--mantine-spacing-md))}.m_4081bf90:where([data-grow])>*{flex-grow:1;max-width:var(--group-child-width)}.m_5ae2e3c{--loader-size-xs: 18px;--loader-size-sm: 22px;--loader-size-md: 36px;--loader-size-lg: 44px;--loader-size-xl: 58px;--loader-size: var(--loader-size-md);--loader-color: var(--mantine-primary-color-filled)}@keyframes m_5d2b3b9d{0%{transform:scale(.6);opacity:0}50%,to{transform:scale(1)}}.m_7a2bd4cd{position:relative;width:var(--loader-size);height:var(--loader-size);display:flex;gap:calc(var(--loader-size) / 5)}.m_870bb79{flex:1;background:var(--loader-color);animation:m_5d2b3b9d 1.2s cubic-bezier(0,.5,.5,1) infinite;border-radius:2px}.m_870bb79:nth-of-type(1){animation-delay:-.24s}.m_870bb79:nth-of-type(2){animation-delay:-.12s}.m_870bb79:nth-of-type(3){animation-delay:0}@keyframes m_aac34a1{0%,to{transform:scale(1);opacity:1}50%{transform:scale(.6);opacity:.5}}.m_4e3f22d7{display:flex;justify-content:center;align-items:center;gap:calc(var(--loader-size) / 10);position:relative;width:var(--loader-size);height:var(--loader-size)}.m_870c4af{width:calc(var(--loader-size) / 3 - var(--loader-size) / 15);height:calc(var(--loader-size) / 3 - var(--loader-size) / 15);border-radius:50%;background:var(--loader-color);animation:m_aac34a1 .8s infinite linear}.m_870c4af:nth-child(2){animation-delay:.4s}@keyframes m_f8e89c4b{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.m_b34414df{display:inline-block;width:var(--loader-size);height:var(--loader-size)}.m_b34414df:after{content:"";display:block;width:var(--loader-size);height:var(--loader-size);border-radius:10000px;border-width:calc(var(--loader-size) / 8);border-style:solid;border-color:var(--loader-color) var(--loader-color) var(--loader-color) transparent;animation:m_f8e89c4b 1.2s linear infinite}.m_9814e45f{inset:0;position:absolute;background:var(--overlay-bg, rgba(0, 0, 0, .6));-webkit-backdrop-filter:var(--overlay-filter);backdrop-filter:var(--overlay-filter);border-radius:var(--overlay-radius, 0);z-index:var(--overlay-z-index)}.m_9814e45f:where([data-fixed]){position:fixed}.m_9814e45f:where([data-center]){display:flex;align-items:center;justify-content:center}.m_615af6c9{line-height:1;padding:0;margin:0;font-weight:400;font-size:var(--mantine-font-size-md)}.m_b5489c3c{display:flex;justify-content:space-between;align-items:center;padding:var(--mb-padding, var(--mantine-spacing-md));padding-inline-end:calc(var(--mb-padding, var(--mantine-spacing-md)) - calc(.3125rem * var(--mantine-scale)));position:sticky;top:0;background-color:var(--mantine-color-body);z-index:1000;min-height:60px;transition:padding-inline-end .1s}.m_60c222c7{position:fixed;width:100%;top:0;bottom:0;z-index:var(--mb-z-index);pointer-events:none}.m_fd1ab0aa{pointer-events:all;box-shadow:var(--mb-shadow, var(--mantine-shadow-xl))}.m_fd1ab0aa [data-mantine-scrollbar]{z-index:1001}[data-offset-scrollbars] .m_fd1ab0aa:has([data-mantine-scrollbar]) .m_b5489c3c{padding-inline-end:calc(var(--mb-padding, var(--mantine-spacing-md)) + calc(.3125rem * var(--mantine-scale)))}.m_606cb269{margin-inline-start:auto}.m_5df29311{padding:var(--mb-padding, var(--mantine-spacing-md));padding-top:var(--mb-padding, var(--mantine-spacing-md))}.m_5df29311:where(:not(:only-child)){padding-top:0}.m_6c018570{position:relative;margin-top:var(--input-margin-top, 0rem);margin-bottom:var(--input-margin-bottom, 0rem);--input-height-xs: 30px;--input-height-sm: 36px;--input-height-md: 42px;--input-height-lg: 50px;--input-height-xl: 60px;--input-padding-y-xs: 5px;--input-padding-y-sm: 6px;--input-padding-y-md: 8px;--input-padding-y-lg: 10px;--input-padding-y-xl: 13px;--input-height: var(--input-height-sm);--input-radius: var(--mantine-radius-default);--input-cursor: text;--input-text-align: left;--input-line-height: calc(var(--input-height) - calc(.125rem * var(--mantine-scale)));--input-padding: calc(var(--input-height) / 3);--input-padding-inline-start: var(--input-padding);--input-padding-inline-end: var(--input-padding);--input-placeholder-color: var(--mantine-color-placeholder);--input-color: var(--mantine-color-text);--input-disabled-bg: var(--mantine-color-disabled);--input-disabled-color: var(--mantine-color-disabled-color);--input-left-section-size: var(--input-left-section-width, calc(var(--input-height) - calc(.125rem * var(--mantine-scale))));--input-right-section-size: var( --input-right-section-width, calc(var(--input-height) - calc(.125rem * var(--mantine-scale))) );--input-size: var(--input-height);--section-y: 1px;--left-section-start: 1px;--left-section-border-radius: var(--input-radius) 0 0 var(--input-radius);--right-section-end: 1px;--right-section-border-radius: 0 var(--input-radius) var(--input-radius) 0}.m_6c018570[data-variant=unstyled]{--input-padding: 0;--input-padding-y: 0;--input-padding-inline-start: 0;--input-padding-inline-end: 0}.m_6c018570[data-pointer]{--input-cursor: pointer}.m_6c018570[data-multiline]{--input-padding-y-xs: 4.5px;--input-padding-y-sm: 5.5px;--input-padding-y-md: 7px;--input-padding-y-lg: 9.5px;--input-padding-y-xl: 13px;--input-size: auto;--input-line-height: var(--mantine-line-height)}.m_6c018570[data-with-left-section]{--input-padding-inline-start: var(--input-left-section-size)}.m_6c018570[data-with-right-section]{--input-padding-inline-end: var(--input-right-section-size)}.m_6c018570[data-size=xs] .m_6c018570[data-with-right-section]:has([data-combined-clear-section]){--input-padding-inline-end: 41px}.m_6c018570[data-size=sm] .m_6c018570[data-with-right-section]:has([data-combined-clear-section]){--input-padding-inline-end: 50px}.m_6c018570[data-size=md] .m_6c018570[data-with-right-section]:has([data-combined-clear-section]){--input-padding-inline-end: 60px}.m_6c018570[data-size=lg] .m_6c018570[data-with-right-section]:has([data-combined-clear-section]){--input-padding-inline-end: 72px}.m_6c018570[data-size=xl] .m_6c018570[data-with-right-section]:has([data-combined-clear-section]){--input-padding-inline-end: 89px}[data-mantine-color-scheme=light] .m_6c018570[data-variant=default]{--input-bd: var(--mantine-color-gray-4);--input-bg: var(--mantine-color-white);--input-bd-focus: var(--mantine-primary-color-filled)}[data-mantine-color-scheme=light] .m_6c018570[data-variant=filled]{--input-bd: transparent;--input-bg: var(--mantine-color-gray-1);--input-bd-focus: var(--mantine-primary-color-filled)}[data-mantine-color-scheme=light] .m_6c018570[data-variant=unstyled]{--input-bd: transparent;--input-bg: transparent;--input-bd-focus: transparent}[data-mantine-color-scheme=dark] .m_6c018570[data-variant=default]{--input-bd: var(--mantine-color-dark-4);--input-bg: var(--mantine-color-dark-6);--input-bd-focus: var(--mantine-primary-color-filled)}[data-mantine-color-scheme=dark] .m_6c018570[data-variant=filled]{--input-bd: transparent;--input-bg: var(--mantine-color-dark-5);--input-bd-focus: var(--mantine-primary-color-filled)}[data-mantine-color-scheme=dark] .m_6c018570[data-variant=unstyled]{--input-bd: transparent;--input-bg: transparent;--input-bd-focus: transparent}[data-mantine-color-scheme] .m_6c018570[data-error]:not([data-variant=unstyled]){--input-bd: var(--mantine-color-error)}[data-mantine-color-scheme] .m_6c018570[data-error]{--input-color: var(--mantine-color-error);--input-placeholder-color: var(--mantine-color-error);--input-section-color: var(--mantine-color-error)}:where([dir=rtl]) .m_6c018570{--input-text-align: right;--left-section-border-radius: 0 var(--input-radius) var(--input-radius) 0;--right-section-border-radius: var(--input-radius) 0 0 var(--input-radius)}.m_8fb7ebe7{-webkit-tap-highlight-color:transparent;appearance:none;resize:var(--input-resize, none);display:block;width:100%;transition:border-color .1s ease;text-align:var(--input-text-align);color:var(--input-color);border:calc(.0625rem * var(--mantine-scale)) solid var(--input-bd);background-color:var(--input-bg);font-family:var(--input-font-family, var(--mantine-font-family));height:var(--input-size);min-height:var(--input-height);line-height:var(--input-line-height);font-size:var(--_input-fz, var(--input-fz, var(--mantine-font-size-md)));border-radius:var(--input-radius);padding-inline-start:var(--input-padding-inline-start);padding-inline-end:var(--input-padding-inline-end);padding-top:var(--input-padding-y, 0rem);padding-bottom:var(--input-padding-y, 0rem);cursor:var(--input-cursor);overflow:var(--input-overflow)}.m_8fb7ebe7[data-no-overflow]{--input-overflow: hidden}.m_8fb7ebe7[data-monospace]{--input-font-family: var(--mantine-font-family-monospace);--_input-fz: calc(var(--input-fz) - calc(.125rem * var(--mantine-scale)))}.m_8fb7ebe7:focus,.m_8fb7ebe7:focus-within{outline:none;--input-bd: var(--input-bd-focus)}[data-error] .m_8fb7ebe7:focus,[data-error] .m_8fb7ebe7:focus-within{--input-bd: var(--mantine-color-error)}.m_8fb7ebe7::placeholder{color:var(--input-placeholder-color);opacity:1}.m_8fb7ebe7::-webkit-inner-spin-button,.m_8fb7ebe7::-webkit-outer-spin-button,.m_8fb7ebe7::-webkit-search-decoration,.m_8fb7ebe7::-webkit-search-cancel-button,.m_8fb7ebe7::-webkit-search-results-button,.m_8fb7ebe7::-webkit-search-results-decoration{appearance:none}.m_8fb7ebe7[type=number]{-moz-appearance:textfield}.m_8fb7ebe7:disabled,.m_8fb7ebe7[data-disabled]{cursor:not-allowed;opacity:.6;background-color:var(--input-disabled-bg);color:var(--input-disabled-color)}.m_8fb7ebe7:has(input:disabled){cursor:not-allowed;opacity:.6;background-color:var(--input-disabled-bg);color:var(--input-disabled-color)}.m_8fb7ebe7[readonly]{caret-color:transparent}.m_82577fc2{pointer-events:var(--section-pointer-events);position:absolute;z-index:1;inset-inline-start:var(--section-start);inset-inline-end:var(--section-end);bottom:var(--section-y);top:var(--section-y);display:flex;align-items:center;justify-content:center;width:var(--section-size);border-radius:var(--section-border-radius);color:var(--input-section-color, var(--mantine-color-dimmed))}.m_82577fc2[data-position=right]{--section-pointer-events: var(--input-right-section-pointer-events);--section-end: var(--right-section-end);--section-size: var(--input-right-section-size);--section-border-radius: var(--right-section-border-radius)}.m_6c018570[data-size=xs] .m_82577fc2[data-position=right]:has([data-combined-clear-section]){--section-size: 41px}.m_6c018570[data-size=sm] .m_82577fc2[data-position=right]:has([data-combined-clear-section]){--section-size: 50px}.m_6c018570[data-size=md] .m_82577fc2[data-position=right]:has([data-combined-clear-section]){--section-size: 60px}.m_6c018570[data-size=lg] .m_82577fc2[data-position=right]:has([data-combined-clear-section]){--section-size: 72px}.m_6c018570[data-size=xl] .m_82577fc2[data-position=right]:has([data-combined-clear-section]){--section-size: 89px}.m_82577fc2[data-position=left]{--section-pointer-events: var(--input-left-section-pointer-events);--section-start: var(--left-section-start);--section-size: var(--input-left-section-size);--section-border-radius: var(--left-section-border-radius)}.m_88bacfd0{color:var(--input-placeholder-color, var(--mantine-color-placeholder))}[data-error] .m_88bacfd0{--input-placeholder-color: var(--input-color, var(--mantine-color-placeholder))}.m_46b77525{line-height:var(--mantine-line-height)}.m_8fdc1311{display:inline-block;font-weight:500;overflow-wrap:break-word;cursor:default;-webkit-tap-highlight-color:transparent;font-size:var(--input-label-size, var(--mantine-font-size-sm))}.m_78a94662{color:var(--input-asterisk-color, var(--mantine-color-error))}.m_8f816625,.m_fe47ce59{word-wrap:break-word;line-height:1.2;display:block;margin:0;padding:0}.m_8f816625{color:var(--mantine-color-error);font-size:var(--input-error-size, calc(var(--mantine-font-size-sm) - calc(.125rem * var(--mantine-scale))))}.m_fe47ce59{color:var(--mantine-color-dimmed);font-size:var(--input-description-size, calc(var(--mantine-font-size-sm) - calc(.125rem * var(--mantine-scale))))}.m_8bffd616{display:flex}.m_9bdbb667{--accordion-radius: var(--mantine-radius-default)}.m_df78851f{overflow-wrap:break-word}.m_4ba554d4{padding:var(--mantine-spacing-md);padding-top:calc(var(--mantine-spacing-xs) / 2)}.m_8fa820a0{margin:0;padding:0}.m_4ba585b8{width:100%;display:flex;align-items:center;flex-direction:row-reverse;padding-inline:var(--mantine-spacing-md);opacity:1;cursor:pointer;background-color:transparent;color:var(--mantine-color-bright)}.m_4ba585b8:where([data-chevron-position=left]){flex-direction:row;padding-inline-start:0}.m_4ba585b8:where(:disabled,[data-disabled]){opacity:.4;cursor:not-allowed}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_6939a5e9:where(:not(:disabled,[data-disabled])):hover,:where([data-mantine-color-scheme=light]) .m_4271d21b:where(:not(:disabled,[data-disabled])):hover{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_6939a5e9:where(:not(:disabled,[data-disabled])):hover,:where([data-mantine-color-scheme=dark]) .m_4271d21b:where(:not(:disabled,[data-disabled])):hover{background-color:var(--mantine-color-dark-6)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_6939a5e9:where(:not(:disabled,[data-disabled])):active,:where([data-mantine-color-scheme=light]) .m_4271d21b:where(:not(:disabled,[data-disabled])):active{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_6939a5e9:where(:not(:disabled,[data-disabled])):active,:where([data-mantine-color-scheme=dark]) .m_4271d21b:where(:not(:disabled,[data-disabled])):active{background-color:var(--mantine-color-dark-6)}}.m_df3ffa0f{color:inherit;font-weight:400;flex:1;overflow:hidden;text-overflow:ellipsis;padding-top:var(--mantine-spacing-sm);padding-bottom:var(--mantine-spacing-sm)}.m_3f35ae96{display:flex;align-items:center;justify-content:flex-start;transition:transform var(--accordion-transition-duration, .2s) ease;width:var(--accordion-chevron-size, calc(.9375rem * var(--mantine-scale)));min-width:var(--accordion-chevron-size, calc(.9375rem * var(--mantine-scale)));transform:rotate(0)}.m_3f35ae96:where([data-rotate]){transform:rotate(180deg)}.m_3f35ae96:where([data-position=left]){margin-inline-end:var(--mantine-spacing-md);margin-inline-start:var(--mantine-spacing-md)}.m_9bd771fe{display:flex;align-items:center;justify-content:center;margin-inline-end:var(--mantine-spacing-sm)}.m_9bd771fe:where([data-chevron-position=left]){margin-inline-end:0;margin-inline-start:var(--mantine-spacing-lg)}:where([data-mantine-color-scheme=light]) .m_9bd7b098{--item-border-color: var(--mantine-color-gray-3);--item-filled-color: var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_9bd7b098{--item-border-color: var(--mantine-color-dark-4);--item-filled-color: var(--mantine-color-dark-6)}.m_fe19b709{border-bottom:1px solid var(--item-border-color)}.m_1f921b3b{border:1px solid var(--item-border-color);transition:background-color .15s ease}.m_1f921b3b:where([data-active]){background-color:var(--item-filled-color)}.m_1f921b3b:first-of-type{border-start-start-radius:var(--accordion-radius);border-start-end-radius:var(--accordion-radius)}.m_1f921b3b:first-of-type>[data-accordion-control]{border-start-start-radius:var(--accordion-radius);border-start-end-radius:var(--accordion-radius)}.m_1f921b3b:last-of-type{border-end-start-radius:var(--accordion-radius);border-end-end-radius:var(--accordion-radius)}.m_1f921b3b:last-of-type>[data-accordion-control]{border-end-start-radius:var(--accordion-radius);border-end-end-radius:var(--accordion-radius)}.m_1f921b3b+.m_1f921b3b{border-top:0}.m_2cdf939a{border-radius:var(--accordion-radius)}.m_2cdf939a:where([data-active]){background-color:var(--item-filled-color)}.m_9f59b069{background-color:var(--item-filled-color);border-radius:var(--accordion-radius);border:1px solid transparent;transition:background-color .15s ease}.m_9f59b069[data-active]{border-color:var(--item-border-color)}:where([data-mantine-color-scheme=light]) .m_9f59b069[data-active]{background-color:var(--mantine-color-white)}:where([data-mantine-color-scheme=dark]) .m_9f59b069[data-active]{background-color:var(--mantine-color-dark-7)}.m_9f59b069+.m_9f59b069{margin-top:var(--mantine-spacing-md)}.m_8d3f4000{--ai-size-xs: 18px;--ai-size-sm: 22px;--ai-size-md: 28px;--ai-size-lg: 34px;--ai-size-xl: 44px;--ai-size-input-xs: 30px;--ai-size-input-sm: 36px;--ai-size-input-md: 42px;--ai-size-input-lg: 50px;--ai-size-input-xl: 60px;--ai-size: var(--ai-size-md);--ai-color: var(--mantine-color-white);line-height:1;display:inline-flex;align-items:center;justify-content:center;position:relative;user-select:none;overflow:hidden;width:var(--ai-size);height:var(--ai-size);min-width:var(--ai-size);min-height:var(--ai-size);border-radius:var(--ai-radius, var(--mantine-radius-default));background:var(--ai-bg, var(--mantine-primary-color-filled));color:var(--ai-color, var(--mantine-color-white));border:var(--ai-bd, calc(.0625rem * var(--mantine-scale)) solid transparent);cursor:pointer}@media(hover:hover){.m_8d3f4000:hover:where(:not([data-loading],:disabled,[data-disabled])){background-color:var(--ai-hover, var(--mantine-primary-color-filled-hover));color:var(--ai-hover-color, var(--ai-color))}}@media(hover:none){.m_8d3f4000:active:where(:not([data-loading],:disabled,[data-disabled])){background-color:var(--ai-hover, var(--mantine-primary-color-filled-hover));color:var(--ai-hover-color, var(--ai-color))}}.m_8d3f4000[data-loading]{cursor:not-allowed}.m_8d3f4000[data-loading] .m_8d3afb97{opacity:0;transform:translateY(100%)}.m_8d3f4000:where(:disabled:not([data-loading]),[data-disabled]:not([data-loading])){cursor:not-allowed;border:1px solid transparent;color:var(--mantine-color-disabled-color);background:var(--mantine-color-disabled)}.m_8d3f4000:where(:disabled:not([data-loading]),[data-disabled]:not([data-loading])):active{transform:none}.m_302b9fb1{inset:-1px;position:absolute;border-radius:var(--ai-radius, var(--mantine-radius-default));display:flex;align-items:center;justify-content:center}:where([data-mantine-color-scheme=light]) .m_302b9fb1{background-color:#ffffff26}:where([data-mantine-color-scheme=dark]) .m_302b9fb1{background-color:#00000026}.m_1a0f1b21{--ai-border-width: 1px;display:flex}.m_1a0f1b21 :where(*):focus{position:relative;z-index:1}.m_1a0f1b21[data-orientation=horizontal]{flex-direction:row}.m_1a0f1b21[data-orientation=horizontal] .m_8d3f4000:not(:only-child):first-child,.m_1a0f1b21[data-orientation=horizontal] .m_437b6484:not(:only-child):first-child{border-end-end-radius:0;border-start-end-radius:0;border-inline-end-width:calc(var(--ai-border-width) / 2)}.m_1a0f1b21[data-orientation=horizontal] .m_8d3f4000:not(:only-child):last-child,.m_1a0f1b21[data-orientation=horizontal] .m_437b6484:not(:only-child):last-child{border-end-start-radius:0;border-start-start-radius:0;border-inline-start-width:calc(var(--ai-border-width) / 2)}.m_1a0f1b21[data-orientation=horizontal] .m_8d3f4000:not(:only-child):not(:first-child):not(:last-child),.m_1a0f1b21[data-orientation=horizontal] .m_437b6484:not(:only-child):not(:first-child):not(:last-child){border-radius:0;border-inline-width:calc(var(--ai-border-width) / 2)}.m_1a0f1b21[data-orientation=vertical]{flex-direction:column}.m_1a0f1b21[data-orientation=vertical] .m_8d3f4000:not(:only-child):first-child,.m_1a0f1b21[data-orientation=vertical] .m_437b6484:not(:only-child):first-child{border-end-start-radius:0;border-end-end-radius:0;border-bottom-width:calc(var(--ai-border-width) / 2)}.m_1a0f1b21[data-orientation=vertical] .m_8d3f4000:not(:only-child):last-child,.m_1a0f1b21[data-orientation=vertical] .m_437b6484:not(:only-child):last-child{border-start-start-radius:0;border-start-end-radius:0;border-top-width:calc(var(--ai-border-width) / 2)}.m_1a0f1b21[data-orientation=vertical] .m_8d3f4000:not(:only-child):not(:first-child):not(:last-child),.m_1a0f1b21[data-orientation=vertical] .m_437b6484:not(:only-child):not(:first-child):not(:last-child){border-radius:0;border-bottom-width:calc(var(--ai-border-width) / 2);border-top-width:calc(var(--ai-border-width) / 2)}.m_8d3afb97{display:flex;align-items:center;justify-content:center;transition:transform .15s ease,opacity .1s ease;width:100%;height:100%}.m_437b6484{--section-height-xs: 18px;--section-height-sm: 22px;--section-height-md: 28px;--section-height-lg: 34px;--section-height-xl: 44px;--section-height-input-xs: 30px;--section-height-input-sm: 36px;--section-height-input-md: 42px;--section-height-input-lg: 50px;--section-height-input-xl: 60px;--section-padding-x-xs: 6px;--section-padding-x-sm: 8px;--section-padding-x-md: 10px;--section-padding-x-lg: 12px;--section-padding-x-xl: 16px;--section-height: var(--section-height-sm);--section-padding-x: var(--section-padding-x-sm);--section-color: var(--mantine-color-white);font-weight:600;width:auto;border-radius:var(--section-radius, var(--mantine-radius-default));font-size:var(--section-fz, var(--mantine-font-size-sm));background:var(--section-bg, var(--mantine-primary-color-filled));border:var(--section-bd, calc(.0625rem * var(--mantine-scale)) solid transparent);color:var(--section-color, var(--mantine-color-white));height:var(--section-height, var(--section-height-sm));padding-inline:var(--section-padding-x, var(--section-padding-x-sm));vertical-align:middle;line-height:1;display:inline-flex;align-items:center;justify-content:center}.m_7f854edf{position:fixed;z-index:var(--affix-z-index);inset-inline-start:var(--affix-left);inset-inline-end:var(--affix-right);top:var(--affix-top);bottom:var(--affix-bottom)}.m_66836ed3{--alert-radius: var(--mantine-radius-default);--alert-bg: var(--mantine-primary-color-light);--alert-bd: 1px solid transparent;--alert-color: var(--mantine-primary-color-light-color);padding:var(--mantine-spacing-md) var(--mantine-spacing-md);border-radius:var(--alert-radius);position:relative;overflow:hidden;background-color:var(--alert-bg);border:var(--alert-bd);color:var(--alert-color)}.m_a5d60502{display:flex}.m_667c2793{flex:1;display:flex;flex-direction:column;gap:var(--mantine-spacing-xs)}.m_6a03f287{display:flex;align-items:center;justify-content:space-between;font-size:var(--mantine-font-size-sm);font-weight:700}.m_6a03f287:where([data-with-close-button]){padding-inline-end:var(--mantine-spacing-md)}.m_698f4f23{display:block;overflow:hidden;text-overflow:ellipsis}.m_667f2a6a{line-height:1;width:20px;height:20px;display:flex;align-items:center;justify-content:flex-start;margin-inline-end:var(--mantine-spacing-md);margin-top:1px}.m_7fa78076{text-overflow:ellipsis;overflow:hidden;font-size:var(--mantine-font-size-sm)}:where([data-mantine-color-scheme=light]) .m_7fa78076{color:var(--mantine-color-black)}:where([data-mantine-color-scheme=dark]) .m_7fa78076{color:var(--mantine-color-white)}.m_7fa78076:where([data-variant=filled]){color:var(--alert-color)}.m_7fa78076:where([data-variant=white]){color:var(--mantine-color-black)}.m_87f54839{width:20px;height:20px;color:var(--alert-color)}.m_849cf0da{color:var(--mantine-color-anchor);text-decoration:none;appearance:none;border:none;display:inline;padding:0;margin:0;background-color:transparent;cursor:pointer}@media(hover:hover){.m_849cf0da:where([data-underline=hover]):hover{text-decoration:underline}}@media(hover:none){.m_849cf0da:where([data-underline=hover]):active{text-decoration:underline}}.m_849cf0da:where([data-underline=not-hover]){text-decoration:underline}@media(hover:hover){.m_849cf0da:where([data-underline=not-hover]):hover{text-decoration:none}}@media(hover:none){.m_849cf0da:where([data-underline=not-hover]):active{text-decoration:none}}.m_849cf0da:where([data-underline=always]){text-decoration:underline}.m_849cf0da:where([data-variant=gradient]),.m_849cf0da:where([data-variant=gradient]):hover{text-decoration:none}.m_849cf0da:where([data-line-clamp]){display:-webkit-box}.m_71ac47fc{--ar-ratio: 1;max-width:100%}.m_71ac47fc>:where(*:not(style)){aspect-ratio:var(--ar-ratio);width:100%}.m_71ac47fc>:where(img,video){object-fit:cover}.m_89ab340[data-resizing]{--app-shell-transition-duration: 0ms !important}.m_89ab340[data-disabled]{--app-shell-header-offset: 0rem !important;--app-shell-navbar-offset: 0rem !important;--app-shell-aside-offset: 0rem !important;--app-shell-footer-offset: 0rem !important}.m_89ab340[data-mode=static]{display:grid;grid-template-columns:var(--app-shell-navbar-width, 0) 1fr var(--app-shell-aside-width, 0);grid-template-rows:auto 1fr auto;position:relative;height:100%;overflow:auto}[data-mantine-color-scheme=light] .m_89ab340{--app-shell-border-color: var(--mantine-color-gray-3)}[data-mantine-color-scheme=dark] .m_89ab340{--app-shell-border-color: var(--mantine-color-dark-4)}.m_45252eee,.m_9cdde9a,.m_3b16f56b,.m_8983817,.m_3840c879{transition-duration:var(--app-shell-transition-duration);transition-timing-function:var(--app-shell-transition-timing-function)}.m_45252eee,.m_9cdde9a{position:fixed;display:flex;flex-direction:column;top:var(--app-shell-header-offset, 0rem);height:calc(100dvh - var(--app-shell-header-offset, 0rem) - var(--app-shell-footer-offset, 0rem));background-color:var(--mantine-color-body);transition-property:transform,top,height}:where([data-mode=static]) .m_45252eee,:where([data-mode=static]) .m_9cdde9a{position:var(--app-shell-navbar-position, fixed);grid-row:var(--app-shell-navbar-grid-row, auto);height:100%}:where([data-layout=alt]) .m_45252eee,:where([data-layout=alt]) .m_9cdde9a{top:0rem;height:100dvh}:where([data-mode=static][data-layout=alt]) .m_45252eee,:where([data-mode=static][data-layout=alt]) .m_9cdde9a{grid-row:1 / -1;height:100%}.m_45252eee{inset-inline-start:0;width:var(--app-shell-navbar-width);transition-property:transform,top,height;transform:var(--app-shell-navbar-transform);z-index:var(--app-shell-navbar-z-index)}:where([data-mode=static]) .m_45252eee{grid-column:var(--app-shell-navbar-grid-column, auto);display:var(--app-shell-navbar-display, flex)}:where([dir=rtl]) .m_45252eee{transform:var(--app-shell-navbar-transform-rtl)}.m_45252eee:where([data-with-border]){border-inline-end:1px solid var(--app-shell-border-color)}.m_9cdde9a{inset-inline-end:0;width:var(--app-shell-aside-width);transform:var(--app-shell-aside-transform);z-index:var(--app-shell-aside-z-index)}:where([data-mode=static]) .m_9cdde9a{position:var(--app-shell-aside-position, fixed);grid-column:var(--app-shell-aside-grid-column, auto);grid-row:var(--app-shell-aside-grid-row, auto);display:var(--app-shell-aside-display, flex)}:where([dir=rtl]) .m_9cdde9a{transform:var(--app-shell-aside-transform-rtl)}.m_9cdde9a:where([data-with-border]){border-inline-start:1px solid var(--app-shell-border-color)}:where([data-mode=static][data-layout=alt]) .m_9cdde9a{grid-row:1 / -1}:where([data-scroll-locked]) .m_9cdde9a{visibility:var(--app-shell-aside-scroll-locked-visibility)}.m_8983817{padding-inline-start:calc(var(--app-shell-navbar-offset, 0rem) + var(--app-shell-padding));padding-inline-end:calc(var(--app-shell-aside-offset, 0rem) + var(--app-shell-padding));padding-top:calc(var(--app-shell-header-offset, 0rem) + var(--app-shell-padding));padding-bottom:calc(var(--app-shell-footer-offset, 0rem) + var(--app-shell-padding));min-height:100dvh;transition-property:padding}:where([data-mode=static]) .m_8983817{padding-inline-start:var(--app-shell-padding);padding-inline-end:var(--app-shell-padding);padding-top:var(--app-shell-padding);padding-bottom:var(--app-shell-padding);min-height:auto;grid-column:var(--app-shell-main-column-start, 1) / var(--app-shell-main-column-end, -1);grid-row:var(--app-shell-main-grid-row, 2)}.m_3b16f56b,.m_3840c879{position:fixed;inset-inline:0;transition-property:transform,margin-inline-start,margin-inline-end;background-color:var(--mantine-color-body)}:where([data-mode=static]) .m_3b16f56b,:where([data-mode=static]) .m_3840c879{position:var(--app-shell-header-position, fixed);grid-column:var(--app-shell-header-grid-column, auto)}:where([data-layout=alt]) .m_3b16f56b,:where([data-layout=alt]) .m_3840c879{margin-inline-start:var(--app-shell-navbar-offset, 0rem);margin-inline-end:var(--app-shell-aside-offset, 0rem)}:where([data-mode=static][data-layout=alt]) .m_3b16f56b,:where([data-mode=static][data-layout=alt]) .m_3840c879{grid-column:var(--app-shell-main-column-start, 1) / var(--app-shell-main-column-end, -1);margin-inline-start:0rem;margin-inline-end:0rem}.m_3b16f56b{top:0;height:var(--app-shell-header-height);background-color:var(--mantine-color-body);transform:var(--app-shell-header-transform);z-index:var(--app-shell-header-z-index)}:where([data-mode=static]) .m_3b16f56b{grid-row:var(--app-shell-header-grid-row, auto)}.m_3b16f56b:where([data-with-border]){border-bottom:1px solid var(--app-shell-border-color)}.m_3840c879{bottom:0;height:calc(var(--app-shell-footer-height) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);transform:var(--app-shell-footer-transform);z-index:var(--app-shell-footer-z-index)}:where([data-mode=static]) .m_3840c879{position:var(--app-shell-footer-position, fixed);grid-column:var(--app-shell-footer-grid-column, auto);grid-row:var(--app-shell-footer-grid-row, auto)}:where([data-mode=static][data-layout=alt]) .m_3840c879{grid-column:var(--app-shell-main-column-start, 1) / var(--app-shell-main-column-end, -1)}.m_3840c879:where([data-with-border]){border-top:1px solid var(--app-shell-border-color)}.m_6dcfc7c7{flex-grow:0}.m_6dcfc7c7:where([data-grow]){flex-grow:1}.m_11def92b{--ag-spacing: var(--mantine-spacing-sm);--ag-offset: calc(var(--ag-spacing) * -1);display:flex;padding-inline-start:var(--ag-spacing)}.m_f85678b6{--avatar-size-xs: 16px;--avatar-size-sm: 26px;--avatar-size-md: 38px;--avatar-size-lg: 56px;--avatar-size-xl: 84px;--avatar-size: var(--avatar-size-md);--avatar-radius: 1000px;--avatar-bg: var(--mantine-color-gray-light);--avatar-bd: 1px solid transparent;--avatar-color: var(--mantine-color-gray-light-color);--avatar-placeholder-fz: calc(var(--avatar-size) / 2.5);-webkit-tap-highlight-color:transparent;position:relative;display:block;user-select:none;overflow:hidden;border-radius:var(--avatar-radius);text-decoration:none;padding:0;width:var(--avatar-size);height:var(--avatar-size);min-width:var(--avatar-size)}.m_f85678b6:where([data-within-group]){margin-inline-start:var(--ag-offset);border:2px solid var(--mantine-color-body);background:var(--mantine-color-body)}.m_11f8ac07{object-fit:cover;width:100%;height:100%;display:block}.m_104cd71f{font-weight:700;display:flex;align-items:center;justify-content:center;width:100%;height:100%;user-select:none;border-radius:var(--avatar-radius);font-size:var(--avatar-placeholder-fz);background:var(--avatar-bg);border:var(--avatar-bd);color:var(--avatar-color)}.m_104cd71f>[data-avatar-placeholder-icon]{width:70%;height:70%}.m_347db0ec{--badge-height-xs: 16px;--badge-height-sm: 18px;--badge-height-md: 20px;--badge-height-lg: 26px;--badge-height-xl: 32px;--badge-fz-xs: 9px;--badge-fz-sm: 10px;--badge-fz-md: 11px;--badge-fz-lg: 13px;--badge-fz-xl: 16px;--badge-padding-x-xs: 6px;--badge-padding-x-sm: 8px;--badge-padding-x-md: 10px;--badge-padding-x-lg: 12px;--badge-padding-x-xl: 16px;--badge-height: var(--badge-height-md);--badge-fz: var(--badge-fz-md);--badge-padding-x: var(--badge-padding-x-md);--badge-radius: 1000px;--badge-lh: calc(var(--badge-height) - calc(.125rem * var(--mantine-scale)));--badge-color: var(--mantine-color-white);--badge-bg: var(--mantine-primary-color-filled);--badge-border-width: 1px;--badge-bd: var(--badge-border-width) solid transparent;-webkit-tap-highlight-color:transparent;font-size:var(--badge-fz);border-radius:var(--badge-radius);height:var(--badge-height);line-height:var(--badge-lh);text-decoration:none;padding:0 var(--badge-padding-x);display:inline-grid;align-items:center;justify-content:center;width:fit-content;text-transform:uppercase;font-weight:700;letter-spacing:.25px;cursor:default;text-overflow:ellipsis;overflow:hidden;color:var(--badge-color);background:var(--badge-bg);border:var(--badge-bd)}.m_347db0ec:where([data-with-left-section],[data-variant=dot]){grid-template-columns:auto 1fr}.m_347db0ec:where([data-with-right-section]){grid-template-columns:1fr auto}.m_347db0ec:where([data-with-left-section][data-with-right-section],[data-variant=dot][data-with-right-section]){grid-template-columns:auto 1fr auto}.m_347db0ec:where([data-block]){display:flex;width:100%}.m_347db0ec:where([data-circle]){padding-inline:2px;display:flex;width:var(--badge-height)}.m_fbd81e3d{--badge-dot-size: calc(var(--badge-height) / 3.4)}:where([data-mantine-color-scheme=light]) .m_fbd81e3d{background-color:var(--mantine-color-white);border-color:var(--mantine-color-gray-4);color:var(--mantine-color-black)}:where([data-mantine-color-scheme=dark]) .m_fbd81e3d{background-color:var(--mantine-color-dark-5);border-color:var(--mantine-color-dark-5);color:var(--mantine-color-white)}.m_fbd81e3d:before{content:"";display:block;width:var(--badge-dot-size);height:var(--badge-dot-size);border-radius:var(--badge-dot-size);background-color:var(--badge-dot-color);margin-inline-end:var(--badge-dot-size)}.m_5add502a{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;cursor:inherit}.m_91fdda9b{--badge-section-margin: calc(var(--mantine-spacing-xs) / 2);display:inline-flex;justify-content:center;align-items:center;max-height:calc(var(--badge-height) - var(--badge-border-width) * 2)}.m_91fdda9b:where([data-position=left]){margin-inline-end:var(--badge-section-margin)}.m_91fdda9b:where([data-position=right]){margin-inline-start:var(--badge-section-margin)}.m_2ce0de02{background-size:cover;background-position:center;display:block;width:100%;border:0;text-decoration:none;border-radius:var(--bi-radius, 0)}.m_ddec01c0{--blockquote-border: 3px solid var(--bq-bd);position:relative;margin:0;border-inline-start:var(--blockquote-border);border-start-end-radius:var(--bq-radius);border-end-end-radius:var(--bq-radius);padding:var(--mantine-spacing-xl) calc(2.375rem * var(--mantine-scale))}:where([data-mantine-color-scheme=light]) .m_ddec01c0{background-color:var(--bq-bg-light)}:where([data-mantine-color-scheme=dark]) .m_ddec01c0{background-color:var(--bq-bg-dark)}.m_dde7bd57{--blockquote-icon-offset: calc(var(--bq-icon-size) / -2);position:absolute;color:var(--bq-bd);background-color:var(--mantine-color-body);display:flex;align-items:center;justify-content:center;top:var(--blockquote-icon-offset);inset-inline-start:var(--blockquote-icon-offset);width:var(--bq-icon-size);height:var(--bq-icon-size);border-radius:var(--bq-icon-size)}.m_dde51a35{display:block;margin-top:var(--mantine-spacing-md);opacity:.6;font-size:85%}.m_8b3717df{display:flex;align-items:center;flex-wrap:wrap}.m_f678d540{line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent}.m_3b8f2208{margin-inline:var(--bc-separator-margin, var(--mantine-spacing-xs));line-height:1;display:flex;align-items:center;justify-content:center}:where([data-mantine-color-scheme=light]) .m_3b8f2208{color:var(--mantine-color-gray-7)}:where([data-mantine-color-scheme=dark]) .m_3b8f2208{color:var(--mantine-color-dark-2)}.m_77c9d27d{--button-height-xs: 30px;--button-height-sm: 36px;--button-height-md: 42px;--button-height-lg: 50px;--button-height-xl: 60px;--button-height-compact-xs: 22px;--button-height-compact-sm: 26px;--button-height-compact-md: 30px;--button-height-compact-lg: 34px;--button-height-compact-xl: 40px;--button-padding-x-xs: 14px;--button-padding-x-sm: 18px;--button-padding-x-md: 22px;--button-padding-x-lg: 26px;--button-padding-x-xl: 32px;--button-padding-x-compact-xs: 7px;--button-padding-x-compact-sm: 8px;--button-padding-x-compact-md: 10px;--button-padding-x-compact-lg: 12px;--button-padding-x-compact-xl: 14px;--button-height: var(--button-height-sm);--button-padding-x: var(--button-padding-x-sm);--button-color: var(--mantine-color-white);user-select:none;font-weight:600;position:relative;line-height:1;text-align:center;overflow:hidden;width:auto;cursor:pointer;display:inline-block;border-radius:var(--button-radius, var(--mantine-radius-default));font-size:var(--button-fz, var(--mantine-font-size-sm));background:var(--button-bg, var(--mantine-primary-color-filled));border:var(--button-bd, calc(.0625rem * var(--mantine-scale)) solid transparent);color:var(--button-color, var(--mantine-color-white));height:var(--button-height, var(--button-height-sm));padding-inline:var(--button-padding-x, var(--button-padding-x-sm));vertical-align:middle}.m_77c9d27d:where([data-block]){display:block;width:100%}.m_77c9d27d:where([data-with-left-section]){padding-inline-start:calc(var(--button-padding-x) / 1.5)}.m_77c9d27d:where([data-with-right-section]){padding-inline-end:calc(var(--button-padding-x) / 1.5)}.m_77c9d27d:where(:disabled:not([data-loading]),[data-disabled]:not([data-loading])){cursor:not-allowed;border:1px solid transparent;transform:none;color:var(--mantine-color-disabled-color);background:var(--mantine-color-disabled)}.m_77c9d27d:before{content:"";pointer-events:none;position:absolute;inset:-1px;border-radius:var(--button-radius, var(--mantine-radius-default));transform:translateY(-100%);opacity:0;filter:blur(12px);transition:transform .15s ease,opacity .1s ease}:where([data-mantine-color-scheme=light]) .m_77c9d27d:before{background-color:#ffffff26}:where([data-mantine-color-scheme=dark]) .m_77c9d27d:before{background-color:#00000026}.m_77c9d27d:where([data-loading]){cursor:not-allowed;transform:none}.m_77c9d27d:where([data-loading]):before{transform:translateY(0);opacity:1}.m_77c9d27d:where([data-loading]) .m_80f1301b{opacity:0;transform:translateY(100%)}@media(hover:hover){.m_77c9d27d:hover:where(:not([data-loading],:disabled,[data-disabled])){background-color:var(--button-hover, var(--mantine-primary-color-filled-hover));color:var(--button-hover-color, var(--button-color))}}@media(hover:none){.m_77c9d27d:active:where(:not([data-loading],:disabled,[data-disabled])){background-color:var(--button-hover, var(--mantine-primary-color-filled-hover));color:var(--button-hover-color, var(--button-color))}}.m_80f1301b{display:flex;align-items:center;justify-content:var(--button-justify, center);height:100%;overflow:visible;transition:transform .15s ease,opacity .1s ease}.m_811560b9{white-space:nowrap;height:100%;overflow:hidden;display:flex;align-items:center;opacity:1}.m_811560b9:where([data-loading]){opacity:.2}.m_a74036a{display:flex;align-items:center}.m_a74036a:where([data-position=left]){margin-inline-end:var(--mantine-spacing-xs)}.m_a74036a:where([data-position=right]){margin-inline-start:var(--mantine-spacing-xs)}.m_a25b86ee{position:absolute;left:50%;top:50%}.m_80d6d844{--button-border-width: 1px;display:flex}.m_80d6d844 :where(.m_77c9d27d):focus{position:relative;z-index:1}.m_80d6d844[data-orientation=horizontal]{flex-direction:row}.m_80d6d844[data-orientation=horizontal] .m_77c9d27d:not(:only-child):first-child,.m_80d6d844[data-orientation=horizontal] .m_70be2a01:not(:only-child):first-child{border-end-end-radius:0;border-start-end-radius:0;border-inline-end-width:calc(var(--button-border-width) / 2)}.m_80d6d844[data-orientation=horizontal] .m_77c9d27d:not(:only-child):last-child,.m_80d6d844[data-orientation=horizontal] .m_70be2a01:not(:only-child):last-child{border-end-start-radius:0;border-start-start-radius:0;border-inline-start-width:calc(var(--button-border-width) / 2)}.m_80d6d844[data-orientation=horizontal] .m_77c9d27d:not(:only-child):not(:first-child):not(:last-child),.m_80d6d844[data-orientation=horizontal] .m_70be2a01:not(:only-child):not(:first-child):not(:last-child){border-radius:0;border-inline-width:calc(var(--button-border-width) / 2)}.m_80d6d844[data-orientation=vertical]{flex-direction:column}.m_80d6d844[data-orientation=vertical] .m_77c9d27d:not(:only-child):first-child,.m_80d6d844[data-orientation=vertical] .m_70be2a01:not(:only-child):first-child{border-end-start-radius:0;border-end-end-radius:0;border-bottom-width:calc(var(--button-border-width) / 2)}.m_80d6d844[data-orientation=vertical] .m_77c9d27d:not(:only-child):last-child,.m_80d6d844[data-orientation=vertical] .m_70be2a01:not(:only-child):last-child{border-start-start-radius:0;border-start-end-radius:0;border-top-width:calc(var(--button-border-width) / 2)}.m_80d6d844[data-orientation=vertical] .m_77c9d27d:not(:only-child):not(:first-child):not(:last-child),.m_80d6d844[data-orientation=vertical] .m_70be2a01:not(:only-child):not(:first-child):not(:last-child){border-radius:0;border-bottom-width:calc(var(--button-border-width) / 2);border-top-width:calc(var(--button-border-width) / 2)}.m_70be2a01{--section-height-xs: 30px;--section-height-sm: 36px;--section-height-md: 42px;--section-height-lg: 50px;--section-height-xl: 60px;--section-height-compact-xs: 22px;--section-height-compact-sm: 26px;--section-height-compact-md: 30px;--section-height-compact-lg: 34px;--section-height-compact-xl: 40px;--section-padding-x-xs: 14px;--section-padding-x-sm: 18px;--section-padding-x-md: 22px;--section-padding-x-lg: 26px;--section-padding-x-xl: 32px;--section-padding-x-compact-xs: 7px;--section-padding-x-compact-sm: 8px;--section-padding-x-compact-md: 10px;--section-padding-x-compact-lg: 12px;--section-padding-x-compact-xl: 14px;--section-height: var(--section-height-sm);--section-padding-x: var(--section-padding-x-sm);--section-color: var(--mantine-color-white);font-weight:600;width:auto;border-radius:var(--section-radius, var(--mantine-radius-default));font-size:var(--section-fz, var(--mantine-font-size-sm));background:var(--section-bg, var(--mantine-primary-color-filled));border:var(--section-bd, calc(.0625rem * var(--mantine-scale)) solid transparent);color:var(--section-color, var(--mantine-color-white));height:var(--section-height, var(--section-height-sm));padding-inline:var(--section-padding-x, var(--section-padding-x-sm));vertical-align:middle;line-height:1;display:inline-flex;align-items:center;justify-content:center}.m_fea6bf1a{--burger-size-xs: 12px;--burger-size-sm: 18px;--burger-size-md: 24px;--burger-size-lg: 34px;--burger-size-xl: 42px;--burger-size: var(--burger-size-md);--burger-line-size: calc(var(--burger-size) / 12);width:calc(var(--burger-size) + var(--mantine-spacing-xs));height:calc(var(--burger-size) + var(--mantine-spacing-xs));padding:calc(var(--mantine-spacing-xs) / 2);cursor:pointer}:where([data-mantine-color-scheme=light]) .m_fea6bf1a{--burger-color: var(--mantine-color-black)}:where([data-mantine-color-scheme=dark]) .m_fea6bf1a{--burger-color: var(--mantine-color-white)}.m_d4fb9cad{position:relative;user-select:none}.m_d4fb9cad,.m_d4fb9cad:before,.m_d4fb9cad:after{display:block;width:var(--burger-size);height:var(--burger-line-size);background-color:var(--burger-color);outline:1px solid transparent;transition-property:background-color,transform;transition-duration:var(--burger-transition-duration, .3s);transition-timing-function:var(--burger-transition-timing-function, ease)}.m_d4fb9cad:before,.m_d4fb9cad:after{position:absolute;content:"";inset-inline-start:0}.m_d4fb9cad:before{top:calc(var(--burger-size) / -3)}.m_d4fb9cad:after{top:calc(var(--burger-size) / 3)}.m_d4fb9cad[data-opened]{background-color:transparent}.m_d4fb9cad[data-opened]:before{transform:translateY(calc(var(--burger-size) / 3)) rotate(45deg)}.m_d4fb9cad[data-opened]:after{transform:translateY(calc(var(--burger-size) / -3)) rotate(-45deg)}.m_e615b15f{--card-padding: var(--mantine-spacing-md);position:relative;overflow:hidden;display:flex;flex-direction:column;padding:var(--card-padding);color:var(--mantine-color-text)}:where([data-mantine-color-scheme=light]) .m_e615b15f{background-color:var(--mantine-color-white)}:where([data-mantine-color-scheme=dark]) .m_e615b15f{background-color:var(--mantine-color-dark-6)}.m_599a2148{display:block;margin-inline:calc(var(--card-padding) * -1)}.m_599a2148:where(:first-child){margin-top:calc(var(--card-padding) * -1);border-top:none!important}.m_599a2148:where(:last-child){margin-bottom:calc(var(--card-padding) * -1);border-bottom:none!important}.m_599a2148:where([data-inherit-padding]){padding-inline:var(--card-padding)}.m_599a2148:where([data-with-border]){border-top:1px solid;border-bottom:1px solid}:where([data-mantine-color-scheme=light]) .m_599a2148{border-color:var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_599a2148{border-color:var(--mantine-color-dark-4)}.m_599a2148+.m_599a2148{border-top:none!important}.m_4451eb3a{display:flex;align-items:center;justify-content:center}.m_4451eb3a:where([data-inline]){display:inline-flex}.m_bf2d988c{--checkbox-size-xs: 16px;--checkbox-size-sm: 20px;--checkbox-size-md: 24px;--checkbox-size-lg: 30px;--checkbox-size-xl: 36px;--checkbox-size: var(--checkbox-size-sm);--checkbox-color: var(--mantine-primary-color-filled)}.m_bf2d988c:where([data-variant=filled]){--checkbox-icon-color: var(--mantine-color-white)}.m_bf2d988c:where([data-variant=outline]){--checkbox-icon-color: var(--checkbox-color)}.m_26062bec{position:relative;width:var(--checkbox-size);height:var(--checkbox-size);order:1}.m_26062bec:where([data-label-position=left]){order:2}.m_26063560{appearance:none;border:1px solid transparent;width:var(--checkbox-size);height:var(--checkbox-size);border-radius:var(--checkbox-radius, var(--mantine-radius-default));padding:0;display:block;margin:0;transition:border-color .1s ease,background-color .1s ease;cursor:var(--mantine-cursor-type);-webkit-tap-highlight-color:transparent}:where([data-mantine-color-scheme=light]) .m_26063560{background-color:var(--mantine-color-white);border-color:var(--mantine-color-gray-4)}:where([data-mantine-color-scheme=dark]) .m_26063560{background-color:var(--mantine-color-dark-6);border-color:var(--mantine-color-dark-4)}.m_26063560:where([data-error]){border-color:var(--mantine-color-error)}.m_26063560[data-indeterminate],.m_26063560:checked{background-color:var(--checkbox-color);border-color:var(--checkbox-color)}.m_26063560[data-indeterminate]+.m_bf295423,.m_26063560:checked+.m_bf295423{opacity:1;transform:none}.m_26063560:disabled{cursor:not-allowed;border-color:var(--mantine-color-disabled-border);background-color:var(--mantine-color-disabled)}.m_26063560:disabled+.m_bf295423{color:var(--mantine-color-disabled-color)}.m_215c4542+.m_bf295423{color:var(--checkbox-color)}.m_215c4542[data-indeterminate]:not(:disabled),.m_215c4542:checked:not(:disabled){background-color:transparent;border-color:var(--checkbox-color)}.m_215c4542[data-indeterminate]:not(:disabled)+.m_bf295423,.m_215c4542:checked:not(:disabled)+.m_bf295423{color:var(--checkbox-icon-color);opacity:1;transform:none}.m_bf295423{position:absolute;inset:0;width:60%;margin:auto;color:var(--checkbox-icon-color);pointer-events:none;transform:translateY(calc(.3125rem * var(--mantine-scale))) scale(.5);opacity:0;transition:transform .1s ease,opacity .1s ease}.m_f59ffda3{--chip-size-xs: 23px;--chip-size-sm: 28px;--chip-size-md: 32px;--chip-size-lg: 36px;--chip-size-xl: 40px;--chip-icon-size-xs: 9px;--chip-icon-size-sm: 12px;--chip-icon-size-md: 14px;--chip-icon-size-lg: 16px;--chip-icon-size-xl: 18px;--chip-padding-xs: 16px;--chip-padding-sm: 20px;--chip-padding-md: 24px;--chip-padding-lg: 28px;--chip-padding-xl: 32px;--chip-checked-padding-xs: 8.2px;--chip-checked-padding-sm: 10px;--chip-checked-padding-md: 11.7px;--chip-checked-padding-lg: 13.5px;--chip-checked-padding-xl: 15.7px;--chip-spacing-xs: 10px;--chip-spacing-sm: 12px;--chip-spacing-md: 16px;--chip-spacing-lg: 20px;--chip-spacing-xl: 22px;--chip-size: var(--chip-size-sm);--chip-icon-size: var(--chip-icon-size-sm);--chip-padding: var(--chip-padding-sm);--chip-spacing: var(--chip-spacing-sm);--chip-checked-padding: var(--chip-checked-padding-sm);--chip-bg: var(--mantine-primary-color-filled);--chip-hover: var(--mantine-primary-color-filled-hover);--chip-color: var(--mantine-color-white);--chip-bd: 1px solid transparent}.m_be049a53{display:inline-flex;align-items:center;user-select:none;border-radius:var(--chip-radius, 1000rem);height:var(--chip-size);font-size:var(--chip-fz, var(--mantine-font-size-sm));line-height:calc(var(--chip-size) - calc(.125rem * var(--mantine-scale)));padding-inline:var(--chip-padding);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;border:1px solid transparent;color:var(--mantine-color-text)}.m_be049a53:where([data-checked]){padding-inline:var(--chip-checked-padding)}.m_be049a53:where([data-disabled]){cursor:not-allowed;background-color:var(--mantine-color-disabled);color:var(--mantine-color-disabled-color)}:where([data-mantine-color-scheme=light]) .m_3904c1af:not([data-disabled]){background-color:var(--mantine-color-white);border:1px solid var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_3904c1af:not([data-disabled]){background-color:var(--mantine-color-dark-6);border:1px solid var(--mantine-color-dark-4)}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_3904c1af:not([data-disabled]):hover{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_3904c1af:not([data-disabled]):hover{background-color:var(--mantine-color-dark-5)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_3904c1af:not([data-disabled]):active{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_3904c1af:not([data-disabled]):active{background-color:var(--mantine-color-dark-5)}}.m_3904c1af:not([data-disabled]):where([data-checked]){--chip-icon-color: var(--chip-color);border:var(--chip-bd)}@media(hover:hover){.m_3904c1af:not([data-disabled]):where([data-checked]):hover{background-color:var(--chip-hover)}}@media(hover:none){.m_3904c1af:not([data-disabled]):where([data-checked]):active{background-color:var(--chip-hover)}}.m_fa109255:not([data-disabled]),.m_f7e165c3:not([data-disabled]){border:1px solid transparent;color:var(--mantine-color-text)}:where([data-mantine-color-scheme=light]) .m_fa109255:not([data-disabled]),:where([data-mantine-color-scheme=light]) .m_f7e165c3:not([data-disabled]){background-color:var(--mantine-color-gray-1)}:where([data-mantine-color-scheme=dark]) .m_fa109255:not([data-disabled]),:where([data-mantine-color-scheme=dark]) .m_f7e165c3:not([data-disabled]){background-color:var(--mantine-color-dark-5)}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_fa109255:not([data-disabled]):hover,:where([data-mantine-color-scheme=light]) .m_f7e165c3:not([data-disabled]):hover{background-color:var(--mantine-color-gray-2)}:where([data-mantine-color-scheme=dark]) .m_fa109255:not([data-disabled]):hover,:where([data-mantine-color-scheme=dark]) .m_f7e165c3:not([data-disabled]):hover{background-color:var(--mantine-color-dark-4)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_fa109255:not([data-disabled]):active,:where([data-mantine-color-scheme=light]) .m_f7e165c3:not([data-disabled]):active{background-color:var(--mantine-color-gray-2)}:where([data-mantine-color-scheme=dark]) .m_fa109255:not([data-disabled]):active,:where([data-mantine-color-scheme=dark]) .m_f7e165c3:not([data-disabled]):active{background-color:var(--mantine-color-dark-4)}}.m_fa109255:not([data-disabled]):where([data-checked]),.m_f7e165c3:not([data-disabled]):where([data-checked]){--chip-icon-color: var(--chip-color);color:var(--chip-color);background-color:var(--chip-bg)}@media(hover:hover){.m_fa109255:not([data-disabled]):where([data-checked]):hover,.m_f7e165c3:not([data-disabled]):where([data-checked]):hover{background-color:var(--chip-hover)}}@media(hover:none){.m_fa109255:not([data-disabled]):where([data-checked]):active,.m_f7e165c3:not([data-disabled]):where([data-checked]):active{background-color:var(--chip-hover)}}.m_9ac86df9{width:calc(var(--chip-icon-size) + (var(--chip-spacing) / 1.5));max-width:calc(var(--chip-icon-size) + (var(--chip-spacing) / 1.5));height:var(--chip-icon-size);display:flex;align-items:center;overflow:hidden}.m_d6d72580{width:var(--chip-icon-size);height:var(--chip-icon-size);display:block;color:var(--chip-icon-color, inherit)}.m_bde07329{width:0;height:0;padding:0;opacity:0;margin:0}.m_bde07329:focus-visible+.m_be049a53{outline:2px solid var(--mantine-primary-color-filled);outline-offset:2px}.m_b183c0a2{font-family:var(--mantine-font-family-monospace);line-height:var(--mantine-line-height);padding:2px calc(var(--mantine-spacing-xs) / 2);border-radius:var(--mantine-radius-sm);font-size:var(--mantine-font-size-xs);margin:0;overflow:auto}:where([data-mantine-color-scheme=light]) .m_b183c0a2{background-color:var(--code-bg, var(--mantine-color-gray-0))}:where([data-mantine-color-scheme=dark]) .m_b183c0a2{background-color:var(--code-bg, var(--mantine-color-dark-6))}.m_b183c0a2[data-block]{padding:var(--mantine-spacing-xs)}.m_b077c2bc{--ci-eye-dropper-icon-size-xs: 14px;--ci-eye-dropper-icon-size-sm: 16px;--ci-eye-dropper-icon-size-md: 18px;--ci-eye-dropper-icon-size-lg: 20px;--ci-eye-dropper-icon-size-xl: 22px;--ci-eye-dropper-icon-size: var(--ci-eye-dropper-icon-size-sm)}.m_66a028b5{--ci-button-size-xs: 22px;--ci-button-size-sm: 26px;--ci-button-size-md: 28px;--ci-button-size-lg: 32px;--ci-button-size-xl: 40px;--ci-button-size: var(--ci-button-size-sm);width:var(--ci-button-size);height:var(--ci-button-size);min-width:var(--ci-button-size);min-height:var(--ci-button-size)}.m_c5ccdcab{--ci-preview-size-xs: 16px;--ci-preview-size-sm: 18px;--ci-preview-size-md: 22px;--ci-preview-size-lg: 28px;--ci-preview-size-xl: 36px;--ci-preview-size: var(--ci-preview-size-sm)}.m_5ece2cd7{padding:8px}.m_fee9c77{--cp-width-xs: 180px;--cp-width-sm: 200px;--cp-width-md: 240px;--cp-width-lg: 280px;--cp-width-xl: 320px;--cp-preview-size-xs: 26px;--cp-preview-size-sm: 34px;--cp-preview-size-md: 42px;--cp-preview-size-lg: 50px;--cp-preview-size-xl: 54px;--cp-thumb-size-xs: 8px;--cp-thumb-size-sm: 12px;--cp-thumb-size-md: 16px;--cp-thumb-size-lg: 20px;--cp-thumb-size-xl: 22px;--cp-saturation-height-xs: 100px;--cp-saturation-height-sm: 110px;--cp-saturation-height-md: 120px;--cp-saturation-height-lg: 140px;--cp-saturation-height-xl: 160px;--cp-preview-size: var(--cp-preview-size-sm);--cp-thumb-size: var(--cp-thumb-size-sm);--cp-saturation-height: var(--cp-saturation-height-sm);--cp-width: var(--cp-width-sm);--cp-body-spacing: var(--mantine-spacing-sm);width:var(--cp-width);padding:1px}.m_fee9c77:where([data-full-width]){width:100%}.m_9dddfbac{width:var(--cp-preview-size);height:var(--cp-preview-size)}.m_bffecc3e{display:flex;padding-top:calc(var(--cp-body-spacing) / 2)}.m_3283bb96{flex:1}.m_3283bb96:not(:only-child){margin-inline-end:var(--mantine-spacing-xs)}.m_40d572ba{overflow:hidden;position:absolute;box-shadow:0 0 1px #0009;border:2px solid var(--mantine-color-white);width:var(--cp-thumb-size);height:var(--cp-thumb-size);border-radius:var(--cp-thumb-size);left:calc(var(--thumb-x-offset) - var(--cp-thumb-size) / 2);top:calc(var(--thumb-y-offset) - var(--cp-thumb-size) / 2)}.m_d8ee6fd8{height:unset!important;width:unset!important;min-width:0!important;min-height:0!important;margin:2px;cursor:pointer;padding-bottom:calc(var(--cp-swatch-size) - calc(.25rem * var(--mantine-scale)));flex:0 0 calc(var(--cp-swatch-size) - calc(.25rem * var(--mantine-scale)))}.m_5711e686{margin-top:5px;margin-inline:-2px;display:flex;flex-wrap:wrap}.m_5711e686:only-child{margin-top:0}.m_202a296e{--cp-thumb-size-xs: 8px;--cp-thumb-size-sm: 12px;--cp-thumb-size-md: 16px;--cp-thumb-size-lg: 20px;--cp-thumb-size-xl: 22px;-webkit-tap-highlight-color:transparent;position:relative;height:var(--cp-saturation-height);border-radius:var(--mantine-radius-sm);margin:calc(var(--cp-thumb-size) / 2)}.m_202a296e:where([data-focus-ring=auto]):focus:focus-visible .m_40d572ba{outline:2px solid var(--mantine-color-blue-filled)}.m_202a296e:where([data-focus-ring=always]):focus .m_40d572ba{outline:2px solid var(--mantine-color-blue-filled)}.m_11b3db02{position:absolute;border-radius:var(--mantine-radius-sm);inset:calc(var(--cp-thumb-size) * -1 / 2 - calc(.0625rem * var(--mantine-scale)))}.m_d856d47d{--cp-thumb-size-xs: 8px;--cp-thumb-size-sm: 12px;--cp-thumb-size-md: 16px;--cp-thumb-size-lg: 20px;--cp-thumb-size-xl: 22px;--cp-thumb-size: var(--cp-thumb-size, calc(.75rem * var(--mantine-scale)));position:relative;height:calc(var(--cp-thumb-size) + calc(.125rem * var(--mantine-scale)));margin-inline:calc(var(--cp-thumb-size) / 2);outline:none}.m_d856d47d+.m_d856d47d{margin-top:6px}.m_d856d47d:where([data-focus-ring=auto]):focus:focus-visible .m_40d572ba{outline:2px solid var(--mantine-color-blue-filled)}.m_d856d47d:where([data-focus-ring=always]):focus .m_40d572ba{outline:2px solid var(--mantine-color-blue-filled)}:where([data-mantine-color-scheme=light]) .m_d856d47d{--slider-checkers: var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_d856d47d{--slider-checkers: var(--mantine-color-dark-4)}.m_8f327113{position:absolute;top:0;bottom:0;inset-inline:calc(var(--cp-thumb-size) * -1 / 2 - calc(.0625rem * var(--mantine-scale)));border-radius:10000rem}.m_de3d2490{--cs-size: 28px;--cs-radius: 1000px;-webkit-tap-highlight-color:transparent;border:none;appearance:none;display:block;line-height:1;position:relative;width:var(--cs-size);height:var(--cs-size);min-width:var(--cs-size);min-height:var(--cs-size);border-radius:var(--cs-radius);color:inherit;text-decoration:none}[data-mantine-color-scheme=light] .m_de3d2490{--alpha-overlay-color: var(--mantine-color-gray-3);--alpha-overlay-bg: var(--mantine-color-white)}[data-mantine-color-scheme=dark] .m_de3d2490{--alpha-overlay-color: var(--mantine-color-dark-4);--alpha-overlay-bg: var(--mantine-color-dark-7)}.m_862f3d1b{position:absolute;inset:0;border-radius:var(--cs-radius)}.m_98ae7f22{position:absolute;inset:0;border-radius:var(--cs-radius);z-index:1;box-shadow:#0000001a 0 0 0 calc(.0625rem * var(--mantine-scale)) inset,#00000026 0 0 calc(.25rem * var(--mantine-scale)) inset}.m_95709ac0{position:absolute;inset:0;border-radius:var(--cs-radius);background-size:8px 8px;background-position:0 0,0 4px,4px -4px,-4px 0;background-image:linear-gradient(45deg,var(--alpha-overlay-color) 25%,transparent 25%),linear-gradient(-45deg,var(--alpha-overlay-color) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,var(--alpha-overlay-color) 75%),linear-gradient(-45deg,var(--alpha-overlay-bg) 75%,var(--alpha-overlay-color) 75%)}.m_93e74e3{position:absolute;inset:0;border-radius:var(--cs-radius);z-index:2;display:flex;align-items:center;justify-content:center}.m_88b62a41{--combobox-padding: 4px;padding:var(--combobox-padding)}.m_88b62a41:has([data-mantine-scrollbar]) .m_985517d8{max-width:calc(100% + var(--combobox-padding))}.m_88b62a41[data-composed]{padding-inline-end:0}.m_88b62a41[data-hidden]{display:none}.m_88b62a41,.m_b2821a6e{--combobox-option-padding-xs: 4px 8px;--combobox-option-padding-sm: 6px 10px;--combobox-option-padding-md: 8px 12px;--combobox-option-padding-lg: 10px 16px;--combobox-option-padding-xl: 14px 20px;--combobox-option-padding: var(--combobox-option-padding-sm)}.m_92253aa5{padding:var(--combobox-option-padding);font-size:var(--combobox-option-fz, var(--mantine-font-size-sm));border-radius:var(--mantine-radius-default);background-color:transparent;color:inherit;cursor:pointer;overflow-wrap:break-word}.m_92253aa5:where([data-combobox-selected]){background-color:var(--mantine-primary-color-filled);color:var(--mantine-color-white)}.m_92253aa5:where([data-combobox-disabled]){cursor:not-allowed;opacity:.35}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_92253aa5:hover:where(:not([data-combobox-selected],[data-combobox-disabled])){background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_92253aa5:hover:where(:not([data-combobox-selected],[data-combobox-disabled])){background-color:var(--mantine-color-dark-7)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_92253aa5:active:where(:not([data-combobox-selected],[data-combobox-disabled])){background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_92253aa5:active:where(:not([data-combobox-selected],[data-combobox-disabled])){background-color:var(--mantine-color-dark-7)}}.m_985517d8{margin-inline:calc(var(--combobox-padding) * -1);margin-top:calc(var(--combobox-padding) * -1);width:calc(100% + var(--combobox-padding) * 2);border-top-width:0;border-inline-width:0;border-end-start-radius:0;border-end-end-radius:0;margin-bottom:var(--combobox-padding);position:relative}:where([data-mantine-color-scheme=light]) .m_985517d8,:where([data-mantine-color-scheme=light]) .m_985517d8:focus{border-color:var(--mantine-color-gray-2)}:where([data-mantine-color-scheme=dark]) .m_985517d8,:where([data-mantine-color-scheme=dark]) .m_985517d8:focus{border-color:var(--mantine-color-dark-4)}:where([data-mantine-color-scheme=light]) .m_985517d8{background-color:var(--mantine-color-white)}:where([data-mantine-color-scheme=dark]) .m_985517d8{background-color:var(--mantine-color-dark-7)}.m_2530cd1d{font-size:var(--combobox-option-fz, var(--mantine-font-size-sm));text-align:center;padding:var(--combobox-option-padding);color:var(--mantine-color-dimmed)}.m_858f94bd,.m_82b967cb{font-size:var(--combobox-option-fz, var(--mantine-font-size-sm));border:0 solid transparent;margin-inline:calc(var(--combobox-padding) * -1);padding:var(--combobox-option-padding)}:where([data-mantine-color-scheme=light]) .m_858f94bd,:where([data-mantine-color-scheme=light]) .m_82b967cb{border-color:var(--mantine-color-gray-2)}:where([data-mantine-color-scheme=dark]) .m_858f94bd,:where([data-mantine-color-scheme=dark]) .m_82b967cb{border-color:var(--mantine-color-dark-4)}.m_82b967cb{border-top-width:1px;margin-top:var(--combobox-padding);margin-bottom:calc(var(--combobox-padding) * -1)}.m_858f94bd{border-bottom-width:1px;margin-bottom:var(--combobox-padding);margin-top:calc(var(--combobox-padding) * -1)}.m_254f3e4f:has(.m_2bb2e9e5:only-child){display:none}.m_2bb2e9e5{color:var(--mantine-color-dimmed);font-size:calc(var(--combobox-option-fz, var(--mantine-font-size-sm)) * .85);padding:var(--combobox-option-padding);font-weight:500;position:relative;display:flex;align-items:center}.m_2bb2e9e5:after{content:"";flex:1;inset-inline:0;height:1px;margin-inline-start:var(--mantine-spacing-xs)}:where([data-mantine-color-scheme=light]) .m_2bb2e9e5:after{background-color:var(--mantine-color-gray-2)}:where([data-mantine-color-scheme=dark]) .m_2bb2e9e5:after{background-color:var(--mantine-color-dark-4)}.m_2bb2e9e5:only-child{display:none}.m_2943220b{--combobox-chevron-size-xs: 14px;--combobox-chevron-size-sm: 18px;--combobox-chevron-size-md: 20px;--combobox-chevron-size-lg: 24px;--combobox-chevron-size-xl: 28px;--combobox-chevron-size: var(--combobox-chevron-size-sm)}:where([data-mantine-color-scheme=light]) .m_2943220b{--_combobox-chevron-color: var(--combobox-chevron-color, var(--mantine-color-gray-6))}:where([data-mantine-color-scheme=dark]) .m_2943220b{--_combobox-chevron-color: var(--combobox-chevron-color, var(--mantine-color-dark-3))}.m_2943220b{width:var(--combobox-chevron-size);height:var(--combobox-chevron-size);color:var(--_combobox-chevron-color)}.m_2943220b:where([data-error]){color:var(--combobox-chevron-color, var(--mantine-color-error))}.m_390b5f4{display:flex;align-items:center;gap:8px}.m_390b5f4:where([data-reverse]){justify-content:space-between}.m_8ee53fc2{opacity:.4;width:.8em;min-width:.8em;height:.8em}:where([data-combobox-selected]) .m_8ee53fc2{opacity:1}.m_a530ee0a{width:.8em;min-width:.8em;height:.8em}.m_7485cace{--container-size-xs: 540px;--container-size-sm: 720px;--container-size-md: 960px;--container-size-lg: 1140px;--container-size-xl: 1320px;--container-size: var(--container-size-md)}.m_7485cace:where([data-strategy=block]){max-width:var(--container-size);padding-inline:var(--mantine-spacing-md);margin-inline:auto}.m_7485cace:where([data-strategy=block]):where([data-fluid]){max-width:100%}.m_7485cace:where([data-strategy=grid]){display:grid;grid-template-columns:1fr min(100%,var(--container-size)) 1fr;margin-inline:auto}.m_7485cace:where([data-strategy=grid])>*{grid-column:2}.m_7485cace:where([data-strategy=grid])>[data-breakout]{grid-column:1 / -1}.m_7485cace:where([data-strategy=grid])>[data-breakout]>[data-container]{max-width:var(--container-size);margin-inline:auto}.m_e2125a27{--dialog-size-xs: 160px;--dialog-size-sm: 200px;--dialog-size-md: 340px;--dialog-size-lg: 400px;--dialog-size-xl: 500px;--dialog-size: var(--dialog-size-md);position:relative;width:var(--dialog-size);max-width:calc(100vw - var(--mantine-spacing-xl) * 2);min-height:50px}.m_5abab665{position:absolute;top:calc(var(--mantine-spacing-md) / 2);inset-inline-end:calc(var(--mantine-spacing-md) / 2)}.m_3eebeb36{--divider-size-xs: 1px;--divider-size-sm: 2px;--divider-size-md: 3px;--divider-size-lg: 4px;--divider-size-xl: 5px;--divider-size: var(--divider-size-xs)}:where([data-mantine-color-scheme=light]) .m_3eebeb36{--divider-color: var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_3eebeb36{--divider-color: var(--mantine-color-dark-4)}.m_3eebeb36:where([data-orientation=horizontal]){border-top:var(--divider-size) var(--divider-border-style, solid) var(--divider-color)}.m_3eebeb36:where([data-orientation=vertical]){border-inline-start:var(--divider-size) var(--divider-border-style, solid) var(--divider-color);height:auto;align-self:stretch}.m_3eebeb36:where([data-with-label]){border:0}.m_9e365f20{display:flex;align-items:center;font-size:var(--mantine-font-size-xs);color:var(--mantine-color-dimmed);white-space:nowrap}.m_9e365f20:where([data-position=left]):before{display:none}.m_9e365f20:where([data-position=right]):after{display:none}.m_9e365f20:before{content:"";flex:1;height:1px;border-top:var(--divider-size) var(--divider-border-style, solid) var(--divider-color);margin-inline-end:var(--mantine-spacing-xs)}.m_9e365f20:after{content:"";flex:1;height:1px;border-top:var(--divider-size) var(--divider-border-style, solid) var(--divider-color);margin-inline-start:var(--mantine-spacing-xs)}.m_f11b401e{--drawer-size-xs: 320px;--drawer-size-sm: 380px;--drawer-size-md: 440px;--drawer-size-lg: 620px;--drawer-size-xl: 780px;--drawer-size: var(--drawer-size-md);--drawer-offset: 0rem}.m_5a7c2c9{z-index:1000}.m_b8a05bbd{flex:var(--drawer-flex, 0 0 var(--drawer-size));height:var(--drawer-height, calc(100% - var(--drawer-offset) * 2));margin:var(--drawer-offset);max-width:calc(100% - var(--drawer-offset) * 2);max-height:calc(100% - var(--drawer-offset) * 2);overflow-y:auto}.m_b8a05bbd[data-hidden]{opacity:0!important;pointer-events:none}.m_31cd769a{display:flex;justify-content:var(--drawer-justify, flex-start);align-items:var(--drawer-align, flex-start)}.m_e9408a47{padding:var(--mantine-spacing-lg);padding-top:var(--mantine-spacing-xs);border-radius:var(--fieldset-radius, var(--mantine-radius-default));min-inline-size:auto}.m_84c9523a{border:1px solid}:where([data-mantine-color-scheme=light]) .m_84c9523a{border-color:var(--mantine-color-gray-3);background-color:var(--mantine-color-white)}:where([data-mantine-color-scheme=dark]) .m_84c9523a{border-color:var(--mantine-color-dark-4);background-color:var(--mantine-color-dark-7)}.m_ef274e49{border:1px solid}:where([data-mantine-color-scheme=light]) .m_ef274e49{border-color:var(--mantine-color-gray-3);background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_ef274e49{border-color:var(--mantine-color-dark-4);background-color:var(--mantine-color-dark-6)}.m_eda993d3{padding:0;border:0;border-radius:0}.m_90794832{font-size:var(--mantine-font-size-sm)}.m_74ca27fe{padding:0;margin-bottom:var(--mantine-spacing-sm)}.m_8478a6da{container:mantine-grid / inline-size}.m_410352e9{--grid-overflow: visible;--grid-margin: calc(var(--grid-gutter) / -2);--grid-col-padding: calc(var(--grid-gutter) / 2);overflow:var(--grid-overflow)}.m_dee7bd2f{width:calc(100% + var(--grid-gutter));display:flex;flex-wrap:wrap;justify-content:var(--grid-justify);align-items:var(--grid-align);margin:var(--grid-margin)}.m_96bdd299{--col-flex-grow: 0;--col-offset: 0rem;flex-shrink:0;order:var(--col-order);flex-basis:var(--col-flex-basis);width:var(--col-width);max-width:var(--col-max-width);flex-grow:var(--col-flex-grow);margin-inline-start:var(--col-offset);padding:var(--grid-col-padding)}.m_9e117634{display:block;object-fit:var(--image-object-fit, cover);width:100%;border-radius:var(--image-radius, 0)}@keyframes m_885901b1{0%{opacity:.6;transform:scale(0)}to{opacity:0;transform:scale(2.8)}}.m_e5262200{--indicator-size: 10px;--indicator-color: var(--mantine-primary-color-filled);position:relative;display:block}.m_e5262200:where([data-inline]){display:inline-block}.m_760d1fb1{position:absolute;top:var(--indicator-top);left:var(--indicator-left);right:var(--indicator-right);bottom:var(--indicator-bottom);transform:translate(var(--indicator-translate-x),var(--indicator-translate-y));min-width:var(--indicator-size);height:var(--indicator-size);border-radius:var(--indicator-radius, 1000rem);z-index:var(--indicator-z-index, 200);display:flex;align-items:center;justify-content:center;font-size:var(--mantine-font-size-xs);background-color:var(--indicator-color);color:var(--indicator-text-color, var(--mantine-color-white));white-space:nowrap}.m_760d1fb1:before{content:"";position:absolute;inset:0;background-color:var(--indicator-color);border-radius:var(--indicator-radius, 1000rem);z-index:-1}.m_760d1fb1:where([data-with-label]){padding-inline:calc(var(--mantine-spacing-xs) / 2)}.m_760d1fb1:where([data-with-border]){border:2px solid var(--mantine-color-body)}.m_760d1fb1[data-processing]:before{animation:m_885901b1 1s linear infinite}.m_5f75b09e{--label-lh-xs: 16px;--label-lh-sm: 20px;--label-lh-md: 24px;--label-lh-lg: 30px;--label-lh-xl: 36px;--label-lh: var(--label-lh-sm)}.m_5f75b09e[data-label-position=left]{--label-order: 1;--label-offset-end: var(--mantine-spacing-sm);--label-offset-start: 0}.m_5f75b09e[data-label-position=right]{--label-order: 2;--label-offset-end: 0;--label-offset-start: var(--mantine-spacing-sm)}.m_5f6e695e{-webkit-tap-highlight-color:transparent;display:flex}.m_d3ea56bb{--label-cursor: var(--mantine-cursor-type);-webkit-tap-highlight-color:transparent;display:inline-flex;flex-direction:column;font-size:var(--label-fz, var(--mantine-font-size-sm));line-height:var(--label-lh);cursor:var(--label-cursor);order:var(--label-order)}fieldset:disabled .m_d3ea56bb,.m_d3ea56bb[data-disabled]{--label-cursor: not-allowed}.m_8ee546b8{cursor:var(--label-cursor);color:inherit;padding-inline-start:var(--label-offset-start);padding-inline-end:var(--label-offset-end)}fieldset:disabled .m_8ee546b8,.m_8ee546b8:where([data-disabled]){color:var(--mantine-color-disabled-color)}.m_328f68c0{margin-top:calc(var(--mantine-spacing-xs) / 2);padding-inline-start:var(--label-offset-start);padding-inline-end:var(--label-offset-end);cursor:default}.m_8e8a99cc{margin-top:calc(var(--mantine-spacing-xs) / 2);padding-inline-start:var(--label-offset-start);padding-inline-end:var(--label-offset-end)}.m_dc6f14e2{--kbd-fz-xs: 10px;--kbd-fz-sm: 12px;--kbd-fz-md: 14px;--kbd-fz-lg: 16px;--kbd-fz-xl: 20px;--kbd-fz: var(--kbd-fz-sm);font-family:var(--mantine-font-family-monospace);line-height:var(--mantine-line-height);font-weight:700;font-size:var(--kbd-fz);border-radius:var(--mantine-radius-sm);border:1px solid;border-bottom-width:3px;unicode-bidi:embed;text-align:center;padding:.12em .45em}:where([data-mantine-color-scheme=light]) .m_dc6f14e2{border-color:var(--mantine-color-gray-3);color:var(--mantine-color-gray-7);background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_dc6f14e2{border-color:var(--mantine-color-dark-4);color:var(--mantine-color-dark-0);background-color:var(--mantine-color-dark-6)}.m_abbac491{--list-fz: var(--mantine-font-size-md);--list-lh: var(--mantine-line-height-md);--list-marker-gap: var(--mantine-spacing-lg);list-style-position:outside;font-size:var(--list-fz);line-height:var(--list-lh);margin:0;padding:0;padding-inline-start:var(--list-marker-gap)}.m_abbac491[data-type=none]{--list-marker-gap: 0}.m_abbac491:where([data-with-padding]){padding-inline-start:calc(var(--list-marker-gap) + var(--mantine-spacing-md))}.m_abb6bec2{white-space:normal;line-height:var(--list-lh)}.m_abb6bec2:where([data-with-icon]){list-style:none}.m_abb6bec2:where([data-with-icon]) .m_75cd9f71{--li-direction: row;--li-align: center}.m_abb6bec2:where(:not(:first-of-type)){margin-top:var(--list-spacing, 0)}.m_abb6bec2:where([data-centered]){line-height:1}.m_75cd9f71{display:inline-flex;flex-direction:var(--li-direction, column);align-items:var(--li-align, flex-start);white-space:normal}.m_60f83e5b{display:inline-block;vertical-align:middle;margin-inline-end:var(--mantine-spacing-sm)}.m_6e45937b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;z-index:var(--lo-z-index)}.m_e8eb006c{position:relative;z-index:calc(var(--lo-z-index) + 1)}.m_df587f17{z-index:var(--lo-z-index)}.m_bcb3f3c2{color:var(--mantine-color-black)}:where([data-mantine-color-scheme=light]) .m_bcb3f3c2{background-color:var(--mark-bg-light)}:where([data-mantine-color-scheme=dark]) .m_bcb3f3c2{background-color:var(--mark-bg-dark)}.m_dc9b7c9f{padding:4px}.m_9bfac126{color:var(--mantine-color-dimmed);font-weight:500;font-size:var(--mantine-font-size-xs);padding:calc(var(--mantine-spacing-xs) / 2) var(--mantine-spacing-sm);cursor:default}.m_efdf90cb{margin-top:4px;margin-bottom:4px;border-top:1px solid}:where([data-mantine-color-scheme=light]) .m_efdf90cb{border-color:var(--mantine-color-gray-2)}:where([data-mantine-color-scheme=dark]) .m_efdf90cb{border-color:var(--mantine-color-dark-4)}.m_99ac2aa1{font-size:var(--mantine-font-size-sm);width:100%;padding:calc(var(--mantine-spacing-xs) / 1.5) var(--mantine-spacing-sm);border-radius:var(--popover-radius, var(--mantine-radius-default));color:var(--menu-item-color, var(--mantine-color-text));display:flex;align-items:center;user-select:none}.m_99ac2aa1:where([data-disabled],:disabled){color:var(--mantine-color-disabled-color);opacity:.6;cursor:not-allowed}:where([data-mantine-color-scheme=light]) .m_99ac2aa1:where(:hover,:focus):where(:not(:disabled,[data-disabled])){background-color:var(--menu-item-hover, var(--mantine-color-gray-1))}:where([data-mantine-color-scheme=dark]) .m_99ac2aa1:where(:hover,:focus):where(:not(:disabled,[data-disabled])){background-color:var(--menu-item-hover, var(--mantine-color-dark-4))}.m_99ac2aa1:where([data-sub-menu-item]){padding-inline-end:5px}.m_5476e0d3{flex:1}.m_8b75e504{display:flex;justify-content:center;align-items:center}.m_8b75e504:where([data-position=left]){margin-inline-end:var(--mantine-spacing-xs)}.m_8b75e504:where([data-position=right]){margin-inline-start:var(--mantine-spacing-xs)}.m_b85b0bed{transform:rotate(-90deg)}:where([dir=rtl]) .m_b85b0bed{transform:rotate(90deg)}.m_9df02822{--modal-size-xs: 320px;--modal-size-sm: 380px;--modal-size-md: 440px;--modal-size-lg: 620px;--modal-size-xl: 780px;--modal-size: var(--modal-size-md);--modal-y-offset: 5dvh;--modal-x-offset: 5vw}.m_9df02822[data-full-screen]{--modal-border-radius: 0 !important}.m_9df02822[data-full-screen] .m_54c44539{--modal-content-flex: 0 0 100%;--modal-content-max-height: auto;--modal-content-height: 100dvh}.m_9df02822[data-full-screen] .m_1f958f16{--modal-inner-y-offset: 0;--modal-inner-x-offset: 0}.m_9df02822[data-centered] .m_1f958f16{--modal-inner-align: center}.m_d0e2b9cd{border-start-start-radius:var(--modal-radius, var(--mantine-radius-default));border-start-end-radius:var(--modal-radius, var(--mantine-radius-default))}.m_54c44539{flex:var(--modal-content-flex, 0 0 var(--modal-size));max-width:100%;max-height:var(--modal-content-max-height, calc(100dvh - var(--modal-y-offset) * 2));height:var(--modal-content-height, auto);overflow-y:auto}.m_54c44539[data-full-screen]{border-radius:0}.m_54c44539[data-hidden]{opacity:0!important;pointer-events:none}.m_1f958f16{display:flex;justify-content:center;align-items:var(--modal-inner-align, flex-start);padding-top:var(--modal-inner-y-offset, var(--modal-y-offset));padding-bottom:var(--modal-inner-y-offset, var(--modal-y-offset));padding-inline:var(--modal-inner-x-offset, var(--modal-x-offset))}.m_f0824112{--nl-bg: var(--mantine-primary-color-light);--nl-hover: var(--mantine-primary-color-light-hover);--nl-color: var(--mantine-primary-color-light-color);display:flex;align-items:center;width:100%;padding:8px var(--mantine-spacing-sm);user-select:none}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_f0824112:hover{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_f0824112:hover{background-color:var(--mantine-color-dark-6)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_f0824112:active{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_f0824112:active{background-color:var(--mantine-color-dark-6)}}.m_f0824112:where([data-disabled]){opacity:.4;pointer-events:none}.m_f0824112:where([data-active],[aria-current=page]){background-color:var(--nl-bg);color:var(--nl-color)}@media(hover:hover){.m_f0824112:where([data-active],[aria-current=page]):hover{background-color:var(--nl-hover)}}@media(hover:none){.m_f0824112:where([data-active],[aria-current=page]):active{background-color:var(--nl-hover)}}.m_f0824112:where([data-active],[aria-current=page]) .m_57492dcc{--description-opacity: .9;--description-color: var(--nl-color)}.m_690090b5{display:flex;align-items:center;justify-content:center;transition:transform .15s ease}.m_690090b5>svg{display:block}.m_690090b5:where([data-position=left]){margin-inline-end:var(--mantine-spacing-sm)}.m_690090b5:where([data-position=right]){margin-inline-start:var(--mantine-spacing-sm)}.m_690090b5:where([data-rotate]){transform:rotate(90deg)}.m_1f6ac4c4{font-size:var(--mantine-font-size-sm)}.m_f07af9d2{flex:1;overflow:hidden;text-overflow:ellipsis}.m_f07af9d2:where([data-no-wrap]){white-space:nowrap}.m_57492dcc{display:block;font-size:var(--mantine-font-size-xs);opacity:var(--description-opacity, 1);color:var(--description-color, var(--mantine-color-dimmed));overflow:hidden;text-overflow:ellipsis}:where([data-no-wrap]) .m_57492dcc{white-space:nowrap}.m_e17b862f{padding-inline-start:var(--nl-offset, var(--mantine-spacing-lg))}.m_1fd8a00b{transform:rotate(-90deg)}.m_a513464{--notification-radius: var(--mantine-radius-default);--notification-color: var(--mantine-primary-color-filled);overflow:hidden;box-sizing:border-box;position:relative;display:flex;align-items:center;padding-inline-start:22px;padding-inline-end:var(--mantine-spacing-xs);padding-top:var(--mantine-spacing-xs);padding-bottom:var(--mantine-spacing-xs);border-radius:var(--notification-radius);box-shadow:var(--mantine-shadow-lg)}.m_a513464:before{content:"";display:block;position:absolute;width:6px;top:var(--notification-radius);bottom:var(--notification-radius);inset-inline-start:4px;border-radius:var(--notification-radius);background-color:var(--notification-color)}:where([data-mantine-color-scheme=light]) .m_a513464{background-color:var(--mantine-color-white)}:where([data-mantine-color-scheme=dark]) .m_a513464{background-color:var(--mantine-color-dark-6)}.m_a513464:where([data-with-icon]):before{display:none}:where([data-mantine-color-scheme=light]) .m_a513464:where([data-with-border]){border:1px solid var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_a513464:where([data-with-border]){border:1px solid var(--mantine-color-dark-4)}.m_a4ceffb{box-sizing:border-box;margin-inline-end:var(--mantine-spacing-md);width:28px;height:28px;border-radius:28px;display:flex;align-items:center;justify-content:center;background-color:var(--notification-color);color:var(--mantine-color-white)}.m_b0920b15{margin-inline-end:var(--mantine-spacing-md)}.m_a49ed24{flex:1;overflow:hidden;margin-inline-end:var(--mantine-spacing-xs)}.m_3feedf16{margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;font-size:var(--mantine-font-size-sm);line-height:var(--mantine-line-height-sm);font-weight:500}:where([data-mantine-color-scheme=light]) .m_3feedf16{color:var(--mantine-color-gray-9)}:where([data-mantine-color-scheme=dark]) .m_3feedf16{color:var(--mantine-color-white)}.m_3d733a3a{font-size:var(--mantine-font-size-sm);line-height:var(--mantine-line-height-sm);overflow:hidden;text-overflow:ellipsis}:where([data-mantine-color-scheme=light]) .m_3d733a3a{color:var(--mantine-color-black)}:where([data-mantine-color-scheme=dark]) .m_3d733a3a{color:var(--mantine-color-dark-0)}:where([data-mantine-color-scheme=light]) .m_3d733a3a:where([data-with-title]){color:var(--mantine-color-gray-6)}:where([data-mantine-color-scheme=dark]) .m_3d733a3a:where([data-with-title]){color:var(--mantine-color-dark-2)}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_919a4d88:hover{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_919a4d88:hover{background-color:var(--mantine-color-dark-8)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_919a4d88:active{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_919a4d88:active{background-color:var(--mantine-color-dark-8)}}.m_e2f5cd4e{--ni-right-section-width-xs: 17px;--ni-right-section-width-sm: 24px;--ni-right-section-width-md: 27px;--ni-right-section-width-lg: 31px;--ni-right-section-width-xl: 34px}.m_95e17d22{--ni-chevron-size-xs: 10px;--ni-chevron-size-sm: 14px;--ni-chevron-size-md: 16px;--ni-chevron-size-lg: 18px;--ni-chevron-size-xl: 20px;--ni-chevron-size: var(--ni-chevron-size-sm);display:flex;flex-direction:column;width:100%;height:calc(var(--input-height) - calc(.125rem * var(--mantine-scale)));max-width:calc(var(--ni-chevron-size) * 1.7);margin-inline-start:auto}.m_80b4b171{--control-border: 1px solid var(--input-bd);--control-radius: calc(var(--input-radius) - calc(.0625rem * var(--mantine-scale)));flex:0 0 50%;width:100%;padding:0;height:calc(var(--input-height) / 2 - calc(.0625rem * var(--mantine-scale)));border-inline-start:var(--control-border);display:flex;align-items:center;justify-content:center;color:var(--mantine-color-text);background-color:transparent;cursor:pointer}.m_80b4b171:where(:disabled){background-color:transparent;cursor:not-allowed;opacity:.6;color:var(--mantine-color-disabled-color)}.m_e2f5cd4e[data-error] :where(.m_80b4b171){color:var(--mantine-color-error)}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_80b4b171:hover{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_80b4b171:hover{background-color:var(--mantine-color-dark-4)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_80b4b171:active{background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_80b4b171:active{background-color:var(--mantine-color-dark-4)}}.m_80b4b171:where(:first-of-type){border-radius:0;border-start-end-radius:var(--control-radius)}.m_80b4b171:last-of-type{border-radius:0;border-end-end-radius:var(--control-radius)}.m_4addd315{--pagination-control-size-xs: 22px;--pagination-control-size-sm: 26px;--pagination-control-size-md: 32px;--pagination-control-size-lg: 38px;--pagination-control-size-xl: 44px;--pagination-control-size: var(--pagination-control-size-md);--pagination-control-fz: var(--mantine-font-size-md);--pagination-active-bg: var(--mantine-primary-color-filled)}.m_326d024a{display:flex;align-items:center;justify-content:center;border:1px solid;cursor:pointer;color:var(--mantine-color-text);height:var(--pagination-control-size);min-width:var(--pagination-control-size);font-size:var(--pagination-control-fz);line-height:1;border-radius:var(--pagination-control-radius, var(--mantine-radius-default))}.m_326d024a:where([data-with-padding]){padding:calc(var(--pagination-control-size) / 4)}.m_326d024a:where(:disabled,[data-disabled]){cursor:not-allowed;opacity:.4}:where([data-mantine-color-scheme=light]) .m_326d024a{border-color:var(--mantine-color-gray-4);background-color:var(--mantine-color-white)}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_326d024a:hover:where(:not(:disabled,[data-disabled])){background-color:var(--mantine-color-gray-0)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_326d024a:active:where(:not(:disabled,[data-disabled])){background-color:var(--mantine-color-gray-0)}}:where([data-mantine-color-scheme=dark]) .m_326d024a{border-color:var(--mantine-color-dark-4);background-color:var(--mantine-color-dark-6)}@media(hover:hover){:where([data-mantine-color-scheme=dark]) .m_326d024a:hover:where(:not(:disabled,[data-disabled])){background-color:var(--mantine-color-dark-5)}}@media(hover:none){:where([data-mantine-color-scheme=dark]) .m_326d024a:active:where(:not(:disabled,[data-disabled])){background-color:var(--mantine-color-dark-5)}}.m_326d024a:where([data-active]){background-color:var(--pagination-active-bg);border-color:var(--pagination-active-bg);color:var(--pagination-active-color, var(--mantine-color-white))}@media(hover:hover){.m_326d024a:where([data-active]):hover{background-color:var(--pagination-active-bg)}}@media(hover:none){.m_326d024a:where([data-active]):active{background-color:var(--pagination-active-bg)}}.m_4ad7767d{height:var(--pagination-control-size);min-width:var(--pagination-control-size);display:flex;align-items:center;justify-content:center;pointer-events:none}.m_7cda1cd6{--pill-fz-xs: 10px;--pill-fz-sm: 12px;--pill-fz-md: 14px;--pill-fz-lg: 16px;--pill-fz-xl: 18px;--pill-height-xs: 18px;--pill-height-sm: 22px;--pill-height-md: 25px;--pill-height-lg: 28px;--pill-height-xl: 32px;--pill-fz: var(--pill-fz-sm);--pill-height: var(--pill-height-sm);font-size:var(--pill-fz);flex:0;height:var(--pill-height);padding-inline:.8em;display:inline-flex;align-items:center;border-radius:var(--pill-radius, 1000rem);line-height:1;white-space:nowrap;user-select:none;-webkit-user-select:none;max-width:100%}:where([data-mantine-color-scheme=dark]) .m_7cda1cd6{background-color:var(--mantine-color-dark-7);color:var(--mantine-color-dark-0)}:where([data-mantine-color-scheme=light]) .m_7cda1cd6{color:var(--mantine-color-black)}.m_7cda1cd6:where([data-with-remove]:not(:has(button:disabled))){padding-inline-end:0}.m_7cda1cd6:where([data-disabled],:has(button:disabled)){cursor:not-allowed}:where([data-mantine-color-scheme=light]) .m_44da308b{background-color:var(--mantine-color-gray-1)}:where([data-mantine-color-scheme=light]) .m_44da308b:where([data-disabled],:has(button:disabled)){background-color:var(--mantine-color-disabled)}:where([data-mantine-color-scheme=light]) .m_e3a01f8{background-color:var(--mantine-color-white)}:where([data-mantine-color-scheme=light]) .m_e3a01f8:where([data-disabled],:has(button:disabled)){background-color:var(--mantine-color-disabled)}.m_1e0e6180{cursor:inherit;overflow:hidden;height:100%;line-height:var(--pill-height);text-overflow:ellipsis}.m_ae386778{color:inherit;font-size:inherit;height:100%;min-height:unset;min-width:2em;width:unset;border-radius:0;padding-inline-start:.1em;padding-inline-end:.3em;flex:0;border-end-end-radius:var(--pill-radius, 50%);border-start-end-radius:var(--pill-radius, 50%)}.m_7cda1cd6[data-disabled]>.m_ae386778,.m_ae386778:disabled{display:none;background-color:transparent;width:.8em;min-width:.8em;padding:0;cursor:not-allowed}.m_7cda1cd6[data-disabled]>.m_ae386778>svg,.m_ae386778:disabled>svg{display:none}.m_ae386778>svg{pointer-events:none}.m_1dcfd90b{--pg-gap-xs: 6px;--pg-gap-sm: 8px;--pg-gap-md: 10px;--pg-gap-lg: 12px;--pg-gap-xl: 12px;--pg-gap: var(--pg-gap-sm);display:flex;align-items:center;gap:var(--pg-gap);flex-wrap:wrap}.m_f61ca620{--psi-button-size-xs: 22px;--psi-button-size-sm: 26px;--psi-button-size-md: 28px;--psi-button-size-lg: 32px;--psi-button-size-xl: 40px;--psi-icon-size-xs: 12px;--psi-icon-size-sm: 15px;--psi-icon-size-md: 17px;--psi-icon-size-lg: 19px;--psi-icon-size-xl: 21px;--psi-button-size: var(--psi-button-size-sm);--psi-icon-size: var(--psi-icon-size-sm)}.m_ccf8da4c{position:relative;overflow:hidden}.m_f2d85dd2{font-family:var(--mantine-font-family);background-color:transparent;border:0;padding-inline-end:var(--input-padding-inline-end);padding-inline-start:var(--input-padding-inline-start);position:absolute;inset:0;outline:0;font-size:inherit;line-height:var(--mantine-line-height);height:100%;width:100%;color:inherit}.m_ccf8da4c[data-disabled] .m_f2d85dd2,.m_f2d85dd2:disabled{cursor:not-allowed}.m_f2d85dd2::placeholder{color:var(--input-placeholder-color);opacity:1}.m_f2d85dd2::-ms-reveal{display:none}.m_b1072d44{width:var(--psi-button-size);height:var(--psi-button-size);min-width:var(--psi-button-size);min-height:var(--psi-button-size)}.m_b1072d44:disabled{display:none}.m_45c4369d{background-color:transparent;appearance:none;min-width:100px;flex:1;border:0;font-size:inherit;height:1.6em;color:inherit;padding:0}.m_45c4369d::placeholder{color:var(--input-placeholder-color);opacity:1}.m_45c4369d:where([data-type=hidden],[data-type=auto]){height:1px;width:1px;top:0;left:0;pointer-events:none;position:absolute;opacity:0}.m_45c4369d:focus{outline:none}.m_45c4369d:where([data-type=auto]:focus){height:1.6em;visibility:visible;opacity:1;position:static}.m_45c4369d:where([data-pointer]:not([data-disabled],:disabled)){cursor:pointer}.m_45c4369d:where([data-disabled],:disabled){cursor:not-allowed}.m_f1cb205a{--pin-input-size-xs: 30px;--pin-input-size-sm: 36px;--pin-input-size-md: 42px;--pin-input-size-lg: 50px;--pin-input-size-xl: 60px;--pin-input-size: var(--pin-input-size-sm)}.m_cb288ead{width:var(--pin-input-size);height:var(--pin-input-size)}@keyframes m_81a374bd{0%{background-position:0 0}to{background-position:40px 0}}@keyframes m_e0fb7a86{0%{background-position:0 0}to{background-position:0 40px}}.m_db6d6462{--progress-radius: var(--mantine-radius-default);--progress-size: var(--progress-size-md);--progress-size-xs: 3px;--progress-size-sm: 5px;--progress-size-md: 8px;--progress-size-lg: 12px;--progress-size-xl: 16px;position:relative;height:var(--progress-size);border-radius:var(--progress-radius);overflow:hidden;display:flex}:where([data-mantine-color-scheme=light]) .m_db6d6462{background-color:var(--mantine-color-gray-2)}:where([data-mantine-color-scheme=dark]) .m_db6d6462{background-color:var(--mantine-color-dark-4)}.m_db6d6462:where([data-orientation=vertical]){height:auto;width:var(--progress-size);flex-direction:column-reverse}.m_2242eb65{background-color:var(--progress-section-color);height:100%;width:var(--progress-section-size);display:flex;align-items:center;justify-content:center;overflow:hidden;background-size:20px 20px;transition:width var(--progress-transition-duration, .1s) ease}.m_2242eb65:where([data-striped]){background-image:linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)}.m_2242eb65:where([data-animated]){animation:m_81a374bd 1s linear infinite}.m_2242eb65:where(:last-of-type){border-radius:0;border-start-end-radius:var(--progress-radius);border-end-end-radius:var(--progress-radius)}.m_2242eb65:where(:first-of-type){border-radius:0;border-start-start-radius:var(--progress-radius);border-end-start-radius:var(--progress-radius)}.m_db6d6462:where([data-orientation=vertical]) .m_2242eb65{width:100%;height:var(--progress-section-size);transition:height var(--progress-transition-duration, .1s) ease}.m_db6d6462:where([data-orientation=vertical]) .m_2242eb65:where([data-striped]){background-image:linear-gradient(135deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)}.m_db6d6462:where([data-orientation=vertical]) .m_2242eb65:where([data-animated]){animation:m_e0fb7a86 1s linear infinite}.m_db6d6462:where([data-orientation=vertical]) .m_2242eb65:where(:last-of-type){border-radius:0;border-start-start-radius:var(--progress-radius);border-start-end-radius:var(--progress-radius)}.m_db6d6462:where([data-orientation=vertical]) .m_2242eb65:where(:first-of-type){border-radius:0;border-end-start-radius:var(--progress-radius);border-end-end-radius:var(--progress-radius)}.m_91e40b74{color:var(--progress-label-color, var(--mantine-color-white));font-weight:700;user-select:none;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:min(calc(var(--progress-size) * .65),calc(1.125rem * var(--mantine-scale)));line-height:1;padding-inline:4px}.m_db6d6462:where([data-orientation=vertical]) .m_91e40b74{writing-mode:vertical-rl}.m_f3f1af94{--radio-size-xs: 16px;--radio-size-sm: 20px;--radio-size-md: 24px;--radio-size-lg: 30px;--radio-size-xl: 36px;--radio-size: var(--radio-size-sm);--radio-icon-size-xs: 6px;--radio-icon-size-sm: 8px;--radio-icon-size-md: 10px;--radio-icon-size-lg: 14px;--radio-icon-size-xl: 16px;--radio-icon-size: var(--radio-icon-size-sm);--radio-icon-color: var(--mantine-color-white)}.m_89c4f5e4{position:relative;width:var(--radio-size);height:var(--radio-size);order:1}.m_89c4f5e4:where([data-label-position=left]){order:2}.m_f3ed6b2b{color:var(--radio-icon-color);opacity:var(--radio-icon-opacity, 0);transform:var(--radio-icon-transform, scale(.2) translateY(calc(.625rem * var(--mantine-scale))));transition:opacity .1s ease,transform .2s ease;pointer-events:none;width:var(--radio-icon-size);height:var(--radio-icon-size);position:absolute;top:calc(50% - var(--radio-icon-size) / 2);left:calc(50% - var(--radio-icon-size) / 2)}.m_8a3dbb89{border:1px solid;position:relative;appearance:none;width:var(--radio-size);height:var(--radio-size);border-radius:var(--radio-radius, var(--radio-size));margin:0;display:flex;align-items:center;justify-content:center;transition-property:background-color,border-color;transition-timing-function:ease;transition-duration:.1s;cursor:var(--mantine-cursor-type);-webkit-tap-highlight-color:transparent}:where([data-mantine-color-scheme=light]) .m_8a3dbb89{background-color:var(--mantine-color-white);border-color:var(--mantine-color-gray-4)}:where([data-mantine-color-scheme=dark]) .m_8a3dbb89{background-color:var(--mantine-color-dark-6);border-color:var(--mantine-color-dark-4)}.m_8a3dbb89:checked{background-color:var(--radio-color, var(--mantine-primary-color-filled));border-color:var(--radio-color, var(--mantine-primary-color-filled))}.m_8a3dbb89:checked+.m_f3ed6b2b{--radio-icon-opacity: 1;--radio-icon-transform: scale(1)}.m_8a3dbb89:disabled{cursor:not-allowed;background-color:var(--mantine-color-disabled);border-color:var(--mantine-color-disabled-border)}.m_8a3dbb89:disabled+.m_f3ed6b2b{--radio-icon-color: var(--mantine-color-disabled-color)}.m_8a3dbb89:where([data-error]){border-color:var(--mantine-color-error)}.m_1bfe9d39+.m_f3ed6b2b{--radio-icon-color: var(--radio-color)}.m_1bfe9d39:checked:not(:disabled){background-color:transparent;border-color:var(--radio-color)}.m_1bfe9d39:checked:not(:disabled)+.m_f3ed6b2b{--radio-icon-color: var(--radio-color);--radio-icon-opacity: 1;--radio-icon-transform: none}.m_f8d312f2{--rating-size-xs: 14px;--rating-size-sm: 18px;--rating-size-md: 20px;--rating-size-lg: 28px;--rating-size-xl: 32px;display:flex;width:max-content}.m_f8d312f2:where(:has(input:disabled)){pointer-events:none}.m_61734bb7{position:relative;transition:transform .1s ease}.m_61734bb7:where([data-active]){z-index:1;transform:scale(1.1)}.m_5662a89a{width:var(--rating-size);height:var(--rating-size);display:block}:where([data-mantine-color-scheme=light]) .m_5662a89a{fill:var(--mantine-color-gray-3);stroke:var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_5662a89a{fill:var(--mantine-color-dark-3);stroke:var(--mantine-color-dark-3)}.m_5662a89a:where([data-filled]){fill:var(--rating-color);stroke:var(--rating-color)}.m_211007ba{height:0;width:0;position:absolute;overflow:hidden;white-space:nowrap;opacity:0;-webkit-tap-highlight-color:transparent}.m_211007ba:focus-visible+label{outline:2px solid var(--mantine-primary-color-filled);outline-offset:2px}.m_21342ee4{display:block;cursor:pointer;position:absolute;top:0;left:0;z-index:var(--rating-item-z-index, 0);-webkit-tap-highlight-color:transparent}.m_21342ee4:where([data-read-only]){cursor:default}.m_21342ee4:where(:last-of-type){position:relative}.m_fae05d6a{clip-path:var(--rating-symbol-clip-path)}.m_b32e4812{position:relative;width:var(--rp-size);height:var(--rp-size);min-width:var(--rp-size);min-height:var(--rp-size);--rp-transition-duration: 0ms}.m_d43b5134{width:var(--rp-size);height:var(--rp-size);min-width:var(--rp-size);min-height:var(--rp-size);transform:rotate(-90deg)}.m_b1ca1fbf{stroke:var(--curve-color, var(--rp-curve-root-color));transition:stroke-dashoffset var(--rp-transition-duration) ease,stroke-dasharray var(--rp-transition-duration) ease,stroke var(--rp-transition-duration)}[data-mantine-color-scheme=light] .m_b1ca1fbf{--rp-curve-root-color: var(--mantine-color-gray-2)}[data-mantine-color-scheme=dark] .m_b1ca1fbf{--rp-curve-root-color: var(--mantine-color-dark-4)}.m_b23f9dc4{position:absolute;top:50%;transform:translateY(-50%);inset-inline:var(--rp-label-offset)}.m_cf365364{--sc-padding-xs: 2px 6px;--sc-padding-sm: 3px 10px;--sc-padding-md: 4px 14px;--sc-padding-lg: 7px 16px;--sc-padding-xl: 10px 20px;--sc-transition-duration: .2s;--sc-padding: var(--sc-padding-sm);--sc-transition-timing-function: ease;--sc-font-size: var(--mantine-font-size-sm);position:relative;display:inline-flex;flex-direction:row;width:auto;border-radius:var(--sc-radius, var(--mantine-radius-default));overflow:hidden;padding:4px}.m_cf365364:where([data-full-width]){display:flex}.m_cf365364:where([data-orientation=vertical]){display:flex;flex-direction:column;width:max-content}.m_cf365364:where([data-orientation=vertical]):where([data-full-width]){width:auto}:where([data-mantine-color-scheme=light]) .m_cf365364{background-color:var(--mantine-color-gray-1)}:where([data-mantine-color-scheme=dark]) .m_cf365364{background-color:var(--mantine-color-dark-8)}.m_9e182ccd{position:absolute;display:block;z-index:1;border-radius:var(--sc-radius, var(--mantine-radius-default))}:where([data-mantine-color-scheme=light]) .m_9e182ccd{box-shadow:var(--sc-shadow, none);background-color:var(--sc-color, var(--mantine-color-white))}:where([data-mantine-color-scheme=dark]) .m_9e182ccd{box-shadow:none;background-color:var(--sc-color, var(--mantine-color-dark-5))}.m_1738fcb2{-webkit-tap-highlight-color:transparent;font-weight:500;display:block;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;user-select:none;border-radius:var(--sc-radius, var(--mantine-radius-default));font-size:var(--sc-font-size);padding:var(--sc-padding);transition:color var(--sc-transition-duration) var(--sc-transition-timing-function);cursor:pointer;outline:var(--segmented-control-outline, none)}:where([data-mantine-color-scheme=light]) .m_1738fcb2{color:var(--mantine-color-gray-7)}:where([data-mantine-color-scheme=dark]) .m_1738fcb2{color:var(--mantine-color-dark-1)}.m_1738fcb2:where([data-read-only]){cursor:default}fieldset:disabled .m_1738fcb2,.m_1738fcb2:where([data-disabled]){cursor:not-allowed;color:var(--mantine-color-disabled-color)}:where([data-mantine-color-scheme=light]) .m_1738fcb2:where([data-active]){color:var(--sc-label-color, var(--mantine-color-black))}:where([data-mantine-color-scheme=dark]) .m_1738fcb2:where([data-active]){color:var(--sc-label-color, var(--mantine-color-white))}.m_cf365364:where([data-initialized]) .m_1738fcb2:where([data-active]):before{display:none}.m_1738fcb2:where([data-active]):before{content:"";inset:0;z-index:0;position:absolute;border-radius:var(--sc-radius, var(--mantine-radius-default))}:where([data-mantine-color-scheme=light]) .m_1738fcb2:where([data-active]):before{box-shadow:var(--sc-shadow, none);background-color:var(--sc-color, var(--mantine-color-white))}:where([data-mantine-color-scheme=dark]) .m_1738fcb2:where([data-active]):before{box-shadow:none;background-color:var(--sc-color, var(--mantine-color-dark-5))}@media(hover:hover){:where([data-mantine-color-scheme=light]) .m_1738fcb2:where(:not([data-disabled],[data-active],[data-read-only])):hover{color:var(--mantine-color-black)}:where([data-mantine-color-scheme=dark]) .m_1738fcb2:where(:not([data-disabled],[data-active],[data-read-only])):hover{color:var(--mantine-color-white)}}@media(hover:none){:where([data-mantine-color-scheme=light]) .m_1738fcb2:where(:not([data-disabled],[data-active],[data-read-only])):active{color:var(--mantine-color-black)}:where([data-mantine-color-scheme=dark]) .m_1738fcb2:where(:not([data-disabled],[data-active],[data-read-only])):active{color:var(--mantine-color-white)}}@media(hover:hover){fieldset:disabled .m_1738fcb2:hover{color:var(--mantine-color-disabled-color)!important}}@media(hover:none){fieldset:disabled .m_1738fcb2:active{color:var(--mantine-color-disabled-color)!important}}.m_1714d588{height:0;width:0;position:absolute;overflow:hidden;white-space:nowrap;opacity:0}.m_1714d588[data-focus-ring=auto]:focus:focus-visible+.m_1738fcb2{--segmented-control-outline: 2px solid var(--mantine-primary-color-filled)}.m_1714d588[data-focus-ring=always]:focus+.m_1738fcb2{--segmented-control-outline: 2px solid var(--mantine-primary-color-filled)}.m_69686b9b{position:relative;flex:1;z-index:2;transition:border-color var(--sc-transition-duration) var(--sc-transition-timing-function)}.m_cf365364[data-with-items-borders] :where(.m_69686b9b):before{content:"";position:absolute;top:0;bottom:0;inset-inline-start:0;background-color:var(--separator-color);width:1px;transition:background-color var(--sc-transition-duration) var(--sc-transition-timing-function)}.m_69686b9b[data-orientation=vertical]:before{top:0;inset-inline:0;bottom:auto;height:1px;width:auto}:where([data-mantine-color-scheme=light]) .m_69686b9b{--separator-color: var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_69686b9b{--separator-color: var(--mantine-color-dark-4)}.m_69686b9b:first-of-type:before{--separator-color: transparent}[data-mantine-color-scheme] .m_69686b9b[data-active]:before,[data-mantine-color-scheme] .m_69686b9b[data-active]+.m_69686b9b:before{--separator-color: transparent}.m_78882f40{position:relative;z-index:2}.m_925c2d2c{container:simple-grid / inline-size}.m_2415a157{display:grid;grid-template-columns:repeat(var(--sg-cols),minmax(0,1fr));gap:var(--sg-spacing-y) var(--sg-spacing-x)}@keyframes m_299c329c{0%,to{opacity:.4}50%{opacity:1}}.m_18320242{height:var(--skeleton-height, auto);width:var(--skeleton-width, 100%);border-radius:var(--skeleton-radius, var(--mantine-radius-default));position:relative;transform:translateZ(0);-webkit-transform:translateZ(0)}.m_18320242:where([data-animate]):after{animation:m_299c329c 1.5s linear infinite}.m_18320242:where([data-visible]){overflow:hidden}.m_18320242:where([data-visible]):before{position:absolute;content:"";inset:0;z-index:10;background-color:var(--mantine-color-body)}.m_18320242:where([data-visible]):after{position:absolute;content:"";inset:0;z-index:11}:where([data-mantine-color-scheme=light]) .m_18320242:where([data-visible]):after{background-color:var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_18320242:where([data-visible]):after{background-color:var(--mantine-color-dark-4)}.m_dd36362e{--slider-size-xs: 4px;--slider-size-sm: 6px;--slider-size-md: 8px;--slider-size-lg: 10px;--slider-size-xl: 12px;--slider-size: var(--slider-size-md);--slider-radius: 1000px;--slider-color: var(--mantine-primary-color-filled);--slider-track-disabled-bg: var(--mantine-color-disabled);-webkit-tap-highlight-color:transparent;outline:none;height:calc(var(--slider-size) * 2);padding-inline:var(--slider-size);display:flex;flex-direction:column;align-items:center;touch-action:none;position:relative}[data-mantine-color-scheme=light] .m_dd36362e{--slider-track-bg: var(--mantine-color-gray-2)}[data-mantine-color-scheme=dark] .m_dd36362e{--slider-track-bg: var(--mantine-color-dark-4)}.m_c9357328{position:absolute;top:-36px;font-size:var(--mantine-font-size-xs);color:var(--mantine-color-white);padding:calc(var(--mantine-spacing-xs) / 2);border-radius:var(--mantine-radius-sm);white-space:nowrap;pointer-events:none;user-select:none;touch-action:none}:where([data-mantine-color-scheme=light]) .m_c9357328{background-color:var(--mantine-color-gray-9)}:where([data-mantine-color-scheme=dark]) .m_c9357328{background-color:var(--mantine-color-dark-4)}.m_c9a9a60a{position:absolute;display:flex;height:var(--slider-thumb-size);width:var(--slider-thumb-size);border:4px solid;transform:translate(-50%,-50%);top:50%;cursor:pointer;border-radius:var(--slider-radius);align-items:center;justify-content:center;transition:box-shadow .1s ease,transform .1s ease;z-index:3;user-select:none;touch-action:none;outline-offset:2px;left:var(--slider-thumb-offset)}:where([dir=rtl]) .m_c9a9a60a{left:auto;right:calc(var(--slider-thumb-offset) - var(--slider-thumb-size))}fieldset:disabled .m_c9a9a60a,.m_c9a9a60a:where([data-disabled]){display:none}.m_c9a9a60a:where([data-dragging]){transform:translate(-50%,-50%) scale(1.05);box-shadow:var(--mantine-shadow-sm)}:where([data-mantine-color-scheme=light]) .m_c9a9a60a{color:var(--slider-color);border-color:var(--slider-color);background-color:var(--mantine-color-white)}:where([data-mantine-color-scheme=dark]) .m_c9a9a60a{color:var(--mantine-color-white);border-color:var(--mantine-color-white);background-color:var(--slider-color)}.m_a8645c2{display:flex;align-items:center;width:100%;height:calc(var(--slider-size) * 2);cursor:pointer}fieldset:disabled .m_a8645c2,.m_a8645c2:where([data-disabled]){cursor:not-allowed}.m_c9ade57f{position:relative;width:100%;height:var(--slider-size)}.m_c9ade57f:where([data-inverted]:not([data-disabled])){--track-bg: var(--slider-color)}fieldset:disabled .m_c9ade57f:where([data-inverted]),.m_c9ade57f:where([data-inverted][data-disabled]){--track-bg: var(--slider-track-disabled-bg)}.m_c9ade57f:before{content:"";position:absolute;top:0;bottom:0;border-radius:var(--slider-radius);inset-inline:calc(var(--slider-size) * -1);background-color:var(--track-bg, var(--slider-track-bg));z-index:0}.m_38aeed47{position:absolute;z-index:1;top:0;bottom:0;background-color:var(--slider-color);border-radius:var(--slider-radius);width:var(--slider-bar-width);inset-inline-start:var(--slider-bar-offset)}.m_38aeed47:where([data-inverted]){background-color:var(--slider-track-bg)}fieldset:disabled .m_38aeed47:where(:not([data-inverted])),.m_38aeed47:where([data-disabled]:not([data-inverted])){background-color:var(--mantine-color-disabled-color)}.m_b7b0423a{position:absolute;inset-inline-start:calc(var(--mark-offset) - var(--slider-size) / 2);top:0;z-index:2;height:0;pointer-events:none}.m_dd33bc19{border:2px solid;height:var(--slider-size);width:var(--slider-size);border-radius:1000px;background-color:var(--mantine-color-white);pointer-events:none}:where([data-mantine-color-scheme=light]) .m_dd33bc19{border-color:var(--mantine-color-gray-2)}:where([data-mantine-color-scheme=dark]) .m_dd33bc19{border-color:var(--mantine-color-dark-4)}.m_dd33bc19:where([data-filled]){border-color:var(--slider-color)}.m_dd33bc19:where([data-filled]):where([data-disabled]){border-color:var(--mantine-color-disabled-border)}.m_68c77a5b{transform:translate(calc(-50% + var(--slider-size) / 2),calc(var(--mantine-spacing-xs) / 2));font-size:var(--mantine-font-size-sm);white-space:nowrap;cursor:pointer;user-select:none}:where([data-mantine-color-scheme=light]) .m_68c77a5b{color:var(--mantine-color-gray-6)}:where([data-mantine-color-scheme=dark]) .m_68c77a5b{color:var(--mantine-color-dark-2)}.m_559cce2d{position:relative}.m_559cce2d:where([data-has-spoiler]){margin-bottom:24px}.m_b912df4e{display:flex;flex-direction:column;overflow:hidden;transition:max-height var(--spoiler-transition-duration, .2s) ease}.m_b9131032{position:absolute;inset-inline-start:0;top:100%;height:24px}.m_6d731127{display:flex;flex-direction:column;align-items:var(--stack-align, stretch);justify-content:var(--stack-justify, flex-start);gap:var(--stack-gap, var(--mantine-spacing-md))}.m_cbb4ea7e{--stepper-icon-size-xs: 34px;--stepper-icon-size-sm: 36px;--stepper-icon-size-md: 42px;--stepper-icon-size-lg: 48px;--stepper-icon-size-xl: 52px;--stepper-icon-size: var(--stepper-icon-size-md);--stepper-color: var(--mantine-primary-color-filled);--stepper-content-padding: var(--mantine-spacing-md);--stepper-spacing: var(--mantine-spacing-md);--stepper-radius: 1000px;--stepper-fz: var(--mantine-font-size-md);--stepper-outline-thickness: 2px}[data-mantine-color-scheme=light] .m_cbb4ea7e{--stepper-outline-color: var(--mantine-color-gray-2)}[data-mantine-color-scheme=dark] .m_cbb4ea7e{--stepper-outline-color: var(--mantine-color-dark-5)}.m_aaf89d0b{display:flex;flex-wrap:nowrap;align-items:center}.m_aaf89d0b:where([data-wrap]){flex-wrap:wrap;gap:var(--mantine-spacing-md) 0}.m_aaf89d0b:where([data-orientation=vertical]){flex-direction:column}.m_aaf89d0b:where([data-orientation=vertical]):where([data-icon-position=left]){align-items:flex-start}.m_aaf89d0b:where([data-orientation=vertical]):where([data-icon-position=right]){align-items:flex-end}.m_aaf89d0b:where([data-orientation=horizontal]){flex-direction:row}.m_2a371ac9{transition:background-color .15s ease;flex:1;height:var(--stepper-outline-thickness);margin-inline:var(--mantine-spacing-md);background-color:var(--stepper-outline-color)}.m_2a371ac9:where([data-active]){background-color:var(--stepper-color)}.m_78da155d{padding-top:var(--stepper-content-padding)}.m_cbb57068{--step-color: var(--stepper-color);display:flex;cursor:default}.m_cbb57068:where([data-allow-click]){cursor:pointer}.m_cbb57068:where([data-icon-position=left]){flex-direction:row}.m_cbb57068:where([data-icon-position=right]){flex-direction:row-reverse}.m_f56b1e2c{align-items:center}.m_833edb7e{--separator-spacing: calc(var(--mantine-spacing-xs) / 2);justify-content:flex-start;min-height:calc(var(--stepper-icon-size) + var(--mantine-spacing-xl) + var(--separator-spacing));margin-top:var(--separator-spacing);overflow:hidden}.m_833edb7e:where(:first-of-type){margin-top:0}.m_833edb7e:where(:last-of-type){min-height:auto}.m_833edb7e:where(:last-of-type) .m_6496b3f3{display:none}.m_818e70b{position:relative}.m_6496b3f3{top:calc(var(--stepper-icon-size) + var(--separator-spacing));inset-inline-start:calc(var(--stepper-icon-size) / 2);height:100vh;position:absolute;border-inline-start:var(--stepper-outline-thickness) solid var(--stepper-outline-color)}.m_6496b3f3:where([data-active]){border-color:var(--stepper-color)}.m_1959ad01{height:var(--stepper-icon-size);width:var(--stepper-icon-size);min-height:var(--stepper-icon-size);min-width:var(--stepper-icon-size);border-radius:var(--stepper-radius);font-size:var(--stepper-fz);display:flex;align-items:center;justify-content:center;position:relative;font-weight:700;transition:background-color .15s ease,border-color .15s ease;border:var(--stepper-outline-thickness) solid var(--stepper-outline-color);background-color:var(--stepper-outline-color)}:where([data-mantine-color-scheme=light]) .m_1959ad01{color:var(--mantine-color-gray-7)}:where([data-mantine-color-scheme=dark]) .m_1959ad01{color:var(--mantine-color-dark-1)}.m_1959ad01:where([data-progress]){border-color:var(--step-color)}.m_1959ad01:where([data-completed]){color:var(--stepper-icon-color, var(--mantine-color-white));background-color:var(--step-color);border-color:var(--step-color)}.m_a79331dc{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--stepper-icon-color, var(--mantine-color-white))}.m_1956aa2a{display:flex;flex-direction:column}.m_1956aa2a:where([data-icon-position=left]){margin-inline-start:var(--mantine-spacing-sm)}.m_1956aa2a:where([data-icon-position=right]){text-align:right;margin-inline-end:var(--mantine-spacing-sm)}:where([dir=rtl]) .m_1956aa2a:where([data-icon-position=right]){text-align:left}.m_12051f6c{font-weight:500;font-size:var(--stepper-fz);line-height:1}.m_164eea74{margin-top:calc(var(--stepper-spacing) / 3);margin-bottom:calc(var(--stepper-spacing) / 3);font-size:calc(var(--stepper-fz) - calc(.125rem * var(--mantine-scale)));line-height:1;color:var(--mantine-color-dimmed)}.m_5f93f3bb{--switch-height-xs: 16px;--switch-height-sm: 20px;--switch-height-md: 24px;--switch-height-lg: 30px;--switch-height-xl: 36px;--switch-width-xs: 32px;--switch-width-sm: 38px;--switch-width-md: 46px;--switch-width-lg: 56px;--switch-width-xl: 72px;--switch-thumb-size-xs: 12px;--switch-thumb-size-sm: 14px;--switch-thumb-size-md: 18px;--switch-thumb-size-lg: 22px;--switch-thumb-size-xl: 28px;--switch-label-font-size-xs: 5px;--switch-label-font-size-sm: 6px;--switch-label-font-size-md: 7px;--switch-label-font-size-lg: 9px;--switch-label-font-size-xl: 11px;--switch-track-label-padding-xs: 2px;--switch-track-label-padding-sm: 2.5px;--switch-track-label-padding-md: 3px;--switch-track-label-padding-lg: 3px;--switch-track-label-padding-xl: 3.5px;--switch-height: var(--switch-height-sm);--switch-width: var(--switch-width-sm);--switch-thumb-size: var(--switch-thumb-size-sm);--switch-label-font-size: var(--switch-label-font-size-sm);--switch-track-label-padding: var(--switch-track-label-padding-sm);--switch-radius: 1000px;--switch-color: var(--mantine-primary-color-filled);--switch-disabled-color: var(--mantine-color-disabled);position:relative}.m_926b4011{height:100%;width:100%;opacity:0;margin:0;padding:0;position:absolute;overflow:hidden;white-space:nowrap}.m_9307d992{-webkit-tap-highlight-color:transparent;cursor:var(--switch-cursor, var(--mantine-cursor-type));overflow:hidden;position:relative;border-radius:var(--switch-radius);background-color:var(--switch-bg);height:var(--switch-height);min-width:var(--switch-width);margin:0;transition:background-color .15s ease,border-color .15s ease;appearance:none;display:flex;align-items:center;font-size:var(--switch-label-font-size);font-weight:600;order:var(--switch-order, 1);user-select:none;z-index:0;line-height:0;color:var(--switch-text-color)}.m_9307d992:where([data-without-labels]){width:var(--switch-width)}.m_926b4011:focus-visible+.m_9307d992{outline:2px solid var(--mantine-primary-color-filled);outline-offset:2px}.m_926b4011:checked+.m_9307d992{--switch-bg: var(--switch-color);--switch-text-color: var(--mantine-color-white)}.m_926b4011:disabled+.m_9307d992,.m_926b4011[data-disabled]+.m_9307d992{--switch-bg: var(--switch-disabled-color);--switch-cursor: not-allowed}[data-mantine-color-scheme=light] .m_9307d992{--switch-bg: var(--mantine-color-gray-3);--switch-text-color: var(--mantine-color-gray-6)}[data-mantine-color-scheme=dark] .m_9307d992{--switch-bg: var(--mantine-color-dark-5);--switch-text-color: var(--mantine-color-dark-1)}.m_9307d992[data-label-position=left]{--switch-order: 2}.m_93039a1d{position:absolute;z-index:1;border-radius:var(--switch-radius);display:flex;background-color:var(--switch-thumb-bg, var(--mantine-color-white));height:var(--switch-thumb-size);width:var(--switch-thumb-size);inset-inline-start:var(--switch-thumb-start, var(--switch-track-label-padding));transition:inset-inline-start .15s ease}.m_93039a1d:where([data-with-thumb-indicator]):before{content:"";width:40%;height:40%;background-color:var(--switch-bg);position:absolute;border-radius:var(--switch-radius);top:50%;left:50%;transform:translate(-50%,-50%)}.m_93039a1d>*{margin:auto}.m_926b4011:checked+*>.m_93039a1d{--switch-thumb-start: calc(100% - var(--switch-thumb-size) - var(--switch-track-label-padding))}.m_926b4011:disabled+*>.m_93039a1d,.m_926b4011[data-disabled]+*>.m_93039a1d{--switch-thumb-bg: var(--switch-thumb-bg-disabled)}[data-mantine-color-scheme=light] .m_93039a1d{--switch-thumb-bg-disabled: var(--mantine-color-gray-0)}[data-mantine-color-scheme=dark] .m_93039a1d{--switch-thumb-bg-disabled: var(--mantine-color-dark-3)}.m_8277e082{height:100%;display:grid;place-content:center;min-width:calc(var(--switch-width) - var(--switch-thumb-size));padding-inline:var(--switch-track-label-padding);margin-inline-start:calc(var(--switch-thumb-size) + var(--switch-track-label-padding));transition:margin .15s ease}.m_926b4011:checked+*>.m_8277e082{margin-inline-end:calc(var(--switch-thumb-size) + var(--switch-track-label-padding));margin-inline-start:0}.m_b23fa0ef{width:100%;border-collapse:collapse;border-spacing:0;line-height:var(--mantine-line-height);font-size:var(--mantine-font-size-sm);table-layout:var(--table-layout, auto);caption-side:var(--table-caption-side, bottom);border:none}:where([data-mantine-color-scheme=light]) .m_b23fa0ef{--table-hover-color: var(--mantine-color-gray-1);--table-striped-color: var(--mantine-color-gray-0);--table-border-color: var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_b23fa0ef{--table-hover-color: var(--mantine-color-dark-5);--table-striped-color: var(--mantine-color-dark-6);--table-border-color: var(--mantine-color-dark-4)}.m_b23fa0ef:where([data-with-table-border]){border:calc(.0625rem * var(--mantine-scale)) solid var(--table-border-color)}.m_b23fa0ef:where([data-tabular-nums]){font-variant-numeric:tabular-nums}.m_b23fa0ef:where([data-variant=vertical]) :where(.m_4e7aa4f3){font-weight:500}:where([data-mantine-color-scheme=light]) .m_b23fa0ef:where([data-variant=vertical]) :where(.m_4e7aa4f3){background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_b23fa0ef:where([data-variant=vertical]) :where(.m_4e7aa4f3){background-color:var(--mantine-color-dark-6)}.m_4e7aa4f3{text-align:left}:where([dir=rtl]) .m_4e7aa4f3{text-align:right}.m_4e7aa4fd{border-bottom:none;background-color:transparent}@media(hover:hover){.m_4e7aa4fd:hover:where([data-hover]){background-color:var(--tr-hover-bg)}}@media(hover:none){.m_4e7aa4fd:active:where([data-hover]){background-color:var(--tr-hover-bg)}}.m_4e7aa4fd:where([data-with-row-border]){border-bottom:calc(.0625rem * var(--mantine-scale)) solid var(--table-border-color)}.m_4e7aa4ef,.m_4e7aa4f3{padding:var(--table-vertical-spacing) var(--table-horizontal-spacing, var(--mantine-spacing-xs))}.m_4e7aa4ef:where([data-with-column-border]:not(:first-child)),.m_4e7aa4f3:where([data-with-column-border]:not(:first-child)){border-inline-start:calc(.0625rem * var(--mantine-scale)) solid var(--table-border-color)}.m_4e7aa4ef:where([data-with-column-border]:not(:last-child)),.m_4e7aa4f3:where([data-with-column-border]:not(:last-child)){border-inline-end:calc(.0625rem * var(--mantine-scale)) solid var(--table-border-color)}.m_b2404537>:where(tr):where([data-with-row-border]:last-of-type){border-bottom:none}.m_b2404537>:where(tr):where([data-striped=odd]:nth-of-type(odd)){background-color:var(--table-striped-color)}.m_b2404537>:where(tr):where([data-striped=even]:nth-of-type(2n)){background-color:var(--table-striped-color)}.m_b2404537>:where(tr)[data-hover]{--tr-hover-bg: var(--table-highlight-on-hover-color, var(--table-hover-color))}.m_b242d975{top:var(--table-sticky-header-offset, 0);z-index:3}.m_b242d975:where([data-sticky]){position:sticky}.m_b242d975:where([data-sticky]) :where(.m_4e7aa4f3){position:sticky;top:var(--table-sticky-header-offset, 0);background-color:var(--mantine-color-body)}:where([data-with-table-border]) .m_b242d975[data-sticky]{position:sticky;top:var(--table-sticky-header-offset, 0);z-index:4;border-top:none}:where([data-with-table-border]) .m_b242d975[data-sticky]:before{content:"";display:block;position:absolute;left:0;top:-.5px;width:100%;height:1px;background-color:var(--table-border-color);z-index:5}:where([data-with-table-border]) .m_b242d975[data-sticky] .m_4e7aa4f3:first-child{border-top:none}.m_9e5a3ac7{color:var(--mantine-color-dimmed)}.m_9e5a3ac7:where([data-side=top]){margin-bottom:var(--mantine-spacing-xs)}.m_9e5a3ac7:where([data-side=bottom]){margin-top:var(--mantine-spacing-xs)}.m_a100c15{overflow-x:var(--table-overflow)}.m_62259741{min-width:var(--table-min-width);max-height:var(--table-max-height)}[data-mantine-color-scheme=light] .m_89d60db1{--tab-border-color: var(--mantine-color-gray-3)}[data-mantine-color-scheme=dark] .m_89d60db1{--tab-border-color: var(--mantine-color-dark-4)}.m_89d60db1{display:var(--tabs-display);flex-direction:var(--tabs-flex-direction);--tabs-list-direction: row;--tabs-panel-grow: unset;--tabs-display: block;--tabs-flex-direction: row;--tabs-list-border-width: 0;--tabs-list-border-size: 0 0 var(--tabs-list-border-width) 0;--tabs-list-gap: unset;--tabs-list-line-bottom: 0;--tabs-list-line-top: unset;--tabs-list-line-start: 0;--tabs-list-line-end: 0;--tab-radius: var(--tabs-radius) var(--tabs-radius) 0 0;--tab-border-width: 0 0 var(--tabs-list-border-width) 0}.m_89d60db1[data-inverted]{--tabs-list-line-bottom: unset;--tabs-list-line-top: 0;--tab-radius: 0 0 var(--tabs-radius) var(--tabs-radius);--tab-border-width: var(--tabs-list-border-width) 0 0 0}.m_89d60db1[data-inverted] .m_576c9d4:before{top:0;bottom:unset}.m_89d60db1[data-orientation=vertical]{--tabs-list-line-start: unset;--tabs-list-line-end: 0;--tabs-list-line-top: 0;--tabs-list-line-bottom: 0;--tabs-list-border-size: 0 var(--tabs-list-border-width) 0 0;--tab-border-width: 0 var(--tabs-list-border-width) 0 0;--tab-radius: var(--tabs-radius) 0 0 var(--tabs-radius);--tabs-list-direction: column;--tabs-panel-grow: 1;--tabs-display: flex}[dir=rtl] .m_89d60db1[data-orientation=vertical]{--tabs-list-border-size: 0 0 0 var(--tabs-list-border-width);--tab-border-width: 0 0 0 var(--tabs-list-border-width);--tab-radius: 0 var(--tabs-radius) var(--tabs-radius) 0}.m_89d60db1[data-orientation=vertical][data-placement=right]{--tabs-flex-direction: row-reverse;--tabs-list-line-start: 0;--tabs-list-line-end: unset;--tabs-list-border-size: 0 0 0 var(--tabs-list-border-width);--tab-border-width: 0 0 0 var(--tabs-list-border-width);--tab-radius: 0 var(--tabs-radius) var(--tabs-radius) 0}[dir=rtl] .m_89d60db1[data-orientation=vertical][data-placement=right]{--tabs-list-border-size: 0 var(--tabs-list-border-width) 0 0;--tab-border-width: 0 var(--tabs-list-border-width) 0 0;--tab-radius: var(--tabs-radius) 0 0 var(--tabs-radius)}.m_89d60db1[data-variant=default]{--tabs-list-border-width: 2px}[data-mantine-color-scheme=light] .m_89d60db1[data-variant=default]{--tab-hover-color: var(--mantine-color-gray-0)}[data-mantine-color-scheme=dark] .m_89d60db1[data-variant=default]{--tab-hover-color: var(--mantine-color-dark-6)}.m_89d60db1[data-variant=outline]{--tabs-list-border-width: 1px}.m_89d60db1[data-variant=pills]{--tabs-list-gap: calc(var(--mantine-spacing-sm) / 2)}[data-mantine-color-scheme=light] .m_89d60db1[data-variant=pills]{--tab-hover-color: var(--mantine-color-gray-0)}[data-mantine-color-scheme=dark] .m_89d60db1[data-variant=pills]{--tab-hover-color: var(--mantine-color-dark-6)}.m_89d33d6d{display:flex;flex-wrap:wrap;justify-content:var(--tabs-justify, flex-start);flex-direction:var(--tabs-list-direction);gap:var(--tabs-list-gap)}.m_89d33d6d:where([data-grow]) .m_4ec4dce6{flex:1}.m_b0c91715{flex-grow:var(--tabs-panel-grow)}.m_4ec4dce6{position:relative;padding:var(--mantine-spacing-xs) var(--mantine-spacing-md);font-size:var(--mantine-font-size-sm);white-space:nowrap;z-index:0;display:flex;align-items:center;line-height:1;user-select:none}.m_4ec4dce6:where(:disabled,[data-disabled]){opacity:.5;cursor:not-allowed}.m_4ec4dce6:focus{z-index:1}.m_fc420b1f{display:flex;align-items:center;justify-content:center}.m_fc420b1f:where([data-position=left]:not(:only-child)){margin-inline-end:var(--mantine-spacing-xs)}.m_fc420b1f:where([data-position=right]:not(:only-child)){margin-inline-start:var(--mantine-spacing-xs)}.m_42bbd1ae{flex:1;text-align:center}.m_576c9d4{position:relative}.m_576c9d4:before{content:"";position:absolute;border:1px solid var(--tab-border-color);bottom:var(--tabs-list-line-bottom);inset-inline-start:var(--tabs-list-line-start);inset-inline-end:var(--tabs-list-line-end);top:var(--tabs-list-line-top)}.m_539e827b{border-radius:var(--tab-radius);border-width:var(--tab-border-width);border-style:solid;border-color:transparent;background-color:transparent}.m_539e827b:where([data-active]){border-color:var(--tabs-color)}@media(hover:hover){.m_539e827b:hover{background-color:var(--tab-hover-color)}.m_539e827b:hover:where(:not([data-active])){border-color:var(--tab-border-color)}}@media(hover:none){.m_539e827b:active{background-color:var(--tab-hover-color)}.m_539e827b:active:where(:not([data-active])){border-color:var(--tab-border-color)}}@media(hover:hover){.m_539e827b:disabled:hover,.m_539e827b[data-disabled]:hover{background-color:transparent}}@media(hover:none){.m_539e827b:disabled:active,.m_539e827b[data-disabled]:active{background-color:transparent}}.m_6772fbd5{position:relative}.m_6772fbd5:before{content:"";position:absolute;border-color:var(--tab-border-color);border-width:var(--tabs-list-border-size);border-style:solid;bottom:var(--tabs-list-line-bottom);inset-inline-start:var(--tabs-list-line-start);inset-inline-end:var(--tabs-list-line-end);top:var(--tabs-list-line-top)}.m_b59ab47c{border-top:1px solid transparent;border-bottom:1px solid transparent;border-right:1px solid transparent;border-left:1px solid transparent;border-top-color:var(--tab-border-top-color);border-bottom-color:var(--tab-border-bottom-color);border-radius:var(--tab-radius);position:relative;--tab-border-bottom-color: transparent;--tab-border-top-color: transparent;--tab-border-inline-end-color: transparent;--tab-border-inline-start-color: transparent}.m_b59ab47c:where([data-active]):before{content:"";position:absolute;background-color:var(--tab-border-color);bottom:var(--tab-before-bottom, calc(-.0625rem * var(--mantine-scale)));left:var(--tab-before-left, calc(-.0625rem * var(--mantine-scale)));right:var(--tab-before-right, auto);top:var(--tab-before-top, auto);width:1px;height:1px}.m_b59ab47c:where([data-active]):after{content:"";position:absolute;background-color:var(--tab-border-color);bottom:var(--tab-after-bottom, calc(-.0625rem * var(--mantine-scale)));right:var(--tab-after-right, calc(-.0625rem * var(--mantine-scale)));left:var(--tab-after-left, auto);top:var(--tab-after-top, auto);width:1px;height:1px}.m_b59ab47c:where([data-active]){border-top-color:var(--tab-border-top-color);border-bottom-color:var(--tab-border-bottom-color);border-inline-start-color:var(--tab-border-inline-start-color);border-inline-end-color:var(--tab-border-inline-end-color);--tab-border-top-color: var(--tab-border-color);--tab-border-inline-start-color: var(--tab-border-color);--tab-border-inline-end-color: var(--tab-border-color);--tab-border-bottom-color: var(--mantine-color-body)}.m_b59ab47c:where([data-active])[data-inverted]{--tab-border-bottom-color: var(--tab-border-color);--tab-border-top-color: var(--mantine-color-body);--tab-before-bottom: auto;--tab-before-top: -1px;--tab-after-bottom: auto;--tab-after-top: -1px}.m_b59ab47c:where([data-active])[data-orientation=vertical][data-placement=left]{--tab-border-inline-end-color: var(--mantine-color-body);--tab-border-inline-start-color: var(--tab-border-color);--tab-border-bottom-color: var(--tab-border-color);--tab-before-right: -1px;--tab-before-left: auto;--tab-before-bottom: auto;--tab-before-top: -1px;--tab-after-left: auto;--tab-after-right: -1px}[dir=rtl] .m_b59ab47c:where([data-active])[data-orientation=vertical][data-placement=left]{--tab-before-right: auto;--tab-before-left: -1px;--tab-after-left: -1px;--tab-after-right: auto}.m_b59ab47c:where([data-active])[data-orientation=vertical][data-placement=right]{--tab-border-inline-start-color: var(--mantine-color-body);--tab-border-inline-end-color: var(--tab-border-color);--tab-border-bottom-color: var(--tab-border-color);--tab-before-left: -1px;--tab-before-right: auto;--tab-before-bottom: auto;--tab-before-top: -1px;--tab-after-right: auto;--tab-after-left: -1px}[dir=rtl] .m_b59ab47c:where([data-active])[data-orientation=vertical][data-placement=right]{--tab-before-left: auto;--tab-before-right: -1px;--tab-after-right: -1px;--tab-after-left: auto}.m_c3381914{border-radius:var(--tabs-radius);background-color:var(--tab-bg);color:var(--tab-color);--tab-bg: transparent;--tab-color: inherit}@media(hover:hover){.m_c3381914:not([data-disabled]):hover{--tab-bg: var(--tab-hover-color)}}@media(hover:none){.m_c3381914:not([data-disabled]):active{--tab-bg: var(--tab-hover-color)}}.m_c3381914[data-active][data-active]{--tab-bg: var(--tabs-color);--tab-color: var(--tabs-text-color, var(--mantine-color-white))}@media(hover:hover){.m_c3381914[data-active][data-active]:hover{--tab-bg: var(--tabs-color)}}@media(hover:none){.m_c3381914[data-active][data-active]:active{--tab-bg: var(--tabs-color)}}.m_b6d8b162{-webkit-tap-highlight-color:transparent;text-decoration:none;font-size:var(--text-fz, var(--mantine-font-size-md));line-height:var(--text-lh, var(--mantine-line-height-md));font-weight:400;margin:0;padding:0;color:var(--text-color)}.m_b6d8b162:where([data-truncate]){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.m_b6d8b162:where([data-truncate=start]){direction:rtl;text-align:right}:where([dir=rtl]) .m_b6d8b162:where([data-truncate=start]){direction:ltr;text-align:left}.m_b6d8b162:where([data-variant=gradient]){background-image:var(--text-gradient);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}.m_b6d8b162:where([data-line-clamp]){overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:var(--text-line-clamp);-webkit-box-orient:vertical}.m_b6d8b162:where([data-inherit]){line-height:inherit;font-weight:inherit;font-size:inherit}.m_b6d8b162:where([data-inline]){line-height:1}.m_7341320d{--ti-size-xs: 18px;--ti-size-sm: 22px;--ti-size-md: 28px;--ti-size-lg: 34px;--ti-size-xl: 44px;--ti-size: var(--ti-size-md);line-height:1;display:inline-flex;align-items:center;justify-content:center;position:relative;user-select:none;width:var(--ti-size);height:var(--ti-size);min-width:var(--ti-size);min-height:var(--ti-size);border-radius:var(--ti-radius, var(--mantine-radius-default));background:var(--ti-bg, var(--mantine-primary-color-filled));color:var(--ti-color, var(--mantine-color-white));border:var(--ti-bd, 1px solid transparent)}.m_43657ece{--offset: calc(var(--tl-bullet-size) / 2 + var(--tl-line-width) / 2);--tl-bullet-size: 20px;--tl-line-width: 4px;--tl-radius: 1000px;--tl-color: var(--mantine-primary-color-filled)}.m_43657ece:where([data-align=left]){padding-inline-start:var(--offset)}.m_43657ece:where([data-align=right]){padding-inline-end:var(--offset)}.m_2ebe8099{font-weight:500;line-height:1;margin-bottom:calc(var(--mantine-spacing-xs) / 2)}.m_436178ff{--item-border: var(--tl-line-width) var(--tli-border-style, solid) var(--item-border-color);position:relative;color:var(--mantine-color-text)}.m_436178ff:before{content:"";pointer-events:none;position:absolute;top:0;left:var(--timeline-line-left, 0);right:var(--timeline-line-right, 0);bottom:calc(var(--mantine-spacing-xl) * -1);border-inline-start:var(--item-border);display:var(--timeline-line-display, none)}.m_43657ece[data-align=left] .m_436178ff:before{--timeline-line-left: calc(var(--tl-line-width) * -1);--timeline-line-right: auto}[dir=rtl] .m_43657ece[data-align=left] .m_436178ff:before{--timeline-line-left: auto;--timeline-line-right: calc(var(--tl-line-width) * -1)}.m_43657ece[data-align=right] .m_436178ff:before{--timeline-line-left: auto;--timeline-line-right: calc(var(--tl-line-width) * -1)}[dir=rtl] .m_43657ece[data-align=right] .m_436178ff:before{--timeline-line-left: calc(var(--tl-line-width) * -1);--timeline-line-right: auto}.m_43657ece:where([data-align=left]) .m_436178ff{padding-inline-start:var(--offset);text-align:left}.m_43657ece:where([data-align=right]) .m_436178ff{padding-inline-end:var(--offset);text-align:right}:where([data-mantine-color-scheme=light]) .m_436178ff{--item-border-color: var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_436178ff{--item-border-color: var(--mantine-color-dark-4)}.m_436178ff:where([data-line-active]):before{border-color:var(--tli-color, var(--tl-color))}.m_436178ff:where(:not(:last-of-type)){--timeline-line-display: block}.m_436178ff:where(:not(:first-of-type)){margin-top:var(--mantine-spacing-xl)}.m_8affcee1{width:var(--tl-bullet-size);height:var(--tl-bullet-size);border-radius:var(--tli-radius, var(--tl-radius));border:var(--tl-line-width) solid;background-color:var(--mantine-color-body);position:absolute;top:0;display:flex;align-items:center;justify-content:center;color:var(--mantine-color-text)}:where([data-mantine-color-scheme=light]) .m_8affcee1{border-color:var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_8affcee1{border-color:var(--mantine-color-dark-4)}.m_43657ece:where([data-align=left]) .m_8affcee1{left:calc((var(--tl-bullet-size) / 2 + var(--tl-line-width) / 2) * -1);right:auto}:where([dir=rtl]) .m_43657ece:where([data-align=left]) .m_8affcee1{left:auto;right:calc((var(--tl-bullet-size) / 2 + var(--tl-line-width) / 2) * -1)}.m_43657ece:where([data-align=right]) .m_8affcee1{left:auto;right:calc((var(--tl-bullet-size) / 2 + var(--tl-line-width) / 2) * -1)}:where([dir=rtl]) .m_43657ece:where([data-align=right]) .m_8affcee1{left:calc((var(--tl-bullet-size) / 2 + var(--tl-line-width) / 2) * -1);right:auto}.m_8affcee1:where([data-with-child]){border-width:var(--tl-line-width)}:where([data-mantine-color-scheme=light]) .m_8affcee1:where([data-with-child]){background-color:var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_8affcee1:where([data-with-child]){background-color:var(--mantine-color-dark-4)}.m_8affcee1:where([data-active]){border-color:var(--tli-color, var(--tl-color));background-color:var(--mantine-color-white);color:var(--tl-icon-color, var(--mantine-color-white))}.m_8affcee1:where([data-active]):where([data-with-child]){background-color:var(--tli-color, var(--tl-color));color:var(--tl-icon-color, var(--mantine-color-white))}.m_43657ece:where([data-align=left]) .m_540e8f41{padding-inline-start:var(--offset);text-align:left}:where([dir=rtl]) .m_43657ece:where([data-align=left]) .m_540e8f41{text-align:right}.m_43657ece:where([data-align=right]) .m_540e8f41{padding-inline-end:var(--offset);text-align:right}:where([dir=rtl]) .m_43657ece:where([data-align=right]) .m_540e8f41{text-align:left}.m_8a5d1357{margin:0;font-weight:var(--title-fw);font-size:var(--title-fz);line-height:var(--title-lh);font-family:var(--mantine-font-family-headings);text-wrap:var(--title-text-wrap, var(--mantine-heading-text-wrap))}.m_8a5d1357:where([data-line-clamp]){overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:var(--title-line-clamp);-webkit-box-orient:vertical}.m_1b3c8819{--tooltip-radius: var(--mantine-radius-default);position:absolute;padding:calc(var(--mantine-spacing-xs) / 2) var(--mantine-spacing-xs);pointer-events:none;font-size:var(--mantine-font-size-sm);white-space:nowrap;border-radius:var(--tooltip-radius)}:where([data-mantine-color-scheme=light]) .m_1b3c8819{background-color:var(--tooltip-bg, var(--mantine-color-gray-9));color:var(--tooltip-color, var(--mantine-color-white))}:where([data-mantine-color-scheme=dark]) .m_1b3c8819{background-color:var(--tooltip-bg, var(--mantine-color-gray-2));color:var(--tooltip-color, var(--mantine-color-black))}.m_1b3c8819:where([data-multiline]){white-space:normal}.m_1b3c8819:where([data-fixed]){position:fixed}.m_f898399f{background-color:inherit;border:0;z-index:1}.m_d08caa0 :first-child{margin-top:0}.m_d08caa0 :last-child{margin-bottom:0}.m_d08caa0 :where(h1,h2,h3,h4,h5,h6){margin-bottom:var(--mantine-spacing-xs);text-wrap:var(--mantine-heading-text-wrap);font-family:var(--mantine-font-family-headings)}.m_d08caa0 :where(h1){margin-top:calc(1.5 * var(--mantine-spacing-xl));font-size:var(--mantine-h1-font-size);line-height:var(--mantine-h1-line-height);font-weight:var(--mantine-h1-font-weight)}.m_d08caa0 :where(h2){margin-top:var(--mantine-spacing-xl);font-size:var(--mantine-h2-font-size);line-height:var(--mantine-h2-line-height);font-weight:var(--mantine-h2-font-weight)}.m_d08caa0 :where(h3){margin-top:calc(.8 * var(--mantine-spacing-xl));font-size:var(--mantine-h3-font-size);line-height:var(--mantine-h3-line-height);font-weight:var(--mantine-h3-font-weight)}.m_d08caa0 :where(h4){margin-top:calc(.8 * var(--mantine-spacing-xl));font-size:var(--mantine-h4-font-size);line-height:var(--mantine-h4-line-height);font-weight:var(--mantine-h4-font-weight)}.m_d08caa0 :where(h5){margin-top:calc(.5 * var(--mantine-spacing-xl));font-size:var(--mantine-h5-font-size);line-height:var(--mantine-h5-line-height);font-weight:var(--mantine-h5-font-weight)}.m_d08caa0 :where(h6){margin-top:calc(.5 * var(--mantine-spacing-xl));font-size:var(--mantine-h6-font-size);line-height:var(--mantine-h6-line-height);font-weight:var(--mantine-h6-font-weight)}.m_d08caa0 :where(img){max-width:100%;margin-bottom:var(--mantine-spacing-xs)}.m_d08caa0 :where(p){margin-top:0;margin-bottom:var(--mantine-spacing-lg)}:where([data-mantine-color-scheme=light]) .m_d08caa0 :where(mark){background-color:var(--mantine-color-yellow-2);color:inherit}:where([data-mantine-color-scheme=dark]) .m_d08caa0 :where(mark){background-color:var(--mantine-color-yellow-5);color:var(--mantine-color-black)}.m_d08caa0 :where(a){color:var(--mantine-color-anchor);text-decoration:none}@media(hover:hover){.m_d08caa0 :where(a):hover{text-decoration:underline}}@media(hover:none){.m_d08caa0 :where(a):active{text-decoration:underline}}.m_d08caa0 :where(hr){margin-top:var(--mantine-spacing-md);margin-bottom:var(--mantine-spacing-md);border:0;border-top:1px solid}:where([data-mantine-color-scheme=light]) .m_d08caa0 :where(hr){border-color:var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_d08caa0 :where(hr){border-color:var(--mantine-color-dark-3)}.m_d08caa0 :where(pre){padding:var(--mantine-spacing-xs);line-height:var(--mantine-line-height);margin:0;margin-top:var(--mantine-spacing-md);margin-bottom:var(--mantine-spacing-md);overflow-x:auto;font-family:var(--mantine-font-family-monospace);font-size:var(--mantine-font-size-xs);border-radius:var(--mantine-radius-sm)}:where([data-mantine-color-scheme=light]) .m_d08caa0 :where(pre){background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_d08caa0 :where(pre){background-color:var(--mantine-color-dark-8)}.m_d08caa0 :where(pre) :where(code){background-color:transparent;padding:0;border-radius:0;color:inherit;border:0}.m_d08caa0 :where(kbd){--kbd-fz: 12px;--kbd-padding: 3px 5px;font-family:var(--mantine-font-family-monospace);line-height:var(--mantine-line-height);font-weight:700;padding:var(--kbd-padding);font-size:var(--kbd-fz);border-radius:var(--mantine-radius-sm);border:1px solid;border-bottom-width:3px}:where([data-mantine-color-scheme=light]) .m_d08caa0 :where(kbd){border-color:var(--mantine-color-gray-3);color:var(--mantine-color-gray-7);background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_d08caa0 :where(kbd){border-color:var(--mantine-color-dark-3);color:var(--mantine-color-dark-0);background-color:var(--mantine-color-dark-5)}.m_d08caa0 :where(code){line-height:var(--mantine-line-height);padding:1px 5px;border-radius:var(--mantine-radius-sm);font-family:var(--mantine-font-family-monospace);font-size:var(--mantine-font-size-xs)}:where([data-mantine-color-scheme=light]) .m_d08caa0 :where(code){background-color:var(--mantine-color-gray-0);color:var(--mantine-color-black)}:where([data-mantine-color-scheme=dark]) .m_d08caa0 :where(code){background-color:var(--mantine-color-dark-5);color:var(--mantine-color-white)}.m_d08caa0 :where(ul,ol):not([data-type=taskList]){margin-bottom:var(--mantine-spacing-md);padding-inline-start:var(--mantine-spacing-xl);list-style-position:outside}.m_d08caa0 :where(table){width:100%;border-collapse:collapse;caption-side:bottom;margin-bottom:var(--mantine-spacing-md)}:where([data-mantine-color-scheme=light]) .m_d08caa0 :where(table){--table-border-color: var(--mantine-color-gray-3)}:where([data-mantine-color-scheme=dark]) .m_d08caa0 :where(table){--table-border-color: var(--mantine-color-dark-4)}.m_d08caa0 :where(table) :where(caption){margin-top:var(--mantine-spacing-xs);font-size:var(--mantine-font-size-sm);color:var(--mantine-color-dimmed)}.m_d08caa0 :where(table) :where(th){text-align:left;font-weight:700;font-size:var(--mantine-font-size-sm);padding:var(--mantine-spacing-xs) var(--mantine-spacing-sm)}.m_d08caa0 :where(table) :where(thead th){border-bottom:1px solid;border-color:var(--table-border-color)}.m_d08caa0 :where(table) :where(tfoot th){border-top:1px solid;border-color:var(--table-border-color)}.m_d08caa0 :where(table) :where(td){padding:var(--mantine-spacing-xs) var(--mantine-spacing-sm);border-bottom:1px solid;border-color:var(--table-border-color);font-size:var(--mantine-font-size-sm)}.m_d08caa0 :where(table) :where(tr:last-of-type td){border-bottom:0}.m_d08caa0 :where(blockquote){font-size:var(--mantine-font-size-lg);line-height:var(--mantine-line-height);margin:var(--mantine-spacing-md) 0;border-radius:var(--mantine-radius-sm);padding:var(--mantine-spacing-md) var(--mantine-spacing-lg)}:where([data-mantine-color-scheme=light]) .m_d08caa0 :where(blockquote){background-color:var(--mantine-color-gray-0)}:where([data-mantine-color-scheme=dark]) .m_d08caa0 :where(blockquote){background-color:var(--mantine-color-dark-8)}.bn-mantine{color-scheme:var(--mantine-color-scheme)}.bn-mantine *,.bn-mantine *:before,.bn-mantine *:after{box-sizing:border-box}.bn-mantine button,.bn-mantine select{text-transform:none}.bn-mantine{-webkit-font-smoothing:var(--mantine-webkit-font-smoothing);-moz-osx-font-smoothing:var(--mantine-moz-font-smoothing)}@media screen and (max-device-width:500px){.bn-mantine{-webkit-text-size-adjust:100%}}.bn-mantine{--mantine-z-index-app: 100;--mantine-z-index-modal: 200;--mantine-z-index-popover: 300;--mantine-z-index-overlay: 400;--mantine-z-index-max: 9999;--mantine-scale: 1;--mantine-cursor-type: default;--mantine-webkit-font-smoothing: antialiased;--mantine-moz-font-smoothing: grayscale;--mantine-color-white: #fff;--mantine-color-black: #000;--mantine-line-height: 1.55;--mantine-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;--mantine-font-family-monospace: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;--mantine-font-family-headings: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;--mantine-heading-font-weight: 700;--mantine-heading-text-wrap: wrap;--mantine-radius-default: calc(.25rem * var(--mantine-scale));--mantine-primary-color-filled: var(--mantine-color-blue-filled);--mantine-primary-color-filled-hover: var(--mantine-color-blue-filled-hover);--mantine-primary-color-light: var(--mantine-color-blue-light);--mantine-primary-color-light-hover: var(--mantine-color-blue-light-hover);--mantine-primary-color-light-color: var(--mantine-color-blue-light-color);--mantine-breakpoint-xs: 36em;--mantine-breakpoint-sm: 48em;--mantine-breakpoint-md: 62em;--mantine-breakpoint-lg: 75em;--mantine-breakpoint-xl: 88em;--mantine-spacing-xs: calc(.625rem * var(--mantine-scale));--mantine-spacing-sm: calc(.75rem * var(--mantine-scale));--mantine-spacing-md: calc(1rem * var(--mantine-scale));--mantine-spacing-lg: calc(1.25rem * var(--mantine-scale));--mantine-spacing-xl: calc(2rem * var(--mantine-scale));--mantine-font-size-xs: calc(.75rem * var(--mantine-scale));--mantine-font-size-sm: calc(.875rem * var(--mantine-scale));--mantine-font-size-md: calc(1rem * var(--mantine-scale));--mantine-font-size-lg: calc(1.125rem * var(--mantine-scale));--mantine-font-size-xl: calc(1.25rem * var(--mantine-scale));--mantine-line-height-xs: 1.4;--mantine-line-height-sm: 1.45;--mantine-line-height-md: 1.55;--mantine-line-height-lg: 1.6;--mantine-line-height-xl: 1.65;--mantine-shadow-xs: 0 calc(.0625rem * var(--mantine-scale)) calc(.1875rem * var(--mantine-scale)) rgba(0, 0, 0, .05), 0 calc(.0625rem * var(--mantine-scale)) calc(.125rem * var(--mantine-scale)) rgba(0, 0, 0, .1);--mantine-shadow-sm: 0 calc(.0625rem * var(--mantine-scale)) calc(.1875rem * var(--mantine-scale)) rgba(0, 0, 0, .05), rgba(0, 0, 0, .05) 0 calc(.625rem * var(--mantine-scale)) calc(.9375rem * var(--mantine-scale)) calc(-.3125rem * var(--mantine-scale)), rgba(0, 0, 0, .04) 0 calc(.4375rem * var(--mantine-scale)) calc(.4375rem * var(--mantine-scale)) calc(-.3125rem * var(--mantine-scale));--mantine-shadow-md: 0 calc(.0625rem * var(--mantine-scale)) calc(.1875rem * var(--mantine-scale)) rgba(0, 0, 0, .05), rgba(0, 0, 0, .05) 0 calc(1.25rem * var(--mantine-scale)) calc(1.5625rem * var(--mantine-scale)) calc(-.3125rem * var(--mantine-scale)), rgba(0, 0, 0, .04) 0 calc(.625rem * var(--mantine-scale)) calc(.625rem * var(--mantine-scale)) calc(-.3125rem * var(--mantine-scale));--mantine-shadow-lg: 0 calc(.0625rem * var(--mantine-scale)) calc(.1875rem * var(--mantine-scale)) rgba(0, 0, 0, .05), rgba(0, 0, 0, .05) 0 calc(1.75rem * var(--mantine-scale)) calc(1.4375rem * var(--mantine-scale)) calc(-.4375rem * var(--mantine-scale)), rgba(0, 0, 0, .04) 0 calc(.75rem * var(--mantine-scale)) calc(.75rem * var(--mantine-scale)) calc(-.4375rem * var(--mantine-scale));--mantine-shadow-xl: 0 calc(.0625rem * var(--mantine-scale)) calc(.1875rem * var(--mantine-scale)) rgba(0, 0, 0, .05), rgba(0, 0, 0, .05) 0 calc(2.25rem * var(--mantine-scale)) calc(1.75rem * var(--mantine-scale)) calc(-.4375rem * var(--mantine-scale)), rgba(0, 0, 0, .04) 0 calc(1.0625rem * var(--mantine-scale)) calc(1.0625rem * var(--mantine-scale)) calc(-.4375rem * var(--mantine-scale));--mantine-radius-xs: calc(.125rem * var(--mantine-scale));--mantine-radius-sm: calc(.25rem * var(--mantine-scale));--mantine-radius-md: calc(.5rem * var(--mantine-scale));--mantine-radius-lg: calc(1rem * var(--mantine-scale));--mantine-radius-xl: calc(2rem * var(--mantine-scale));--mantine-primary-color-0: var(--mantine-color-blue-0);--mantine-primary-color-1: var(--mantine-color-blue-1);--mantine-primary-color-2: var(--mantine-color-blue-2);--mantine-primary-color-3: var(--mantine-color-blue-3);--mantine-primary-color-4: var(--mantine-color-blue-4);--mantine-primary-color-5: var(--mantine-color-blue-5);--mantine-primary-color-6: var(--mantine-color-blue-6);--mantine-primary-color-7: var(--mantine-color-blue-7);--mantine-primary-color-8: var(--mantine-color-blue-8);--mantine-primary-color-9: var(--mantine-color-blue-9);--mantine-color-dark-0: #c9c9c9;--mantine-color-dark-1: #b8b8b8;--mantine-color-dark-2: #828282;--mantine-color-dark-3: #696969;--mantine-color-dark-4: #424242;--mantine-color-dark-5: #3b3b3b;--mantine-color-dark-6: #2e2e2e;--mantine-color-dark-7: #242424;--mantine-color-dark-8: #1f1f1f;--mantine-color-dark-9: #141414;--mantine-color-gray-0: #f8f9fa;--mantine-color-gray-1: #f1f3f5;--mantine-color-gray-2: #e9ecef;--mantine-color-gray-3: #dee2e6;--mantine-color-gray-4: #ced4da;--mantine-color-gray-5: #adb5bd;--mantine-color-gray-6: #868e96;--mantine-color-gray-7: #495057;--mantine-color-gray-8: #343a40;--mantine-color-gray-9: #212529;--mantine-color-red-0: #fff5f5;--mantine-color-red-1: #ffe3e3;--mantine-color-red-2: #ffc9c9;--mantine-color-red-3: #ffa8a8;--mantine-color-red-4: #ff8787;--mantine-color-red-5: #ff6b6b;--mantine-color-red-6: #fa5252;--mantine-color-red-7: #f03e3e;--mantine-color-red-8: #e03131;--mantine-color-red-9: #c92a2a;--mantine-color-pink-0: #fff0f6;--mantine-color-pink-1: #ffdeeb;--mantine-color-pink-2: #fcc2d7;--mantine-color-pink-3: #faa2c1;--mantine-color-pink-4: #f783ac;--mantine-color-pink-5: #f06595;--mantine-color-pink-6: #e64980;--mantine-color-pink-7: #d6336c;--mantine-color-pink-8: #c2255c;--mantine-color-pink-9: #a61e4d;--mantine-color-grape-0: #f8f0fc;--mantine-color-grape-1: #f3d9fa;--mantine-color-grape-2: #eebefa;--mantine-color-grape-3: #e599f7;--mantine-color-grape-4: #da77f2;--mantine-color-grape-5: #cc5de8;--mantine-color-grape-6: #be4bdb;--mantine-color-grape-7: #ae3ec9;--mantine-color-grape-8: #9c36b5;--mantine-color-grape-9: #862e9c;--mantine-color-violet-0: #f3f0ff;--mantine-color-violet-1: #e5dbff;--mantine-color-violet-2: #d0bfff;--mantine-color-violet-3: #b197fc;--mantine-color-violet-4: #9775fa;--mantine-color-violet-5: #845ef7;--mantine-color-violet-6: #7950f2;--mantine-color-violet-7: #7048e8;--mantine-color-violet-8: #6741d9;--mantine-color-violet-9: #5f3dc4;--mantine-color-indigo-0: #edf2ff;--mantine-color-indigo-1: #dbe4ff;--mantine-color-indigo-2: #bac8ff;--mantine-color-indigo-3: #91a7ff;--mantine-color-indigo-4: #748ffc;--mantine-color-indigo-5: #5c7cfa;--mantine-color-indigo-6: #4c6ef5;--mantine-color-indigo-7: #4263eb;--mantine-color-indigo-8: #3b5bdb;--mantine-color-indigo-9: #364fc7;--mantine-color-blue-0: #e7f5ff;--mantine-color-blue-1: #d0ebff;--mantine-color-blue-2: #a5d8ff;--mantine-color-blue-3: #74c0fc;--mantine-color-blue-4: #4dabf7;--mantine-color-blue-5: #339af0;--mantine-color-blue-6: #228be6;--mantine-color-blue-7: #1c7ed6;--mantine-color-blue-8: #1971c2;--mantine-color-blue-9: #1864ab;--mantine-color-cyan-0: #e3fafc;--mantine-color-cyan-1: #c5f6fa;--mantine-color-cyan-2: #99e9f2;--mantine-color-cyan-3: #66d9e8;--mantine-color-cyan-4: #3bc9db;--mantine-color-cyan-5: #22b8cf;--mantine-color-cyan-6: #15aabf;--mantine-color-cyan-7: #1098ad;--mantine-color-cyan-8: #0c8599;--mantine-color-cyan-9: #0b7285;--mantine-color-teal-0: #e6fcf5;--mantine-color-teal-1: #c3fae8;--mantine-color-teal-2: #96f2d7;--mantine-color-teal-3: #63e6be;--mantine-color-teal-4: #38d9a9;--mantine-color-teal-5: #20c997;--mantine-color-teal-6: #12b886;--mantine-color-teal-7: #0ca678;--mantine-color-teal-8: #099268;--mantine-color-teal-9: #087f5b;--mantine-color-green-0: #ebfbee;--mantine-color-green-1: #d3f9d8;--mantine-color-green-2: #b2f2bb;--mantine-color-green-3: #8ce99a;--mantine-color-green-4: #69db7c;--mantine-color-green-5: #51cf66;--mantine-color-green-6: #40c057;--mantine-color-green-7: #37b24d;--mantine-color-green-8: #2f9e44;--mantine-color-green-9: #2b8a3e;--mantine-color-lime-0: #f4fce3;--mantine-color-lime-1: #e9fac8;--mantine-color-lime-2: #d8f5a2;--mantine-color-lime-3: #c0eb75;--mantine-color-lime-4: #a9e34b;--mantine-color-lime-5: #94d82d;--mantine-color-lime-6: #82c91e;--mantine-color-lime-7: #74b816;--mantine-color-lime-8: #66a80f;--mantine-color-lime-9: #5c940d;--mantine-color-yellow-0: #fff9db;--mantine-color-yellow-1: #fff3bf;--mantine-color-yellow-2: #ffec99;--mantine-color-yellow-3: #ffe066;--mantine-color-yellow-4: #ffd43b;--mantine-color-yellow-5: #fcc419;--mantine-color-yellow-6: #fab005;--mantine-color-yellow-7: #f59f00;--mantine-color-yellow-8: #f08c00;--mantine-color-yellow-9: #e67700;--mantine-color-orange-0: #fff4e6;--mantine-color-orange-1: #ffe8cc;--mantine-color-orange-2: #ffd8a8;--mantine-color-orange-3: #ffc078;--mantine-color-orange-4: #ffa94d;--mantine-color-orange-5: #ff922b;--mantine-color-orange-6: #fd7e14;--mantine-color-orange-7: #f76707;--mantine-color-orange-8: #e8590c;--mantine-color-orange-9: #d9480f;--mantine-h1-font-size: calc(2.125rem * var(--mantine-scale));--mantine-h1-line-height: 1.3;--mantine-h1-font-weight: 700;--mantine-h2-font-size: calc(1.625rem * var(--mantine-scale));--mantine-h2-line-height: 1.35;--mantine-h2-font-weight: 700;--mantine-h3-font-size: calc(1.375rem * var(--mantine-scale));--mantine-h3-line-height: 1.4;--mantine-h3-font-weight: 700;--mantine-h4-font-size: calc(1.125rem * var(--mantine-scale));--mantine-h4-line-height: 1.45;--mantine-h4-font-weight: 700;--mantine-h5-font-size: calc(1rem * var(--mantine-scale));--mantine-h5-line-height: 1.5;--mantine-h5-font-weight: 700;--mantine-h6-font-size: calc(.875rem * var(--mantine-scale));--mantine-h6-line-height: 1.5;--mantine-h6-font-weight: 700}.bn-mantine[data-mantine-color-scheme=dark]{--mantine-color-scheme: dark;--mantine-primary-color-contrast: var(--mantine-color-white);--mantine-color-bright: var(--mantine-color-white);--mantine-color-text: var(--mantine-color-dark-0);--mantine-color-body: var(--mantine-color-dark-7);--mantine-color-error: var(--mantine-color-red-8);--mantine-color-placeholder: var(--mantine-color-dark-3);--mantine-color-anchor: var(--mantine-color-blue-4);--mantine-color-default: var(--mantine-color-dark-6);--mantine-color-default-hover: var(--mantine-color-dark-5);--mantine-color-default-color: var(--mantine-color-white);--mantine-color-default-border: var(--mantine-color-dark-4);--mantine-color-dimmed: var(--mantine-color-dark-2);--mantine-color-disabled: var(--mantine-color-dark-6);--mantine-color-disabled-color: var(--mantine-color-dark-3);--mantine-color-disabled-border: var(--mantine-color-dark-4);--mantine-color-dark-text: var(--mantine-color-dark-4);--mantine-color-dark-filled: var(--mantine-color-dark-8);--mantine-color-dark-filled-hover: var(--mantine-color-dark-9);--mantine-color-dark-light: rgba(46, 46, 46, .15);--mantine-color-dark-light-hover: rgba(46, 46, 46, .2);--mantine-color-dark-light-color: var(--mantine-color-dark-3);--mantine-color-dark-outline: var(--mantine-color-dark-4);--mantine-color-dark-outline-hover: rgba(66, 66, 66, .05);--mantine-color-gray-text: var(--mantine-color-gray-4);--mantine-color-gray-filled: var(--mantine-color-gray-8);--mantine-color-gray-filled-hover: var(--mantine-color-gray-9);--mantine-color-gray-light: rgba(134, 142, 150, .15);--mantine-color-gray-light-hover: rgba(134, 142, 150, .2);--mantine-color-gray-light-color: var(--mantine-color-gray-3);--mantine-color-gray-outline: var(--mantine-color-gray-4);--mantine-color-gray-outline-hover: rgba(206, 212, 218, .05);--mantine-color-red-text: var(--mantine-color-red-4);--mantine-color-red-filled: var(--mantine-color-red-8);--mantine-color-red-filled-hover: var(--mantine-color-red-9);--mantine-color-red-light: rgba(250, 82, 82, .15);--mantine-color-red-light-hover: rgba(250, 82, 82, .2);--mantine-color-red-light-color: var(--mantine-color-red-3);--mantine-color-red-outline: var(--mantine-color-red-4);--mantine-color-red-outline-hover: rgba(255, 135, 135, .05);--mantine-color-pink-text: var(--mantine-color-pink-4);--mantine-color-pink-filled: var(--mantine-color-pink-8);--mantine-color-pink-filled-hover: var(--mantine-color-pink-9);--mantine-color-pink-light: rgba(230, 73, 128, .15);--mantine-color-pink-light-hover: rgba(230, 73, 128, .2);--mantine-color-pink-light-color: var(--mantine-color-pink-3);--mantine-color-pink-outline: var(--mantine-color-pink-4);--mantine-color-pink-outline-hover: rgba(247, 131, 172, .05);--mantine-color-grape-text: var(--mantine-color-grape-4);--mantine-color-grape-filled: var(--mantine-color-grape-8);--mantine-color-grape-filled-hover: var(--mantine-color-grape-9);--mantine-color-grape-light: rgba(190, 75, 219, .15);--mantine-color-grape-light-hover: rgba(190, 75, 219, .2);--mantine-color-grape-light-color: var(--mantine-color-grape-3);--mantine-color-grape-outline: var(--mantine-color-grape-4);--mantine-color-grape-outline-hover: rgba(218, 119, 242, .05);--mantine-color-violet-text: var(--mantine-color-violet-4);--mantine-color-violet-filled: var(--mantine-color-violet-8);--mantine-color-violet-filled-hover: var(--mantine-color-violet-9);--mantine-color-violet-light: rgba(121, 80, 242, .15);--mantine-color-violet-light-hover: rgba(121, 80, 242, .2);--mantine-color-violet-light-color: var(--mantine-color-violet-3);--mantine-color-violet-outline: var(--mantine-color-violet-4);--mantine-color-violet-outline-hover: rgba(151, 117, 250, .05);--mantine-color-indigo-text: var(--mantine-color-indigo-4);--mantine-color-indigo-filled: var(--mantine-color-indigo-8);--mantine-color-indigo-filled-hover: var(--mantine-color-indigo-9);--mantine-color-indigo-light: rgba(76, 110, 245, .15);--mantine-color-indigo-light-hover: rgba(76, 110, 245, .2);--mantine-color-indigo-light-color: var(--mantine-color-indigo-3);--mantine-color-indigo-outline: var(--mantine-color-indigo-4);--mantine-color-indigo-outline-hover: rgba(116, 143, 252, .05);--mantine-color-blue-text: var(--mantine-color-blue-4);--mantine-color-blue-filled: var(--mantine-color-blue-8);--mantine-color-blue-filled-hover: var(--mantine-color-blue-9);--mantine-color-blue-light: rgba(34, 139, 230, .15);--mantine-color-blue-light-hover: rgba(34, 139, 230, .2);--mantine-color-blue-light-color: var(--mantine-color-blue-3);--mantine-color-blue-outline: var(--mantine-color-blue-4);--mantine-color-blue-outline-hover: rgba(77, 171, 247, .05);--mantine-color-cyan-text: var(--mantine-color-cyan-4);--mantine-color-cyan-filled: var(--mantine-color-cyan-8);--mantine-color-cyan-filled-hover: var(--mantine-color-cyan-9);--mantine-color-cyan-light: rgba(21, 170, 191, .15);--mantine-color-cyan-light-hover: rgba(21, 170, 191, .2);--mantine-color-cyan-light-color: var(--mantine-color-cyan-3);--mantine-color-cyan-outline: var(--mantine-color-cyan-4);--mantine-color-cyan-outline-hover: rgba(59, 201, 219, .05);--mantine-color-teal-text: var(--mantine-color-teal-4);--mantine-color-teal-filled: var(--mantine-color-teal-8);--mantine-color-teal-filled-hover: var(--mantine-color-teal-9);--mantine-color-teal-light: rgba(18, 184, 134, .15);--mantine-color-teal-light-hover: rgba(18, 184, 134, .2);--mantine-color-teal-light-color: var(--mantine-color-teal-3);--mantine-color-teal-outline: var(--mantine-color-teal-4);--mantine-color-teal-outline-hover: rgba(56, 217, 169, .05);--mantine-color-green-text: var(--mantine-color-green-4);--mantine-color-green-filled: var(--mantine-color-green-8);--mantine-color-green-filled-hover: var(--mantine-color-green-9);--mantine-color-green-light: rgba(64, 192, 87, .15);--mantine-color-green-light-hover: rgba(64, 192, 87, .2);--mantine-color-green-light-color: var(--mantine-color-green-3);--mantine-color-green-outline: var(--mantine-color-green-4);--mantine-color-green-outline-hover: rgba(105, 219, 124, .05);--mantine-color-lime-text: var(--mantine-color-lime-4);--mantine-color-lime-filled: var(--mantine-color-lime-8);--mantine-color-lime-filled-hover: var(--mantine-color-lime-9);--mantine-color-lime-light: rgba(130, 201, 30, .15);--mantine-color-lime-light-hover: rgba(130, 201, 30, .2);--mantine-color-lime-light-color: var(--mantine-color-lime-3);--mantine-color-lime-outline: var(--mantine-color-lime-4);--mantine-color-lime-outline-hover: rgba(169, 227, 75, .05);--mantine-color-yellow-text: var(--mantine-color-yellow-4);--mantine-color-yellow-filled: var(--mantine-color-yellow-8);--mantine-color-yellow-filled-hover: var(--mantine-color-yellow-9);--mantine-color-yellow-light: rgba(250, 176, 5, .15);--mantine-color-yellow-light-hover: rgba(250, 176, 5, .2);--mantine-color-yellow-light-color: var(--mantine-color-yellow-3);--mantine-color-yellow-outline: var(--mantine-color-yellow-4);--mantine-color-yellow-outline-hover: rgba(255, 212, 59, .05);--mantine-color-orange-text: var(--mantine-color-orange-4);--mantine-color-orange-filled: var(--mantine-color-orange-8);--mantine-color-orange-filled-hover: var(--mantine-color-orange-9);--mantine-color-orange-light: rgba(253, 126, 20, .15);--mantine-color-orange-light-hover: rgba(253, 126, 20, .2);--mantine-color-orange-light-color: var(--mantine-color-orange-3);--mantine-color-orange-outline: var(--mantine-color-orange-4);--mantine-color-orange-outline-hover: rgba(255, 169, 77, .05)}.bn-mantine[data-mantine-color-scheme=light]{--mantine-color-scheme: light;--mantine-primary-color-contrast: var(--mantine-color-white);--mantine-color-bright: var(--mantine-color-black);--mantine-color-text: #000;--mantine-color-body: #fff;--mantine-color-error: var(--mantine-color-red-6);--mantine-color-placeholder: var(--mantine-color-gray-5);--mantine-color-anchor: var(--mantine-color-blue-6);--mantine-color-default: var(--mantine-color-white);--mantine-color-default-hover: var(--mantine-color-gray-0);--mantine-color-default-color: var(--mantine-color-black);--mantine-color-default-border: var(--mantine-color-gray-4);--mantine-color-dimmed: var(--mantine-color-gray-6);--mantine-color-disabled: var(--mantine-color-gray-2);--mantine-color-disabled-color: var(--mantine-color-gray-5);--mantine-color-disabled-border: var(--mantine-color-gray-3);--mantine-color-dark-text: var(--mantine-color-dark-filled);--mantine-color-dark-filled: var(--mantine-color-dark-6);--mantine-color-dark-filled-hover: var(--mantine-color-dark-7);--mantine-color-dark-light: rgba(46, 46, 46, .1);--mantine-color-dark-light-hover: rgba(46, 46, 46, .12);--mantine-color-dark-light-color: var(--mantine-color-dark-6);--mantine-color-dark-outline: var(--mantine-color-dark-6);--mantine-color-dark-outline-hover: rgba(46, 46, 46, .05);--mantine-color-gray-text: var(--mantine-color-gray-filled);--mantine-color-gray-filled: var(--mantine-color-gray-6);--mantine-color-gray-filled-hover: var(--mantine-color-gray-7);--mantine-color-gray-light: rgba(134, 142, 150, .1);--mantine-color-gray-light-hover: rgba(134, 142, 150, .12);--mantine-color-gray-light-color: var(--mantine-color-gray-6);--mantine-color-gray-outline: var(--mantine-color-gray-6);--mantine-color-gray-outline-hover: rgba(134, 142, 150, .05);--mantine-color-red-text: var(--mantine-color-red-filled);--mantine-color-red-filled: var(--mantine-color-red-6);--mantine-color-red-filled-hover: var(--mantine-color-red-7);--mantine-color-red-light: rgba(250, 82, 82, .1);--mantine-color-red-light-hover: rgba(250, 82, 82, .12);--mantine-color-red-light-color: var(--mantine-color-red-6);--mantine-color-red-outline: var(--mantine-color-red-6);--mantine-color-red-outline-hover: rgba(250, 82, 82, .05);--mantine-color-pink-text: var(--mantine-color-pink-filled);--mantine-color-pink-filled: var(--mantine-color-pink-6);--mantine-color-pink-filled-hover: var(--mantine-color-pink-7);--mantine-color-pink-light: rgba(230, 73, 128, .1);--mantine-color-pink-light-hover: rgba(230, 73, 128, .12);--mantine-color-pink-light-color: var(--mantine-color-pink-6);--mantine-color-pink-outline: var(--mantine-color-pink-6);--mantine-color-pink-outline-hover: rgba(230, 73, 128, .05);--mantine-color-grape-text: var(--mantine-color-grape-filled);--mantine-color-grape-filled: var(--mantine-color-grape-6);--mantine-color-grape-filled-hover: var(--mantine-color-grape-7);--mantine-color-grape-light: rgba(190, 75, 219, .1);--mantine-color-grape-light-hover: rgba(190, 75, 219, .12);--mantine-color-grape-light-color: var(--mantine-color-grape-6);--mantine-color-grape-outline: var(--mantine-color-grape-6);--mantine-color-grape-outline-hover: rgba(190, 75, 219, .05);--mantine-color-violet-text: var(--mantine-color-violet-filled);--mantine-color-violet-filled: var(--mantine-color-violet-6);--mantine-color-violet-filled-hover: var(--mantine-color-violet-7);--mantine-color-violet-light: rgba(121, 80, 242, .1);--mantine-color-violet-light-hover: rgba(121, 80, 242, .12);--mantine-color-violet-light-color: var(--mantine-color-violet-6);--mantine-color-violet-outline: var(--mantine-color-violet-6);--mantine-color-violet-outline-hover: rgba(121, 80, 242, .05);--mantine-color-indigo-text: var(--mantine-color-indigo-filled);--mantine-color-indigo-filled: var(--mantine-color-indigo-6);--mantine-color-indigo-filled-hover: var(--mantine-color-indigo-7);--mantine-color-indigo-light: rgba(76, 110, 245, .1);--mantine-color-indigo-light-hover: rgba(76, 110, 245, .12);--mantine-color-indigo-light-color: var(--mantine-color-indigo-6);--mantine-color-indigo-outline: var(--mantine-color-indigo-6);--mantine-color-indigo-outline-hover: rgba(76, 110, 245, .05);--mantine-color-blue-text: var(--mantine-color-blue-filled);--mantine-color-blue-filled: var(--mantine-color-blue-6);--mantine-color-blue-filled-hover: var(--mantine-color-blue-7);--mantine-color-blue-light: rgba(34, 139, 230, .1);--mantine-color-blue-light-hover: rgba(34, 139, 230, .12);--mantine-color-blue-light-color: var(--mantine-color-blue-6);--mantine-color-blue-outline: var(--mantine-color-blue-6);--mantine-color-blue-outline-hover: rgba(34, 139, 230, .05);--mantine-color-cyan-text: var(--mantine-color-cyan-filled);--mantine-color-cyan-filled: var(--mantine-color-cyan-6);--mantine-color-cyan-filled-hover: var(--mantine-color-cyan-7);--mantine-color-cyan-light: rgba(21, 170, 191, .1);--mantine-color-cyan-light-hover: rgba(21, 170, 191, .12);--mantine-color-cyan-light-color: var(--mantine-color-cyan-6);--mantine-color-cyan-outline: var(--mantine-color-cyan-6);--mantine-color-cyan-outline-hover: rgba(21, 170, 191, .05);--mantine-color-teal-text: var(--mantine-color-teal-filled);--mantine-color-teal-filled: var(--mantine-color-teal-6);--mantine-color-teal-filled-hover: var(--mantine-color-teal-7);--mantine-color-teal-light: rgba(18, 184, 134, .1);--mantine-color-teal-light-hover: rgba(18, 184, 134, .12);--mantine-color-teal-light-color: var(--mantine-color-teal-6);--mantine-color-teal-outline: var(--mantine-color-teal-6);--mantine-color-teal-outline-hover: rgba(18, 184, 134, .05);--mantine-color-green-text: var(--mantine-color-green-filled);--mantine-color-green-filled: var(--mantine-color-green-6);--mantine-color-green-filled-hover: var(--mantine-color-green-7);--mantine-color-green-light: rgba(64, 192, 87, .1);--mantine-color-green-light-hover: rgba(64, 192, 87, .12);--mantine-color-green-light-color: var(--mantine-color-green-6);--mantine-color-green-outline: var(--mantine-color-green-6);--mantine-color-green-outline-hover: rgba(64, 192, 87, .05);--mantine-color-lime-text: var(--mantine-color-lime-filled);--mantine-color-lime-filled: var(--mantine-color-lime-6);--mantine-color-lime-filled-hover: var(--mantine-color-lime-7);--mantine-color-lime-light: rgba(130, 201, 30, .1);--mantine-color-lime-light-hover: rgba(130, 201, 30, .12);--mantine-color-lime-light-color: var(--mantine-color-lime-6);--mantine-color-lime-outline: var(--mantine-color-lime-6);--mantine-color-lime-outline-hover: rgba(130, 201, 30, .05);--mantine-color-yellow-text: var(--mantine-color-yellow-filled);--mantine-color-yellow-filled: var(--mantine-color-yellow-6);--mantine-color-yellow-filled-hover: var(--mantine-color-yellow-7);--mantine-color-yellow-light: rgba(250, 176, 5, .1);--mantine-color-yellow-light-hover: rgba(250, 176, 5, .12);--mantine-color-yellow-light-color: var(--mantine-color-yellow-6);--mantine-color-yellow-outline: var(--mantine-color-yellow-6);--mantine-color-yellow-outline-hover: rgba(250, 176, 5, .05);--mantine-color-orange-text: var(--mantine-color-orange-filled);--mantine-color-orange-filled: var(--mantine-color-orange-6);--mantine-color-orange-filled-hover: var(--mantine-color-orange-7);--mantine-color-orange-light: rgba(253, 126, 20, .1);--mantine-color-orange-light-hover: rgba(253, 126, 20, .12);--mantine-color-orange-light-color: var(--mantine-color-orange-6);--mantine-color-orange-outline: var(--mantine-color-orange-6);--mantine-color-orange-outline-hover: rgba(253, 126, 20, .05)}.bn-block-outer{line-height:1.5;transition:margin .2s}.bn-block{flex-direction:column;display:flex}.bn-block-content{width:100%;padding:3px 0;transition:font-size .2s;display:flex}.bn-block-content.ProseMirror-selectednode>*,.ProseMirror-selectednode>.bn-block-content>*,.bn-block-content .ProseMirror-selectednode,.bn-inline-content .ProseMirror-selectednode{position:relative}.bn-block-content.ProseMirror-selectednode>:after,.ProseMirror-selectednode>.bn-block-content>:after,.bn-block-content .ProseMirror-selectednode:after,.bn-inline-content .ProseMirror-selectednode:after{content:"";pointer-events:none;background-color:#64a0ff14;border-radius:4px;position:absolute;inset:0;box-shadow:inset 0 0 0 4px #64a0ff4d}.bn-block-content:before{content:"";height:0;margin-right:0;transition:all .2s;overflow:visible}.bn-inline-content{white-space:pre-wrap}.bn-trailing-block{cursor:text;-webkit-user-select:none;user-select:none;height:30px}.bn-block-group .bn-block-group{margin-left:24px}.bn-block-group .bn-block-group>.bn-block-outer{position:relative}.bn-block-group .bn-block-group>.bn-block-outer:not([data-prev-depth-changed]):before{content:" ";height:100%;transition:all .2s .1s;display:inline;position:absolute;left:-20px}.bn-block-group .bn-block-group>.bn-block-outer[data-prev-depth-change="-2"]:before{height:0}.bn-inline-content code{font-family:monospace}[data-prev-depth-change="1"]{--x:1}[data-prev-depth-change="2"]{--x:2}[data-prev-depth-change="3"]{--x:3}[data-prev-depth-change="4"]{--x:4}[data-prev-depth-change="5"]{--x:5}[data-prev-depth-change="-1"]{--x:-1}[data-prev-depth-change="-2"]{--x:-2}[data-prev-depth-change="-3"]{--x:-3}[data-prev-depth-change="-4"]{--x:-4}[data-prev-depth-change="-5"]{--x:-5}.bn-block-outer[data-prev-depth-change]{margin-left:calc(10px * var(--x))}.bn-block-outer[data-prev-depth-change] .bn-block-outer[data-prev-depth-change]{margin-left:0}[data-content-type=heading]{--level:3em;padding-top:18px}[data-content-type=heading][data-level="2"]{--level:2em}[data-content-type=heading][data-level="3"]{--level:1.3em}[data-content-type=heading][data-level="4"]{--level:1em}[data-content-type=heading][data-level="5"]{--level:.9em}[data-content-type=heading][data-level="6"]{--level:.8em}[data-prev-level="1"]{--prev-level:3em}[data-prev-level="2"]{--prev-level:2em}[data-prev-level="3"]{--prev-level:1.3em}[data-prev-level="4"]{--prev-level:1em}[data-prev-level="5"]{--prev-level:.9em}[data-prev-level="6"]{--prev-level:.8em}.bn-block-outer[data-prev-type=heading]>.bn-block>.bn-block-content{font-size:var(--prev-level);font-weight:700}.bn-block-outer:not([data-prev-type])>.bn-block>.bn-block-content[data-content-type=heading],.bn-block-outer:not([data-prev-type])>.bn-block>div[data-type=modification]>div[data-type=modification]>.bn-block-content[data-content-type=heading],.bn-block-outer:not([data-prev-type])>.bn-block>:is(ins,del)>.bn-suggestion-node>.bn-block-content[data-content-type=heading]{font-size:var(--level);font-weight:700}[data-content-type=quote] blockquote{color:#7d797a;border-left:2px solid #7d797a;margin:0;padding-left:1em}[data-content-type=divider] hr{border:none;border-top:1px solid #7d797a;flex:1;margin:.5em 0}.bn-block-content:before{content:"";margin-right:0}.bn-block-content[data-content-type=numberedListItem]:before{justify-content:center;min-width:24px;padding-right:4px;display:flex}[data-content-type=numberedListItem]{--index:attr(data-index)}[data-prev-type=numberedListItem]{--prev-index:attr(data-prev-index)}.bn-block-outer[data-prev-type=numberedListItem]:not([data-prev-index=none])>.bn-block>.bn-block-content:before{content:var(--prev-index) "."}.bn-block-outer:not([data-prev-type])>.bn-block>.bn-block-content[data-content-type=numberedListItem]:before,.bn-block-outer:not([data-prev-type])>.bn-block>div[data-type=modification]>.bn-block-content[data-content-type=numberedListItem]:before,.bn-block-outer:not([data-prev-type])>.bn-block>:is(ins,del)>.bn-suggestion-node>.bn-block-content[data-content-type=numberedListItem]:before{content:var(--index) "."}.bn-block-content[data-content-type=bulletListItem]:before{justify-content:center;min-width:24px;padding-right:4px;display:flex}.bn-block-content[data-content-type=checkListItem]>div:has(>input){height:24px}.bn-block-content[data-content-type=checkListItem]>div>input{cursor:pointer;margin-left:4px;margin-right:8px;width:12px;height:24px;margin-block:0}.bn-block-content[data-content-type=checkListItem][data-checked=true] .bn-inline-content{text-decoration:line-through}.bn-block-content[data-text-alignment=center]{justify-content:center}.bn-block-content[data-text-alignment=right]{justify-content:flex-end}:is(.bn-block:has(>.bn-block-content>div>.bn-toggle-wrapper[data-show-children=false])>.bn-block-group,.bn-block:has(>.react-renderer>.bn-block-content>div>.bn-toggle-wrapper[data-show-children=false])>.bn-block-group){display:none}.bn-toggle-wrapper{align-items:center;display:flex}.bn-toggle-button{color:var(--bn-colors-editor-text);padding:3px}.bn-toggle-button>svg{width:18px;height:18px}.bn-toggle-wrapper[data-show-children=true] .bn-toggle-button{transform:rotate(90deg)}.bn-toggle-add-block-button{color:var(--bn-colors-side-menu);width:fit-content;margin-left:22px;padding-inline:2px;font-size:16px;font-weight:400}.bn-toggle-button,.bn-toggle-add-block-button{border-radius:var(--bn-border-radius-small);cursor:pointer;-webkit-user-select:none;user-select:none;background:0 0;border:none;display:flex}.bn-toggle-button:hover,.bn-toggle-add-block-button:hover{background-color:var(--bn-colors-hovered-background)}.bn-block-outer[data-prev-type=bulletListItem]>.bn-block>.bn-block-content:before,.bn-block-outer:not([data-prev-type])>.bn-block>.bn-block-content[data-content-type=bulletListItem]:before,.bn-block-outer:not([data-prev-type])>.bn-block>div[data-type=modification]>.bn-block-content[data-content-type=bulletListItem]:before,.bn-block-outer:not([data-prev-type])>.bn-block>:is(ins,del)>.bn-suggestion-node .bn-block-content[data-content-type=bulletListItem]:before{content:"\\2022"}[data-content-type=bulletListItem]~.bn-block-group>.bn-block-outer[data-prev-type=bulletListItem]>.bn-block>.bn-block-content:before,[data-content-type=bulletListItem]~.bn-block-group>.bn-block-outer:not([data-prev-type])>.bn-block>.bn-block-content[data-content-type=bulletListItem]:before,[data-content-type=bulletListItem]~.bn-block-group>.bn-block-outer:not([data-prev-type])>.bn-block>div[data-type=modification]>.bn-block-content[data-content-type=bulletListItem]:before{content:"\\25e6"}[data-content-type=bulletListItem]~.bn-block-group [data-content-type=bulletListItem]~.bn-block-group>.bn-block-outer[data-prev-type=bulletListItem]>.bn-block>.bn-block-content:before,[data-content-type=bulletListItem]~.bn-block-group [data-content-type=bulletListItem]~.bn-block-group>.bn-block-outer:not([data-prev-type])>.bn-block>.bn-block-content[data-content-type=bulletListItem]:before,[data-content-type=bulletListItem]~.bn-block-group [data-content-type=bulletListItem]~.bn-block-group>.bn-block-outer:not([data-prev-type])>.bn-block>div[data-type=modification]>.bn-block-content[data-content-type=bulletListItem]:before{content:"\\25aa\\fe0e"}.bn-block-content[data-content-type=codeBlock]{color:#fff;background-color:#161616;border-radius:8px;position:relative}.bn-block-content[data-content-type=codeBlock]>pre{white-space:pre;tab-size:2;width:100%;margin:0;padding:24px;overflow-x:auto}.bn-block-content[data-content-type=codeBlock]>div{outline:none!important}.bn-block-content[data-content-type=codeBlock]>div>select{appearance:none;-webkit-user-select:none;user-select:none;cursor:pointer;color:#fff;opacity:0;background-color:#0000;border:none;font-size:.8em;transition:opacity .3s 1s;position:absolute;top:8px;left:18px;outline:none!important}.bn-block-content[data-content-type=codeBlock]>div>select>option{color:#000}.bn-block-content[data-content-type=codeBlock]:hover>div>select,.bn-block-content[data-content-type=codeBlock]>div>select:focus{opacity:.5;transition-delay:.1s}.bn-block-content[data-content-type=codeBlock]:has(.bn-preview-with-source-popup){color:inherit;background-color:#0000}.shiki{color:var(--shiki-dark)}.bn-source-block-popup .shiki{color:var(--shiki-light)}.bn-root[data-color-scheme=dark] .bn-source-block-popup .shiki{color:var(--shiki-dark)}.bn-preview-with-source-popup{position:relative}.bn-block-content .bn-preview-with-source-popup{width:100%;padding:12px;display:flex}.bn-inline-content-section .bn-preview-with-source-popup{width:fit-content;padding:0;display:inline-block}.bn-preview-container{anchor-name:--bn-source-popup-anchor;cursor:pointer}.bn-block-content .bn-preview-container{width:100%;overflow:auto}.bn-inline-content-section .bn-preview-container{width:fit-content;overflow:visible}.bn-block-content .bn-preview-container .katex-html:has(>.tag){box-sizing:border-box;width:max-content;min-width:100%;padding-right:2.5em}.bn-source-block-popup{box-shadow:none;color:#0000;z-index:0;background-color:#0000;border:none;border-radius:0;width:0;height:0;margin-top:4px;position:absolute;top:100%;left:0;overflow:clip}.bn-preview-with-source-popup[data-open=true] .bn-source-block-popup{background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);color:var(--bn-colors-menu-text);height:unset;z-index:1}.bn-block-content .bn-preview-with-source-popup[data-open=true] .bn-source-block-popup{width:100%}.bn-inline-content-section .bn-preview-with-source-popup[data-open=true] .bn-source-block-popup{width:300px}.bn-code-block-source-popup-body{align-items:flex-end;display:flex}.bn-code-block-source-popup-body>pre{tab-size:2;white-space:pre;flex:1;align-self:center;width:0;max-height:200px;margin:0;padding:16px;position:relative;overflow:auto}.bn-code-block-source-popup-input-empty:before{color:currentColor;content:attr(data-placeholder);opacity:.5;pointer-events:none;text-overflow:ellipsis;white-space:nowrap;position:absolute;top:16px;left:16px;right:16px;overflow:hidden}.bn-code-block-source-error{border-top:var(--bn-border);color:var(--bn-colors-highlights-red-text);padding:8px 16px;font-family:monospace;font-size:.8em;white-space:pre-wrap!important}.bn-code-block-source-popup-ok-button-wrapper{justify-content:flex-end;align-items:flex-end;padding:14px 16px}.bn-code-block-source-popup-ok-button{appearance:none;border-radius:var(--bn-border-radius-small);color:#fff;cursor:pointer;background-color:#2563eb;border:none;align-items:center;gap:4px;padding:4px 8px;font-size:.8em;font-weight:500;display:flex}.bn-code-block-source-popup-ok-button-icon{width:1.2em;height:1.2em}.bn-code-block-source-popup-ok-button:hover{background-color:#1d4ed8}.bn-preview-with-source-popup:has(.bn-preview-placeholder){padding:0}.bn-preview-placeholder{color:#5f5b5c;background-color:#f2f1ee;border-radius:4px;align-items:center;display:flex}.bn-block-content .bn-preview-placeholder{gap:10px;padding:12px}.bn-inline-content-section .bn-preview-placeholder{gap:4px;padding:0 4px}.bn-preview-placeholder:where(.dark,.dark *){color:#bebebe;background-color:#464646}.bn-editor[contenteditable=true] .bn-preview-placeholder:not(.bn-preview-placeholder-error):hover{background-color:#e1e1e1}.bn-editor[contenteditable=true] .bn-preview-placeholder:not(.bn-preview-placeholder-error):hover:where(.dark,.dark *){background-color:#5a5a5a}.bn-preview-placeholder-error{background-color:var(--bn-colors-highlights-red-background);color:var(--bn-colors-highlights-red-text)}.bn-preview-placeholder-icon{align-items:center;display:flex}.bn-block-content .bn-preview-placeholder-icon{width:24px;height:24px}.bn-inline-content-section .bn-preview-placeholder-icon{width:14px;height:14px}.bn-preview-placeholder-icon>svg{width:100%;height:100%}.bn-preview-placeholder-text{margin:0}.bn-block-content .bn-preview-placeholder-text{font-size:.9rem}.bn-inline-content-section .bn-preview-placeholder-text{font-size:.7rem}.bn-suppress-source-popup-caret .bn-inline-content-section .bn-preview-with-source-popup:not([data-open=true]) .bn-source-block-popup{visibility:hidden}.bn-block-content[data-content-type=pageBreak]>div{border-top:2px dotted #7d797a;width:100%;height:0;margin-block:11px}@media print{.bn-block-content[data-content-type=pageBreak]>div{page-break-after:always}}[data-file-block] .bn-file-block-content-wrapper{cursor:pointer;-webkit-user-select:none;user-select:none;flex-direction:column;margin:0;display:flex}:is([data-file-block] .bn-file-block-content-wrapper:has(.bn-add-file-button),[data-file-block] .bn-file-block-content-wrapper:has(.bn-file-name-with-icon)){width:100%}[data-file-block] .bn-add-file-button{color:#7d797a;background-color:#f2f1ee;border-radius:4px;align-items:center;gap:10px;padding:12px;display:flex}[data-file-block] .bn-add-file-button:where(.dark,.dark *){color:#bebebe;background-color:#464646}.bn-editor[contenteditable=true] [data-file-block] .bn-add-file-button:hover,[data-file-block] .bn-file-name-with-icon:hover,.ProseMirror-selectednode .bn-file-name-with-icon{background-color:#e1e1e1}.bn-editor[contenteditable=true] [data-file-block] .bn-add-file-button:hover:where(.dark,.dark *),[data-file-block] .bn-file-name-with-icon:hover:where(.dark,.dark *),.ProseMirror-selectednode .bn-file-name-with-icon:where(.dark,.dark *){background-color:#5a5a5a}[data-file-block] .bn-add-file-button-icon,[data-file-block] .bn-file-icon{width:24px;height:24px}[data-file-block] .bn-add-file-button-text{font-size:.9rem}[data-file-block] .bn-file-name-with-icon{border-radius:4px;gap:4px;padding:4px;display:flex}[data-file-block] .bn-file-caption{word-break:break-word;padding-block:4px;font-size:.8em}[data-file-block] .bn-file-caption:empty{padding-block:0}[data-file-block] .bn-resize-handle{cursor:ew-resize;background-color:#000;border:1px solid #fff;border-radius:4px;width:8px;height:30px;position:absolute}[data-file-block] .bn-visual-media-wrapper{align-items:center;max-width:100%;display:flex;position:relative}[data-file-block] .bn-visual-media{border-radius:4px;width:100%}[data-content-type=audio]>.bn-file-block-content-wrapper,.bn-audio{width:100%}.bn-block-content:has(.ProseMirror-trailingBreak:only-child):after{pointer-events:none;max-width:100%;margin-inline:-2px;font-style:italic}.bn-block:has(>.bn-block-content[data-text-color=gray]){color:#9b9a97}.bn-block:has(>.bn-block-content[data-text-color=brown]){color:#64473a}.bn-block:has(>.bn-block-content[data-text-color=red]){color:#e03e3e}.bn-block:has(>.bn-block-content[data-text-color=orange]){color:#d9730d}.bn-block:has(>.bn-block-content[data-text-color=yellow]){color:#dfab01}.bn-block:has(>.bn-block-content[data-text-color=green]){color:#4d6461}.bn-block:has(>.bn-block-content[data-text-color=blue]){color:#0b6e99}.bn-block:has(>.bn-block-content[data-text-color=purple]){color:#6940a5}.bn-block:has(>.bn-block-content[data-text-color=pink]){color:#ad1a72}.bn-block:has(>.bn-block-content[data-background-color=gray]){background-color:#ebeced}.bn-block:has(>.bn-block-content[data-background-color=brown]){background-color:#e9e5e3}.bn-block:has(>.bn-block-content[data-background-color=red]){background-color:#fbe4e4}.bn-block:has(>.bn-block-content[data-background-color=orange]){background-color:#f6e9d9}.bn-block:has(>.bn-block-content[data-background-color=yellow]){background-color:#fbf3db}.bn-block:has(>.bn-block-content[data-background-color=green]){background-color:#ddedea}.bn-block:has(>.bn-block-content[data-background-color=blue]){background-color:#ddebf1}.bn-block:has(>.bn-block-content[data-background-color=purple]){background-color:#eae4f2}.bn-block:has(>.bn-block-content[data-background-color=pink]){background-color:#f4dfeb}[data-text-alignment=left]{text-align:left!important;justify-content:flex-start!important}[data-text-alignment=center]{text-align:center!important;justify-content:center!important}[data-text-alignment=right]{text-align:right!important;justify-content:flex-end!important}[data-text-alignment=justify]{text-align:justify!important;justify-content:flex-start!important}.bn-block-column-list{flex-direction:row;display:flex}.bn-block-column{flex-direction:column;flex:1;padding:12px 15px 12px 25px;display:flex;overflow-x:auto}.bn-editor[contenteditable=true] .bn-column-list-hovered>.bn-block-column:not(:last-child){transition:box-shadow .2s .2s;box-shadow:4px 0 #eee}.bn-editor[contenteditable=true] .bn-column-list-hovered>.bn-block-column:not(:last-child):where(.dark,.dark *){box-shadow:4px 0 #464646}.bn-editor[contenteditable=true] .bn-column-list-hovered>.bn-block-column.bn-column-resize-border{cursor:col-resize;transition:box-shadow .2s;box-shadow:4px 0 #ccc}.bn-editor[contenteditable=true] .bn-column-list-hovered>.bn-block-column.bn-column-resize-border:where(.dark,.dark *){box-shadow:4px 0 #6e6e6e}.bn-editor[contenteditable=true] .bn-block-column.bn-column-resize-border+.bn-block-column{cursor:col-resize}.bn-block-column>.bn-trailing-block{flex-grow:1;height:auto}.bn-block-column:first-child{padding-left:0}.bn-block-column:last-child{padding-right:0}.bn-thread-mark:not([data-orphan=true]){background:#ffc80026}.bn-thread-mark .bn-thread-mark-selected{background:#ffc80040}div[data-type=modification]{display:inline}.bn-root ins,.bn-root del{background-color:color-mix(in srgb,var(--user-color-light) 50%,white);color:var(--user-color-dark);border-radius:4px;text-decoration:none;position:relative}.dark.bn-root ins,.dark.bn-root del{background-color:color-mix(in srgb,var(--user-color-dark) 50%,black);color:var(--user-color-light)}.bn-suggestion-mark{background-color:color-mix(in srgb,var(--user-color-light) 50%,white);color:var(--user-color-dark);border-radius:4px}.dark.bn-root .bn-suggestion-mark{background-color:color-mix(in srgb,var(--user-color-dark) 50%,black);color:#fff}.bn-suggestion-node>*{background-color:color-mix(in srgb,var(--user-color-light) 50%,white);border-radius:4px}.dark.bn-root .bn-suggestion-node>*{background-color:color-mix(in srgb,var(--user-color-dark) 50%,black)}.bn-suggestion-node--delete>:first-child:before{content:var(--deleted-label,"Deleted");text-transform:uppercase;letter-spacing:.04em;vertical-align:middle;color:var(--bn-colors-editor-text);margin-right:6px;padding:0 4px;font-size:11px;font-weight:700;line-height:1.4;display:inline-block}.bn-suggestion-node:has(.bn-block-content)>*{background-color:#0000}.dark.bn-root .bn-suggestion-node:has(.bn-block-content)>*{background-color:#0000}.bn-suggestion-node--delete:has(.bn-block-content)>:first-child:before{content:none}.bn-suggestion-node--delete .bn-block-content .bn-inline-content{color:var(--user-color-dark);text-decoration:line-through}.dark.bn-root .bn-suggestion-node--delete .bn-block-content .bn-inline-content{color:var(--user-color-light)}.bn-suggestion-node--delete :is(td,th) p{color:var(--user-color-dark);text-decoration:line-through}.dark.bn-root .bn-suggestion-node--delete :is(td,th) p{color:var(--user-color-light)}.bn-suggestion-node--delete>:is(table,tr,td,th):first-child:before{content:none}.bn-suggestion-node .bn-block-content:not(:has(.bn-inline-content)){background-color:color-mix(in srgb,var(--user-color-light) 50%,white);border-radius:16px;padding:12px}.dark.bn-root .bn-suggestion-node .bn-block-content:not(:has(.bn-inline-content)){background-color:color-mix(in srgb,var(--user-color-dark) 50%,black)}.bn-suggestion-node .bn-block-content:not(:has(.bn-inline-content)):has(>.bn-file-block-content-wrapper){width:fit-content}.bn-suggestion-node--delete .bn-block-content:not(:has(.bn-inline-content)){padding:48px 24px 24px;position:relative}.bn-suggestion-node--delete .bn-block-content:not(:has(.bn-inline-content)):before{content:var(--deleted-label,"Deleted");color:var(--bn-colors-editor-text);font-size:18px;font-weight:500;line-height:1.2;position:absolute;top:16px;left:24px}[data-type=modification] .bn-suggestion-mark,[data-type=modification] .bn-suggestion-node>*{color:inherit;-webkit-text-decoration:underline dotted;text-decoration:underline dotted;-webkit-text-decoration-color:var(--user-color-dark);text-decoration-color:var(--user-color-dark);text-underline-offset:2px;background-color:#0000;text-decoration-thickness:2px}.dark.bn-root [data-type=modification] .bn-suggestion-mark,.dark.bn-root [data-type=modification] .bn-suggestion-node>*{color:inherit;-webkit-text-decoration-color:var(--user-color-light);text-decoration-color:var(--user-color-light);background-color:#0000}[data-type=modification] .bn-suggestion-mark:hover,[data-type=modification] .bn-suggestion-node:hover>*{background-color:color-mix(in srgb,var(--user-color-light) 50%,white);border-radius:4px}.dark.bn-root [data-type=modification] .bn-suggestion-mark:hover,.dark.bn-root [data-type=modification] .bn-suggestion-node:hover>*{background-color:color-mix(in srgb,var(--user-color-dark) 50%,black)}.bn-suggestion-mark--delete{color:var(--user-color-dark);background-color:#0000;text-decoration:line-through}.dark.bn-root .bn-suggestion-mark--delete{color:var(--user-color-light);background-color:#0000}.bn-suggestion-tooltip{color:#fff;white-space:nowrap;pointer-events:none;background-color:#232323;border:1px solid #ffffff1a;border-radius:4px;width:max-content;max-width:calc(100vw - 8px);padding:0 4px;font-size:12px;font-weight:700}.bn-root del{color:var(--user-color-dark);background-color:#0000;text-decoration:line-through}.dark.bn-root del{color:var(--user-color-light);background-color:#0000}.bn-root del:hover{text-decoration-line:overline}.ProseMirror .tableWrapper{overflow-x:auto}.ProseMirror table{border-collapse:collapse;table-layout:fixed;width:100%;overflow:hidden}.ProseMirror td,.ProseMirror th{vertical-align:top;box-sizing:border-box;position:relative}.ProseMirror td:not([data-colwidth]):not(.column-resize-dragging),.ProseMirror th:not([data-colwidth]):not(.column-resize-dragging){min-width:var(--default-cell-min-width)}.ProseMirror .column-resize-handle{z-index:20;pointer-events:none;background-color:#adf;width:4px;position:absolute;top:0;bottom:0;right:-2px}.ProseMirror.resize-cursor{cursor:ew-resize;cursor:col-resize}.ProseMirror .selectedCell:after{z-index:2;content:"";pointer-events:none;background:#c8c8ff66;position:absolute;inset:0}.bn-editor{font-synthesis:style weight;--N800:#172b4d;--N40:#dfe1e6;outline:none;padding-inline:54px}.bn-comment-editor{width:100%;padding:0}.bn-comment-editor .bn-editor{padding:0}.bn-default-styles p,.bn-default-styles h1,.bn-default-styles h2,.bn-default-styles h3,.bn-default-styles h4,.bn-default-styles h5,.bn-default-styles h6,.bn-default-styles li{font-size:inherit;margin:0;padding:0;min-width:2px!important}.bn-default-styles{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:Inter,SF Pro Display,-apple-system,BlinkMacSystemFont,Open Sans,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;font-size:16px;font-weight:400}.bn-table-drop-cursor{z-index:20;pointer-events:none;background-color:#adf;position:absolute}.bn-drag-preview{opacity:.001;pointer-events:none;padding:10px;position:absolute;top:0;left:0}.bn-editor .bn-collaboration-cursor__base{position:relative}.bn-editor .bn-collaboration-cursor__base .bn-collaboration-cursor__caret{width:2px;position:absolute;top:1px;bottom:-2px;left:-1px}.bn-editor .bn-collaboration-cursor__base .bn-collaboration-cursor__label{pointer-events:none;white-space:nowrap;-webkit-user-select:none;user-select:none;color:#0000;border-radius:0 1.5px 1.5px 0;max-width:4px;max-height:5px;padding:0;font-size:12px;font-style:normal;font-weight:600;line-height:normal;transition:all .2s;position:absolute;top:-1px;left:0;overflow:hidden}.bn-editor .bn-collaboration-cursor__base[data-active] .bn-collaboration-cursor__label{color:#0d0d0d;border-radius:3px 3px 3px 0;max-width:20rem;max-height:1.1rem;padding:.1rem .3rem;transition:all .2s;top:-17px;left:0}.bn-editor [data-content-type=table] .tableWrapper{--bn-table-widget-size:22px;--bn-table-handle-size: 9px ;padding:var(--bn-table-handle-size) var(--bn-table-widget-size) var(--bn-table-widget-size) var(--bn-table-handle-size);width:100%;position:relative;overflow-y:hidden}.bn-editor [data-content-type=table] table{word-break:break-word;width:auto!important}.bn-editor [data-content-type=table] th,.bn-editor [data-content-type=table] td{border:1px solid #ddd;padding:5px 10px}.bn-editor [data-content-type=table] th{text-align:left;font-weight:700}.bn-editor [data-content-type=table] th>p,.bn-editor [data-content-type=table] td>p{min-height:1.5rem}.ProseMirror td,.ProseMirror th{min-width:auto!important}.ProseMirror td:not([colwidth]):not(.column-resize-dragging),.ProseMirror th:not([colwidth]):not(.column-resize-dragging){min-width:var(--default-cell-min-width)!important}.prosemirror-dropcursor-block{transition-property:top,bottom;transition-duration:.15s;transition-timing-function:cubic-bezier(.4,0,.2,1)}.prosemirror-dropcursor-vertical{transition-property:left,right}[data-show-selection]{background-color:highlight;padding:2px 0}.bn-root{--bn-colors-editor-text:#3f3f3f;--bn-colors-editor-background:#fff;--bn-colors-menu-text:#3f3f3f;--bn-colors-menu-background:#fff;--bn-colors-tooltip-text:#3f3f3f;--bn-colors-tooltip-background:#efefef;--bn-colors-hovered-text:#3f3f3f;--bn-colors-hovered-background:#efefef;--bn-colors-selected-text:#fff;--bn-colors-selected-background:#3f3f3f;--bn-colors-disabled-text:#afafaf;--bn-colors-disabled-background:#efefef;--bn-colors-shadow:#cfcfcf;--bn-colors-border:#efefef;--bn-colors-side-menu:#cfcfcf;--bn-colors-highlights-gray-text:#9b9a97;--bn-colors-highlights-gray-background:#ebeced;--bn-colors-highlights-brown-text:#64473a;--bn-colors-highlights-brown-background:#e9e5e3;--bn-colors-highlights-red-text:#e03e3e;--bn-colors-highlights-red-background:#fbe4e4;--bn-colors-highlights-orange-text:#d9730d;--bn-colors-highlights-orange-background:#f6e9d9;--bn-colors-highlights-yellow-text:#dfab01;--bn-colors-highlights-yellow-background:#fbf3db;--bn-colors-highlights-green-text:#4d6461;--bn-colors-highlights-green-background:#ddedea;--bn-colors-highlights-blue-text:#0b6e99;--bn-colors-highlights-blue-background:#ddebf1;--bn-colors-highlights-purple-text:#6940a5;--bn-colors-highlights-purple-background:#eae4f2;--bn-colors-highlights-pink-text:#ad1a72;--bn-colors-highlights-pink-background:#f4dfeb;--bn-font-family:"Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Open Sans", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;--bn-border-radius:6px;--bn-shadow-medium:0 4px 12px var(--bn-colors-shadow);--bn-shadow-light:0 2px 6px var(--bn-colors-border);--bn-border:1px solid var(--bn-colors-border);--bn-border-radius-small:max(var(--bn-border-radius) - 2px, 1px);--bn-border-radius-medium:var(--bn-border-radius);--bn-border-radius-large:max(var(--bn-border-radius) + 2px, 1px)}.bn-root[data-color-scheme=dark]{--bn-colors-editor-text:#cfcfcf;--bn-colors-editor-background:#1f1f1f;--bn-colors-menu-text:#cfcfcf;--bn-colors-menu-background:#1f1f1f;--bn-colors-tooltip-text:#cfcfcf;--bn-colors-tooltip-background:#161616;--bn-colors-hovered-text:#cfcfcf;--bn-colors-hovered-background:#161616;--bn-colors-selected-text:#cfcfcf;--bn-colors-selected-background:#0f0f0f;--bn-colors-disabled-text:#3f3f3f;--bn-colors-disabled-background:#161616;--bn-colors-shadow:#0f0f0f;--bn-colors-border:#161616;--bn-colors-side-menu:#7f7f7f;--bn-colors-highlights-gray-text:#bebdb8;--bn-colors-highlights-gray-background:#9b9a97;--bn-colors-highlights-brown-text:#8e6552;--bn-colors-highlights-brown-background:#64473a;--bn-colors-highlights-red-text:#ec4040;--bn-colors-highlights-red-background:#be3434;--bn-colors-highlights-orange-text:#e3790d;--bn-colors-highlights-orange-background:#b7600a;--bn-colors-highlights-yellow-text:#dfab01;--bn-colors-highlights-yellow-background:#b58b00;--bn-colors-highlights-green-text:#6b8b87;--bn-colors-highlights-green-background:#4d6461;--bn-colors-highlights-blue-text:#0e87bc;--bn-colors-highlights-blue-background:#0b6e99;--bn-colors-highlights-purple-text:#8552d7;--bn-colors-highlights-purple-background:#6940a5;--bn-colors-highlights-pink-text:#da208f;--bn-colors-highlights-pink-background:#ad1a72}.bn-root{font-family:var(--bn-font-family)}.bn-editor{background-color:var(--bn-colors-editor-background);border-radius:var(--bn-border-radius-large);color:var(--bn-colors-editor-text)}.bn-react-node-view-renderer{flex-direction:column;width:100%;display:flex}.bn-block-group .bn-block:not(:has(.bn-toggle-wrapper)) .bn-block-group .bn-block-outer:not([data-prev-depth-changed]):before{border-left:1px solid var(--bn-colors-side-menu)}.bn-block-content:has(.ProseMirror-trailingBreak:only-child):after{color:var(--bn-colors-side-menu)}.bn-root .bn-color-icon{border:var(--bn-border);border-radius:var(--bn-border-radius-small);justify-content:center;align-items:center;display:flex}.bn-error-text{color:red;font-size:12px}[data-style-type=textColor][data-value=gray],[data-text-color=gray]{color:var(--bn-colors-highlights-gray-text)}.bn-block:has(>.bn-block-content[data-text-color=gray]){color:var(--bn-colors-highlights-gray-text)}[data-style-type=textColor][data-value=brown],[data-text-color=brown]{color:var(--bn-colors-highlights-brown-text)}.bn-block:has(>.bn-block-content[data-text-color=brown]){color:var(--bn-colors-highlights-brown-text)}[data-style-type=textColor][data-value=red],[data-text-color=red]{color:var(--bn-colors-highlights-red-text)}.bn-block:has(>.bn-block-content[data-text-color=red]){color:var(--bn-colors-highlights-red-text)}[data-style-type=textColor][data-value=orange],[data-text-color=orange]{color:var(--bn-colors-highlights-orange-text)}.bn-block:has(>.bn-block-content[data-text-color=orange]){color:var(--bn-colors-highlights-orange-text)}[data-style-type=textColor][data-value=yellow],[data-text-color=yellow]{color:var(--bn-colors-highlights-yellow-text)}.bn-block:has(>.bn-block-content[data-text-color=yellow]){color:var(--bn-colors-highlights-yellow-text)}[data-style-type=textColor][data-value=green],[data-text-color=green]{color:var(--bn-colors-highlights-green-text)}.bn-block:has(>.bn-block-content[data-text-color=green]){color:var(--bn-colors-highlights-green-text)}[data-style-type=textColor][data-value=blue],[data-text-color=blue]{color:var(--bn-colors-highlights-blue-text)}.bn-block:has(>.bn-block-content[data-text-color=blue]){color:var(--bn-colors-highlights-blue-text)}[data-style-type=textColor][data-value=purple],[data-text-color=purple]{color:var(--bn-colors-highlights-purple-text)}.bn-block:has(>.bn-block-content[data-text-color=purple]){color:var(--bn-colors-highlights-purple-text)}[data-style-type=textColor][data-value=pink],[data-text-color=pink]{color:var(--bn-colors-highlights-pink-text)}.bn-block:has(>.bn-block-content[data-text-color=pink]){color:var(--bn-colors-highlights-pink-text)}[data-style-type=backgroundColor][data-value=gray],[data-background-color=gray]{background-color:var(--bn-colors-highlights-gray-background)}.bn-block:has(>.bn-block-content[data-background-color=gray]){background-color:var(--bn-colors-highlights-gray-background)}[data-style-type=backgroundColor][data-value=brown],[data-background-color=brown]{background-color:var(--bn-colors-highlights-brown-background)}.bn-block:has(>.bn-block-content[data-background-color=brown]){background-color:var(--bn-colors-highlights-brown-background)}[data-style-type=backgroundColor][data-value=red],[data-background-color=red]{background-color:var(--bn-colors-highlights-red-background)}.bn-block:has(>.bn-block-content[data-background-color=red]){background-color:var(--bn-colors-highlights-red-background)}[data-style-type=backgroundColor][data-value=orange],[data-background-color=orange]{background-color:var(--bn-colors-highlights-orange-background)}.bn-block:has(>.bn-block-content[data-background-color=orange]){background-color:var(--bn-colors-highlights-orange-background)}[data-style-type=backgroundColor][data-value=yellow],[data-background-color=yellow]{background-color:var(--bn-colors-highlights-yellow-background)}.bn-block:has(>.bn-block-content[data-background-color=yellow]){background-color:var(--bn-colors-highlights-yellow-background)}[data-style-type=backgroundColor][data-value=green],[data-background-color=green]{background-color:var(--bn-colors-highlights-green-background)}.bn-block:has(>.bn-block-content[data-background-color=green]){background-color:var(--bn-colors-highlights-green-background)}[data-style-type=backgroundColor][data-value=blue],[data-background-color=blue]{background-color:var(--bn-colors-highlights-blue-background)}.bn-block:has(>.bn-block-content[data-background-color=blue]){background-color:var(--bn-colors-highlights-blue-background)}[data-style-type=backgroundColor][data-value=purple],[data-background-color=purple]{background-color:var(--bn-colors-highlights-purple-background)}.bn-block:has(>.bn-block-content[data-background-color=purple]){background-color:var(--bn-colors-highlights-purple-background)}[data-style-type=backgroundColor][data-value=pink],[data-background-color=pink]{background-color:var(--bn-colors-highlights-pink-background)}.bn-block:has(>.bn-block-content[data-background-color=pink]){background-color:var(--bn-colors-highlights-pink-background)}.bn-root{--bn-ui-base-z-index:0}.bn-side-menu{height:30px}.bn-threads-sidebar{border-radius:var(--bn-border-radius-medium);flex-direction:column;gap:10px;display:flex;overflow:auto}.bn-thread-expand-prompt .mantine-Text-root,.bn-thread .bn-header-text{color:var(--bn-colors-menu-text)}.bn-threads-sidebar .bn-thread .bn-editor{background-color:#0000}.bn-threads-sidebar .bn-thread.selected{background-color:#f5f9fd;border:2px solid #c2dcf8}.dark .bn-threads-sidebar .bn-thread.selected{background-color:#20242a;border:2px solid #23405b}.bn-versioning-sidebar{flex:1;padding-inline:16px;overflow:auto}.bn-versioning-sidebar-header{justify-content:space-between;align-items:center;padding-block:16px 8px;display:flex}.bn-versioning-sidebar-header-title{align-items:center;gap:6px;display:flex}.bn-versioning-sidebar-title{color:var(--bn-colors-menu-text);margin:0;font-size:18px;font-weight:700}.bn-versioning-sidebar-header-actions{align-items:center;gap:4px;display:flex}.bn-versioning-sidebar-tabs{border-bottom:1px solid var(--bn-colors-border);gap:4px;margin-bottom:8px;display:flex}.bn-versioning-sidebar-tab{color:var(--bn-colors-menu-text);cursor:pointer;opacity:.6;background:0 0;border:none;border-bottom:2px solid #0000;margin-bottom:-1px;padding:8px 4px;font-size:13px;font-weight:500}.bn-versioning-sidebar-tab:hover{opacity:.85}.bn-versioning-sidebar-tab[aria-selected=true]{border-bottom-color:var(--bn-colors-menu-text);opacity:1}.bn-snapshot{background-color:var(--bn-colors-menu-background);color:var(--bn-colors-menu-text);cursor:pointer;border:1px solid #0000;border-radius:8px;flex-direction:column;gap:6px;width:100%;margin-bottom:4px;padding:12px 14px;transition:background-color .12s,border-color .12s;display:flex;position:relative;overflow:visible}.bn-snapshot:hover{background-color:var(--bn-colors-hovered-background)}.bn-snapshot-name{color:inherit;background:0 0;border:none;width:100%;padding:0;font-size:14px;font-weight:700}.bn-snapshot-name:focus{outline:none}.bn-snapshot-body{flex-direction:column;gap:2px;font-size:13px;display:flex}.bn-snapshot-date{color:var(--bn-colors-menu-text);font-size:13px;line-height:1.3}.bn-snapshot-original-date,.bn-snapshot-secondary-label{color:#6b7280;font-size:13px;line-height:1.3}.dark .bn-snapshot-original-date,.dark .bn-snapshot-secondary-label{color:#9ca3af}.bn-snapshot .bn-snapshot-menu{opacity:0;transition:opacity .12s;position:absolute;top:8px;right:8px}.bn-snapshot:hover .bn-snapshot-menu,.bn-snapshot:focus-within .bn-snapshot-menu{opacity:1}.bn-versioning-sidebar .bn-snapshot-menu .bn-action-toolbar{background-color:#0000;border:none;border-radius:0;padding:0}.bn-versioning-sidebar .bn-snapshot .bn-snapshot-menu-trigger,.bn-versioning-sidebar .bn-snapshot .bn-snapshot-menu-trigger:hover,.bn-versioning-sidebar .bn-snapshot .bn-snapshot-menu-trigger[data-selected]{background-color:#0000;border:none;min-width:0;height:auto;padding:2px}.bn-versioning-sidebar .bn-snapshot .bn-snapshot-menu-trigger:hover{opacity:.6}.bn-versioning-sidebar .bn-snapshot.selected{color:#fff;background-color:#3e5de7}.bn-versioning-sidebar .bn-snapshot.selected .bn-snapshot-name{color:#fff}.bn-versioning-sidebar .bn-snapshot.selected .bn-snapshot-date,.bn-versioning-sidebar .bn-snapshot.selected .bn-snapshot-original-date,.bn-versioning-sidebar .bn-snapshot.selected .bn-snapshot-secondary-label{color:#fffc}.bn-versioning-sidebar .bn-snapshot.selected .bn-snapshot-menu-trigger{color:#fff}.bn-versioning-sidebar .bn-snapshot.comparing{background-color:color-mix(in srgb,#3e5de7 8%,var(--bn-colors-editor-background))}.bn-snapshot-comparing-to{color:#3e5de7;align-items:center;gap:4px;font-size:13px;font-weight:600;display:flex}.bn-mobile-formatting-toolbar{bottom:var(--bn-mobile-keyboard-offset,0px);z-index:calc(var(--bn-ui-base-z-index) + 40);touch-action:pan-x;-webkit-overflow-scrolling:touch;padding-bottom:env(safe-area-inset-bottom,0);transition:bottom .15s ease-out;display:flex;position:fixed;left:0;right:0;overflow-x:auto}.bn-root em-emoji-picker{max-height:100%}.bn-mantine .mantine-active:active{transform:none}.bn-mantine .mantine-Badge-root{background-color:var(--bn-colors-tooltip-background);color:var(--bn-colors-tooltip-text)}.bn-mantine .mantine-FileInput-input{align-items:center;background-color:var(--bn-colors-menu-background);border:none;border-radius:4px;color:var(--bn-colors-menu-text);display:flex;flex-direction:row;font-family:var(--bn-font-family);justify-content:center}.bn-mantine .mantine-FileInput-input:hover{background-color:var(--bn-colors-hovered-background)}.bn-mantine .mantine-FileInput-wrapper{border:solid var(--bn-colors-border) 1px;border-radius:4px}.bn-mantine .mantine-InputPlaceholder-placeholder{color:var(--bn-colors-menu-text);font-family:var(--bn-font-family);font-weight:600}.bn-mantine .mantine-Menu-dropdown,.bn-mantine .bn-menu-dropdown{background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);box-sizing:border-box;color:var(--bn-colors-menu-text);padding:2px;overflow:auto}.bn-mantine .mantine-Menu-label{background-color:var(--bn-colors-menu-background);color:var(--bn-colors-menu-text)}.bn-mantine .mantine-Menu-item{background-color:var(--bn-colors-menu-background);border:none;border-radius:var(--bn-border-radius-small);color:var(--bn-colors-menu-text)}.bn-mantine .mantine-Menu-item[aria-selected=true],.bn-mantine .mantine-Menu-item:hover{background-color:var(--bn-colors-hovered-background);border:none;color:var(--bn-colors-hovered-text)}.bn-mantine .bn-panel-popover,.bn-mantine .bn-emoji-picker-popover{background-color:transparent;border:none;border-radius:0;box-shadow:none;display:flex;padding:0}.bn-mantine .mantine-Tabs-root{width:100%;background-color:var(--bn-colors-menu-background)}.bn-mantine .mantine-Tabs-list:before{border-color:var(--bn-colors-hovered-background)}.bn-mantine .mantine-Tabs-tab{color:var(--bn-colors-menu-text);border-color:var(--bn-colors-hovered-background)}.bn-mantine .mantine-Tabs-tab:hover{background-color:var(--bn-colors-hovered-background);border-color:var(--bn-colors-hovered-background);color:var(--bn-colors-hovered-text)}.bn-mantine .mantine-Tabs-tab[data-active],.bn-mantine .mantine-Tabs-tab[data-active]:hover{border-color:var(--bn-colors-menu-text);color:var(--bn-colors-menu-text)}.bn-mantine .mantine-Tabs-panel{padding:8px}.bn-mantine .mantine-TextInput-input{background-color:var(--bn-colors-menu-background);border:solid var(--bn-colors-border) 1px;border-radius:4px;color:var(--bn-colors-menu-text);font-family:var(--bn-font-family);height:32px}.bn-mantine .bn-mt-input-large .mantine-TextInput-input{border:none;font-size:14px;height:52px}.bn-mantine .mantine-Tooltip-tooltip{background-color:transparent;border:none;border-radius:0;box-shadow:none;padding:0}.bn-mantine .mantine-Tooltip-tooltip p:last-child{white-space:pre-wrap}.bn-mantine .mantine-Tooltip-tooltip p:first-child{white-space:unset}.bn-mantine .bn-select{overflow:auto}.bn-mantine .mantine-Button-root[aria-controls*=dropdown]{min-width:fit-content}.bn-mantine .bn-toolbar{background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);flex-wrap:nowrap;gap:2px;padding:2px;width:fit-content;overflow-x:auto;max-width:100vw}.bn-mantine .bn-toolbar:empty{display:none}.bn-toolbar .mantine-Button-root,.bn-toolbar .mantine-ActionIcon-root{background-color:var(--bn-colors-menu-background);border:none;border-radius:var(--bn-border-radius-small);color:var(--bn-colors-menu-text)}.bn-toolbar .mantine-Button-root:hover,.bn-toolbar .mantine-ActionIcon-root:hover{background-color:var(--bn-colors-hovered-background);border:none;color:var(--bn-colors-hovered-text)}.bn-toolbar .mantine-Button-root[data-selected],.bn-toolbar .mantine-ActionIcon-root[data-selected]{background-color:var(--bn-colors-selected-background);border:none;color:var(--bn-colors-selected-text)}.bn-toolbar .mantine-Button-root[data-disabled],.bn-toolbar .mantine-ActionIcon-root[data-disabled]{background-color:var(--bn-colors-disabled-background);border:none;color:var(--bn-colors-disabled-text)}.bn-toolbar .mantine-Menu-item{font-size:12px;height:30px}.bn-toolbar .mantine-Menu-item:hover{background-color:var(--bn-colors-hovered-background)}.bn-mantine .bn-form-popover{background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);color:var(--bn-colors-menu-text);gap:4px;min-width:145px;padding:2px}.bn-form-popover .mantine-TextInput-root,.bn-form-popover .mantine-FileInput-root{width:300px}.bn-form-popover .mantine-TextInput-wrapper,.bn-form-popover .mantine-FileInput-wrapper{padding:0;border-radius:4px}.bn-form-popover .mantine-TextInput-wrapper:hover{background-color:var(--bn-colors-hovered-background)}.bn-form-popover .mantine-TextInput-input,.bn-form-popover .mantine-FileInput-input{border:none;font-size:12px}.bn-form-popover .mantine-FileInput-input:hover{background-color:var(--bn-colors-hovered-background)}.bn-form-popover .mantine-FileInput-section[data-position=left],.bn-form-popover .mantine-FileInput-placeholder{color:var(--bn-colors-menu-text)}.bn-mantine .bn-suggestion-menu{max-height:100%;position:relative;box-shadow:var(--mantine-shadow-md);border:calc(.0625rem * var(--mantine-scale)) solid var(--mantine-color-gray-2);border-radius:var(--mantine-radius-default);padding:4px}.bn-mantine .bn-suggestion-menu-label{color:var(--mantine-color-dimmed);font-weight:500;font-size:var(--mantine-font-size-xs);padding:calc(var(--mantine-spacing-xs) / 2) var(--mantine-spacing-sm);cursor:default}.bn-mantine .bn-suggestion-menu-item{font-size:var(--mantine-font-size-sm);width:100%;padding:calc(var(--mantine-spacing-xs) / 1.5) var(--mantine-spacing-sm);border-radius:var(--popover-radius, var(--mantine-radius-default));color:var(--menu-item-color, var(--mantine-color-text));display:flex;align-items:center;user-select:none;&:where([data-disabled],:disabled){color:var(--mantine-color-dimmed);opacity:.6;pointer-events:none}}.bn-mt-suggestion-menu-item-body{flex:1}.bn-mt-suggestion-menu-item-section{display:flex;justify-content:center;align-items:center;&:where([data-position=left]){margin-inline-end:var(--mantine-spacing-xs)}&:where([data-position=right]){margin-inline-start:var(--mantine-spacing-xs)}}.bn-mantine .bn-suggestion-menu{background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);box-sizing:border-box;color:var(--bn-colors-menu-text);height:fit-content;max-height:inherit;max-width:350px;overflow-y:auto;padding:2px}.bn-mantine .bn-suggestion-menu-item{cursor:pointer;flex-shrink:0}.bn-mantine .bn-suggestion-menu-item:not(.bn-suggestion-menu-item-small){min-height:52px}.bn-mantine .bn-suggestion-menu-item-small{padding:calc(var(--mantine-spacing-xs) / 2) var(--mantine-spacing-sm)}.bn-mantine .bn-suggestion-menu-item[aria-selected=true],.bn-mantine .bn-suggestion-menu-item:hover{background-color:var(--bn-colors-hovered-background)}.bn-mt-suggestion-menu-item-section{color:var(--bn-colors-tooltip-text)}.bn-mt-suggestion-menu-item-section[data-position=left]{background-color:var(--bn-colors-tooltip-background);border-radius:var(--bn-border-radius-small);padding:8px}.bn-suggestion-menu-item-small .bn-mt-suggestion-menu-item-section[data-position=left]{background-color:transparent;padding:0}.bn-suggestion-menu-item-small .bn-mt-suggestion-menu-item-section[data-position=left] svg{height:14px;width:14px}.bn-mt-suggestion-menu-item-body{align-items:stretch;display:flex;flex:1;min-width:0;flex-direction:column;justify-content:flex-start;padding-right:16px}.bn-mt-suggestion-menu-item-title{color:var(--bn-colors-menu-text);line-height:20px;font-weight:500;font-size:14px;margin:0;padding:0;overflow-wrap:anywhere}.bn-suggestion-menu-item-small .bn-mt-suggestion-menu-item-title{font-size:12px}.bn-mt-suggestion-menu-item-subtitle{color:var(--bn-colors-menu-text);line-height:16px;font-size:10px;margin:0;padding:0;overflow-wrap:anywhere}.bn-suggestion-menu-item-small .bn-mt-suggestion-menu-item-subtitle{display:none}.bn-mantine .bn-suggestion-menu-label{color:var(--bn-colors-hovered-text)}.bn-mantine .bn-suggestion-menu-loader{height:20px;width:100%}.bn-mantine .bn-suggestion-menu-loader span{background-color:var(--bn-colors-side-menu)}.bn-mantine .bn-grid-suggestion-menu{background:var(--bn-colors-menu-background);border-radius:var(--bn-border-radius-large);box-shadow:var(--bn-shadow-medium);display:grid;gap:7px;height:fit-content;justify-items:center;max-height:inherit;overflow-y:auto;padding:20px}.bn-mantine .bn-grid-suggestion-menu-item{align-items:center;border-radius:var(--bn-border-radius-large);cursor:pointer;display:flex;font-size:20px;height:32px;justify-content:center;margin:2px;padding:6px;width:32px}.bn-mantine .bn-grid-suggestion-menu-item[aria-selected=true],.bn-mantine .bn-grid-suggestion-menu-item:hover{background-color:var(--bn-colors-hovered-background)}.bn-mantine .bn-grid-suggestion-menu-empty-item,.bn-mantine .bn-grid-suggestion-menu-loader{align-items:center;color:var(--bn-colors-menu-text);display:flex;font-size:14px;font-weight:500;height:32px;justify-content:center}.bn-mantine .bn-grid-suggestion-menu-loader span{background-color:var(--bn-colors-side-menu)}.bn-mantine .bn-side-menu{background-color:transparent;overflow:visible}.bn-side-menu .mantine-Menu-item,.bn-table-handle-menu .mantine-Menu-item{font-size:12px;height:30px}.bn-side-menu .mantine-UnstyledButton-root:not(.mantine-Menu-item){background-color:transparent}.bn-side-menu .mantine-UnstyledButton-root:hover{background-color:var(--bn-colors-hovered-background)}.bn-side-menu .mantine-UnstyledButton-root:not(.mantine-Menu-item) svg{background-color:transparent;color:var(--bn-colors-side-menu);height:22px;width:22px}.bn-mantine .bn-side-menu>[draggable=true]{display:flex}.bn-side-menu .mantine-Menu-dropdown{min-width:100px;padding:2px;position:absolute}.bn-mantine .bn-panel{background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);padding:2px;width:500px;max-width:100vw}.bn-mantine .bn-panel .bn-tab-panel{align-items:center;display:flex;flex-direction:column;gap:8px;width:100%}.bn-panel .mantine-TextInput-root,.bn-panel .mantine-FileInput-root{width:100%}.bn-panel .mantine-Button-root{background-color:var(--bn-colors-menu-background);border:solid var(--bn-colors-border) 1px;border-radius:var(--bn-border-radius-small);color:var(--bn-colors-menu-text);height:32px;width:60%}.bn-panel .mantine-Button-root:hover{background-color:var(--bn-colors-hovered-background)}.bn-panel .mantine-Text-root{text-align:center}.bn-mantine .bn-table-handle,.bn-mantine .bn-extend-button,.bn-mantine .bn-table-cell-handle{align-items:center;background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-small);box-shadow:var(--bn-shadow-light);color:var(--bn-colors-side-menu);cursor:grab;display:flex;height:fit-content;justify-content:center;overflow:visible;padding:0}.bn-mantine .bn-table-cell-handle{padding:0 4px}.bn-mantine .bn-table-handle svg{margin-inline:-4px}.bn-mantine .bn-table-handle-not-draggable{cursor:pointer}.bn-mantine .bn-table-handle:hover,.bn-mantine .bn-table-handle-dragging,.bn-mantine .bn-extend-button:hover,.bn-mantine .bn-extend-button-editing,.bn-mantine .bn-table-cell-handle:hover{background-color:var(--bn-colors-hovered-background)}.bn-mantine .bn-extend-button-add-remove-columns{height:100%;width:18px;margin-left:4px;cursor:col-resize}.bn-mantine .bn-extend-button-add-remove-rows{height:18px;width:100%;margin-top:4px;cursor:row-resize}.bn-mantine .bn-drag-handle-menu,.bn-mantine .bn-table-handle-menu{overflow:visible}.bn-mantine .bn-tooltip{background-color:var(--bn-colors-tooltip-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);color:var(--bn-colors-tooltip-text);padding:4px 10px;text-align:center}.bn-mantine .bn-tick-space{padding:0;width:20px}.bn-mantine .bn-thread{background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);color:var(--bn-colors-menu-text);display:flex;flex-direction:column;gap:16px;min-width:350px;overflow:visible}.bn-mantine .bn-threads-sidebar .bn-thread{box-shadow:none}.bn-mantine .bn-thread-comments,.bn-mantine .bn-thread-composer{display:flex;flex-direction:column;margin:0;padding:0}.bn-mantine .bn-thread-comments{gap:1rem}.bn-mantine .bn-thread-comment{align-items:flex-start;flex-direction:column;gap:.25rem}.bn-mantine .bn-thread-comment>.mantine-Group-root{gap:12px}.bn-mantine .bn-thread-comment p{color:var(--bn-colors-menu-text)}.bn-mantine .bn-thread .bn-header-text,.bn-mantine .bn-thread-comment .bn-resolved-text{font-size:.8rem;font-style:italic}.bn-mantine .bn-comment-actions-wrapper{width:100%;display:flex;justify-content:flex-end}.bn-mantine .bn-action-toolbar{align-self:flex-end;background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);gap:0;padding:2px}.bn-action-toolbar .mantine-Button-root,.bn-action-toolbar .mantine-ActionIcon-root{background-color:var(--bn-colors-menu-background);border:none;border-radius:var(--bn-border-radius-small);color:var(--bn-colors-menu-text)}.bn-action-toolbar .mantine-Button-root:hover,.bn-action-toolbar .mantine-ActionIcon-root:hover{background-color:var(--bn-colors-hovered-background);border:none;color:var(--bn-colors-hovered-text)}.bn-action-toolbar .mantine-Button-root[data-selected],.bn-action-toolbar .mantine-ActionIcon-root[data-selected]{background-color:var(--bn-colors-selected-background);border:none;color:var(--bn-colors-selected-text)}.bn-action-toolbar .mantine-Button-root[data-disabled],.bn-action-toolbar .mantine-ActionIcon-root[data-disabled]{background-color:var(--bn-colors-disabled-background);border:none;color:var(--bn-colors-disabled-text)}.bn-mantine .bn-action-toolbar .mantine-Menu-itemLabel{font-size:12px}.bn-mantine .bn-badge-group{display:flex;gap:4px;justify-content:flex-start;width:100%}.bn-mantine .bn-badge{flex-grow:0}.bn-mantine .bn-badge .mantine-Chip-label{padding:0 8px}.bn-mantine .bn-badge .mantine-Chip-label:not([data-checked=true]){background-color:var(--bn-colors-menu-background);border:var(--bn-border);color:var(--bn-colors-menu-text)}.bn-mantine .bn-badge .mantine-Chip-label:hover{border:1px solid var(--mantine-primary-color-filled-hover);color:var(--mantine-primary-color-filled-hover)}.bn-mantine .bn-badge .mantine-Chip-label>span:not(.mantine-Chip-iconWrapper){display:inline-flex;gap:4px}.bn-mantine .bn-badge .mantine-Chip-label>span:not(.mantine-Chip-iconWrapper)>span{align-items:center;display:inline-flex;justify-content:center}.bn-mantine .bn-combobox-input,.bn-mantine .bn-combobox-items:not(:empty){background-color:var(--bn-colors-menu-background);border:var(--bn-border);border-radius:var(--bn-border-radius-medium);box-shadow:var(--bn-shadow-medium);color:var(--bn-colors-menu-text);gap:4px;min-width:145px;padding:2px}.bn-mantine .bn-combobox-input .bn-combobox-icon,.bn-mantine .bn-combobox-input .bn-combobox-right-section{align-items:center;display:flex;justify-content:center}.bn-mantine .bn-combobox-input .bn-combobox-error{color:var(--bn-colors-highlights-red-background)}.bn-mantine .bn-badge .mantine-Chip-iconWrapper{display:none}\n';
 
 // packages/report-review/src/preview.jsx
-var import_react166 = __toESM(require("react"), 1);
+var import_react167 = __toESM(require("react"), 1);
 
 // node_modules/devlop/lib/default.js
 function ok() {
@@ -109213,11 +109563,11 @@ function addChildren(props, children) {
     }
   }
 }
-function productionCreate(_, jsx95, jsxs32) {
+function productionCreate(_, jsx95, jsxs33) {
   return create2;
   function create2(_2, type, props, key) {
     const isStaticChildren = Array.isArray(props.children);
-    const fn5 = isStaticChildren ? jsxs32 : jsx95;
+    const fn5 = isStaticChildren ? jsxs33 : jsx95;
     return key ? fn5(type, props, key) : fn5(type, props);
   }
 }
@@ -109463,7 +109813,7 @@ var urlAttributes = {
 
 // node_modules/react-markdown/lib/index.js
 var import_jsx_runtime128 = require("react/jsx-runtime");
-var import_react165 = require("react");
+var import_react166 = require("react");
 
 // node_modules/mdast-util-to-string/lib/index.js
 var emptyOptions2 = {};
@@ -120302,7 +120652,7 @@ function MarkdownPreview({ text: text7, scrollRef }) {
   return /* @__PURE__ */ (0, import_jsx_runtime129.jsx)("article", { ref: scrollRef, className: "rr-markdown-body", children: /* @__PURE__ */ (0, import_jsx_runtime129.jsx)(Markdown, { remarkPlugins: plugins, rehypePlugins: htmlPlugins, components, skipHtml: true, children: text7 }) });
 }
 function usePreviewScroll(editorRef, previewRef, active, text7, readOnly2) {
-  (0, import_react166.useEffect)(() => {
+  (0, import_react167.useEffect)(() => {
     const view = editorRef.current, preview = previewRef.current;
     if (!active || !view || !preview) return;
     const source = view.scrollDOM;
@@ -120360,8 +120710,8 @@ function usePreviewScroll(editorRef, previewRef, active, text7, readOnly2) {
   }, [active, text7, readOnly2]);
 }
 function TemplateSelect({ value, templates, disabled, onChange }) {
-  const id3 = (0, import_react166.useId)(), root4 = (0, import_react166.useRef)(null), trigger = (0, import_react166.useRef)(null);
-  const [open, setOpen] = (0, import_react166.useState)(false), [active, setActive2] = (0, import_react166.useState)(0);
+  const id3 = (0, import_react167.useId)(), root4 = (0, import_react167.useRef)(null), trigger = (0, import_react167.useRef)(null);
+  const [open, setOpen] = (0, import_react167.useState)(false), [active, setActive2] = (0, import_react167.useState)(0);
   const options = [{ id: "", name: "\u9ED8\u8BA4\u6A21\u677F", content: "\u4F7F\u7528\u5185\u7F6E\u5468\u62A5\u5206\u6790\u7ED3\u6784" }, ...templates];
   const selected = Math.max(0, options.findIndex((option) => option.id === value));
   function choose(index4) {
@@ -120524,7 +120874,17 @@ function aiFetch(path2, init) {
   return send(base2 + path2, init);
 }
 function getSlashMenuItemsWithAI(editor) {
-  return [...Yr3(editor), ...getAISlashMenuItems(editor)];
+  return [...getAISlashMenuItems(editor), ...Yr3(editor)];
+}
+function DirectAISuggestionMenu({ items, onItemClick }) {
+  const invoked = (0, import_react168.useRef)(false);
+  (0, import_react168.useEffect)(() => {
+    if (!invoked.current && items && items.length > 0) {
+      invoked.current = true;
+      onItemClick(items[0]);
+    }
+  }, [items, onItemClick]);
+  return null;
 }
 function ReportFormattingToolbar() {
   return /* @__PURE__ */ (0, import_jsx_runtime130.jsxs)(lr3, { children: [
@@ -120542,21 +120902,51 @@ function ReportDragMenu() {
 function ReportSideMenu(props) {
   return /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(kr3, { ...props, dragHandleMenu: ReportDragMenu });
 }
-var floatingOptions = { useFloatingOptions: { strategy: "fixed", transform: false } };
-function BlockEditor({ value, onChange, readOnly: readOnly2, onSource }) {
-  const root4 = (0, import_react167.useRef)(null);
-  const [portal, setPortal] = (0, import_react167.useState)(null);
-  (0, import_react167.useEffect)(() => {
+var floatingOptions = { useFloatingOptions: { strategy: "fixed", transform: false, whileElementsMounted: (reference, floating, update) => autoUpdate(reference, floating, update, { animationFrame: true }) } };
+var suggestionMenuFloatingOptions = {
+  useFloatingOptions: {
+    strategy: "fixed",
+    transform: false,
+    whileElementsMounted(reference, floating, update) {
+      floating.style.opacity = "0";
+      let done = false;
+      const reveal = () => {
+        if (!done) {
+          done = true;
+          floating.style.opacity = "1";
+        }
+      };
+      const cleanup = autoUpdate(reference, floating, update, { animationFrame: true });
+      const p2 = update();
+      if (p2 && typeof p2.then === "function") {
+        p2.then(reveal).catch(() => {
+        });
+      }
+      const timer = setTimeout(reveal, 150);
+      return () => {
+        clearTimeout(timer);
+        cleanup();
+      };
+    }
+  },
+  elementProps: { style: { zIndex: 70, opacity: 0 } }
+};
+function BlockEditor({ value, onChange, readOnly: readOnly2, onSource, sessionId, reportId, onAiBusy, editorApi }) {
+  const root4 = (0, import_react168.useRef)(null);
+  const [portal, setPortal] = (0, import_react168.useState)(null);
+  (0, import_react168.useEffect)(() => {
     setPortal(root4.current?.closest("dialog") || root4.current);
   }, []);
-  const portalElements = (0, import_react167.useMemo)(() => ({ default: portal }), [portal]);
-  const callbacks = (0, import_react167.useRef)({ onChange, readOnly: readOnly2 });
-  callbacks.current = { onChange, readOnly: readOnly2 };
-  const last3 = (0, import_react167.useRef)(value);
-  const [failed, setFailed] = (0, import_react167.useState)(false);
-  const [aiDiag, setAiDiag] = (0, import_react167.useState)(null);
-  const diagTimer = (0, import_react167.useRef)(null);
-  (0, import_react167.useEffect)(() => {
+  const chatRef = (0, import_react168.useRef)(null);
+  if (!chatRef.current) chatRef.current = createNativeChat({ fetchFn: aiFetch, sessionId, reportId });
+  const portalElements = (0, import_react168.useMemo)(() => ({ default: portal }), [portal]);
+  const callbacks = (0, import_react168.useRef)({ onChange, readOnly: readOnly2, onAiBusy });
+  callbacks.current = { onChange, readOnly: readOnly2, onAiBusy };
+  const last3 = (0, import_react168.useRef)(value);
+  const [failed, setFailed] = (0, import_react168.useState)(false);
+  const [aiDiag, setAiDiag] = (0, import_react168.useState)(null);
+  const diagTimer = (0, import_react168.useRef)(null);
+  (0, import_react168.useEffect)(() => {
     const on5 = (e6) => {
       setAiDiag(e6.detail);
       clearTimeout(diagTimer.current);
@@ -120568,20 +120958,82 @@ function BlockEditor({ value, onChange, readOnly: readOnly2, onSource }) {
       clearTimeout(diagTimer.current);
     };
   }, []);
-  const session = (0, import_react167.useMemo)(() => {
+  const session = (0, import_react168.useMemo)(() => {
     try {
       const parser6 = Wi.create({ schema, dictionary: b2 });
       const state = loadBlockMarkdown(parser6, value);
-      const editor = Wi.create({ schema, dictionary: { ...b2, ai: zh }, initialContent: state.blocks, extensions: [AIExtension({ chatProvider: () => createNativeChat({ fetchFn: aiFetch }) })] });
+      const editor = Wi.create({ schema, dictionary: { ...b2, placeholders: { ...b2.placeholders, default: "\u8F93\u5165 '/' \u4EE5\u4F7F\u7528\u547D\u4EE4\uFF0C\u8F93\u5165 '//' \u5FEB\u901F\u8FDB\u5165 AI \u6A21\u5F0F" }, ai: zh }, initialContent: state.blocks, extensions: [AIExtension({ chatProvider: () => chatRef.current })] });
       state.snapshot = fingerprint(editor.document);
       return { editor, state };
     } catch {
       return null;
     }
   }, []);
-  (0, import_react167.useEffect)(() => {
+  (0, import_react168.useEffect)(() => {
     if (value !== last3.current) setFailed(true);
   }, [value]);
+  (0, import_react168.useEffect)(() => {
+    const unsub = chatRef.current["~registerStatusCallback"]?.((s4) => callbacks.current.onAiBusy?.(s4 === "submitted"));
+    return () => {
+      try {
+        unsub?.();
+      } catch {
+      }
+    };
+  }, []);
+  (0, import_react168.useEffect)(() => {
+    if (!editorApi || !session) return;
+    const ext = () => session.editor.getExtension(AIExtension);
+    editorApi.current = {
+      enterAIMode() {
+        if (callbacks.current.readOnly) return;
+        try {
+          const cursor = session.editor.getTextCursorPosition();
+          const isEmpty2 = cursor?.block?.content && Array.isArray(cursor.block.content) && cursor.block.content.length === 0;
+          const blockId = isEmpty2 && cursor.prevBlock ? cursor.prevBlock.id : cursor.block.id;
+          ext().openAIMenuAtBlock?.(blockId);
+        } catch {
+        }
+      },
+      enterVoiceMode() {
+        if (callbacks.current.readOnly) return;
+        try {
+          const cursor = session.editor.getTextCursorPosition();
+          const isEmpty2 = cursor?.block?.content && Array.isArray(cursor.block.content) && cursor.block.content.length === 0;
+          const blockId = isEmpty2 && cursor.prevBlock ? cursor.prevBlock.id : cursor.block.id;
+          markVoiceAutoStart();
+          ext().openAIMenuAtBlock?.(blockId);
+        } catch {
+        }
+      }
+    };
+    return () => {
+      editorApi.current = null;
+    };
+  }, [editorApi, session]);
+  (0, import_react168.useEffect)(() => {
+    const onKeyDown = (e6) => {
+      if (e6.key !== "Alt" || e6.location !== 2 || e6.repeat || e6.ctrlKey || e6.metaKey || e6.shiftKey) return;
+      if (callbacks.current.readOnly || !session) return;
+      const ai4 = session.editor.getExtension(AIExtension);
+      if (!ai4?.openAIMenuAtBlock) return;
+      e6.preventDefault();
+      if (voiceBus.menuOpen) {
+        window.dispatchEvent(new CustomEvent(VOICE_TOGGLE_EVENT));
+      } else {
+        try {
+          const cursor = session.editor.getTextCursorPosition();
+          const isEmpty2 = cursor?.block?.content && Array.isArray(cursor.block.content) && cursor.block.content.length === 0;
+          const blockId = isEmpty2 && cursor.prevBlock ? cursor.prevBlock.id : cursor.block.id;
+          markVoiceAutoStart();
+          ai4.openAIMenuAtBlock(blockId);
+        } catch {
+        }
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [session]);
   if (!session || failed) return /* @__PURE__ */ (0, import_jsx_runtime130.jsxs)("div", { className: "rr-editor-fallback", role: "status", children: [
     "\u6B64\u6587\u6863\u6682\u65F6\u65E0\u6CD5\u4F7F\u7528\u53EF\u89C6\u5316\u7F16\u8F91\uFF0C\u8BF7\u5728\u6E90\u7801\u4E2D\u7EE7\u7EED\u3002",
     /* @__PURE__ */ (0, import_jsx_runtime130.jsx)("button", { className: "rr-button", onClick: onSource, children: "\u6253\u5F00 Markdown \u6E90\u7801" })
@@ -120614,7 +121066,12 @@ function BlockEditor({ value, onChange, readOnly: readOnly2, onSource }) {
       /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(dr3, { formattingToolbar: ReportFormattingToolbar, floatingUIOptions: floatingOptions }),
       /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(jr3, { sideMenu: ReportSideMenu, floatingUIOptions: floatingOptions }),
       /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(AIMenuController, {}),
-      /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(Xr3, { triggerCharacter: "/", getItems: async (q6) => $r(getSlashMenuItemsWithAI(session.editor), q6), floatingUIOptions: floatingOptions })
+      /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(Xr3, { triggerCharacter: "/", getItems: async (q6) => $r(getSlashMenuItemsWithAI(session.editor), q6), floatingUIOptions: suggestionMenuFloatingOptions }),
+      /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(Xr3, { triggerCharacter: "//", shouldOpen: (tr4) => {
+        const from2 = tr4.selection.from;
+        const before = tr4.doc.textBetween(Math.max(0, from2 - 2), Math.max(0, from2 - 1));
+        return before.trim() === "";
+      }, getItems: async () => getAISlashMenuItems(session.editor), suggestionMenuComponent: DirectAISuggestionMenu, floatingUIOptions: suggestionMenuFloatingOptions })
     ] })
   ] });
 }
@@ -121092,9 +121549,9 @@ var REVIEW_TITLES = { humanItems: "\u91CD\u70B9\u4EBA\u5DE5\u4FE1\u606F", diff: 
 var reviewTitle = (t4) => REVIEW_TITLES[t4] || "\u5BA1\u9605\u8BE6\u60C5";
 var reviewSub = (t4, v) => t4 === "diff" ? "\u672C\u8F6E\u57FA\u7EBF vs \u5F53\u524D\u7A3F" : t4 === "versions" ? "\u5BA1\u67E5\u786E\u8BA4\u7248\u672C\uFF08\u4E0D\u53EF\u53D8\uFF09" : t4 === "timeline" ? "\u6BCF\u6B21\u7248\u672C\u5207\u7247\u4E0E\u76F8\u90BB\u5DEE\u5F02" : t4 === "publishPlan" ? `\u6838\u5BF9\u6B63\u6587 / \u56FE\u7247 / \u516C\u5F00\u4FE1\u606F / \u77E5\u8BC6\u5E93\u8EAB\u4EFD` : t4 === "publish" ? "\u53D1\u5E03\u63D0\u4EA4\u56DE\u6267" : t4 === "publicationStatus" ? "\u4E0A\u4F20 / \u89E3\u6790\u4E3A\u5F02\u6B65\uFF1B\u6838\u9A8C\u524D\u4E0D\u6807\u8BB0\u53D1\u5E03\u5B8C\u6210" : "";
 function GenerateProgress({ progress, onCancel, onRetry, onRegenerate, onClose }) {
-  const [open, setOpen] = (0, import_react169.useState)(true);
-  const [expanded, setExpanded] = (0, import_react169.useState)(() => /* @__PURE__ */ new Set());
-  (0, import_react169.useEffect)(() => {
+  const [open, setOpen] = (0, import_react171.useState)(true);
+  const [expanded, setExpanded] = (0, import_react171.useState)(() => /* @__PURE__ */ new Set());
+  (0, import_react171.useEffect)(() => {
     if (progress?.status === "ok") {
       const t4 = setTimeout(() => setOpen(false), 1600);
       return () => clearTimeout(t4);
@@ -121207,16 +121664,17 @@ var testErrorText = (code4) => ({
   plaintext_non_loopback: "\u660E\u6587 http \u53EA\u5141\u8BB8\u672C\u673A\u56DE\u73AF\u5730\u5740\uFF0C\u8FDC\u7AEF\u8BF7\u4F7F\u7528 https"
 })[code4] || code4;
 function SettingsPanel({ request, onClose, onIdentity }) {
-  const dialogRef = (0, import_react169.useRef)(null);
-  const [view, setView] = (0, import_react169.useState)(null);
-  const [form, setForm] = (0, import_react169.useState)({ baseUrl: "", kbId: "", tenantId: "", readKey: "", writeKey: "" });
-  const [state, setState] = (0, import_react169.useState)({ busy: true, note: "", error: "" });
-  const [test, setTest] = (0, import_react169.useState)(null);
+  const dialogRef = (0, import_react171.useRef)(null);
+  const [view, setView] = (0, import_react171.useState)(null);
+  const [form, setForm] = (0, import_react171.useState)({ baseUrl: "", kbId: "", tenantId: "", readKey: "", writeKey: "" });
+  const [state, setState] = (0, import_react171.useState)({ busy: true, note: "", error: "" });
+  const [test, setTest] = (0, import_react171.useState)(null);
+  const voicePrefs = useVoicePrefs();
   const adopt = (v) => {
     setView(v);
     setForm((f2) => ({ ...f2, baseUrl: v?.baseUrl || "", kbId: v?.kbId || "", tenantId: v?.tenantId || "", readKey: "", writeKey: "" }));
   };
-  (0, import_react169.useEffect)(() => {
+  (0, import_react171.useEffect)(() => {
     let cancelled = false;
     request("settingsGet").then((v) => {
       if (!cancelled) {
@@ -121230,7 +121688,7 @@ function SettingsPanel({ request, onClose, onIdentity }) {
       cancelled = true;
     };
   }, []);
-  (0, import_react169.useEffect)(() => {
+  (0, import_react171.useEffect)(() => {
     const d = dialogRef.current;
     if (d && !d.open) d.showModal();
   }, []);
@@ -121293,6 +121751,19 @@ function SettingsPanel({ request, onClose, onIdentity }) {
       view?.writeKeySet && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-muted", children: "\uFF08\u5DF2\u4FDD\u5B58\uFF0C\u7559\u7A7A\u4FDD\u6301\u4E0D\u53D8\uFF09" }),
       /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { "aria-label": "\u53D1\u5E03\u5BC6\u94A5", type: "password", autoComplete: "off", placeholder: view?.writeKeySet ? "\u2022\u2022\u2022\u2022\u2022\u2022\uFF08\u7559\u7A7A\u4E0D\u4FEE\u6539\uFF09" : "\u7528\u4E8E\u53D1\u5E03\u7684 API Key\uFF0C\u53EF\u7559\u7A7A\uFF08\u53EA\u8BFB\uFF09", value: form.writeKey, disabled: state.busy, onChange: (e6) => field("writeKey", e6.target.value) })
     ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-settings-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("div", { className: "rr-section-heading", children: /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h3", { children: "\u8BED\u97F3\u8F93\u5165" }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("label", { className: "rr-settings-toggle", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { type: "checkbox", checked: voicePrefs.enabled, onChange: (e6) => voicePrefs.setEnabled(e6.target.checked) }),
+        " \u8BED\u97F3\u8F6C\u5199\u540E\u81EA\u52A8\u7406\u89E3\u610F\u56FE\u5E76\u8865\u5168\u63D0\u793A\u8BCD",
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-muted", children: "\uFF08\u4E0D\u81EA\u52A8\u63D0\u4EA4\uFF0C\u8BC6\u522B\u6587\u672C\u5148\u586B\u5165\u8F93\u5165\u6846\uFF0C\u7531\u4F60\u786E\u8BA4\uFF1B\u5173\u95ED\u5219\u4EC5\u8FD4\u56DE\u539F\u59CB\u8F6C\u5199\uFF09" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("p", { className: "rr-muted", children: [
+        "\u76EE\u6807\u8BED\u8A00\u81EA\u52A8\u8DDF\u968F\u7CFB\u7EDF\uFF08\u5F53\u524D\uFF1A",
+        voicePrefs.lang === "zh-TW" || voicePrefs.lang === "zh-HK" ? "\u7E41\u4F53\u4E2D\u6587" : (voicePrefs.lang || "zh-CN").startsWith("en") ? "\u82F1\u6587" : "\u7B80\u4F53\u4E2D\u6587",
+        "\uFF09\uFF0C\u8BC6\u522B\u7ED3\u679C\u82E5\u4E3A\u7E41\u4F53/\u7B80\u4F53\u6DF7\u7528\u4F1A\u81EA\u52A8\u7EDF\u4E00\u3002"
+      ] })
+    ] }),
     /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-muted", children: "\u5BC6\u94A5\u4FDD\u5B58\u4E3A\u672C\u673A\u53D7\u9650\u6587\u4EF6\uFF0C\u4E0D\u5199\u5165\u4EFB\u4F55\u914D\u7F6E\u6216\u8865\u4E01\uFF1B\u754C\u9762\u4E0D\u56DE\u663E\u5BC6\u94A5\u5185\u5BB9\u3002\u53D1\u5E03\u5BC6\u94A5\u987B\u4E0E\u8BFB\u53D6\u5BC6\u94A5\u4E0D\u540C\u3002" }),
     state.note && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-settings-note", role: "status", children: state.note }),
     state.error && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("p", { className: "rr-settings-error", role: "alert", children: state.error }),
@@ -121335,10 +121806,10 @@ var editorTheme = EditorView.theme({
   "&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection": { backgroundColor: "var(--rr-selection)" }
 });
 function Editor2({ value, onChange, readOnly: readOnly2 = false, editorRef }) {
-  const root4 = (0, import_react169.useRef)(null), view = (0, import_react169.useRef)(null), change = (0, import_react169.useRef)(onChange);
-  const access = (0, import_react169.useRef)(new Compartment());
+  const root4 = (0, import_react171.useRef)(null), view = (0, import_react171.useRef)(null), change = (0, import_react171.useRef)(onChange);
+  const access = (0, import_react171.useRef)(new Compartment());
   change.current = onChange;
-  (0, import_react169.useEffect)(() => {
+  (0, import_react171.useEffect)(() => {
     view.current = new EditorView({ parent: root4.current, state: EditorState.create({ doc: value || "", extensions: [lineNumbers(), history(), markdown(), markdownHighlight, keymap.of([...defaultKeymap, ...historyKeymap]), EditorView.lineWrapping, editorTheme, access.current.of([EditorState.readOnly.of(readOnly2), EditorView.editable.of(!readOnly2)]), EditorView.updateListener.of((u2) => {
       if (u2.docChanged && !u2.transactions.some((t4) => t4.isUserEvent("remote"))) change.current?.(u2.state.doc.toString());
     })] }) });
@@ -121349,18 +121820,18 @@ function Editor2({ value, onChange, readOnly: readOnly2 = false, editorRef }) {
       view.current = null;
     };
   }, []);
-  (0, import_react169.useEffect)(() => {
+  (0, import_react171.useEffect)(() => {
     view.current?.dispatch({ effects: access.current.reconfigure([EditorState.readOnly.of(readOnly2), EditorView.editable.of(!readOnly2)]) });
   }, [readOnly2]);
-  (0, import_react169.useEffect)(() => {
+  (0, import_react171.useEffect)(() => {
     const v = view.current;
     if (v && v.state.doc.toString() !== value) v.dispatch({ changes: { from: 0, to: v.state.doc.length, insert: value || "" }, userEvent: "remote" });
   }, [value]);
   return /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("div", { ref: root4, className: "rr-editor" });
 }
 function Diff({ before, after }) {
-  const root4 = (0, import_react169.useRef)(null);
-  (0, import_react169.useEffect)(() => {
+  const root4 = (0, import_react171.useRef)(null);
+  (0, import_react171.useEffect)(() => {
     const merge3 = new MergeView({ parent: root4.current, a: { doc: before, extensions: [markdown(), markdownHighlight, editorTheme, EditorState.readOnly.of(true), EditorView.editable.of(false), EditorView.lineWrapping] }, b: { doc: after, extensions: [markdown(), markdownHighlight, editorTheme, EditorState.readOnly.of(true), EditorView.editable.of(false), EditorView.lineWrapping] } });
     return () => merge3.destroy();
   }, [before, after]);
@@ -121390,7 +121861,7 @@ function humanItemPayload(items) {
   return (items || []).map((i3) => ({ annotationId: i3.annotationId, category: i3.category || "supplement", selected: i3.selected === true, visibility: i3.visibility === "public" ? "public" : "local", ...typeof i3.publicSource === "string" ? { publicSource: i3.publicSource } : {} }));
 }
 function HumanItemsPanel({ value, readOnly: readOnly2, onSave }) {
-  const [items, setItems] = (0, import_react169.useState)(() => humanItemPayload(value.items).map((i3, n3) => ({ ...value.items[n3], ...i3 })));
+  const [items, setItems] = (0, import_react171.useState)(() => humanItemPayload(value.items).map((i3, n3) => ({ ...value.items[n3], ...i3 })));
   const update = (n3, patch2) => setItems((previous3) => previous3.map((i3, k6) => k6 === n3 ? { ...i3, ...patch2 } : i3));
   return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("section", { "aria-label": "\u91CD\u70B9\u4EBA\u5DE5\u4FE1\u606F", children: [
     /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h3", { children: "\u91CD\u70B9\u4EBA\u5DE5\u4FE1\u606F" }),
@@ -121478,17 +121949,18 @@ function Timeline({ value }) {
   ] });
 }
 function Workspace({ sessionId, close: close2, initialMode = "real" }) {
-  const [mode, setMode] = (0, import_react169.useState)(initialMode);
+  const [mode, setMode] = (0, import_react171.useState)(initialMode);
   return /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(WorkspaceContent, { sessionId, close: close2, mode, onModeChange: setMode }, mode);
 }
 function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
   const demo = mode === "demo";
-  const demoApi = (0, import_react169.useMemo)(() => demo ? createDemoApi(globalThis.localStorage) : null, [demo]);
-  const [stage, setStage] = (0, import_react169.useState)("generation"), [blankTitle, setBlankTitle] = (0, import_react169.useState)("");
-  const dialogRef = (0, import_react169.useRef)(null);
-  const [search2, setSearch] = (0, import_react169.useState)(""), [viewMode, setViewMode] = (0, import_react169.useState)("editor"), [focused, setFocused] = (0, import_react169.useState)(false);
+  const demoApi = (0, import_react171.useMemo)(() => demo ? createDemoApi(globalThis.localStorage) : null, [demo]);
+  const [stage, setStage] = (0, import_react171.useState)("generation"), [blankTitle, setBlankTitle] = (0, import_react171.useState)("");
+  const dialogRef = (0, import_react171.useRef)(null);
+  const editorApiRef = (0, import_react171.useRef)(null);
+  const [search2, setSearch] = (0, import_react171.useState)(""), [viewMode, setViewMode] = (0, import_react171.useState)("editor"), [focused, setFocused] = (0, import_react171.useState)(false);
   const sourceMode = viewMode !== "editor";
-  (0, import_react169.useEffect)(() => {
+  (0, import_react171.useEffect)(() => {
     const dialog = dialogRef.current, previous3 = document.activeElement;
     dialog.showModal();
     return () => {
@@ -121496,22 +121968,23 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       if (previous3?.isConnected) previous3.focus();
     };
   }, []);
-  const [reports, setReports] = (0, import_react169.useState)([]), [draft, setDraft] = (0, import_react169.useState)(null), [text7, setText] = (0, import_react169.useState)("");
-  const [dirty, setDirty] = (0, import_react169.useState)(false), [status, setStatus] = (0, import_react169.useState)("\u6B63\u5728\u52A0\u8F7D"), [error3, setError] = (0, import_react169.useState)("");
-  const [reportWarnings, setReportWarnings] = (0, import_react169.useState)([]);
-  const [preview, setPreview] = (0, import_react169.useState)(null), [pdf, setPdf] = (0, import_react169.useState)(null), [identity2, setIdentity] = (0, import_react169.useState)(null), [panel, setPanel] = (0, import_react169.useState)(null), [busy, setBusy] = (0, import_react169.useState)(false);
-  const [variety, setVariety] = (0, import_react169.useState)("\u9521"), [end, setEnd] = (0, import_react169.useState)(() => {
+  const [reports, setReports] = (0, import_react171.useState)([]), [draft, setDraft] = (0, import_react171.useState)(null), [text7, setText] = (0, import_react171.useState)("");
+  const [dirty, setDirty] = (0, import_react171.useState)(false), [status, setStatus] = (0, import_react171.useState)("\u6B63\u5728\u52A0\u8F7D"), [error3, setError] = (0, import_react171.useState)("");
+  const [reportWarnings, setReportWarnings] = (0, import_react171.useState)([]);
+  const [preview, setPreview] = (0, import_react171.useState)(null), [pdf, setPdf] = (0, import_react171.useState)(null), [identity2, setIdentity] = (0, import_react171.useState)(null), [panel, setPanel] = (0, import_react171.useState)(null), [busy, setBusy] = (0, import_react171.useState)(false);
+  const [variety, setVariety] = (0, import_react171.useState)("\u9521"), [end, setEnd] = (0, import_react171.useState)(() => {
     const d = /* @__PURE__ */ new Date();
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-  }), [analysisPrompt, setAnalysisPrompt] = (0, import_react169.useState)(DEFAULT_PROMPT_TEMPLATE), [webSearchEnabled, setWebSearchEnabled] = (0, import_react169.useState)(false);
-  const [templates, setTemplates] = (0, import_react169.useState)([]), [tmplId, setTmplId] = (0, import_react169.useState)(""), [tmplName, setTmplName] = (0, import_react169.useState)("");
-  const [confirmClose, setConfirmClose] = (0, import_react169.useState)(false);
-  const [confirmPublish, setConfirmPublish] = (0, import_react169.useState)(false);
-  const [settingsOpen, setSettingsOpen] = (0, import_react169.useState)(false);
-  const [aiModel, setAiModel] = (0, import_react169.useState)(null);
-  const current = (0, import_react169.useRef)({}), alive = (0, import_react169.useRef)(true), saving = (0, import_react169.useRef)(false), revision = (0, import_react169.useRef)(0), previewSerial = (0, import_react169.useRef)(0), genAbort = (0, import_react169.useRef)(null);
-  const [progress, setProgress] = (0, import_react169.useState)(null);
-  (0, import_react169.useEffect)(() => {
+  }), [analysisPrompt, setAnalysisPrompt] = (0, import_react171.useState)(DEFAULT_PROMPT_TEMPLATE), [webSearchEnabled, setWebSearchEnabled] = (0, import_react171.useState)(false);
+  const [templates, setTemplates] = (0, import_react171.useState)([]), [tmplId, setTmplId] = (0, import_react171.useState)(""), [tmplName, setTmplName] = (0, import_react171.useState)("");
+  const [confirmClose, setConfirmClose] = (0, import_react171.useState)(false);
+  const [confirmPublish, setConfirmPublish] = (0, import_react171.useState)(false);
+  const [settingsOpen, setSettingsOpen] = (0, import_react171.useState)(false);
+  const [aiModel, setAiModel] = (0, import_react171.useState)(null);
+  const [aiBusy, setAiBusy] = (0, import_react171.useState)(false);
+  const current = (0, import_react171.useRef)({}), alive = (0, import_react171.useRef)(true), saving = (0, import_react171.useRef)(false), revision = (0, import_react171.useRef)(0), previewSerial = (0, import_react171.useRef)(0), genAbort = (0, import_react171.useRef)(null);
+  const [progress, setProgress] = (0, import_react171.useState)(null);
+  (0, import_react171.useEffect)(() => {
     if (demo || !sessionId) return;
     let live = true;
     hostFetch("/api/run19/review", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "aiDefaultModel" }) }).then(async (r4) => {
@@ -121746,8 +122219,8 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
     setError("");
   }
   async function load(id3) {
-    if (current.current.dirty || saving.current) {
-      setError("\u8BF7\u5148\u4FDD\u5B58\u6216\u5BFC\u51FA\u5F53\u524D\u810F\u7A3F\uFF1B\u4E0D\u4F1A\u8986\u76D6\u672C\u5730\u8F93\u5165\u3002");
+    if (current.current.dirty || saving.current || aiBusy) {
+      setError(aiBusy ? "AI \u4FEE\u6539\u8FDB\u884C\u4E2D\uFF0C\u6682\u65F6\u4E0D\u80FD\u5207\u6362\u62A5\u544A\u3002" : "\u8BF7\u5148\u4FDD\u5B58\u6216\u5BFC\u51FA\u5F53\u524D\u810F\u7A3F\uFF1B\u4E0D\u4F1A\u8986\u76D6\u672C\u5730\u8F93\u5165\u3002");
       return;
     }
     setBusy(true);
@@ -121800,7 +122273,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       saving.current = false;
     }
   }
-  (0, import_react169.useEffect)(() => {
+  (0, import_react171.useEffect)(() => {
     alive.current = true;
     request("list").then((v) => {
       if (alive.current) {
@@ -121816,12 +122289,12 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       previewSerial.current++;
     };
   }, [sessionId]);
-  (0, import_react169.useEffect)(() => {
+  (0, import_react171.useEffect)(() => {
     if (!dirty || error3) return;
     const timer = setTimeout(save, 650);
     return () => clearTimeout(timer);
   }, [text7, dirty, draft?.saveToken, busy, error3]);
-  (0, import_react169.useEffect)(() => {
+  (0, import_react171.useEffect)(() => {
     const timer = setInterval(async () => {
       const c4 = current.current;
       if (!c4.draft || c4.dirty || saving.current || c4.busy) return;
@@ -121835,7 +122308,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
     }, 5e3);
     return () => clearInterval(timer);
   }, [sessionId]);
-  (0, import_react169.useEffect)(() => {
+  (0, import_react171.useEffect)(() => {
     if (!draft || dirty) return;
     const serial = ++previewSerial.current;
     let cancelled = false, timer;
@@ -121855,7 +122328,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       clearTimeout(timer);
     };
   }, [draft?.reportId, draft?.saveToken, dirty]);
-  (0, import_react169.useEffect)(() => {
+  (0, import_react171.useEffect)(() => {
     const warn = (e6) => {
       if (current.current.dirty) {
         e6.preventDefault();
@@ -121960,7 +122433,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
     }
   }
   const assetKey = previewAssetKey(preview);
-  (0, import_react169.useEffect)(() => {
+  (0, import_react171.useEffect)(() => {
     let cancelled = false, ownedUrl;
     setPdf(null);
     if (!assetKey) return;
@@ -121995,7 +122468,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
     setDirty(true);
     setStatus("\u6709\u672A\u4FDD\u5B58\u4FEE\u6539");
   };
-  const editorRef = (0, import_react169.useRef)(null), markdownScrollRef = (0, import_react169.useRef)(null);
+  const editorRef = (0, import_react171.useRef)(null), markdownScrollRef = (0, import_react171.useRef)(null);
   usePreviewScroll(editorRef, markdownScrollRef, viewMode === "markdown" && stage === "editor", text7, readOnly2);
   const warnings = safeWarnings(reportWarnings.map((w4) => w4.code), draft?.warnings, preview?.warnings);
   const verified = identity2?.confirmed === true && !!identity2?.displayName;
@@ -122094,7 +122567,6 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
   };
   return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("dialog", { ref: dialogRef, "aria-label": "\u5468\u62A5\u5BA1\u9605\u5DE5\u4F5C\u53F0", className: "rr-workspace", "data-focus": focused && stage === "editor", "data-stage": stage, "data-mode": mode, onCancel: (event) => {
     event.preventDefault();
-    requestClose();
   }, children: [
     /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("style", { children: workspace_default }),
     /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("header", { className: "rr-header", children: [
@@ -122129,7 +122601,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
         }, children: "\uFF0B \u65B0\u5EFA\u5468\u62A5" }),
         /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { "aria-label": "\u641C\u7D22\u62A5\u544A", placeholder: "\u641C\u7D22\u62A5\u544A\u2026", type: "search", value: search2, onChange: (e6) => setSearch(e6.target.value) }),
         /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-report-list", children: [
-          visibleReports.map((r4) => /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("button", { className: "rr-report-item", "aria-current": draft?.reportId === r4.reportId ? "page" : void 0, disabled: busy || dirty, onClick: () => load(r4.reportId), children: [
+          visibleReports.map((r4) => /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("button", { className: "rr-report-item", "aria-current": draft?.reportId === r4.reportId ? "page" : void 0, disabled: busy || dirty || aiBusy, onClick: () => load(r4.reportId), children: [
             /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("span", { className: "rr-item-top", children: [
               /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: `rr-status-dot ${r4.status === "confirmed" ? "is-confirmed" : ""}`, "aria-hidden": "true" }),
               /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("strong", { className: "rr-report-title", children: r4.title || r4.reportId })
@@ -122208,6 +122680,17 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-toolbar", role: "group", "aria-label": "\u6587\u6863\u89C6\u56FE", children: [
             /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", "aria-pressed": viewMode === "editor", onClick: () => setViewMode("editor"), children: "\u53EF\u89C6\u5316\u7F16\u8F91" }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("button", { className: "rr-button rr-ai-enter", disabled: viewMode !== "editor" || readOnly2 || !draft || aiBusy, title: "\u76F4\u63A5\u8FDB\u5165 AI \u6A21\u5F0F\u6539\u7A3F\uFF08\u540C //\uFF09", onClick: () => editorApiRef.current?.enterAIMode(), children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("svg", { className: "rr-btn-ico", viewBox: "0 0 24 24", width: "13", height: "13", fill: "currentColor", "aria-hidden": "true", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("path", { d: "M12 2l2.4 6.1L21 10l-6.6 1.9L12 18l-2.4-6.1L3 10l6.6-1.9z" }),
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("path", { d: "M19 15l1 2.6 2.6 1-2.6 1-1 2.6-1-2.6-2.6-1 2.6-1z" })
+              ] }),
+              "\u8FDB\u5165 AI"
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("button", { className: "rr-button rr-voice-enter", disabled: viewMode !== "editor" || readOnly2 || !draft || aiBusy, title: "\u8FDB\u5165 AI \u6A21\u5F0F\u5E76\u5F00\u59CB\u8BED\u97F3\u8F93\u5165\uFF08\u540C\u53F3 Alt\uFF09", onClick: () => editorApiRef.current?.enterVoiceMode(), children: [
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("svg", { className: "rr-btn-ico", viewBox: "0 0 24 24", width: "13", height: "13", fill: "currentColor", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("path", { d: "M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm6-3a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.94V22h2v-2.06A8 8 0 0 0 20 12h-2z" }) }),
+              "\u8BED\u97F3"
+            ] }),
             /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("button", { className: "rr-button", disabled: !draft, "aria-pressed": viewMode === "markdown", onClick: () => {
               setViewMode("markdown");
               setFocused(true);
@@ -122245,7 +122728,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
                 /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("strong", { children: sourceMode ? "Markdown \u6E90\u7801" : "\u53EF\u89C6\u5316\u7F16\u8F91" }),
                 /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { children: dirty ? "\u672A\u4FDD\u5B58" : "\u81EA\u52A8\u4FDD\u5B58" })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("section", { className: "rr-canvas", "aria-label": "\u62A5\u544A\u6B63\u6587", children: draft ? sourceMode ? /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(Editor2, { editorRef, value: text7, readOnly: readOnly2, onChange: changeText }, draft.reportId) : /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(BlockEditor, { value: text7, readOnly: readOnly2, onSource: () => {
+              /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("section", { className: "rr-canvas", "aria-label": "\u62A5\u544A\u6B63\u6587", children: draft ? sourceMode ? /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(Editor2, { editorRef, value: text7, readOnly: readOnly2, onChange: changeText }, draft.reportId) : /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(BlockEditor, { value: text7, readOnly: readOnly2, sessionId, reportId: draft.reportId, onAiBusy: setAiBusy, editorApi: editorApiRef, onSource: () => {
                 setViewMode("markdown");
                 setFocused(true);
               }, onChange: changeText }, draft.reportId) : /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-welcome", children: [
@@ -122394,14 +122877,14 @@ function createWorkspaceController() {
   };
 }
 function WorkspaceOverlay({ controller }) {
-  const opened = (0, import_react169.useSyncExternalStore)(controller.subscribe, controller.snapshot, controller.snapshot);
+  const opened = (0, import_react171.useSyncExternalStore)(controller.subscribe, controller.snapshot, controller.snapshot);
   return /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)(import_jsx_runtime131.Fragment, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("style", { children: workspace_default }),
     opened && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)(Workspace, { sessionId: opened.sessionId, close: controller.close })
   ] });
 }
 function RegisteredTrigger({ controller, sessionId, getSessionId, renderTrigger, footer: footer2 = false, wide = true }) {
-  const opened = (0, import_react169.useSyncExternalStore)(controller.subscribe, controller.snapshot, controller.snapshot);
+  const opened = (0, import_react171.useSyncExternalStore)(controller.subscribe, controller.snapshot, controller.snapshot);
   const onClick = () => controller.open(sessionId || getSessionId?.() || null);
   return renderTrigger({ footer: footer2, wide, opened: !!opened, onClick });
 }

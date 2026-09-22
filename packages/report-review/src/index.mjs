@@ -6,6 +6,7 @@ import { resolveFolderPath, moveArtifacts, DEFAULT_COMMODITY_GROUPS, SUBDIR } fr
 import { computeTimeline } from './timeline.mjs';
 import { extractReviewMarks } from './review-marks.mjs';
 import { mapChunks } from './chunk-map.mjs';
+import { homedir } from 'node:os';
 
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 const pick = (value, keys) => Object.fromEntries(keys.filter(k => value?.[k] !== undefined).map(k => [k, value[k]]));
@@ -17,6 +18,31 @@ const hex = x => typeof x === 'string' && /^[a-f0-9]{64}$/.test(x);
 const aiDebugFile = join(process.env.USERPROFILE || '.', '.dsh', 'report-review', 'ai-stream-debug.ndjson');
 const aiDebug = (rec) => { try { appendFile(aiDebugFile, JSON.stringify(rec) + '\n').catch(() => {}); } catch { /* ignore */ } };
 const validString = (x, max = 512) => typeof x === 'string' && x.length > 0 && x.length <= max && !x.includes('\0');
+// Language helpers for the ASR post-processor. `navigatorLanguage` is a host-side fallback (the
+// client passes its own navigator.language, but a direct/host test may omit it). `describeLanguage`
+// gives the LLM a clear target script/language so it can normalize a mixed simplified/traditional
+// transcription to the user's system language.
+const navigatorLanguage = () => { try { return (globalThis.navigator?.language || '') ; } catch { return ''; } };
+const describeLanguage = (lang) => {
+  const s = String(lang || '').toLowerCase();
+  if (s.startsWith('en')) return '英文（English）';
+  if (s.startsWith('zh')) {
+    if (s.includes('tw') || s.includes('hk') || s.includes('hant') || s.includes('mo')) return '繁体中文（Traditional Chinese）';
+    return '简体中文（Simplified Chinese）';
+  }
+  return s ? `语言代码 ${s}` : '简体中文（默认）';
+};
+// Tolerant extraction of the ASR-polish judgment. Different chat models drift on the key names
+// (complete/polished/reason vs editable/rewrite/isExecutable/simplifiedText/json_text), so we read
+// a small set of aliases and fall back to the raw transcript when no usable text is found.
+const pickFirst = (obj, keys) => { for (const k of keys) { const v = obj?.[k]; if (typeof v === 'string' && v.trim()) return v.trim(); } return ''; };
+const pickBool = (obj, keys) => { for (const k of keys) { const v = obj?.[k]; if (v === true) return true; if (v === false) return false; } return false; };
+const asrPolishParse = (v, transcript) => {
+  const complete = pickBool(v, ['complete', 'editable', 'isExecutable', 'executable', 'actionable', 'isComplete', 'needsEdit']);
+  const polished = pickFirst(v, ['polished', 'polish', 'rewrite', 'rewritten', 'text', 'edited', 'editedText', 'simplifiedText', 'result', 'instruction', 'command', 'processed']);
+  const reason = pickFirst(v, ['reason', 'note', 'summary', 'explanation', 'message', 'comment']);
+  return { complete, polished: polished || (complete ? transcript : transcript), reason };
+};
 // Whether the human EXPLICITLY asked to combine historical weeks / compare with past periods, so the script
 // fetches past WeKnora weekly reports. Bare "周报"/"周度" do NOT imply historical comparison; an explicit
 // "不/无需/仅本周" override wins, so a user who edits the requirement (or says not to compare) is honored.
@@ -31,12 +57,45 @@ const KNOWLEDGE_RE = /(知识库|数据库|上传|上载|材料|资料|素材|�
 // this as a distinct, user-actionable warning (reduce the reference scope) instead of a generic OR failure.
 const isContextOverflow = e => /context\s*length|context[_\\-\s]?(length|size|window)|maximum\s*context|too\s*many\s*tokens|token\s*limit|exceeds?\s*(the\s*)?maximum|reduce\s*(the\s*)?(length|input|message)|input[\s_-]?too[\s_-]?large|maximum\s*(model\s*)?token/i.test(`${e?.message || ''} ${e?.code || ''} ${e?.error?.message || ''} ${e?.error?.code || ''}`);
 const safeError = e => {
-  const known = new Set(['NOT_FOUND','INVALID_INPUT','CONFLICT','DRAFT_EXISTS','REVISION_REQUIRED','ASSET_CORRUPT','SESSION_FORBIDDEN','IDENTITY_UNVERIFIED','IDENTITY_CHANGED','CONNECTOR_UNAVAILABLE','SOURCE_UNAVAILABLE','SOURCE_ROOT_REQUIRED','SOURCE_MANIFEST_INVALID','SOURCE_FILE_INVALID','SOURCE_HASH_MISMATCH','SOURCE_FAILED','WEB_SEARCH_UNAVAILABLE','KNOWLEDGE_SEARCH_FAILED','KNOWLEDGE_RESPONSE_INVALID','LIST_UNAVAILABLE','PUBLISH_TARGET_REQUIRED','IMAGES_UNSUPPORTED','PUBLICATION_RECONCILIATION_REQUIRED','PUBLISH_TOKEN_INVALID','HUMAN_CLICK_REQUIRED','PUBLICATION_IN_PROGRESS','PUBLISH_REJECTED','PREVIEW_STALE','PREVIEW_NOT_FOUND','PDF_INVALID','DISPOSED','BODY_TOO_LARGE','ACTION_UNSUPPORTED','HUMAN_ITEMS_UNAVAILABLE','HUMAN_ITEMS_PUBLICATION_UNSUPPORTED','UNSUPPORTED_ASSET_REFERENCE','UNREGISTERED_ASSET','AMBIGUOUS_ASSET_CAPTION','UNREFERENCED_ASSET','INVALID_PUBLIC_VERSION','INVALID_IMAGE_CAPTION','INVALID_PUBLIC_SOURCE','INVALID_PUBLIC_SOURCE_TIME','INVALID_PUBLIC_AUTHOR','UNSUPPORTED_PUBLIC_MARKDOWN','INVALID_OR_DUPLICATE_ASSET','INVALID_HUMAN_ITEM','PRIVATE_HUMAN_ITEM','HUMAN_ITEM_ASSET_UNSUPPORTED','HUMAN_CONTENT_NOT_IN_VERSION','HUMAN_ANNOTATION_MISMATCH','UNTRUSTED_MANIFEST','INVALID_RESOURCE_BINDING','RESOURCE_BINDING_MISMATCH','INCOMPLETE_RESOURCE_BINDINGS','SETTINGS_UNAVAILABLE','SETTINGS_INVALID','LLM_UNSUPPORTED','LLM_SYNTHESIS_UNSUPPORTED','LLM_SYNTHESIS_NO_MODEL','LLM_SYNTHESIS_TIMEOUT','LLM_SYNTHESIS_EMPTY','LLM_SYNTHESIS_EMPTY_RETRY','LLM_SYNTHESIS_FAILED','LLM_SYNTHESIS_CONTEXT_OVERFLOW']);
+  const known = new Set(['NOT_FOUND','INVALID_INPUT','CONFLICT','DRAFT_EXISTS','REVISION_REQUIRED','ASSET_CORRUPT','SESSION_FORBIDDEN','IDENTITY_UNVERIFIED','IDENTITY_CHANGED','CONNECTOR_UNAVAILABLE','SOURCE_UNAVAILABLE','SOURCE_ROOT_REQUIRED','SOURCE_MANIFEST_INVALID','SOURCE_FILE_INVALID','SOURCE_HASH_MISMATCH','SOURCE_FAILED','WEB_SEARCH_UNAVAILABLE','KNOWLEDGE_SEARCH_FAILED','KNOWLEDGE_RESPONSE_INVALID','LIST_UNAVAILABLE','PUBLISH_TARGET_REQUIRED','IMAGES_UNSUPPORTED','PUBLICATION_RECONCILIATION_REQUIRED','PUBLISH_TOKEN_INVALID','HUMAN_CLICK_REQUIRED','PUBLICATION_IN_PROGRESS','PUBLISH_REJECTED','PREVIEW_STALE','PREVIEW_NOT_FOUND','PDF_INVALID','DISPOSED','BODY_TOO_LARGE','ACTION_UNSUPPORTED','HUMAN_ITEMS_UNAVAILABLE','HUMAN_ITEMS_PUBLICATION_UNSUPPORTED','UNSUPPORTED_ASSET_REFERENCE','UNREGISTERED_ASSET','AMBIGUOUS_ASSET_CAPTION','UNREFERENCED_ASSET','INVALID_PUBLIC_VERSION','INVALID_IMAGE_CAPTION','INVALID_PUBLIC_SOURCE','INVALID_PUBLIC_SOURCE_TIME','INVALID_PUBLIC_AUTHOR','UNSUPPORTED_PUBLIC_MARKDOWN','INVALID_OR_DUPLICATE_ASSET','INVALID_HUMAN_ITEM','PRIVATE_HUMAN_ITEM','HUMAN_ITEM_ASSET_UNSUPPORTED','HUMAN_CONTENT_NOT_IN_VERSION','HUMAN_ANNOTATION_MISMATCH','UNTRUSTED_MANIFEST','INVALID_RESOURCE_BINDING','RESOURCE_BINDING_MISMATCH','INCOMPLETE_RESOURCE_BINDINGS','SETTINGS_UNAVAILABLE','SETTINGS_INVALID','LLM_UNSUPPORTED','LLM_SYNTHESIS_UNSUPPORTED','LLM_SYNTHESIS_NO_MODEL','LLM_SYNTHESIS_TIMEOUT','LLM_SYNTHESIS_EMPTY','LLM_SYNTHESIS_EMPTY_RETRY','LLM_SYNTHESIS_FAILED','LLM_SYNTHESIS_CONTEXT_OVERFLOW','ASR_CREDENTIAL','ASR_PROVIDER','ASR_POLISH_NO_JSON','EMPTY_AUDIO']);
   const code = known.has(e?.code) ? e.code : 'INTERNAL_ERROR';
   // Known codes pass their own message through so a coded failure can carry a sanitized cause suffix
   // (every producer is our own fail(), which defaults message to the code itself).
   return { ok: false, error: { code, message: code === 'INTERNAL_ERROR' ? 'Host operation failed; private diagnostics are not exposed.' : (e?.message || code) } };
 };
+// Resolve a DSH credential ref (e.g. TOKENSAPI_API_KEY) from the plugin context, falling back to the
+// process environment. Mirrors how dsh-media-gen reads its provider key (ctx.credentials.resolve).
+async function resolveCredential(ctx, refName) {
+  // 1) explicit in-plugin credential service (same as dsh-media-gen)
+  try {
+    const mod = await import('@deepseek-ai/dsh-credentials');
+    const ref = typeof mod.credentialRef === 'function' ? mod.credentialRef(refName) : refName;
+    const resolved = await ctx?.credentials?.resolve?.(ref);
+    if (resolved?.value) return resolved.value;
+  } catch { /* host may not expose the module; fall through */ }
+  // 2) default-model provider config may carry a key (mirrors what the host passes to llm.stream)
+  try {
+    const sel = ctx?.get?.('agentDefaultModel')?.currentSelection?.();
+    const cfg = sel?.config ?? sel?.providerConfig ?? sel?.auth ?? sel?.apiKeyConfig;
+    if (typeof cfg?.apiKey === 'string' && cfg.apiKey) return cfg.apiKey;
+    if (typeof cfg?.key === 'string' && cfg.key) return cfg.key;
+    if (typeof sel?.apiKey === 'string' && sel.apiKey) return sel.apiKey;
+    if (typeof sel?.key === 'string' && sel.key) return sel.key;
+  } catch { /* ignore */ }
+  // 3) process environment
+  for (const name of [refName, 'TOKENSAPI_API_KEY', 'DEEPSEEK_API_KEY']) {
+    if (process.env[name]) return process.env[name];
+  }
+  // 4) last-resort: read the user's ~/.dsh/.credentials.yaml (same store the host uses) for a
+  //    `<KEY>: <value>` line, so ASR keeps working even if ctx.credentials isn't exposed here.
+  try {
+    const raw = await readFile(join(homedir(), '.dsh', '.credentials.yaml'), 'utf8');
+    const re = new RegExp(`^\\s*${refName}\\s*:\\s*(.+?)\\s*$`, 'm');
+    const m = raw.match(re);
+    if (m?.[1]) return m[1].replace(/^["']|["']$/g, '');
+  } catch { /* ignore */ }
+  fail('ASR_CREDENTIAL', `ASR 未配置：请提供 ${refName}`);
+}
 function annotationView(a) {
   return { ...pick(a, ['id','source','public','pending','mappingConfidence','displayName','completedAt']), ...(a.target ? { target: pick(a.target, ['startLine','endLine']) } : {}) };
 }
@@ -67,7 +126,7 @@ export function draftView(d) {
 }
 
 /** Trusted Host factory. dispatchHuman is for authenticated connection routes ONLY, never a model tool. */
-export function createReviewHost({ core, pdf, sessions, getConnector = () => undefined, getSource = () => undefined, getLlm = () => undefined, getDefaultModel = () => undefined, getWeb = () => undefined, llmSynthesisEnabled = true, llmSynthesisMaxTokens = 32000, llmSynthesisTimeoutMs = 300000 }, config = {}) {
+export function createReviewHost({ core, pdf, sessions, getConnector = () => undefined, getSource = () => undefined, getLlm = () => undefined, getDefaultModel = () => undefined, getWeb = () => undefined, getAsrCredential = () => undefined, llmSynthesisEnabled = true, llmSynthesisMaxTokens = 32000, llmSynthesisTimeoutMs = 300000 }, config = {}) {
   const previews = new Map(), plans = new Map(), publishing = new Set();
   // ---- P3 seam: retrieval memory (self-evolution) ----
   // When the human corrects a retrieval scope ("不是笔记，是专题夹"), record it so the planner can reuse the lesson
@@ -1151,6 +1210,12 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
         const model = validString(input.model, 128) ? input.model : selection?.model;
         if (!Array.isArray(input.messages)) fail('INVALID_INPUT');
         const tools = Array.isArray(input.tools) && input.tools.length ? input.tools : undefined;
+        // Route the edit call to the report's DSH session when the client provides one.
+        // Enforces the allowed-session whitelist (same gate as review/generate/pdf) so a
+        // conversational / selection AI edit is bound to an authenticated session, not a
+        // free-floating one-shot call. Optional: one-shot callers (demo/tests) omit it.
+        let sessionBound = null;
+        if (validString(input.sessionId)) sessionBound = await binding({ sessionId: input.sessionId });
         if (!validString(provider, 64) || !validString(model, 128)) { aiDebug({ evt: 'req', provider, model, noModel: true, tools: (tools||[]).map(t=>t.name) }); fail('LLM_SYNTHESIS_NO_MODEL'); }
         aiDebug({ evt: 'req', provider, model, tools: (tools||[]).map(t=>({ name:t?.name, hasParams:!!t?.parameters, paramKeys:Object.keys(t?.parameters||{}) })), toolsFull: tools, msgs: input.messages?.map(m=>({ role:m?.role, len:(m?.content||'').length, head:typeof m?.content==='string'?m.content.slice(0,120):null })), system: (validString(input.system,4096)?input.system:'').slice(0,160) });
         // DSH GenerateOptions has no toolChoice, so a tool-capable model may still reply
@@ -1167,6 +1232,7 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
           temperature: typeof input.temperature === 'number' ? input.temperature : undefined,
           maxTokens: typeof input.maxTokens === 'number' ? input.maxTokens : undefined,
           ...(tools ? { tools } : {}),
+          ...(sessionBound ? { sessionId: sessionBound.sessionId } : {}),
         };
         if (validString(input.reasoningEffort, 64)) streamOpts.reasoningEffort = input.reasoningEffort;
         const controller = new AbortController();
@@ -1198,6 +1264,71 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
         return new Response(stream, { headers: { 'content-type':'application/x-ndjson; charset=utf-8', 'cache-control':'no-store', 'x-accel-buffering':'no' } });
       } catch(e) { return json(safeError(e), e.code === 'SESSION_FORBIDDEN' ? 403 : 400); }
     },
+    // Speech-to-text: the client records microphone audio and posts it here; we hand it to the
+    // provider's OpenAI-compatible /audio/transcriptions endpoint using the qwen-asr model.
+    async fetchAsr(request) {
+      try {
+        if (request.method !== 'POST') return json({ ok:false, error:{ code:'METHOD_NOT_ALLOWED', message:'POST required' } }, 405);
+        let buf;
+        if (typeof request?.arrayBuffer === 'function') buf = Buffer.from(await request.arrayBuffer());
+        else if (Buffer.isBuffer(request?.body)) buf = request.body;
+        else if (ArrayBuffer.isView(request?.body)) buf = Buffer.from(request.body.buffer, request.body.byteOffset, request.body.byteLength);
+        if (!buf || !buf.length) return json({ ok:false, error:{ code:'EMPTY_AUDIO', message:'音频为空' } }, 400);
+        const baseURL = String(config.asrBaseURL || 'https://tokensapi.ai/v1').replace(/\/+$/, '');
+        const model = config.asrModel || 'qwen3-asr';
+        const apiKey = await getAsrCredential(config.asrApiKeyEnv || 'TOKENSAPI_API_KEY');
+        const mime = request.headers?.get?.('content-type') || 'audio/webm';
+        const ext = mime.includes('wav') ? 'wav' : mime.includes('ogg') ? 'ogg' : mime.includes('mp4') ? 'm4a' : mime.includes('x-wav') ? 'wav' : 'webm';
+        const form = new FormData();
+        form.append('file', new Blob([buf], { type: mime }), `speech.${ext}`);
+        form.append('model', model);
+        form.append('response_format', 'json');
+        const res = await fetch(`${baseURL}/audio/transcriptions`, { method:'POST', headers:{ Authorization:`Bearer ${apiKey}` }, body: form, signal: request.signal });
+        if (!res.ok) { const t = (await res.text()).slice(0, 200); throw Object.assign(new Error(`ASR 上游失败 (${res.status})：${t}`), { code:'ASR_PROVIDER' }); }
+        const out = await res.json();
+        return json({ ok: true, text: typeof out.text === 'string' ? out.text : '' });
+      } catch (e) {
+        return json(safeError(e), e?.code === 'ASR_PROVIDER' ? 502 : 400);
+      }
+    },
+    // Voice post-processing: judge whether the transcribed utterance expresses a complete,
+    // actionable editing intent, and return a polished/completed instruction (optionally normalized
+    // to the user's system language, e.g. traditional -> simplified). A pure LLM call (no document
+    // injection, no tools, never edits); the client decides what to do with `polished`.
+    async fetchAsrPolish(request) {
+      try {
+        if (request.method !== 'POST') return json({ ok:false, error:{ code:'METHOD_NOT_ALLOWED', message:'POST required' } }, 405);
+        const text = await request.text(); if (Buffer.byteLength(text) > maxBodyBytes) fail('BODY_TOO_LARGE');
+        let input; try { input = JSON.parse(text); } catch { fail('INVALID_INPUT'); }
+        if (!input || typeof input !== 'object' || Array.isArray(input)) fail('INVALID_INPUT');
+        const transcript = validString(input.text, 4096) ? input.text.trim() : '';
+        if (!transcript) fail('INVALID_INPUT');
+        const lang = (validString(input.lang, 16) ? input.lang : navigatorLanguage()) || '';
+        const llm = getLlm(); if (!llm?.stream) fail('LLM_UNSUPPORTED');
+        const selection = getDefaultModel()?.currentSelection?.();
+        const provider = selection?.provider, model = selection?.model;
+        if (!validString(provider, 64) || !validString(model, 128)) fail('LLM_SYNTHESIS_NO_MODEL');
+        const selectionCtx = (typeof input.selection === 'string' && input.selection.trim()) ? input.selection.trim().slice(0, 2000) : '';
+        // Language correction direction: system language decides the target script (simplified vs
+        // traditional) and language. If the transcript is in the same language, we only tidy format.
+        const langDescr = describeLanguage(lang);
+        const prompt = `你是周报 AI 编辑的语音意图理解助手。用户对着周报编辑器说话，转写得到下面的文本。请完成两件事：\n1) 把转写文本整理成通顺、准确的文字；若转写里繁体/简体混用或用字与目标语言不符，统一改成目标语言；\n2) 判断它是否是一个「完整、可执行的编辑意图」（用户明确想对文档做某个具体改动，意思已表达完整），并给出改写/补全后的一条完整编辑指令。\n\n目标语言：${langDescr}。\n${selectionCtx ? `当前选中的文字：\n"""${selectionCtx}"""\n\n` : ''}用户语音转写："""${transcript}"""\n\n请严格按下面的格式输出一个 JSON 对象（**键名必须原样使用 complete / polished / reason，一个字都不能改**，值用中文写）：\n{"complete":true,"polished":"改写或补全后的完整编辑指令（已转换为目标语言）","reason":"一句话理由"}\n其中：complete=布尔值，是否完整可执行的编辑意图；polished=字符串，改写/补全后的指令文本（complete 为 true 时应是一句可直接执行的编辑要求，如“把第一段的涨幅改成 3.2%”；complete 为 false 则把原文本整理通顺即可，不要臆造缺失内容）；reason=字符串，一句话说明你的判断。只做格式/完整度/语言统一，不改变用户原意。`;
+        const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), Number(config.llmSynthesisTimeoutMs ?? 300000));
+        try {
+          let out = '';
+          for await (const c of llm.stream({ provider, model, messages: [{ id: token(), role: 'user', content: [{ type: 'text', text: prompt }], source: { kind: 'plugin', plugin: 'run19-report-review' } }], system: '你只输出 JSON 对象，键名必须使用 complete/polished/reason。', temperature: 0, maxTokens: 512, signal: controller.signal })) {
+            if (c.type === 'text-delta') out += c.text; else if (c.type === 'finish') break;
+          }
+          const m = out.match(/\{[\s\S]*\}/);
+          if (!m) fail('ASR_POLISH_NO_JSON', '无法解析语音意图');
+          const v = JSON.parse(m[0]);
+          const p = asrPolishParse(v, transcript);
+          return json({ ok: true, complete: p.complete, polished: p.polished || transcript, reason: p.reason, lang });
+        } finally { clearTimeout(timer); }
+      } catch (e) {
+        return json(safeError(e), e?.code === 'ASR_POLISH_NO_JSON' ? 502 : e?.code === 'LLM_SYNTHESIS_NO_MODEL' ? 400 : 502);
+      }
+    },
     dispose() { disposed = true; plans.clear(); previews.clear(); retrievalMemory.clear(); }
   });
 }
@@ -1207,6 +1338,7 @@ export function apply(ctx, config = {}) {
   const api = createReviewHost({ core: ctx.reportCore, pdf: ctx.reportPdf, sessions: ctx.sessions,
     getConnector: () => ctx.get('weknoraConnector'), getSource: () => ctx.get('weeklyReportSource'),
     getLlm: () => ctx.get('llm'), getDefaultModel: () => ctx.get('agentDefaultModel'), getWeb: () => ctx.get('web'),
+    getAsrCredential: env => resolveCredential(ctx, env),
     llmSynthesisEnabled: config.llmSynthesisEnabled !== false,
     llmSynthesisMaxTokens: config.llmSynthesisMaxTokens ?? 32000,
     llmSynthesisTimeoutMs: config.llmSynthesisTimeoutMs ?? 300000 }, config);
@@ -1214,6 +1346,8 @@ export function apply(ctx, config = {}) {
   ctx.connection.fetch.register({ path:'/api/run19/review', methods:['POST'], requestBody:'buffered', fetch: request => api.fetchReview(request) });
   ctx.connection.fetch.register({ path:'/api/run19/generate', methods:['POST'], requestBody:'buffered', fetch: request => api.fetchGenerate(request) });
   ctx.connection.fetch.register({ path:'/api/run19/ai-stream', methods:['POST'], requestBody:'buffered', fetch: request => api.fetchAiStream(request) });
+  ctx.connection.fetch.register({ path:'/api/run19/asr', methods:['POST'], requestBody:'buffered', fetch: request => api.fetchAsr(request) });
+  ctx.connection.fetch.register({ path:'/api/run19/asr-polish', methods:['POST'], requestBody:'buffered', fetch: request => api.fetchAsrPolish(request) });
   ctx.connection.fetch.register({ path:'/api/run19/pdf', methods:['GET'], requestBody:'buffered', fetch: request => api.fetchPdf(request) });
   ctx.effect(() => () => api.dispose());
 }

@@ -65,6 +65,11 @@ export function createStreamToolsArraySchema(
   return {
     type: "object",
     properties: {
+      reportId: {
+        type: "string",
+        description:
+          "当前报告 ID。必须等于会话提示中给出的当前报告 ID。若与当前报告不一致，调用会被拒绝，以防误改其他报告。",
+      },
       operations: {
         //description:
         // "Operations to apply to the document. Put all operations in this array in ONE tool call / function call. DO NOT use multiple operation arrays with parallel tool calls.",

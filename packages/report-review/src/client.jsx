@@ -8,6 +8,7 @@ import { tags } from '@lezer/highlight';
 import { MergeView } from '@codemirror/merge';
 import workspaceCss from './workspace.css';
 import { BlockEditor } from './block-editor.jsx';
+import { useVoicePrefs } from './editor-ai/hooks/useVoicePrefs.js';
 import { MarkdownPreview, TemplateSelect, usePreviewScroll } from './preview.jsx';
 import { createDemoApi } from './demo-api.mjs';
 
@@ -230,6 +231,7 @@ export function SettingsPanel({ request, onClose, onIdentity }) {
   const [form, setForm] = useState({ baseUrl: '', kbId: '', tenantId: '', readKey: '', writeKey: '' });
   const [state, setState] = useState({ busy: true, note: '', error: '' });
   const [test, setTest] = useState(null);
+  const voicePrefs = useVoicePrefs();
   const adopt = v => { setView(v); setForm(f => ({ ...f, baseUrl: v?.baseUrl || '', kbId: v?.kbId || '', tenantId: v?.tenantId || '', readKey: '', writeKey: '' })); };
   useEffect(() => {
     let cancelled = false;
@@ -270,6 +272,10 @@ export function SettingsPanel({ request, onClose, onIdentity }) {
       <label>租户 ID<span className="rr-muted">（可选）</span><input aria-label="租户 ID" placeholder="WeKnora 多租户 ID，单租户可留空" value={form.tenantId} disabled={state.busy} onChange={e => field('tenantId', e.target.value)} /></label>
       <label>读取密钥{view?.readKeySet && <span className="rr-muted">（已保存，留空保持不变）</span>}<input aria-label="读取密钥" type="password" autoComplete="off" placeholder={view?.readKeySet ? '••••••（留空不修改）' : '用于检索的 API Key'} value={form.readKey} disabled={state.busy} onChange={e => field('readKey', e.target.value)} /></label>
       <label>发布密钥{view?.writeKeySet && <span className="rr-muted">（已保存，留空保持不变）</span>}<input aria-label="发布密钥" type="password" autoComplete="off" placeholder={view?.writeKeySet ? '••••••（留空不修改）' : '用于发布的 API Key，可留空（只读）'} value={form.writeKey} disabled={state.busy} onChange={e => field('writeKey', e.target.value)} /></label>
+      <div className="rr-settings-section"><div className="rr-section-heading"><h3>语音输入</h3></div>
+        <label className="rr-settings-toggle"><input type="checkbox" checked={voicePrefs.enabled} onChange={e => voicePrefs.setEnabled(e.target.checked)} /> 语音转写后自动理解意图并补全提示词<span className="rr-muted">（不自动提交，识别文本先填入输入框，由你确认；关闭则仅返回原始转写）</span></label>
+        <p className="rr-muted">目标语言自动跟随系统（当前：{voicePrefs.lang === 'zh-TW' || voicePrefs.lang === 'zh-HK' ? '繁体中文' : (voicePrefs.lang || 'zh-CN').startsWith('en') ? '英文' : '简体中文'}），识别结果若为繁体/简体混用会自动统一。</p>
+      </div>
       <p className="rr-muted">密钥保存为本机受限文件，不写入任何配置或补丁；界面不回显密钥内容。发布密钥须与读取密钥不同。</p>
       {state.note && <p className="rr-settings-note" role="status">{state.note}</p>}
       {state.error && <p className="rr-settings-error" role="alert">{state.error}</p>}
@@ -400,6 +406,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
   const demoApi = useMemo(() => demo ? createDemoApi(globalThis.localStorage) : null, [demo]);
   const [stage, setStage] = useState('generation'), [blankTitle, setBlankTitle] = useState('');
   const dialogRef = useRef(null);
+  const editorApiRef = useRef(null);
   const [search, setSearch] = useState(''), [viewMode, setViewMode] = useState('editor'), [focused, setFocused] = useState(false);
   const sourceMode = viewMode !== 'editor';
   useEffect(() => {
@@ -417,6 +424,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
   const [confirmPublish, setConfirmPublish] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [aiModel, setAiModel] = useState(null); // current AI provider/model for the status bar
+  const [aiBusy, setAiBusy] = useState(false); // an AI document edit is in flight -> block report switching
   const current = useRef({}), alive = useRef(true), saving = useRef(false), revision = useRef(0), previewSerial = useRef(0), genAbort = useRef(null);
   const [progress, setProgress] = useState(null);
   useEffect(() => {
@@ -519,7 +527,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
   const isConflict = e => (e?.code || '').toLowerCase().includes('conflict');
   const fail = e => { if (alive.current) { setError(friendlyError(e?.code, e?.message)); setStatus(isConflict(e) ? '冲突：本地草稿已保留，请对照远端后处理' : '操作失败，本地草稿保留'); } };
   function adopt(value) { const d = asDraft(value); if (!d?.reportId || typeof d.markdown !== 'string') throw new Error('Host 未返回有效工作稿'); const sameReport = current.current.draft?.reportId === d.reportId; setReportWarnings(previous => { const received = safeWarnings(value?.warnings, d.warnings); return sameReport ? safeWarnings(previous.map(w => w.code), received.map(w => w.code)) : received; }); revision.current++; current.current = { ...current.current, draft: d, text: d.markdown, dirty: false }; setDraft(d); setReports(previous => previous.map(r => r.reportId === d.reportId ? { ...r, title: d.title, status: d.status } : r)); setText(d.markdown); setDirty(false); setStatus('已保存'); setError(''); }
-  async function load(id) { if (current.current.dirty || saving.current) { setError('请先保存或导出当前脏稿；不会覆盖本地输入。'); return; } setBusy(true); try { const d = await request('get', { reportId: id }); if (alive.current) { adopt(d); setPreview(null); setPanel(null); setStage('editor'); setViewMode('editor'); } } catch(e) { fail(e); } finally { if (alive.current) setBusy(false); } }
+  async function load(id) { if (current.current.dirty || saving.current || aiBusy) { setError(aiBusy ? 'AI 修改进行中，暂时不能切换报告。' : '请先保存或导出当前脏稿；不会覆盖本地输入。'); return; } setBusy(true); try { const d = await request('get', { reportId: id }); if (alive.current) { adopt(d); setPreview(null); setPanel(null); setStage('editor'); setViewMode('editor'); } } catch(e) { fail(e); } finally { if (alive.current) setBusy(false); } }
   async function save() {
     const c = current.current; if (!c.draft || !c.dirty || saving.current || isDraftReadOnly(c.draft, c.busy)) return;
     saving.current = true; const seq = revision.current; setStatus('保存中');
@@ -647,7 +655,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
   };
   const visibleReports = reports.filter(r => (r.title || r.reportId).toLowerCase().includes(search.trim().toLowerCase()));
   const requestClose = () => { if (busy || saving.current) return; if (dirty) setConfirmClose(true); else close(); };
-  return <dialog ref={dialogRef} aria-label="周报审阅工作台" className="rr-workspace" data-focus={focused && stage === 'editor'} data-stage={stage} data-mode={mode} onCancel={event => { event.preventDefault(); requestClose(); }}>
+  return <dialog ref={dialogRef} aria-label="周报审阅工作台" className="rr-workspace" data-focus={focused && stage === 'editor'} data-stage={stage} data-mode={mode} onCancel={event => { event.preventDefault(); }}>
     <style>{workspaceCss}</style>
     <header className="rr-header">
       <strong className="rr-app-title">周报工作台</strong>
@@ -663,7 +671,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
         <div className="rr-section-heading"><h2>研究档案</h2><span className="rr-badge">{reports.length}</span></div>
         <button className="rr-button rr-button--primary" disabled={busy || dirty} onClick={() => { setStage('generation'); setFocused(false); }}>＋ 新建周报</button>
         <input aria-label="搜索报告" placeholder="搜索报告…" type="search" value={search} onChange={e => setSearch(e.target.value)} />
-        <div className="rr-report-list">{visibleReports.map(r => <button className="rr-report-item" key={r.reportId} aria-current={draft?.reportId === r.reportId ? 'page' : undefined} disabled={busy || dirty} onClick={() => load(r.reportId)}><span className="rr-item-top"><span className={`rr-status-dot ${r.status === 'confirmed' ? 'is-confirmed' : ''}`} aria-hidden="true"/><strong className="rr-report-title">{r.title || r.reportId}</strong></span><span className="rr-report-sub">{r.status === 'confirmed' ? '已确认 · 只读' : '研究草稿'}</span></button>)}
+        <div className="rr-report-list">{visibleReports.map(r => <button className="rr-report-item" key={r.reportId} aria-current={draft?.reportId === r.reportId ? 'page' : undefined} disabled={busy || dirty || aiBusy} onClick={() => load(r.reportId)}><span className="rr-item-top"><span className={`rr-status-dot ${r.status === 'confirmed' ? 'is-confirmed' : ''}`} aria-hidden="true"/><strong className="rr-report-title">{r.title || r.reportId}</strong></span><span className="rr-report-sub">{r.status === 'confirmed' ? '已确认 · 只读' : '研究草稿'}</span></button>)}
           {!visibleReports.length && <p className="rr-empty">{search ? '没有匹配的报告' : '暂无报告，新建一份开始研究。'}</p>}</div>
         <p className="rr-sidebar-note">从本周数据出发，留下判断与依据。<br/>保存后可切换报告。</p>
       </nav>
@@ -688,8 +696,8 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
         </section>
         <section className="rr-editor-stage" hidden={stage !== 'editor'}>
         <header className="rr-report-header"><span className="rr-eyebrow">WEEKLY RESEARCH</span><h1>{draft?.title || '开始本周研究'}</h1><div className="rr-row"><span className="rr-badge">{draft?.status === 'confirmed' ? '已确认 · 只读' : dirty ? '待保存' : draft ? '研究草稿' : '未选择报告'}</span><span className="rr-muted">先看结论，再核对证据</span></div></header>
-        <div className="rr-toolbar" role="group" aria-label="文档视图"><button className="rr-button" aria-pressed={viewMode === 'editor'} onClick={() => setViewMode('editor')}>可视化编辑</button><button className="rr-button" disabled={!draft} aria-pressed={viewMode === 'markdown'} onClick={() => { setViewMode('markdown'); setFocused(true); }}>Markdown 实时浏览</button><button className="rr-button" disabled={!draft} aria-pressed={viewMode === 'pdf'} onClick={() => { setViewMode('pdf'); setFocused(true); }}>PDF 实时浏览</button><button className="rr-button" disabled={!synced || busy} title={synced ? '导出当前已保存版本' : '等待当前内容保存并完成 PDF 生成后可导出'} onClick={() => { if (!synced) return; const link = document.createElement('a'); link.href = pdf.url; link.download = demo ? 'demo-weekly-report.pdf' : (draft.title || 'weekly-report').replace(/[<>:"/\\|?*]/g, '_') + '.pdf'; link.click(); }}>导出 PDF</button><button className="rr-button rr-button--primary rr-push" disabled={!dirty || readOnly} onClick={() => { setError(''); save(); }}>保存 / 重试</button></div>
-        <p className="rr-engine-note">切换模式保留正文内容；可视化与源码之间切换时，撤销历史重新开始。</p>{panel && <section className="rr-review-view" aria-label="审阅详情"><div className="rr-review-view-head"><button className="rr-button" onClick={() => setPanel(null)}>← 返回正文</button><div className="rr-review-view-head2"><h2>{reviewTitle(panel.type)}</h2><span className="rr-muted">{reviewSub(panel.type, panel.value)}</span></div></div><div className="rr-review-view-body">{renderPanel()}</div></section>}<div className="rr-document-panes" data-view={viewMode}><div className="rr-source-pane"><div className="rr-pane-heading"><strong>{sourceMode ? 'Markdown 源码' : '可视化编辑'}</strong><span>{dirty ? '未保存' : '自动保存'}</span></div><section className="rr-canvas" aria-label="报告正文">{draft ? (sourceMode ? <Editor key={draft.reportId} editorRef={editorRef} value={text} readOnly={readOnly} onChange={changeText} /> : <BlockEditor key={draft.reportId} value={text} readOnly={readOnly} onSource={() => { setViewMode('markdown'); setFocused(true); }} onChange={changeText} />) : <div className="rr-welcome"><span className="rr-eyebrow">本周的判断，从这里开始</span><h2>把数据整理成有依据的观点</h2><p>从左侧打开已有报告，或新建周报后使用上方设置生成初稿。</p><p className="rr-muted">生成初稿 → 人工审阅 → 确认版本 → 发布与核对</p></div>}</section>
+        <div className="rr-toolbar" role="group" aria-label="文档视图"><button className="rr-button" aria-pressed={viewMode === 'editor'} onClick={() => setViewMode('editor')}>可视化编辑</button><button className="rr-button rr-ai-enter" disabled={viewMode !== 'editor' || readOnly || !draft || aiBusy} title="直接进入 AI 模式改稿（同 //）" onClick={() => editorApiRef.current?.enterAIMode()}><svg className="rr-btn-ico" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 6.1L21 10l-6.6 1.9L12 18l-2.4-6.1L3 10l6.6-1.9z"/><path d="M19 15l1 2.6 2.6 1-2.6 1-1 2.6-1-2.6-2.6-1 2.6-1z"/></svg>进入 AI</button><button className="rr-button rr-voice-enter" disabled={viewMode !== 'editor' || readOnly || !draft || aiBusy} title="进入 AI 模式并开始语音输入（同右 Alt）" onClick={() => editorApiRef.current?.enterVoiceMode()}><svg className="rr-btn-ico" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm6-3a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.94V22h2v-2.06A8 8 0 0 0 20 12h-2z"/></svg>语音</button><button className="rr-button" disabled={!draft} aria-pressed={viewMode === 'markdown'} onClick={() => { setViewMode('markdown'); setFocused(true); }}>Markdown 实时浏览</button><button className="rr-button" disabled={!draft} aria-pressed={viewMode === 'pdf'} onClick={() => { setViewMode('pdf'); setFocused(true); }}>PDF 实时浏览</button><button className="rr-button" disabled={!synced || busy} title={synced ? '导出当前已保存版本' : '等待当前内容保存并完成 PDF 生成后可导出'} onClick={() => { if (!synced) return; const link = document.createElement('a'); link.href = pdf.url; link.download = demo ? 'demo-weekly-report.pdf' : (draft.title || 'weekly-report').replace(/[<>:"/\\|?*]/g, '_') + '.pdf'; link.click(); }}>导出 PDF</button><button className="rr-button rr-button--primary rr-push" disabled={!dirty || readOnly} onClick={() => { setError(''); save(); }}>保存 / 重试</button></div>
+        <p className="rr-engine-note">切换模式保留正文内容；可视化与源码之间切换时，撤销历史重新开始。</p>{panel && <section className="rr-review-view" aria-label="审阅详情"><div className="rr-review-view-head"><button className="rr-button" onClick={() => setPanel(null)}>← 返回正文</button><div className="rr-review-view-head2"><h2>{reviewTitle(panel.type)}</h2><span className="rr-muted">{reviewSub(panel.type, panel.value)}</span></div></div><div className="rr-review-view-body">{renderPanel()}</div></section>}<div className="rr-document-panes" data-view={viewMode}><div className="rr-source-pane"><div className="rr-pane-heading"><strong>{sourceMode ? 'Markdown 源码' : '可视化编辑'}</strong><span>{dirty ? '未保存' : '自动保存'}</span></div><section className="rr-canvas" aria-label="报告正文">{draft ? (sourceMode ? <Editor key={draft.reportId} editorRef={editorRef} value={text} readOnly={readOnly} onChange={changeText} /> : <BlockEditor key={draft.reportId} value={text} readOnly={readOnly} sessionId={sessionId} reportId={draft.reportId} onAiBusy={setAiBusy} editorApi={editorApiRef} onSource={() => { setViewMode('markdown'); setFocused(true); }} onChange={changeText} />) : <div className="rr-welcome"><span className="rr-eyebrow">本周的判断，从这里开始</span><h2>把数据整理成有依据的观点</h2><p>从左侧打开已有报告，或新建周报后使用上方设置生成初稿。</p><p className="rr-muted">生成初稿 → 人工审阅 → 确认版本 → 发布与核对</p></div>}</section>
         </div><section className="rr-markdown-preview" aria-label="Markdown 实时预览" hidden={viewMode !== 'markdown'}><div className="rr-pane-heading"><strong>阅读预览</strong><span>随输入实时更新</span></div>{viewMode === 'markdown' && <MarkdownPreview text={text} scrollRef={markdownScrollRef} />}</section>
         <section className="rr-pdf" aria-label="报告版式" hidden={viewMode !== 'pdf'}><div className="rr-pane-heading"><strong>PDF 版式</strong><span>{synced ? '已同步' : '等待生成 / 旧预览'}</span></div>{pdf ? <><a href={pdf.url} target="_blank" rel="noreferrer" download={demo ? "demo-weekly-report.pdf" : undefined}>{demo ? "下载演示 PDF（模拟数据）" : "下载 / 打开当前 PDF"}{!synced ? '（旧预览）' : ''}</a><object aria-label="实际 PDF 预览" data={pdf.url} type="application/pdf" className="rr-pdf-object"><a href={pdf.url} target="_blank" rel="noreferrer">浏览器无法内嵌 PDF，请打开实际 PDF</a></object></> : <p className="rr-empty">尚无可用实际 PDF，保存后等待预览生成。</p>}</section></div>
         </section>
