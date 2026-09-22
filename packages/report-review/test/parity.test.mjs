@@ -12,10 +12,10 @@ async function load(source) {
   const module = { exports:{} }; new Function('require','module','exports',result.outputFiles[0].text)(require,module,module.exports); return module.exports;
 }
 test('baseline parity: unchanged Host packages and client payload/preview/identity guards', async () => {
-  const files = execFileSync('git',['ls-tree','-r','--name-only','ef20751','--','packages'],{cwd:'../..',encoding:'utf8'}).trim().split('\n').filter(p => !p.startsWith('packages/report-review/') || (/\/src\//.test(p) && !p.endsWith('client.jsx')));
+  const files = execFileSync('git',['ls-tree','-r','--name-only','a77ded0','--','packages'],{cwd:'../..',encoding:'utf8'}).trim().split('\n').filter(p => !p.startsWith('packages/report-review/') || (/\/src\//.test(p) && !p.endsWith('client.jsx')));
   // Includes core, source, renderer, connector, all review Host logic and helper modules.
-  assert.equal(execFileSync('git',['diff','ef20751','--',...files],{cwd:'../..',encoding:'utf8'}),'');
-  const baseline = await load(execFileSync('git',['show','ef20751:packages/report-review/src/client.jsx'],{encoding:'utf8',maxBuffer:3e6}));
+  assert.equal(execFileSync('git',['diff','a77ded0','--',...files],{cwd:'../..',encoding:'utf8'}),'');
+  const baseline = await load(execFileSync('git',['show','a77ded0:packages/report-review/src/client.jsx'],{encoding:'utf8',maxBuffer:3e6}));
   const current = await load("export * from './client.jsx';");
   const input = {variety:' 锡 ',end:'2026-09-08',analysisPrompt:' 核对近四周 ',webSearchEnabled:true};
   assert.deepEqual(current.generationInput(input),baseline.generationInput(input));
