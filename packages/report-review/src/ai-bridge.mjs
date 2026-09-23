@@ -19,6 +19,13 @@ function emitDiag(detail) {
   try { if (typeof window !== 'undefined' && window.dispatchEvent && window.CustomEvent) window.dispatchEvent(new window.CustomEvent('dsh-ai-diag', { detail })); } catch { /* ignore */ }
 }
 
+// Live "what the agent is doing" ticker. The host emits NDJSON `activity` lines as it
+// runs system tools / applies the edit; we relay them as a window CustomEvent so the
+// AI menu can render "正在搜索 / 正在写入…" without threading callbacks everywhere.
+function emitActivity(detail) {
+  try { if (typeof window !== 'undefined' && window.dispatchEvent && window.CustomEvent) window.dispatchEvent(new window.CustomEvent('dsh-ai-activity', { detail })); } catch { /* ignore */ }
+}
+
 // Map a DSH finish reason to the model finishReason vocabulary.
 function mapFinishReason(kind) {
   switch (kind) {
@@ -192,6 +199,7 @@ export function createDshLlmModel(opts) {
               let rec; try { rec = JSON.parse(line); } catch { continue; }
               if (rec.t === 'error') { ctrl.enqueue({ type: 'error', error: new Error(rec.error?.message || 'DSH stream error') }); break; }
               if (rec.t === 'done') break;
+              if (rec.t === 'activity') { emitActivity(rec); continue; }
               if (rec.t === 'meta') { streamMetaProvider = rec.provider ?? null; streamMetaModel = rec.model ?? null; continue; }
               if (rec.t !== 'chunk') continue;
               const c = rec.chunk;

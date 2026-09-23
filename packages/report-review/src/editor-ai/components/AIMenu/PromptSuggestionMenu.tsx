@@ -25,6 +25,8 @@ export type PromptSuggestionMenuProps = {
   rightSection?: ReactNode;
   placeholder?: string;
   disabled?: boolean;
+  // Optional live "agent is working" strip shown directly under the prompt input.
+  activity?: ReactNode;
 };
 
 export const PromptSuggestionMenu = (props: PromptSuggestionMenuProps) => {
@@ -131,6 +133,7 @@ export const PromptSuggestionMenu = (props: PromptSuggestionMenuProps) => {
           aria-activedescendant={activeDescendantId}
         />
       </Components.Generic.Form.Root>
+      {props.activity}
       {items.length > 0 && (
         <Components.SuggestionMenu.Root
           className={"bn-combobox-items"}

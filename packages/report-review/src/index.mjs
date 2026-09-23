@@ -126,7 +126,7 @@ export function draftView(d) {
 }
 
 /** Trusted Host factory. dispatchHuman is for authenticated connection routes ONLY, never a model tool. */
-export function createReviewHost({ core, pdf, sessions, getConnector = () => undefined, getSource = () => undefined, getLlm = () => undefined, getDefaultModel = () => undefined, getWeb = () => undefined, getAsrCredential = () => undefined, llmSynthesisEnabled = true, llmSynthesisMaxTokens = 32000, llmSynthesisTimeoutMs = 300000 }, config = {}) {
+export function createReviewHost({ core, pdf, sessions, getConnector = () => undefined, getSource = () => undefined, getLlm = () => undefined, getDefaultModel = () => undefined, getWeb = () => undefined, getTools = () => undefined, getAsrCredential = () => undefined, llmSynthesisEnabled = true, llmSynthesisMaxTokens = 32000, llmSynthesisTimeoutMs = 300000 }, config = {}) {
   const previews = new Map(), plans = new Map(), publishing = new Set();
   // ---- P3 seam: retrieval memory (self-evolution) ----
   // When the human corrects a retrieval scope ("不是笔记，是专题夹"), record it so the planner can reuse the lesson
@@ -159,6 +159,13 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
   // the tool call. Let it finish reasoning and issue applyDocumentOperations; the
   // timeout below still bounds wall-clock time.
   const AI_TIMEOUT_MS = config.aiTimeoutMs ?? 90000;
+  // The AI edit path is an agent loop: the model may spend several turns calling system
+  // tools (web search, filesystem) before it issues the edit. AI_TIMEOUT_MS bounds ONE
+  // model turn; this bounds the whole request so tool turns get their own wall-clock
+  // instead of silently eating the single-turn budget.
+  const AI_TOTAL_TIMEOUT_MS = config.aiTotalTimeoutMs ?? AI_TIMEOUT_MS * 3;
+  // Cap the gather-context turns so a model that keeps calling tools can't loop forever.
+  const AI_MAX_TOOL_TURNS = config.aiMaxToolTurns ?? 6;
   const ttl = config.publishTokenTtlMs ?? 5 * 60 * 1000;
   // Honor an explicit session whitelist. Without a live-registry gate, a report is addressed by its OWN sessionId (report-core enforces the
   // ownership match), so a caller may use any well-formed session to reach reports it stored — including a session
@@ -1220,38 +1227,179 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
         aiDebug({ evt: 'req', provider, model, tools: (tools||[]).map(t=>({ name:t?.name, hasParams:!!t?.parameters, paramKeys:Object.keys(t?.parameters||{}) })), toolsFull: tools, msgs: input.messages?.map(m=>({ role:m?.role, len:(m?.content||'').length, head:typeof m?.content==='string'?m.content.slice(0,120):null })), system: (validString(input.system,4096)?input.system:'').slice(0,160) });
         // DSH GenerateOptions has no toolChoice, so a tool-capable model may still reply
         // in plain text instead of calling the tool. Nudge it hard when tools are present.
+        // We merge the host's FULL system tool set (ctx.tools.schemas()) with the editor's
+        // applyDocumentOperations, so the model can gather context (web search, filesystem,
+        // etc.) the same way the normal agent can. Any non-edit tool call the model emits is
+        // executed right here via toolRuntime.execute and fed back; only applyDocumentOperations
+        // is forwarded to the client, which applies it as a diff.
         let system = validString(input.system, 4096) ? input.system : undefined;
-        if (tools?.length) {
-          const names = tools.map(t => t.name).join(', ');
-          system = `${system ?? 'You are editing a document.'}\n\nIMPORTANT: To make any change to this document you MUST call one of the tools (${names}). Do NOT reply with a summary or plain text — issue the tool call with the required arguments. If no change is needed, reply with the exact text "NO_EDIT".`;
+        const toolRuntime = getTools?.();
+        let systemSchemas = [];
+        try {
+          if (toolRuntime && typeof toolRuntime.schemas === 'function') {
+            const s = toolRuntime.schemas();
+            if (Array.isArray(s)) systemSchemas = s;
+          }
+        } catch { systemSchemas = []; }
+        const clientTools = Array.isArray(input.tools) ? input.tools.filter(t => t && typeof t.name === 'string') : [];
+        const toolByName = new Map();
+        for (const t of clientTools) toolByName.set(t.name, { name: t.name, description: t.description || '', parameters: t.parameters || {} });
+        // Names the host owns and we therefore execute in-process. Tracked separately from
+        // `toolByName`: "not the edit tool" is NOT the same as "the host can run it" — a client
+        // tool we don't recognise must go back to the client, not into toolRuntime.execute.
+        const systemToolNames = new Set();
+        for (const t of systemSchemas) {
+          const name = t?.name;
+          if (!name || toolByName.has(name)) continue;
+          toolByName.set(name, { name, description: t.description || '', parameters: t.parameters || {} });
+          systemToolNames.add(name);
+        }
+        const allTools = Array.from(toolByName.values());
+        const isSystemTool = name => !!name && systemToolNames.has(name);
+        aiDebug({ evt: 'req-tools', client: clientTools.map(t => t.name), system: systemSchemas.map(t => t?.name).filter(Boolean), merged: allTools.map(t => t.name) });
+        if (allTools.length) {
+          const editToolPresent = toolByName.has('applyDocumentOperations');
+          system = `${system ?? 'You are editing a document.'}\n\nIMPORTANT: To make ANY change to this document you MUST call the ${editToolPresent ? '"applyDocumentOperations"' : 'edit'} tool with the required operations. You may call the other available tools (e.g. web_search, filesystem) to gather context BEFORE editing. Do NOT reply with a summary or plain text instead of the edit tool call. If no change is needed, reply with the exact text "NO_EDIT".`;
         }
         const streamOpts = {
           provider, model,
-          messages: input.messages,
           system,
           temperature: typeof input.temperature === 'number' ? input.temperature : undefined,
           maxTokens: typeof input.maxTokens === 'number' ? input.maxTokens : undefined,
-          ...(tools ? { tools } : {}),
+          ...(allTools.length ? { tools: allTools } : {}),
           ...(sessionBound ? { sessionId: sessionBound.sessionId } : {}),
         };
         if (validString(input.reasoningEffort, 64)) streamOpts.reasoningEffort = input.reasoningEffort;
-        const controller = new AbortController();
         const encoder = new TextEncoder();
-        // Bound the round-trip so a misbehaving model can't hang the AI UI forever.
+        // Two nested bounds: `timer` is the whole-request budget (all turns), while each turn
+        // below gets its own AI_TIMEOUT_MS. Declared before `timer` so the callback never
+        // closes over a still-uninitialized binding.
+        let currentAborter = new AbortController();
         let timedOut = false;
-        const timer = setTimeout(() => { timedOut = true; try { controller.abort(); } catch { /* ignore */ } }, AI_TIMEOUT_MS);
+        const timer = setTimeout(() => { timedOut = true; try { currentAborter?.abort(); } catch { /* ignore */ } }, AI_TOTAL_TIMEOUT_MS);
         const stream = new ReadableStream({
           async start(ctrl) {
             try {
               // Lead with the resolved model so the client can show it in the status bar.
               ctrl.enqueue(encoder.encode(JSON.stringify({ t:'meta', provider, model }) + '\n'));
-              for await (const chunk of llm.stream({ ...streamOpts, signal: controller.signal })) {
-                if (chunk?.type === 'tool-call-delta' || chunk?.type === 'block-end' || chunk?.type === 'finish') {
-                  console.error(`[run19/ai-stream] chunk type=${chunk.type}`, (chunk.type === 'finish' ? `reason=${chunk.reason?.kind}` : chunk.type === 'block-end' ? `block=${chunk.block?.type} name=${chunk.block?.name} id=${chunk.block?.id}` : `name=${chunk.name}`));
+              // Control channel: a thin `activity` NDJSON line the client surfaces live so the
+              // user sees WHAT the agent is doing (thinking / calling a system tool / editing).
+              // These are NOT model content; the client maps them into a status strip.
+              const activity = (payload) => { try { ctrl.enqueue(encoder.encode(JSON.stringify({ t:'activity', ...payload }) + '\n')); } catch { /* ignore */ } };
+              // Every message we append must match the DSH Message contract the client's
+              // toDshMessage already satisfies: a stable id, a 'system'|'user'|'assistant'
+              // role, and a source. There is no 'tool' role — a tool result is a USER
+              // message carrying exactly one tool-result block.
+              const mkMessage = (role, content) => ({ id: token(), role, content, source: { kind: 'plugin', plugin: 'run19-report-review' } });
+              let messages = Array.isArray(input.messages) ? input.messages : [];
+              let turn = 0;
+              let lastBuffered = [];
+              let done = false;
+              while (!done && turn < AI_MAX_TOOL_TURNS) {
+                turn++;
+                activity({ kind: 'thinking', turn });
+                currentAborter = new AbortController();
+                const turnTimer = setTimeout(() => { timedOut = true; try { currentAborter.abort(); } catch { /* ignore */ } }, AI_TIMEOUT_MS);
+                const buffered = [];
+                const toolCallAcc = new Map(); // id -> { name, arguments }
+                let textBuf = '';
+                let turnErr;
+                try {
+                  for await (const chunk of llm.stream({ ...streamOpts, messages, signal: currentAborter.signal })) {
+                    if (chunk?.type === 'tool-call-delta' || chunk?.type === 'block-end' || chunk?.type === 'finish') {
+                      console.error(`[run19/ai-stream] turn=${turn} chunk type=${chunk.type}`, (chunk.type === 'finish' ? `reason=${chunk.reason?.kind}` : chunk.type === 'block-end' ? `block=${chunk.block?.type} name=${chunk.block?.name} id=${chunk.block?.id}` : `name=${chunk.name}`));
+                    }
+                    aiDebug({ evt: 'chunk', turn, type: chunk?.type, name: chunk?.name, blockType: chunk?.block?.type, blockName: chunk?.block?.name, blockId: chunk?.block?.id, reason: chunk?.reason?.kind });
+                    buffered.push(chunk);
+                    if (chunk?.type === 'text-delta') textBuf += chunk.text ?? '';
+                    else if (chunk?.type === 'tool-call-delta') {
+                      const id = String(chunk.id ?? chunk.blockId ?? '');
+                      const acc = toolCallAcc.get(id) ?? { name: chunk.name || '', arguments: '' };
+                      acc.arguments = (acc.arguments || '') + (chunk.argumentsDelta || '');
+                      toolCallAcc.set(id, acc);
+                    } else if (chunk?.type === 'block-end' && (chunk?.block?.type === 'tool-call' || chunk?.blockType === 'tool-call')) {
+                      const id = String(chunk?.block?.id ?? chunk?.blockId ?? '');
+                      const name = chunk?.block?.name ?? chunk?.blockName ?? '';
+                      const raw = chunk?.block?.arguments ?? toolCallAcc.get(id)?.arguments ?? '';
+                      toolCallAcc.set(id, { name, arguments: typeof raw === 'string' ? raw : JSON.stringify(raw ?? {}) });
+                    }
+                  }
+                } catch (e) { turnErr = e; }
+                finally { clearTimeout(turnTimer); }
+
+                if (turnErr) throw turnErr;
+                lastBuffered = buffered;
+
+                const systemCalls = [...toolCallAcc.entries()].filter(([, acc]) => isSystemTool(acc.name));
+
+                if (systemCalls.length > 0) {
+                  // Gather-context turn: execute the model's system tool calls host-side and feed
+                  // the results back, then loop so the model can issue the actual edit.
+                  //
+                  // Only the calls we are about to answer go into the assistant message. If the
+                  // model emitted an edit call in the SAME turn we drop it here rather than
+                  // forwarding it: it was written before the tool results existed, so it is stale,
+                  // and keeping it would leave a tool-call block with no matching tool-result.
+                  // The next turn re-issues the edit with the gathered context in hand.
+                  const droppedEdits = [...toolCallAcc.values()].filter(a => !isSystemTool(a.name)).map(a => a.name);
+                  if (droppedEdits.length) aiDebug({ evt: 'tool-turn-dropped-calls', turn, names: droppedEdits });
+                  const assistantBlocks = [];
+                  if (textBuf) assistantBlocks.push({ type: 'text', text: textBuf });
+                  for (const [id, acc] of systemCalls) assistantBlocks.push({ type: 'tool-call', id, name: acc.name, arguments: acc.arguments });
+                  messages = [...messages, mkMessage('assistant', assistantBlocks)];
+
+                  for (const [id, acc] of systemCalls) {
+                    // NB: toolRuntime.execute RESOLVES with { isError, error, content } on tool
+                    // failure — it does not throw. Reading only the catch would report every
+                    // failed tool to the model as a success. The catch is for the runtime itself
+                    // going away (missing service, abort).
+                    let content, isError;
+                    try {
+                      let args; try { args = JSON.parse(acc.arguments || '{}'); } catch { args = { _raw: acc.arguments }; }
+                      aiDebug({ evt: 'tool-exec', callId: id, name: acc.name, argKeys: Object.keys(args || {}) });
+                      activity({ kind: 'tool', callId: id, name: acc.name, status: 'running' });
+                      const result = await toolRuntime.execute({ callId: id, name: acc.name, arguments: args, signal: currentAborter.signal });
+                      isError = result?.isError === true;
+                      // `content` is already ContentBlock[] — exactly what a tool-result carries.
+                      // Fall back to the canonical `value` only when a tool returned no blocks.
+                      content = Array.isArray(result?.content) && result.content.length
+                        ? result.content
+                        : [{ type: 'text', text: isError ? String(result?.error?.message ?? result?.error ?? 'tool failed') : JSON.stringify(result?.value ?? {}) }];
+                      if (isError) aiDebug({ evt: 'tool-exec-failed', callId: id, name: acc.name, error: result?.error?.code ?? result?.error?.message });
+                    } catch (ex) {
+                      isError = true;
+                      content = [{ type: 'text', text: String(ex?.message || ex) }];
+                      aiDebug({ evt: 'tool-exec-error', callId: id, name: acc.name, message: String(ex?.message || ex) });
+                    }
+                    activity({ kind: 'tool', callId: id, name: acc.name, status: isError ? 'error' : 'done' });
+                    messages = [...messages, mkMessage('user', [{ type: 'tool-result', toolCallId: id, isError, content }])];
+                  }
+                  continue;
                 }
-                aiDebug({ evt: 'chunk', type: chunk?.type, name: chunk?.name, blockType: chunk?.block?.type, blockName: chunk?.block?.name, blockId: chunk?.block?.id, reason: chunk?.reason?.kind });
-                ctrl.enqueue(encoder.encode(JSON.stringify({ t:'chunk', chunk }) + '\n'));
+
+                // Final turn: forward the model's raw chunks (text and/or applyDocumentOperations
+                // tool call plus finish) so the client applies the diff. If the model replied text
+                // only, that reply is surfaced untouched (no edit, no silent failure).
+                //
+                // These are replayed after the turn completes rather than streamed live: a turn
+                // is only classifiable as "final" once we know it issued no system tool call, and
+                // forwarding a gather turn's chunks would feed the client adapter a `finish` for
+                // an answer that isn't the answer. The activity strip covers the latency.
+                const hasEditCall = [...toolCallAcc.values()].some((a) => a.name === 'applyDocumentOperations');
+                if (hasEditCall) activity({ kind: 'edit', status: 'applying' });
+                for (const c of buffered) ctrl.enqueue(encoder.encode(JSON.stringify({ t:'chunk', chunk: c }) + '\n'));
+                if (hasEditCall) activity({ kind: 'edit', status: 'done' });
+                done = true;
+                break;
               }
+              if (!done) {
+                // Hit the tool-turn cap while still gathering. Replaying that turn's chunks would
+                // hand the client tool calls it has no executor for, so report it as an error the
+                // AI menu can show instead of leaving the user with a silent no-op.
+                aiDebug({ evt: 'tool-turns-exhausted', turns: turn, lastChunks: lastBuffered.length });
+                ctrl.enqueue(encoder.encode(JSON.stringify({ t:'error', error: { code: 'AI_TOOL_TURNS_EXHAUSTED', message: `AI 连续调用了 ${turn} 轮工具仍未给出修改，已停止。请把要求描述得更具体一些。` } }) + '\n'));
+              }
+              activity({ kind: 'finished' });
               ctrl.enqueue(encoder.encode(JSON.stringify({ t:'done' }) + '\n'));
             } catch (e) {
               const msg = timedOut ? 'AI 请求超时（模型未在时限内返回）' : (e?.message || String(e));
@@ -1259,7 +1407,7 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
               ctrl.enqueue(encoder.encode(JSON.stringify({ t:'error', error: { code: e?.code ?? 'AI_TIMEOUT', message: msg } }) + '\n'));
             } finally { clearTimeout(timer); try { ctrl.close(); } catch { /* ignore */ } }
           },
-          cancel() { clearTimeout(timer); try { controller.abort(); } catch { /* ignore */ } },
+          cancel() { clearTimeout(timer); try { currentAborter?.abort(); } catch { /* ignore */ } },
         });
         return new Response(stream, { headers: { 'content-type':'application/x-ndjson; charset=utf-8', 'cache-control':'no-store', 'x-accel-buffering':'no' } });
       } catch(e) { return json(safeError(e), e.code === 'SESSION_FORBIDDEN' ? 403 : 400); }
@@ -1337,7 +1485,7 @@ export const inject = ['connection', 'reportCore', 'reportPdf', 'sessions'];
 export function apply(ctx, config = {}) {
   const api = createReviewHost({ core: ctx.reportCore, pdf: ctx.reportPdf, sessions: ctx.sessions,
     getConnector: () => ctx.get('weknoraConnector'), getSource: () => ctx.get('weeklyReportSource'),
-    getLlm: () => ctx.get('llm'), getDefaultModel: () => ctx.get('agentDefaultModel'), getWeb: () => ctx.get('web'),
+    getLlm: () => ctx.get('llm'), getDefaultModel: () => ctx.get('agentDefaultModel'), getWeb: () => ctx.get('web'), getTools: () => ctx.get('tools'),
     getAsrCredential: env => resolveCredential(ctx, env),
     llmSynthesisEnabled: config.llmSynthesisEnabled !== false,
     llmSynthesisMaxTokens: config.llmSynthesisMaxTokens ?? 32000,

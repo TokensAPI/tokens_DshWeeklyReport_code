@@ -91,6 +91,16 @@ export const AIMenu = (props: AIMenuProps) => {
   const [voiceOn, setVoiceOn] = useState(false);
   const [asrBusy, setAsrBusy] = useState(false);
   const [asrError, setAsrError] = useState<string | null>(null);
+  // Live "what the agent is doing" strip. The host relays NDJSON activity lines through
+  // window `dsh-ai-activity` (see ai-bridge.mjs emitActivity), e.g. the model is calling
+  // web_search, or is writing the doc. We mirror that as a small status line under the prompt.
+  const [aiActivity, setAiActivity] = useState<{
+    kind?: string;
+    name?: string;
+    status?: string;
+    callId?: string;
+    turn?: number;
+  } | null>(null);
   const recorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const chunksRef = useRef<Blob[]>([]);
@@ -323,6 +333,69 @@ export const AIMenu = (props: AIMenuProps) => {
     }
   }, [aiResponseStatus]);
 
+  // Subscribe to the host's agent-activity ticker. `aiActivity` drives the small
+  // "正在…" line, and also surfaces the tool name while each system tool runs.
+  useEffect(() => {
+    const onActivity = (e: Event) => {
+      const d = (e as CustomEvent).detail;
+      if (d?.kind === "finished") {
+        setAiActivity(null);
+        return;
+      }
+      // A completed tool is immediately followed by the next model turn's `thinking`,
+      // so holding the running label here avoids a jarring flash; clear only on finished.
+      if (d?.kind === "tool" && d?.status === "done") return;
+      setAiActivity(d && typeof d === "object" ? d : null);
+    };
+    window.addEventListener("dsh-ai-activity", onActivity);
+    return () => window.removeEventListener("dsh-ai-activity", onActivity);
+  }, []);
+
+  // Human-friendly label for a system tool name (e.g. web_search -> 联网搜索).
+  const toolLabel = useCallback((name?: string) => {
+    if (!name) return "工具";
+    const map: Record<string, string> = {
+      web_search: "联网搜索",
+      web_fetch: "抓取网页",
+      read_file: "读取文件",
+      write_file: "写入文件",
+      edit: "编辑文件",
+      glob: "查找文件",
+      grep: "搜索内容",
+      bash: "执行命令",
+      todo_write: "更新清单",
+    };
+    return map[name] || name;
+  }, []);
+
+  // Compose the status text and whether to show a spinner.
+  const activityStrip = useMemo(() => {
+    if (!aiResponseStatus) return null;
+    const isWorking = aiResponseStatus === "thinking" || aiResponseStatus === "ai-writing";
+    if (!isWorking) return null;
+    const a = aiActivity;
+    let text: string;
+    let spinning = true;
+    if (!a) {
+      text = "AI 正在处理…";
+    } else if (a.kind === "thinking") {
+      text = "正在思考…";
+    } else if (a.kind === "tool" && a.status === "running") {
+      text = `正在${toolLabel(a.name)}…`;
+    } else if (a.kind === "tool" && a.status === "error") {
+      text = `${toolLabel(a.name)}失败`;
+      spinning = false;
+    } else if (a.kind === "edit" && a.status === "applying") {
+      text = "正在写入文档…";
+    } else if (a.kind === "edit" && a.status === "done") {
+      text = "已写入文档，请审阅";
+      spinning = false;
+    } else {
+      text = "AI 正在处理…";
+    }
+    return { text, spinning };
+  }, [aiResponseStatus, aiActivity, toolLabel]);
+
   const placeholder = useMemo(() => {
     if (voiceOn) {
       return "正在聆听… 按右 Alt 或点话筒结束";
@@ -434,6 +507,37 @@ export const AIMenu = (props: AIMenuProps) => {
         </div>
       }
       rightSection={rightSection}
+      activity={
+        activityStrip ? (
+          <div
+            className="rr-ai-activity"
+            role="status"
+            aria-live="polite"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              padding: "4px 12px 6px",
+              fontSize: 12,
+              color: "#a3a9b2",
+              minHeight: 18,
+            }}
+          >
+            {activityStrip.spinning ? (
+              <span
+                className="rr-ai-spin"
+                aria-hidden="true"
+                style={{ width: 11, height: 11, flex: "none" }}
+              />
+            ) : (
+              <span aria-hidden="true" style={{ flex: "none", fontSize: 11 }}>
+                ✓
+              </span>
+            )}
+            <span>{activityStrip.text}</span>
+          </div>
+        ) : undefined
+      }
     />
   );
 };
