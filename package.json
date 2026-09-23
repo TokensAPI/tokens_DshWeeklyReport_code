@@ -1,6 +1,6 @@
 {
   "name": "@tokensapi/dsh-weekly-report",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "TokensCowork 周报生成、审阅、PDF 预览与受控 WeKnora 发布插件",
   "dependencies": {},
   "repository": {

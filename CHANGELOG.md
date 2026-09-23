@@ -1,5 +1,18 @@
 # 更新记录
 
+## 0.1.13 — AI 编辑可调用宿主工具 + 实时动作提示
+
+- **AI 编辑可先取数再改稿**：文档 AI 菜单此前只能调用 `applyDocumentOperations`，没有任何取数手段。现在把宿主工具注册表（`ctx.tools.schemas()`）合并进请求，模型发出的非编辑类调用由 Host 侧就地执行（`toolRuntime.execute`）并把结果回灌，直到模型给出真正的编辑。可以直接说「搜一下上周锡价补进来」。
+- **实时动作提示**：Host 以 NDJSON `activity` 行播报当前动作，客户端经 `dsh-ai-activity` 事件在输入框下渲染「正在联网搜索… / 正在写入文档…」状态条，工具失败显示对应失败态。
+- 修复四处协议错配（任一都会让上述循环不工作）：
+  - 工具结果原以 `{role:'tool'}` 多 block 追加，但 DSH `Message` 没有 `tool` 角色，工具结果是**携带单个 tool-result block 的 user 消息**且需 `id`/`source`——原实现下模型根本收不到工具输出，会空转到轮次上限。
+  - `toolRuntime.execute` 在工具失败时**是 resolve 而非 throw**（返回 `{isError,error,content}`），只看 `catch` 会把每一次失败都当成功报给模型；改为读 `result.isError` 并透传 `result.content`（本就是 `ContentBlock[]`），不再整包 `JSON.stringify`。
+  - 同一轮内同时发出系统工具调用与编辑调用时，编辑被丢弃但其 tool-call block 仍留在历史里，形成无对应结果的孤儿调用；现改为整体剔除该陈旧调用，由下一轮带着上下文重发。
+  - 「不是编辑工具」被当成了「宿主能执行」，未识别的客户端工具会被派给并不拥有它的运行时。
+- 超时拆分为**单轮**与**整请求**两级；轮次耗尽时返回 `AI_TOOL_TURNS_EXHAUSTED`，不再把 gather 轮的工具调用回放给无法执行它们的客户端。
+- 测试：新增 `test/ai-agent-loop.test.mjs`（6 例，覆盖上述协议约定，其中 5 例可复现修复前的缺陷）；`parity.test.mjs` 基线推进到 `c57333b`。
+- 仓库：工作区行尾恢复为 LF 并以 `* text=auto eol=lf` 固化——此前整树被改写为 CRLF，导致约 1.9 万行伪改动淹没真实 diff。
+
 ## 0.1.12 — 语音输入、语音意图补全、AI 对话上下文与克制化工具栏
 
 - **语音输入**：在 AI 菜单内点话筒 / 按右 `Alt` 即可录音；录制的是浏览器 `webm/opus`，客户端先解码为 16-bit PCM WAV 再交给语音识别，修复「说半天没识别」问题。新增 `POST /api/run19/asr`（`qwen3-asr`），密钥经 `resolveCredential`（插件会话 → 默认模型配置 → 环境变量 → `~/.dsh/.credentials.yaml`）解析，错误给出 `ASR_CREDENTIAL`/`ASR_PROVIDER` 等可读码。
