@@ -1,3 +1,8 @@
+# This repo is developed from WSL against a Windows-mounted path, where editors and
+# packaging tools silently rewrite whole files to CRLF and drown real diffs in noise.
+# Pin LF in the worktree so that cannot recur; binaries are still auto-detected.
+* text=auto eol=lf
+
 # Browser bundles produced by scripts/build-client.mjs.
 /packages/report-review/lib/** linguist-generated=true
 # Vendor Markdown serializers contain meaningful trailing spaces in literals.
