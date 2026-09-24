@@ -5,6 +5,7 @@ import {
   getStepsAsAgent,
 } from "../../../prosemirror/agent.js";
 import { streamTool } from "../../../streamTool/streamTool.js";
+import { stripIDSuffix } from "../../promptHelpers/suffixIds.js";
 
 /**
  * Factory function to create a StreamTool that deletes a block from the document.
@@ -47,14 +48,7 @@ export const deleteBlockTool = (
 
       let id = operation.id;
       if (options.idsSuffixed) {
-        if (!id?.endsWith("$")) {
-          return {
-            ok: false,
-            error: "id must end with $",
-          };
-        }
-
-        id = id.slice(0, -1);
+        id = stripIDSuffix(id);
       }
 
       const block = editor.getBlock(id);

@@ -12,6 +12,7 @@ import { Result, streamTool } from "../../../streamTool/streamTool.js";
 import { AbortError } from "../../../util/AbortError.js";
 import { isEmptyParagraph } from "../../../util/emptyBlock.js";
 import { validateBlockArray } from "./util/validateBlockArray.js";
+import { stripIDSuffix } from "../../promptHelpers/suffixIds.js";
 
 /**
  * Factory function to create a StreamTool that adds blocks to the document.
@@ -130,14 +131,7 @@ export function createAddBlocksTool<T>(config: {
 
         let referenceId = operation.referenceId;
         if (options.idsSuffixed) {
-          if (!referenceId?.endsWith("$")) {
-            return {
-              ok: false,
-              error: "referenceId must end with $",
-            };
-          }
-
-          referenceId = referenceId.slice(0, -1);
+          referenceId = stripIDSuffix(referenceId);
         }
 
         const block = editor.getBlock(referenceId);

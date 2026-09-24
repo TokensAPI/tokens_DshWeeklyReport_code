@@ -103999,6 +103999,9 @@ function suffixIDs(source) {
     return el;
   });
 }
+function stripIDSuffix(id3) {
+  return typeof id3 === "string" && id3.endsWith("$") ? id3.slice(0, -1) : id3;
+}
 
 // packages/report-review/src/editor-ai/api/formats/DocumentStateBuilder.ts
 function makeDocumentStateBuilder(convertBlockFn) {
@@ -105118,13 +105121,7 @@ function createAddBlocksTool(config) {
         }
         let referenceId = operation.referenceId;
         if (options.idsSuffixed) {
-          if (!referenceId?.endsWith("$")) {
-            return {
-              ok: false,
-              error: "referenceId must end with $"
-            };
-          }
-          referenceId = referenceId.slice(0, -1);
+          referenceId = stripIDSuffix(referenceId);
         }
         const block = editor.getBlock(referenceId);
         if (!block) {
@@ -105269,13 +105266,7 @@ function createUpdateBlockTool(config) {
         }
         let id3 = operation.id;
         if (options.idsSuffixed) {
-          if (!id3?.endsWith("$")) {
-            return {
-              ok: false,
-              error: "id must end with $"
-            };
-          }
-          id3 = id3.slice(0, -1);
+          id3 = stripIDSuffix(id3);
         }
         if (!operation.block) {
           return {
@@ -105407,13 +105398,7 @@ var deleteBlockTool = (editor, options) => streamTool({
     }
     let id3 = operation.id;
     if (options.idsSuffixed) {
-      if (!id3?.endsWith("$")) {
-        return {
-          ok: false,
-          error: "id must end with $"
-        };
-      }
-      id3 = id3.slice(0, -1);
+      id3 = stripIDSuffix(id3);
     }
     const block = editor.getBlock(id3);
     if (!block) {

@@ -10,6 +10,7 @@ import { updateToReplaceSteps } from "../../../prosemirror/changeset.js";
 import { RebaseTool } from "../../../prosemirror/rebaseTool.js";
 import { Result, streamTool } from "../../../streamTool/streamTool.js";
 import { AbortError } from "../../../util/AbortError.js";
+import { stripIDSuffix } from "../../promptHelpers/suffixIds.js";
 
 export type UpdateBlockToolCall<T> = {
   type: "update";
@@ -123,14 +124,7 @@ export function createUpdateBlockTool<T>(config: {
 
         let id = operation.id;
         if (options.idsSuffixed) {
-          if (!id?.endsWith("$")) {
-            return {
-              ok: false,
-              error: "id must end with $",
-            };
-          }
-
-          id = id.slice(0, -1);
+          id = stripIDSuffix(id);
         }
 
         if (!operation.block) {
