@@ -10,6 +10,7 @@ import { zh as aiZh } from './editor-ai/locales.js';
 import aiCss from './editor-ai/style.css';
 import { ReportImage } from './report-image.jsx';
 import { createNativeChat } from './ai-bridge.mjs';
+import { htmlBlockLLMFormat } from './editor-ai/api/formats/html-blocks/htmlBlocks.js';
 import editorCss from './block-editor-styles.mjs';
 import { MarkdownPreview } from './preview.jsx';
 import { loadBlockMarkdown, saveBlockMarkdown, fingerprint } from './block-markdown.mjs';
@@ -94,7 +95,13 @@ export function BlockEditor({ value, onChange, readOnly, onSource, sessionId, re
   // discard the accumulated messages. The chat is created per report (the parent mounts this
   // component with key={reportId}), so `reportId` scopes the conversation + tool guard.
   const chatRef = useRef(null);
-  if (!chatRef.current) chatRef.current = createNativeChat({ fetchFn: aiFetch, sessionId, reportId });
+  // The format's own system prompt has to be passed in explicitly. Upstream xl-ai sends it as
+  // part of its LLM request; this fork drives DSH directly through createNativeChat, and the
+  // rewrite dropped it — nothing else in the tree reads `htmlBlockLLMFormat.systemPrompt`.
+  // Without it the model is never told that block ids carry a trailing `$`, so it "cleans up"
+  // the id it was given and every operation is rejected with "id must end with $", i.e. the
+  // edit silently does nothing. The prompt also carries the list-item and code-block rules.
+  if (!chatRef.current) chatRef.current = createNativeChat({ fetchFn: aiFetch, sessionId, reportId, system: htmlBlockLLMFormat.systemPrompt });
   const portalElements = useMemo(() => ({ default: portal }), [portal]);
   const callbacks = useRef({ onChange, readOnly, onAiBusy });
   callbacks.current = { onChange, readOnly, onAiBusy };

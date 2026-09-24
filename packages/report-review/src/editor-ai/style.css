@@ -1,8 +1,15 @@
+/* The prompt panel floats directly over document content and had no surface of its own, so
+   whatever sat underneath read straight through it. Over a table that is especially bad: the
+   gridlines and cell text show behind the prompt and it stops looking like a separate panel.
+   An opaque background plus a shadow lifts it off the page. */
 .bn-combobox {
   display: flex;
   flex-direction: column;
   gap: 4px;
   width: 100%;
+  background: var(--rr-paper, #fff);
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.16), 0 0 0 1px var(--rr-border, rgba(0, 0, 0, 0.12));
 }
 
 .bn-combobox-items {
