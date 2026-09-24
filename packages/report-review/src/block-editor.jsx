@@ -13,6 +13,7 @@ import { createNativeChat } from './ai-bridge.mjs';
 import editorCss from './block-editor-styles.mjs';
 import { MarkdownPreview } from './preview.jsx';
 import { loadBlockMarkdown, saveBlockMarkdown, fingerprint } from './block-markdown.mjs';
+import { createHoldGate } from './ai-hold.mjs';
 
 const sourceBlock = createReactBlockSpec({ type: 'source', propSchema: { raw: { default: '' } }, content: 'none' }, {
   render: ({ block }) => <div className="rr-preserved-block" contentEditable={false}><span className="rr-muted">此片段暂未开放可视化编辑 · 可切换 CodeMirror 修改</span><MarkdownPreview text={block.props.raw} /></div>
@@ -99,6 +100,11 @@ export function BlockEditor({ value, onChange, readOnly, onSource, sessionId, re
   callbacks.current = { onChange, readOnly, onAiBusy };
   const last = useRef(value);
   const [failed, setFailed] = useState(false);
+  // Serialization is held while the AI edit is mid-flight; see ai-hold.mjs for why. `flushRef`
+  // is filled in below once `session` exists, so the gate can be created before it.
+  const flushRef = useRef(() => {});
+  const gateRef = useRef(null);
+  if (!gateRef.current) gateRef.current = createHoldGate(final => flushRef.current(final));
   // Show the outcome of the last AI request on screen (readable without DevTools).
   const [aiDiag, setAiDiag] = useState(null);
   const diagTimer = useRef(null);
@@ -120,11 +126,31 @@ export function BlockEditor({ value, onChange, readOnly, onSource, sessionId, re
       return { editor, state };
     } catch { return null; }
   }, []);
+  // Serialize the document and bubble it up. `final` marks the settle after an AI edit: only
+  // then is a serialization failure fatal. Mid-AI the document legitimately holds suggestion
+  // marks (old + new content at once), which cannot round-trip through Markdown, so failing
+  // there must not strand the editor in its fallback.
+  flushRef.current = (final) => {
+    if (!session || callbacks.current.readOnly) return;
+    try {
+      const next = saveBlockMarkdown(session.editor, session.state);
+      if (next !== last.current) { last.current = next; callbacks.current.onChange(next); }
+    } catch { if (final) setFailed(true); }
+  };
   useEffect(() => {
     // Server echoes must not reset selection or undo history. A genuinely new
     // source document is mounted by the parent when changing editing engines.
     if (value !== last.current) setFailed(true);
   }, [value]);
+  // Hold serialization while the AI is mid-edit, and settle once it lands. acceptChanges() and
+  // rejectChanges() both call closeAIMenu() last, after their document transactions, so the
+  // falling edge to 'closed' already sees the finished document.
+  useEffect(() => {
+    const store = session?.editor.getExtension(AIExtension)?.store;
+    if (!store?.subscribe) return;
+    gateRef.current.onAiState(store.state?.aiMenuState);
+    return store.subscribe(({ currentVal }) => gateRef.current.onAiState(currentVal?.aiMenuState));
+  }, [session]);
   // Any AI edit (the "/" slash menu or a selection edit) drives the same persistent chat, so
   // reflect its running status on the parent so the workspace can block report switching
   // while an AI request is in flight. status 'submitted' == a request is running.
@@ -196,10 +222,7 @@ export function BlockEditor({ value, onChange, readOnly, onSource, sessionId, re
     {aiDiag && <div className="rr-ai-diag">AI：工具 {aiDiag.tools?.join(', ') || '(无)'} · 调用 {aiDiag.toolCalls ?? 0} 次 · {aiDiag.toolCalls > 0 ? '已生成操作' : '模型未调用工具'}{aiDiag.error ? ` · 错误：${aiDiag.error}` : ''}</div>}
     {portal && <BlockNoteView editor={session.editor} portalElements={portalElements} editable={!readOnly} formattingToolbar={false} sideMenu={false} slashMenu={false} filePanel={false} tableHandles={true} onChange={() => {
       if (callbacks.current.readOnly) return;
-      try {
-        const next = saveBlockMarkdown(session.editor, session.state);
-        if (next !== last.current) { last.current = next; callbacks.current.onChange(next); }
-      } catch { setFailed(true); }
+      gateRef.current.onChange();
     }}>
       <FormattingToolbarController formattingToolbar={ReportFormattingToolbar} floatingUIOptions={floatingOptions} />
       <SideMenuController sideMenu={ReportSideMenu} floatingUIOptions={floatingOptions} />

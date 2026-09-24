@@ -521,7 +521,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
     if (id === '') { setTmplId(''); setAnalysisPrompt(DEFAULT_PROMPT_TEMPLATE); setTmplName(''); return; }
     const t = templates.find(x => x.id === id); if (t) { setTmplId(t.id); setAnalysisPrompt(t.content); setTmplName(t.name || ''); }
   }
-  current.current = { draft, text, dirty, busy };
+  current.current = { draft, text, dirty, busy, aiBusy };
   const request = (action, data = {}) => {
     if (demo) return demoApi(action, data);
     if (!sessionId) return Promise.reject(Object.assign(new Error('请先在客户端选择一个会话，或切换本地演示。'), { code: 'SESSION_REQUIRED' }));
@@ -539,7 +539,11 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
   function adopt(value) { const d = asDraft(value); if (!d?.reportId || typeof d.markdown !== 'string') throw new Error('Host 未返回有效工作稿'); const sameReport = current.current.draft?.reportId === d.reportId; setReportWarnings(previous => { const received = safeWarnings(value?.warnings, d.warnings); return sameReport ? safeWarnings(previous.map(w => w.code), received.map(w => w.code)) : received; }); revision.current++; current.current = { ...current.current, draft: d, text: d.markdown, dirty: false }; setDraft(d); setReports(previous => previous.map(r => r.reportId === d.reportId ? { ...r, title: d.title, status: d.status } : r)); setText(d.markdown); setDirty(false); setStatus('已保存'); setError(''); }
   async function load(id) { if (current.current.dirty || saving.current || aiBusy) { setError(aiBusy ? 'AI 修改进行中，暂时不能切换报告。' : '请先保存或导出当前脏稿；不会覆盖本地输入。'); return; } setBusy(true); try { const d = await request('get', { reportId: id }); if (alive.current) { adopt(d); setPreview(null); setPanel(null); setStage('editor'); setViewMode('editor'); } } catch(e) { fail(e); } finally { if (alive.current) setBusy(false); } }
   async function save() {
-    const c = current.current; if (!c.draft || !c.dirty || saving.current || isDraftReadOnly(c.draft, c.busy)) return;
+    // `aiBusy` is defence in depth: the editor already holds serialization while an AI edit is
+    // in flight (ai-hold.mjs), so a half-written document should never reach `text` in the
+    // first place. It is not sufficient on its own — chat status flips to 'ready' while the
+    // executor is still applying operations — which is why the editor-side hold is the real fix.
+    const c = current.current; if (!c.draft || !c.dirty || saving.current || c.aiBusy || isDraftReadOnly(c.draft, c.busy)) return;
     saving.current = true; const seq = revision.current; setStatus('保存中');
     try {
       let saved;
@@ -561,7 +565,9 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
     } catch(e) { fail(e); } finally { saving.current = false; }
   }
   useEffect(() => { alive.current = true; request('list').then(v => { if (alive.current) { setReports(rows(v, 'reports')); setStatus(demo ? '本地演示已就绪' : '请选择或生成周报'); } }).catch(fail); request('identity').then(v => alive.current && setIdentity(v)).catch(fail); request('templateList').then(v => alive.current && setTemplates(v?.templates || [])).catch(() => {}); return () => { alive.current = false; previewSerial.current++; }; }, [sessionId]);
-  useEffect(() => { if (!dirty || error) return; const timer = setTimeout(save, 650); return () => clearTimeout(timer); }, [text, dirty, draft?.saveToken, busy, error]);
+  // `aiBusy` is a dependency so a save skipped mid-AI is retried once the run ends, rather than
+  // waiting for the next keystroke.
+  useEffect(() => { if (!dirty || error) return; const timer = setTimeout(save, 650); return () => clearTimeout(timer); }, [text, dirty, draft?.saveToken, busy, error, aiBusy]);
   useEffect(() => {
     const timer = setInterval(async () => { const c = current.current; if (!c.draft || c.dirty || saving.current || c.busy) return;
       const seq = revision.current; try { const d = asDraft(await request('get', { reportId: c.draft.reportId })); if (alive.current && !current.current.dirty && !saving.current && seq === revision.current && d.saveToken !== current.current.draft?.saveToken) adopt(d); } catch(e) { fail(e); }

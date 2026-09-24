@@ -120983,8 +120983,14 @@ function loadBlockMarkdown(editor, markdown2) {
     } catch {
     }
     if (!parsed?.length) parsed = [{ type: "source", props: { raw } }];
-    editor.replaceBlocks(editor.document, parsed);
-    const normalized = editor.document;
+    let normalized;
+    try {
+      editor.replaceBlocks(editor.document, parsed);
+      normalized = editor.document;
+    } catch {
+      editor.replaceBlocks(editor.document, [{ type: "source", props: { raw } }]);
+      normalized = editor.document;
+    }
     records.push({ ids: normalized.map((b4) => b4.id), snapshot: fingerprint(normalized), raw, before: markdown2.slice(end, start2) });
     blocks.push(...normalized);
     end = stop;
@@ -121033,6 +121039,44 @@ function saveBlockMarkdown(editor, state) {
     }
   }
   return result + state.tail;
+}
+
+// packages/report-review/src/ai-hold.mjs
+var HOLD_STATUS = /* @__PURE__ */ new Set(["thinking", "ai-writing", "user-reviewing", "error"]);
+function isAiHolding(aiMenuState) {
+  if (!aiMenuState || aiMenuState === "closed" || typeof aiMenuState !== "object") return false;
+  return HOLD_STATUS.has(aiMenuState.status);
+}
+function createHoldGate(flush) {
+  let holding = false;
+  let pending = false;
+  return {
+    get holding() {
+      return holding;
+    },
+    get pending() {
+      return pending;
+    },
+    /** An editor change. Returns true when it was serialized and bubbled. */
+    onChange() {
+      if (holding) {
+        pending = true;
+        return false;
+      }
+      flush(false);
+      return true;
+    },
+    /** A new AIExtension store state. Drives the hold and the settle flush. */
+    onAiState(aiMenuState) {
+      const next = isAiHolding(aiMenuState);
+      const was = holding;
+      holding = next;
+      if (was && !next && pending) {
+        pending = false;
+        flush(true);
+      }
+    }
+  };
 }
 
 // packages/report-review/src/block-editor.jsx
@@ -121126,6 +121170,10 @@ function BlockEditor({ value, onChange, readOnly: readOnly2, onSource, sessionId
   callbacks.current = { onChange, readOnly: readOnly2, onAiBusy };
   const last3 = (0, import_react168.useRef)(value);
   const [failed, setFailed] = (0, import_react168.useState)(false);
+  const flushRef = (0, import_react168.useRef)(() => {
+  });
+  const gateRef = (0, import_react168.useRef)(null);
+  if (!gateRef.current) gateRef.current = createHoldGate((final) => flushRef.current(final));
   const [aiDiag, setAiDiag] = (0, import_react168.useState)(null);
   const diagTimer = (0, import_react168.useRef)(null);
   (0, import_react168.useEffect)(() => {
@@ -121151,9 +121199,27 @@ function BlockEditor({ value, onChange, readOnly: readOnly2, onSource, sessionId
       return null;
     }
   }, []);
+  flushRef.current = (final) => {
+    if (!session || callbacks.current.readOnly) return;
+    try {
+      const next = saveBlockMarkdown(session.editor, session.state);
+      if (next !== last3.current) {
+        last3.current = next;
+        callbacks.current.onChange(next);
+      }
+    } catch {
+      if (final) setFailed(true);
+    }
+  };
   (0, import_react168.useEffect)(() => {
     if (value !== last3.current) setFailed(true);
   }, [value]);
+  (0, import_react168.useEffect)(() => {
+    const store = session?.editor.getExtension(AIExtension)?.store;
+    if (!store?.subscribe) return;
+    gateRef.current.onAiState(store.state?.aiMenuState);
+    return store.subscribe(({ currentVal }) => gateRef.current.onAiState(currentVal?.aiMenuState));
+  }, [session]);
   (0, import_react168.useEffect)(() => {
     const unsub = chatRef.current["~registerStatusCallback"]?.((s4) => callbacks.current.onAiBusy?.(s4 === "submitted"));
     return () => {
@@ -121235,15 +121301,7 @@ function BlockEditor({ value, onChange, readOnly: readOnly2, onSource, sessionId
     ] }),
     portal && /* @__PURE__ */ (0, import_jsx_runtime130.jsxs)(mt5, { editor: session.editor, portalElements, editable: !readOnly2, formattingToolbar: false, sideMenu: false, slashMenu: false, filePanel: false, tableHandles: true, onChange: () => {
       if (callbacks.current.readOnly) return;
-      try {
-        const next = saveBlockMarkdown(session.editor, session.state);
-        if (next !== last3.current) {
-          last3.current = next;
-          callbacks.current.onChange(next);
-        }
-      } catch {
-        setFailed(true);
-      }
+      gateRef.current.onChange();
     }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(dr3, { formattingToolbar: ReportFormattingToolbar, floatingUIOptions: floatingOptions }),
       /* @__PURE__ */ (0, import_jsx_runtime130.jsx)(jr3, { sideMenu: ReportSideMenu, floatingUIOptions: floatingOptions }),
@@ -122385,7 +122443,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       setTmplName(t4.name || "");
     }
   }
-  current.current = { draft, text: text7, dirty, busy };
+  current.current = { draft, text: text7, dirty, busy, aiBusy };
   const request = (action2, data2 = {}) => {
     if (demo) return demoApi(action2, data2);
     if (!sessionId) return Promise.reject(Object.assign(new Error("\u8BF7\u5148\u5728\u5BA2\u6237\u7AEF\u9009\u62E9\u4E00\u4E2A\u4F1A\u8BDD\uFF0C\u6216\u5207\u6362\u672C\u5730\u6F14\u793A\u3002"), { code: "SESSION_REQUIRED" }));
@@ -122457,7 +122515,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
   }
   async function save() {
     const c4 = current.current;
-    if (!c4.draft || !c4.dirty || saving.current || isDraftReadOnly(c4.draft, c4.busy)) return;
+    if (!c4.draft || !c4.dirty || saving.current || c4.aiBusy || isDraftReadOnly(c4.draft, c4.busy)) return;
     saving.current = true;
     const seq = revision.current;
     setStatus("\u4FDD\u5B58\u4E2D");
@@ -122509,7 +122567,7 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
     if (!dirty || error3) return;
     const timer = setTimeout(save, 650);
     return () => clearTimeout(timer);
-  }, [text7, dirty, draft?.saveToken, busy, error3]);
+  }, [text7, dirty, draft?.saveToken, busy, error3, aiBusy]);
   (0, import_react171.useEffect)(() => {
     const timer = setInterval(async () => {
       const c4 = current.current;

@@ -32,9 +32,19 @@ export function loadBlockMarkdown(editor, markdown) {
     if (picture) parsed = [{type:'image', props:{url:picture.url, caption:picture.alt || '', title:picture.title || ''}}];
     try { if (supported(node)) parsed = editor.tryParseMarkdownToBlocks(raw); } catch { /* retain original */ }
     if (!parsed?.length) parsed = [{ type: 'source', props: { raw } }];
-    // Resolve generated ids and defaults using the same schema as the live editor.
-    editor.replaceBlocks(editor.document, parsed);
-    const normalized = editor.document;
+    // Resolve generated ids and defaults using the same schema as the live editor. A block that
+    // the schema rejects (e.g. a table whose rows lost their column grid, which is how a
+    // document damaged by an interrupted AI edit reads back) must degrade to a preserved source
+    // block. Letting it throw here would take down the whole session and leave the report with
+    // no visual editing at all, when only one block is actually broken.
+    let normalized;
+    try {
+      editor.replaceBlocks(editor.document, parsed);
+      normalized = editor.document;
+    } catch {
+      editor.replaceBlocks(editor.document, [{ type: 'source', props: { raw } }]);
+      normalized = editor.document;
+    }
     records.push({ ids: normalized.map(b => b.id), snapshot: fingerprint(normalized), raw, before: markdown.slice(end, start) });
     blocks.push(...normalized);
     end = stop;
