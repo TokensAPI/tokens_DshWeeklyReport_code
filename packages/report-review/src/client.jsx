@@ -228,15 +228,17 @@ const testErrorText = code => ({
 export function SettingsPanel({ request, onClose, onIdentity }) {
   const dialogRef = useRef(null);
   const [view, setView] = useState(null);
-  const [form, setForm] = useState({ baseUrl: '', kbId: '', tenantId: '', readKey: '', writeKey: '' });
+  const [form, setForm] = useState({ baseUrl: '', kbId: '', tenantId: '', readKey: '', writeKey: '', commodityKbIds: {} });
   const [state, setState] = useState({ busy: true, note: '', error: '' });
   const [test, setTest] = useState(null);
+  const [commodityProfiles, setCommodityProfiles] = useState(null);
   const voicePrefs = useVoicePrefs();
-  const adopt = v => { setView(v); setForm(f => ({ ...f, baseUrl: v?.baseUrl || '', kbId: v?.kbId || '', tenantId: v?.tenantId || '', readKey: '', writeKey: '' })); };
+  const adopt = v => { setView(v); setForm(f => ({ ...f, baseUrl: v?.baseUrl || '', kbId: v?.kbId || '', tenantId: v?.tenantId || '', readKey: '', writeKey: '', commodityKbIds: v?.commodityKbIds || {} })); };
   useEffect(() => {
     let cancelled = false;
     request('settingsGet').then(v => { if (!cancelled) { adopt(v); setState({ busy: false, note: '', error: '' }); } })
       .catch(e => { if (!cancelled) setState({ busy: false, note: '', error: e.code === 'SETTINGS_UNAVAILABLE' ? '当前 Host 版本不支持可视化设置，请升级插件后完全重启。' : (e.message || '读取设置失败') }); });
+    request('commodityOptions').then(v => { if (!cancelled) setCommodityProfiles(v); }).catch(() => { if (!cancelled) setCommodityProfiles({ list: ['锡'], folders: {}, kbIds: {} }); });
     return () => { cancelled = true; };
   }, []);
   // A real modal <dialog> lives in the top layer, so it reliably floats above
@@ -245,7 +247,7 @@ export function SettingsPanel({ request, onClose, onIdentity }) {
   const save = async () => {
     setState({ busy: true, note: '', error: '' });
     try {
-      const settings = { baseUrl: form.baseUrl.trim(), kbId: form.kbId.trim(), tenantId: form.tenantId.trim() };
+      const settings = { baseUrl: form.baseUrl.trim(), kbId: form.kbId.trim(), tenantId: form.tenantId.trim(), commodityKbIds: form.commodityKbIds || {} };
       if (form.readKey.trim()) settings.readKey = form.readKey.trim();
       if (form.writeKey.trim()) settings.writeKey = form.writeKey.trim();
       const v = await request('settingsSave', { settings });
@@ -270,6 +272,7 @@ export function SettingsPanel({ request, onClose, onIdentity }) {
       <label>WeKnora 地址<input aria-label="WeKnora 地址" placeholder="https://weknora.example.internal 或 http://127.0.0.1:8080" value={form.baseUrl} disabled={state.busy} onChange={e => field('baseUrl', e.target.value)} /></label>
       <label>知识库 ID<input aria-label="知识库 ID" placeholder="检索与发布使用的知识库 ID" value={form.kbId} disabled={state.busy} onChange={e => field('kbId', e.target.value)} /></label>
       <label>租户 ID<span className="rr-muted">（可选）</span><input aria-label="租户 ID" placeholder="WeKnora 多租户 ID，单租户可留空" value={form.tenantId} disabled={state.busy} onChange={e => field('tenantId', e.target.value)} /></label>
+      {commodityProfiles?.list?.length ? <div className="rr-settings-section"><div className="rr-section-heading"><h3>按商品知识库 ID</h3><span className="rr-muted">留空则使用上方「知识库 ID」</span></div>{commodityProfiles.list.map(c => <label key={c}>{c}<input aria-label={`${c} 知识库 ID`} placeholder="留空使用默认" value={form.commodityKbIds?.[c] || ''} disabled={state.busy} onChange={e => setForm(f => ({ ...f, commodityKbIds: { ...(f.commodityKbIds || {}), [c]: e.target.value } }))} /></label>)}</div> : null}
       <label>读取密钥{view?.readKeySet && <span className="rr-muted">（已保存，留空保持不变）</span>}<input aria-label="读取密钥" type="password" autoComplete="off" placeholder={view?.readKeySet ? '••••••（留空不修改）' : '用于检索的 API Key'} value={form.readKey} disabled={state.busy} onChange={e => field('readKey', e.target.value)} /></label>
       <label>发布密钥{view?.writeKeySet && <span className="rr-muted">（已保存，留空保持不变）</span>}<input aria-label="发布密钥" type="password" autoComplete="off" placeholder={view?.writeKeySet ? '••••••（留空不修改）' : '用于发布的 API Key，可留空（只读）'} value={form.writeKey} disabled={state.busy} onChange={e => field('writeKey', e.target.value)} /></label>
       <div className="rr-settings-section"><div className="rr-section-heading"><h3>语音输入</h3></div>
@@ -433,6 +436,13 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
     hostFetch('/api/run19/review', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'aiDefaultModel' }) }).then(async r => { if (live && r.ok) { const d = await r.json(); const m = d?.value; if (m?.model) setAiModel({ provider: m.provider, model: m.model }); } else { console.error('[run19] ai-default-model failed:', r.status); } }).catch(e => { console.error('[run19] ai-default-model error:', e); });
     return () => { live = false; };
   }, []);
+  const [commodityProfiles, setCommodityProfiles] = useState(null);
+  useEffect(() => {
+    let live = true;
+    if (demo) { setCommodityProfiles({ list: ['锡', '铝', '氧化铝', '锌', '碳酸锂'], folders: { '锡': '根目录/周报' }, kbIds: {} }); return () => { live = false; }; }
+    request('commodityOptions').then(v => { if (live) setCommodityProfiles(v); }).catch(() => { if (live) setCommodityProfiles({ list: ['锡'], folders: {}, kbIds: {} }); });
+    return () => { live = false; };
+  }, [sessionId]);
   const applyGenEv = ev => setProgress(p => { if (!p) return p; const steps = p.steps.map(s => s.key === ev.step ? { ...s, state: ev.state, label: ev.label || s.label, detail: ev.detail || s.detail } : s); return { ...p, steps }; });
   async function runGenerate(input) {
     const controller = new AbortController();
@@ -679,7 +689,7 @@ function WorkspaceContent({ sessionId, close, mode, onModeChange }) {
 
         <section className="rr-generation-stage" aria-label="生成与分析" hidden={stage !== 'generation'}><header><h1>生成周报</h1><p className="rr-muted">先确定品种、截止日期和分析要求。生成后进入可视化编辑，已有报告不会被覆盖。</p></header>
     <form onSubmit={generate} className="rr-generation-form" aria-label="生成周报参数">
-      <div className="rr-generation-basics"><label>商品 <input aria-label="商品" value={variety} disabled={busy} onChange={e => setVariety(e.target.value)} className="rr-commodity-input" required /></label>
+      <div className="rr-generation-basics"><label>商品 <select aria-label="商品" value={variety} disabled={busy} onChange={e => setVariety(e.target.value)} className="rr-commodity-input" required>{(commodityProfiles?.list?.length ? commodityProfiles.list : ['锡']).map(c => <option key={c} value={c}>{c}</option>)}</select>{commodityProfiles?.folders?.[variety] && <span className="rr-muted">将上传至「{commodityProfiles.folders[variety]}」</span>}</label>
       <label>截止日期 <input aria-label="截止日期" type="date" value={end} disabled={busy} onChange={e => setEnd(e.target.value)} required /></label>
       <label><input type="checkbox" checked={webSearchEnabled} disabled={busy} onChange={e => setWebSearchEnabled(e.target.checked)} />联网检索（新闻/外部信源）</label></div>
       <div className="rr-form-heading"><h2>分析要求</h2><p className="rr-muted">选用模板开始，也可以直接调整章节和研究重点。留空则仅整理 7 天数据。</p></div>

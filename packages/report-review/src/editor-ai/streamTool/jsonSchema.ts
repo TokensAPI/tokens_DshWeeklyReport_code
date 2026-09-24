@@ -91,5 +91,29 @@ export function streamToolsToToolSet(streamTools: StreamTool<any>[]): ToolSet {
       inputSchema: jsonSchema(createStreamToolsArraySchema(streamTools)),
       outputSchema: jsonSchema({ type: "object" }),
     },
+    lookup_data_ref: {
+      description:
+        "在本地数据源（行情镜像）中按查询词解析并取回某个数据指标的 reference 与序列值，用于在周报中引用/补齐/核对数据。若用户要加入或引用某个指标，先调用本工具；单次处理一个查询，如需多个指标可多次调用。",
+      inputSchema: jsonSchema({
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "要查询的数据指标描述，例如：巴西发运量 / BHP发运量 / 碳酸锂表观需求 / 沪锡收盘价。",
+          },
+          commodity: {
+            type: "string",
+            description: "可选：限定品种（如 铁矿 / 碳酸锂 / 锡 / 沥青）。留空则由宿主按当前报告品种自动过滤。",
+          },
+          windowMs: {
+            type: "number",
+            description: "可选：回看窗口（毫秒），取该区间内的序列；缺省时仅返回最新值与变化。",
+          },
+        },
+        required: ["query"],
+        additionalProperties: false,
+      }),
+      outputSchema: jsonSchema({ type: "object" }),
+    },
   };
 }

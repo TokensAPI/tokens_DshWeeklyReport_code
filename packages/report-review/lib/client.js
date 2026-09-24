@@ -103313,6 +103313,29 @@ function streamToolsToToolSet(streamTools) {
     applyDocumentOperations: {
       inputSchema: jsonSchema(createStreamToolsArraySchema(streamTools)),
       outputSchema: jsonSchema({ type: "object" })
+    },
+    lookup_data_ref: {
+      description: "\u5728\u672C\u5730\u6570\u636E\u6E90\uFF08\u884C\u60C5\u955C\u50CF\uFF09\u4E2D\u6309\u67E5\u8BE2\u8BCD\u89E3\u6790\u5E76\u53D6\u56DE\u67D0\u4E2A\u6570\u636E\u6307\u6807\u7684 reference \u4E0E\u5E8F\u5217\u503C\uFF0C\u7528\u4E8E\u5728\u5468\u62A5\u4E2D\u5F15\u7528/\u8865\u9F50/\u6838\u5BF9\u6570\u636E\u3002\u82E5\u7528\u6237\u8981\u52A0\u5165\u6216\u5F15\u7528\u67D0\u4E2A\u6307\u6807\uFF0C\u5148\u8C03\u7528\u672C\u5DE5\u5177\uFF1B\u5355\u6B21\u5904\u7406\u4E00\u4E2A\u67E5\u8BE2\uFF0C\u5982\u9700\u591A\u4E2A\u6307\u6807\u53EF\u591A\u6B21\u8C03\u7528\u3002",
+      inputSchema: jsonSchema({
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "\u8981\u67E5\u8BE2\u7684\u6570\u636E\u6307\u6807\u63CF\u8FF0\uFF0C\u4F8B\u5982\uFF1A\u5DF4\u897F\u53D1\u8FD0\u91CF / BHP\u53D1\u8FD0\u91CF / \u78B3\u9178\u9502\u8868\u89C2\u9700\u6C42 / \u6CAA\u9521\u6536\u76D8\u4EF7\u3002"
+          },
+          commodity: {
+            type: "string",
+            description: "\u53EF\u9009\uFF1A\u9650\u5B9A\u54C1\u79CD\uFF08\u5982 \u94C1\u77FF / \u78B3\u9178\u9502 / \u9521 / \u6CA5\u9752\uFF09\u3002\u7559\u7A7A\u5219\u7531\u5BBF\u4E3B\u6309\u5F53\u524D\u62A5\u544A\u54C1\u79CD\u81EA\u52A8\u8FC7\u6EE4\u3002"
+          },
+          windowMs: {
+            type: "number",
+            description: "\u53EF\u9009\uFF1A\u56DE\u770B\u7A97\u53E3\uFF08\u6BEB\u79D2\uFF09\uFF0C\u53D6\u8BE5\u533A\u95F4\u5185\u7684\u5E8F\u5217\uFF1B\u7F3A\u7701\u65F6\u4EC5\u8FD4\u56DE\u6700\u65B0\u503C\u4E0E\u53D8\u5316\u3002"
+          }
+        },
+        required: ["query"],
+        additionalProperties: false
+      }),
+      outputSchema: jsonSchema({ type: "object" })
     }
   };
 }
@@ -107934,71 +107957,136 @@ function createNativeChat(opts) {
         description: def.description,
         inputSchema: def.inputSchema
       }));
+      const fetchFn = opts && opts.fetchFn || ((path2, init) => fetch(path2, init));
       const userText = extractMessageText(message);
       state.convo = [...state.convo, { role: "user", text: userText, reportId }];
       const history3 = state.convo.slice(0, -1).filter((m2) => m2 && typeof m2.text === "string" && m2.text.length > 0 && (reportId == null || m2.reportId == null || m2.reportId === reportId)).map((m2) => ({ role: m2.role, content: [{ type: "text", text: m2.text }] }));
       const injected = injectDocumentStateMessages([...history3, message]).map(
         (m2) => m2 && Array.isArray(m2.parts) ? { role: m2.role, id: m2.id, content: m2.parts } : m2
       );
+      const system = [
+        opts.system,
+        reportId ? `\u5F53\u524D\u62A5\u544A ID\uFF1A${reportId}\u3002\u4F60\u6B63\u5728\u7F16\u8F91\u8FD9\u4EFD\u62A5\u544A\u3002\u8C03\u7528 applyDocumentOperations \u65F6\u5FC5\u987B\u5728\u9876\u5C42\u4F20\u5165 reportId \u5B57\u6BB5\uFF0C\u5176\u503C\u5FC5\u987B\u7B49\u4E8E ${reportId}\uFF0C\u5426\u5219\u4F1A\u88AB\u62D2\u7EDD\u3002` : ""
+      ].filter(Boolean).join("\n");
+      const runLookup = async (query, commodity) => {
+        try {
+          const res = await fetchFn("/api/run19/lookup", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ query, commodity, withSeries: true })
+          });
+          if (!res.ok) return `[\u6570\u636E\u67E5\u8BE2\u5931\u8D25] \u67E5\u8BE2\u201C${query}\u201D\u672A\u6210\u529F\uFF08HTTP ${res.status}\uFF09`;
+          const data2 = await res.json();
+          if (!data2 || data2.ok === false) {
+            const cands = data2 && data2.candidates || [];
+            const hint = data2 && data2.reason === "no-match" ? "\u672C\u5730\u6570\u636E\u6E90\u65E0\u5339\u914D\u3002" : "";
+            return `[\u6570\u636E\u67E5\u8BE2] \u672A\u89E3\u6790\u5230\u201C${query}\u201D\u5BF9\u5E94\u7684\u6307\u6807\u3002${hint}${cands.length ? `\u53EF\u80FD\u5019\u9009\uFF1A${cands.slice(0, 3).map((c4) => `${c4.ref} ${c4.name}`).join("\uFF1B")}` : ""}`;
+          }
+          const r4 = data2.resolved || {};
+          const v = data2.values || {};
+          let s4 = `[\u6570\u636E\u67E5\u8BE2\u7ED3\u679C] ${r4.name || query}\uFF08ref=${r4.ref || "?"}${r4.unit ? `\uFF0C\u5355\u4F4D=${r4.unit}` : ""}${r4.cat ? `\uFF0C\u7C7B\u522B=${r4.cat}` : ""}\uFF09`;
+          if (v) {
+            s4 += `\uFF1A\u6700\u65B0 ${v.latest !== void 0 ? v.latest : "\u2014"}`;
+            if (v.prev !== void 0) s4 += `\uFF0C\u524D\u503C ${v.prev}`;
+            if (v.changePct !== void 0) s4 += `\uFF0C\u73AF\u6BD4 ${v.changePct}%`;
+            if (Array.isArray(v.points) && v.points.length) {
+              const head = v.points.slice(-4).map((p2) => `${p2.t.slice(0, 10)}=${p2.v}`).join("\uFF0C");
+              s4 += `\uFF1B\u8FD1\u7AEF\u5E8F\u5217\uFF1A${head}`;
+            }
+          }
+          return s4;
+        } catch (e6) {
+          return `[\u6570\u636E\u67E5\u8BE2\u5931\u8D25] ${String(e6 && e6.message || e6)}`;
+        }
+      };
       setStatus("submitted");
-      let stream2;
-      try {
-        const system = [
-          opts.system,
-          reportId ? `\u5F53\u524D\u62A5\u544A ID\uFF1A${reportId}\u3002\u4F60\u6B63\u5728\u7F16\u8F91\u8FD9\u4EFD\u62A5\u544A\u3002\u8C03\u7528 applyDocumentOperations \u65F6\u5FC5\u987B\u5728\u9876\u5C42\u4F20\u5165 reportId \u5B57\u6BB5\uFF0C\u5176\u503C\u5FC5\u987B\u7B49\u4E8E ${reportId}\uFF0C\u5426\u5219\u4F1A\u88AB\u62D2\u7EDD\u3002` : ""
-        ].filter(Boolean).join("\n");
-        ({ stream: stream2 } = await model.doStream({
-          prompt: injected,
-          tools: tools2,
-          system: system || void 0,
-          abortSignal: state.abortController.signal
-        }));
-      } catch (e6) {
-        setError(e6);
-        return;
-      }
       const parts = [];
       let curText = null;
-      const reader = stream2.getReader();
+      const feedback = [];
+      let turn = 0;
+      const MAX_TURNS = 4;
       try {
-        for (; ; ) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          if (!value) continue;
-          if (value.type === "text-delta") {
-            if (!curText) {
-              curText = { type: "text", text: "" };
-              parts.push(curText);
-              setLastMessage({ role: "assistant", parts: [...parts] });
-            }
-            curText.text += value.delta || "";
-          } else if (value.type === "tool-call") {
-            let input = value.input;
-            if (typeof input === "string") {
-              try {
-                input = JSON.parse(input);
-              } catch {
+        for (; turn < MAX_TURNS; turn++) {
+          let stream2;
+          try {
+            const prompt = turn === 0 ? injected : [...injected, ...feedback.map((t4) => ({ role: "assistant", content: [{ type: "text", text: t4 }] }))];
+            ({ stream: stream2 } = await model.doStream({
+              prompt,
+              tools: tools2,
+              system: system || void 0,
+              abortSignal: state.abortController.signal
+            }));
+          } catch (e6) {
+            setError(e6);
+            return;
+          }
+          const reader = stream2.getReader();
+          let lookupInput = null;
+          try {
+            for (; ; ) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              if (!value) continue;
+              if (value.type === "text-delta") {
+                if (!curText) {
+                  curText = { type: "text", text: "" };
+                  parts.push(curText);
+                  setLastMessage({ role: "assistant", parts: [...parts] });
+                }
+                curText.text += value.delta || "";
+              } else if (value.type === "tool-call") {
+                if (value.toolName !== "applyDocumentOperations") {
+                  if (value.toolName === "lookup_data_ref") lookupInput = value.input;
+                  try {
+                    await reader.cancel();
+                  } catch {
+                  }
+                  break;
+                }
+                let input = value.input;
+                if (typeof input === "string") {
+                  try {
+                    input = JSON.parse(input);
+                  } catch {
+                  }
+                }
+                const stamp = input && typeof input === "object" ? input.reportId : void 0;
+                if (reportId && typeof stamp === "string" && stamp !== reportId) {
+                  const err = new Error(`AI \u5C1D\u8BD5\u7F16\u8F91\u5176\u4ED6\u62A5\u544A\uFF08reportId=${stamp}\uFF09\uFF0C\u4E3A\u4FDD\u62A4\u5F53\u524D\u62A5\u544A\u5DF2\u62D2\u7EDD\u672C\u6B21\u4FEE\u6539\u3002`);
+                  emitDiag({ tools: (tools2 || []).map((t4) => t4.name), toolCalls: 1, finishReason: "error", error: String(err.message) });
+                  setError(err);
+                  return;
+                }
+                const safeInput = input && typeof input === "object" && Array.isArray(input.operations) ? { operations: input.operations } : input;
+                parts.push({ type: "tool-applyDocumentOperations", state: "input-available", toolCallId: String(value.id), input: safeInput });
+                setLastMessage({ role: "assistant", parts: [...parts] });
+              } else if (value.type === "finish") {
+                break;
+              } else if (value.type === "error") {
+                setError(value.error);
+                return;
               }
             }
-            const stamp = input && typeof input === "object" ? input.reportId : void 0;
-            if (reportId && typeof stamp === "string" && stamp !== reportId) {
-              const err = new Error(`AI \u5C1D\u8BD5\u7F16\u8F91\u5176\u4ED6\u62A5\u544A\uFF08reportId=${stamp}\uFF09\uFF0C\u4E3A\u4FDD\u62A4\u5F53\u524D\u62A5\u544A\u5DF2\u62D2\u7EDD\u672C\u6B21\u4FEE\u6539\u3002`);
-              emitDiag({ tools: (tools2 || []).map((t4) => t4.name), toolCalls: 1, finishReason: "error", error: String(err.message) });
-              setError(err);
-              break;
-            }
-            const safeInput = input && typeof input === "object" && Array.isArray(input.operations) ? { operations: input.operations } : input;
-            parts.push({ type: "tool-applyDocumentOperations", state: "input-available", toolCallId: String(value.id), input: safeInput });
-            setLastMessage({ role: "assistant", parts: [...parts] });
-          } else if (value.type === "finish") {
-            break;
-          } else if (value.type === "error") {
-            setError(value.error);
-            break;
+          } catch (e6) {
+            setError(e6);
+            return;
           }
+          if (lookupInput !== null) {
+            let query = "", commodity = "";
+            try {
+              const o4 = typeof lookupInput === "string" ? JSON.parse(lookupInput) : lookupInput;
+              query = typeof o4?.query === "string" ? o4.query : "";
+              commodity = typeof o4?.commodity === "string" ? o4.commodity : "";
+            } catch {
+            }
+            if (query) feedback.push(await runLookup(query, commodity));
+            continue;
+          }
+          break;
         }
       } catch (e6) {
         setError(e6);
+        return;
       }
       if (curText?.text) state.convo = [...state.convo, { role: "assistant", text: curText.text, reportId }];
       if (state.status !== "error") {
@@ -121760,13 +121848,14 @@ var testErrorText = (code4) => ({
 function SettingsPanel({ request, onClose, onIdentity }) {
   const dialogRef = (0, import_react171.useRef)(null);
   const [view, setView] = (0, import_react171.useState)(null);
-  const [form, setForm] = (0, import_react171.useState)({ baseUrl: "", kbId: "", tenantId: "", readKey: "", writeKey: "" });
+  const [form, setForm] = (0, import_react171.useState)({ baseUrl: "", kbId: "", tenantId: "", readKey: "", writeKey: "", commodityKbIds: {} });
   const [state, setState] = (0, import_react171.useState)({ busy: true, note: "", error: "" });
   const [test, setTest] = (0, import_react171.useState)(null);
+  const [commodityProfiles, setCommodityProfiles] = (0, import_react171.useState)(null);
   const voicePrefs = useVoicePrefs();
   const adopt = (v) => {
     setView(v);
-    setForm((f2) => ({ ...f2, baseUrl: v?.baseUrl || "", kbId: v?.kbId || "", tenantId: v?.tenantId || "", readKey: "", writeKey: "" }));
+    setForm((f2) => ({ ...f2, baseUrl: v?.baseUrl || "", kbId: v?.kbId || "", tenantId: v?.tenantId || "", readKey: "", writeKey: "", commodityKbIds: v?.commodityKbIds || {} }));
   };
   (0, import_react171.useEffect)(() => {
     let cancelled = false;
@@ -121777,6 +121866,11 @@ function SettingsPanel({ request, onClose, onIdentity }) {
       }
     }).catch((e6) => {
       if (!cancelled) setState({ busy: false, note: "", error: e6.code === "SETTINGS_UNAVAILABLE" ? "\u5F53\u524D Host \u7248\u672C\u4E0D\u652F\u6301\u53EF\u89C6\u5316\u8BBE\u7F6E\uFF0C\u8BF7\u5347\u7EA7\u63D2\u4EF6\u540E\u5B8C\u5168\u91CD\u542F\u3002" : e6.message || "\u8BFB\u53D6\u8BBE\u7F6E\u5931\u8D25" });
+    });
+    request("commodityOptions").then((v) => {
+      if (!cancelled) setCommodityProfiles(v);
+    }).catch(() => {
+      if (!cancelled) setCommodityProfiles({ list: ["\u9521"], folders: {}, kbIds: {} });
     });
     return () => {
       cancelled = true;
@@ -121789,7 +121883,7 @@ function SettingsPanel({ request, onClose, onIdentity }) {
   const save = async () => {
     setState({ busy: true, note: "", error: "" });
     try {
-      const settings = { baseUrl: form.baseUrl.trim(), kbId: form.kbId.trim(), tenantId: form.tenantId.trim() };
+      const settings = { baseUrl: form.baseUrl.trim(), kbId: form.kbId.trim(), tenantId: form.tenantId.trim(), commodityKbIds: form.commodityKbIds || {} };
       if (form.readKey.trim()) settings.readKey = form.readKey.trim();
       if (form.writeKey.trim()) settings.writeKey = form.writeKey.trim();
       const v = await request("settingsSave", { settings });
@@ -121835,6 +121929,16 @@ function SettingsPanel({ request, onClose, onIdentity }) {
       /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-muted", children: "\uFF08\u53EF\u9009\uFF09" }),
       /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { "aria-label": "\u79DF\u6237 ID", placeholder: "WeKnora \u591A\u79DF\u6237 ID\uFF0C\u5355\u79DF\u6237\u53EF\u7559\u7A7A", value: form.tenantId, disabled: state.busy, onChange: (e6) => field("tenantId", e6.target.value) })
     ] }),
+    commodityProfiles?.list?.length ? /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-settings-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-section-heading", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("h3", { children: "\u6309\u5546\u54C1\u77E5\u8BC6\u5E93 ID" }),
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-muted", children: "\u7559\u7A7A\u5219\u4F7F\u7528\u4E0A\u65B9\u300C\u77E5\u8BC6\u5E93 ID\u300D" })
+      ] }),
+      commodityProfiles.list.map((c4) => /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("label", { children: [
+        c4,
+        /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { "aria-label": `${c4} \u77E5\u8BC6\u5E93 ID`, placeholder: "\u7559\u7A7A\u4F7F\u7528\u9ED8\u8BA4", value: form.commodityKbIds?.[c4] || "", disabled: state.busy, onChange: (e6) => setForm((f2) => ({ ...f2, commodityKbIds: { ...f2.commodityKbIds || {}, [c4]: e6.target.value } })) })
+      ] }, c4))
+    ] }) : null,
     /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("label", { children: [
       "\u8BFB\u53D6\u5BC6\u94A5",
       view?.readKeySet && /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("span", { className: "rr-muted", children: "\uFF08\u5DF2\u4FDD\u5B58\uFF0C\u7559\u7A7A\u4FDD\u6301\u4E0D\u53D8\uFF09" }),
@@ -122096,6 +122200,24 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
       live = false;
     };
   }, []);
+  const [commodityProfiles, setCommodityProfiles] = (0, import_react171.useState)(null);
+  (0, import_react171.useEffect)(() => {
+    let live = true;
+    if (demo) {
+      setCommodityProfiles({ list: ["\u9521", "\u94DD", "\u6C27\u5316\u94DD", "\u950C", "\u78B3\u9178\u9502"], folders: { "\u9521": "\u6839\u76EE\u5F55/\u5468\u62A5" }, kbIds: {} });
+      return () => {
+        live = false;
+      };
+    }
+    request("commodityOptions").then((v) => {
+      if (live) setCommodityProfiles(v);
+    }).catch(() => {
+      if (live) setCommodityProfiles({ list: ["\u9521"], folders: {}, kbIds: {} });
+    });
+    return () => {
+      live = false;
+    };
+  }, [sessionId]);
   const applyGenEv = (ev) => setProgress((p2) => {
     if (!p2) return p2;
     const steps = p2.steps.map((s4) => s4.key === ev.step ? { ...s4, state: ev.state, label: ev.label || s4.label, detail: ev.detail || s4.detail } : s4);
@@ -122720,7 +122842,12 @@ function WorkspaceContent({ sessionId, close: close2, mode, onModeChange }) {
             /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("div", { className: "rr-generation-basics", children: [
               /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("label", { children: [
                 "\u5546\u54C1 ",
-                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("input", { "aria-label": "\u5546\u54C1", value: variety, disabled: busy, onChange: (e6) => setVariety(e6.target.value), className: "rr-commodity-input", required: true })
+                /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("select", { "aria-label": "\u5546\u54C1", value: variety, disabled: busy, onChange: (e6) => setVariety(e6.target.value), className: "rr-commodity-input", required: true, children: (commodityProfiles?.list?.length ? commodityProfiles.list : ["\u9521"]).map((c4) => /* @__PURE__ */ (0, import_jsx_runtime131.jsx)("option", { value: c4, children: c4 }, c4)) }),
+                commodityProfiles?.folders?.[variety] && /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("span", { className: "rr-muted", children: [
+                  "\u5C06\u4E0A\u4F20\u81F3\u300C",
+                  commodityProfiles.folders[variety],
+                  "\u300D"
+                ] })
               ] }),
               /* @__PURE__ */ (0, import_jsx_runtime131.jsxs)("label", { children: [
                 "\u622A\u6B62\u65E5\u671F ",

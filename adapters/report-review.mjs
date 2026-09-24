@@ -7,10 +7,12 @@ export const name = 'tokens-weekly-report-review'
 export const inject = original.inject
 export function apply(ctx, config = {}) {
   const publishKbId = process.env.TOKENSCOWORK_WEEKLY_REPORT_PUBLISH_KB_ID || settingsView().publishKbId
+  const commodityKbIds = settingsView().commodityKbIds || {}
   return original.apply(ctx, {
     sourceOutputRoot: generatedRoot(),
     settingsApi: { get: () => settingsView(), update: input => updateSettings(input), test: () => testConnection() },
     ...(publishKbId ? { publishKbId } : {}),
+    ...(Object.keys(commodityKbIds).length ? { commodityKbIds } : {}),
     ...config,
   })
 }

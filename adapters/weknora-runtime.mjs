@@ -109,6 +109,7 @@ export function settingsView(home = pluginHome()) {
     connectorActive: active,
     connectorError: active ? null : lastError,
     publishKbId: staticConfig.publishKbId || (KB_ID.test(s.kbId || '') ? s.kbId : null),
+    commodityKbIds: { ...(staticConfig.commodityKbIds || s.commodityKbIds || {}) },
   }
 }
 
@@ -116,7 +117,7 @@ const fail = code => { const e = new Error(code); e.code = code; throw e }
 export function updateSettings(input, home = pluginHome()) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) fail('SETTINGS_INVALID')
   const keys = Object.keys(input)
-  if (keys.some(k => !['baseUrl', 'kbId', 'tenantId', 'readKey', 'writeKey'].includes(k))) fail('SETTINGS_INVALID')
+  if (keys.some(k => !['baseUrl', 'kbId', 'tenantId', 'readKey', 'writeKey', 'commodityKbIds'].includes(k))) fail('SETTINGS_INVALID')
   const next = { ...readSettings(home) }
   if (input.baseUrl !== undefined) {
     if (typeof input.baseUrl !== 'string' || input.baseUrl.length > 2048) fail('SETTINGS_INVALID')
@@ -131,6 +132,20 @@ export function updateSettings(input, home = pluginHome()) {
   if (input.tenantId !== undefined) {
     if (typeof input.tenantId !== 'string' || (input.tenantId.trim() && !TENANT.test(input.tenantId.trim()))) fail('SETTINGS_INVALID')
     next.tenantId = input.tenantId.trim()
+  }
+  // Per-commodity knowledge-base id override. A commodity's empty/absent value means "use the global
+  // publishKbId". Stored inside the same settings blob (no keys, only kb ids, which are non-secret).
+  if (input.commodityKbIds !== undefined) {
+    const map = input.commodityKbIds
+    if (!map || typeof map !== 'object' || Array.isArray(map)) fail('SETTINGS_INVALID')
+    const clean = {}
+    for (const [com, kb] of Object.entries(map)) {
+      if (typeof com !== 'string' || !com.trim()) continue
+      if (kb === undefined || kb === null || kb === '') { clean[com.trim()] = ''; continue }
+      if (typeof kb !== 'string' || !KB_ID.test(kb.trim())) fail('SETTINGS_INVALID')
+      clean[com.trim()] = kb.trim()
+    }
+    next.commodityKbIds = clean
   }
   for (const [field, purpose] of [['readKey', 'read'], ['writeKey', 'write']]) {
     const value = input[field]

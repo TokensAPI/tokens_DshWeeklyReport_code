@@ -403,6 +403,7 @@ export function createNativeChat(opts) {
         description: def.description,
         inputSchema: def.inputSchema,
       }));
+      const fetchFn = (opts && opts.fetchFn) || ((path, init) => fetch(path, init));
       // The DSH bridge consumes ModelMessage-shaped messages (`content` is an array of
       // parts). xl-ai's injected state uses UIMessage-shaped `parts`, so normalize here.
       // For a conversation we prepend the accumulated history (prior user + assistant
@@ -418,67 +419,138 @@ export function createNativeChat(opts) {
       const injected = injectDocumentStateMessages([...history, message]).map((m) =>
         m && Array.isArray(m.parts) ? { role: m.role, id: m.id, content: m.parts } : m,
       );
+      const system = [
+        opts.system,
+        reportId ? `当前报告 ID：${reportId}。你正在编辑这份报告。调用 applyDocumentOperations 时必须在顶层传入 reportId 字段，其值必须等于 ${reportId}，否则会被拒绝。` : '',
+      ].filter(Boolean).join('\n');
+
+      // Local data lookup helper: route a lookup_data_ref tool call to the host `/api/run19/lookup`
+      // endpoint (which resolves the metric against the local data source and fetches its series),
+      // then return a ready-to-feed-back text block so the model can reference / write the data.
+      const runLookup = async (query, commodity) => {
+        try {
+          const res = await fetchFn('/api/run19/lookup', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ query, commodity, withSeries: true }),
+          });
+          if (!res.ok) return `[数据查询失败] 查询“${query}”未成功（HTTP ${res.status}）`;
+          const data = await res.json();
+          if (!data || data.ok === false) {
+            const cands = (data && data.candidates) || [];
+            const hint = data && data.reason === 'no-match' ? '本地数据源无匹配。' : '';
+            return `[数据查询] 未解析到“${query}”对应的指标。${hint}${cands.length ? `可能候选：${cands.slice(0, 3).map((c) => `${c.ref} ${c.name}`).join('；')}` : ''}`;
+          }
+          const r = data.resolved || {};
+          const v = data.values || {};
+          let s = `[数据查询结果] ${r.name || query}（ref=${r.ref || '?'}${r.unit ? `，单位=${r.unit}` : ''}${r.cat ? `，类别=${r.cat}` : ''}）`;
+          if (v) {
+            s += `：最新 ${v.latest !== undefined ? v.latest : '—'}`;
+            if (v.prev !== undefined) s += `，前值 ${v.prev}`;
+            if (v.changePct !== undefined) s += `，环比 ${v.changePct}%`;
+            if (Array.isArray(v.points) && v.points.length) {
+              const head = v.points.slice(-4).map((p) => `${p.t.slice(0, 10)}=${p.v}`).join('，');
+              s += `；近端序列：${head}`;
+            }
+          }
+          return s;
+        } catch (e) {
+          return `[数据查询失败] ${String((e && e.message) || e)}`;
+        }
+      };
 
       setStatus('submitted');
-      let stream;
-      try {
-        // Anchor the model on the current report so it knows which report it is editing and
-        // stamps it on applyDocumentOperations; the tool-call guard below rejects mismatches.
-        const system = [
-          opts.system,
-          reportId ? `当前报告 ID：${reportId}。你正在编辑这份报告。调用 applyDocumentOperations 时必须在顶层传入 reportId 字段，其值必须等于 ${reportId}，否则会被拒绝。` : '',
-        ].filter(Boolean).join('\n');
-        ({ stream } = await model.doStream({
-          prompt: injected,
-          tools,
-          system: system || undefined,
-          abortSignal: state.abortController.signal,
-        }));
-      } catch (e) {
-        setError(e);
-        return;
-      }
-
       const parts = [];
       let curText = null;
-      const reader = stream.getReader();
+      const feedback = [];
+      let turn = 0;
+      const MAX_TURNS = 4;
       try {
-        for (;;) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          if (!value) continue;
-          if (value.type === 'text-delta') {
-            if (!curText) { curText = { type: 'text', text: '' }; parts.push(curText); setLastMessage({ role: 'assistant', parts: [...parts] }); }
-            curText.text += value.delta || '';
-          } else if (value.type === 'tool-call') {
-            // The executor consumes exactly one `input-available` part (writes + closes).
-            // `input` must be the parsed operations OBJECT (objectStreamToOperationsResult
-            // expects DeepPartial<{operations}>), not the raw JSON string.
-            let input = value.input;
-            if (typeof input === 'string') { try { input = JSON.parse(input); } catch { /* keep */ } }
-            // Guard: if the model stamps a reportId that is NOT this report, refuse to apply so
-            // we can never edit a different report's document. Absent stamp = accept (the chat is
-            // per-report anchored anyway). Strip reportId before forwarding so the operations
-            // pipeline only ever sees {operations}.
-            const stamp = input && typeof input === 'object' ? input.reportId : undefined;
-            if (reportId && typeof stamp === 'string' && stamp !== reportId) {
-              const err = new Error(`AI 尝试编辑其他报告（reportId=${stamp}），为保护当前报告已拒绝本次修改。`);
-              emitDiag({ tools: (tools || []).map((t) => t.name), toolCalls: 1, finishReason: 'error', error: String(err.message) });
-              setError(err);
-              break;
-            }
-            const safeInput = input && typeof input === 'object' && Array.isArray(input.operations) ? { operations: input.operations } : input;
-            parts.push({ type: 'tool-applyDocumentOperations', state: 'input-available', toolCallId: String(value.id), input: safeInput });
-            setLastMessage({ role: 'assistant', parts: [...parts] });
-          } else if (value.type === 'finish') {
-            break;
-          } else if (value.type === 'error') {
-            setError(value.error);
-            break;
+        // Multi-turn loop: if the model asks for data via lookup_data_ref, resolve it, append the
+        // fetched data as an assistant context message, and re-stream so the model can then
+        // applyDocumentOperations / finish. Caps at MAX_TURNS to avoid a runaway loop.
+        for (; turn < MAX_TURNS; turn++) {
+          let stream;
+          try {
+            const prompt = turn === 0 ? injected : [...injected, ...feedback.map((t) => ({ role: 'assistant', content: [{ type: 'text', text: t }] }))];
+            ({ stream } = await model.doStream({
+              prompt,
+              tools,
+              system: system || undefined,
+              abortSignal: state.abortController.signal,
+            }));
+          } catch (e) {
+            setError(e);
+            return;
           }
+
+          const reader = stream.getReader();
+          let lookupInput = null;
+          try {
+            for (;;) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              if (!value) continue;
+              if (value.type === 'text-delta') {
+                if (!curText) { curText = { type: 'text', text: '' }; parts.push(curText); setLastMessage({ role: 'assistant', parts: [...parts] }); }
+                curText.text += value.delta || '';
+              } else if (value.type === 'tool-call') {
+                if (value.toolName !== 'applyDocumentOperations') {
+                  // A non-document tool (e.g. lookup_data_ref): stop this pass, run it, feed the
+                  // result back, and let the model continue in the next turn. We deliberately do
+                  // NOT forward it to the BlockNote executor (it only handles doc operations).
+                  if (value.toolName === 'lookup_data_ref') lookupInput = value.input;
+                  try { await reader.cancel(); } catch { /* ignore */ }
+                  break;
+                }
+                // The executor consumes exactly one `input-available` part (writes + closes).
+                // `input` must be the parsed operations OBJECT (objectStreamToOperationsResult
+                // expects DeepPartial<{operations}>), not the raw JSON string.
+                let input = value.input;
+                if (typeof input === 'string') { try { input = JSON.parse(input); } catch { /* keep */ } }
+                // Guard: if the model stamps a reportId that is NOT this report, refuse to apply so
+                // we can never edit a different report's document. Absent stamp = accept (the chat is
+                // per-report anchored anyway). Strip reportId before forwarding so the operations
+                // pipeline only ever sees {operations}.
+                const stamp = input && typeof input === 'object' ? input.reportId : undefined;
+                if (reportId && typeof stamp === 'string' && stamp !== reportId) {
+                  const err = new Error(`AI 尝试编辑其他报告（reportId=${stamp}），为保护当前报告已拒绝本次修改。`);
+                  emitDiag({ tools: (tools || []).map((t) => t.name), toolCalls: 1, finishReason: 'error', error: String(err.message) });
+                  setError(err);
+                  return;
+                }
+                const safeInput = input && typeof input === 'object' && Array.isArray(input.operations) ? { operations: input.operations } : input;
+                parts.push({ type: 'tool-applyDocumentOperations', state: 'input-available', toolCallId: String(value.id), input: safeInput });
+                setLastMessage({ role: 'assistant', parts: [...parts] });
+              } else if (value.type === 'finish') {
+                break;
+              } else if (value.type === 'error') {
+                setError(value.error);
+                return;
+              }
+            }
+          } catch (e) {
+            setError(e);
+            return;
+          }
+
+          // If a lookup was requested this pass, resolve it and continue so the model can write/
+          // reference the data next turn. Otherwise the pass produced an edit or finished: stop.
+          if (lookupInput !== null) {
+            let query = '', commodity = '';
+            try {
+              const o = typeof lookupInput === 'string' ? JSON.parse(lookupInput) : lookupInput;
+              query = typeof o?.query === 'string' ? o.query : '';
+              commodity = typeof o?.commodity === 'string' ? o.commodity : '';
+            } catch { /* keep */ }
+            if (query) feedback.push(await runLookup(query, commodity));
+            continue;
+          }
+          break;
         }
       } catch (e) {
         setError(e);
+        return;
       }
       if (curText?.text) state.convo = [...state.convo, { role: 'assistant', text: curText.text, reportId }];
       if (state.status !== 'error') {

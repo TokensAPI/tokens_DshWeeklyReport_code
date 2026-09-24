@@ -7,6 +7,8 @@ import { computeTimeline } from './timeline.mjs';
 import { extractReviewMarks } from './review-marks.mjs';
 import { mapChunks } from './chunk-map.mjs';
 import { homedir } from 'node:os';
+import { lookupData } from '../../weekly-report-source/lib/lookup.mjs';
+import { COMMODITY_LIST, DEFAULT_COMMODITY_FOLDERS, kbIdFor, commodityFolder, commodityProfilesView } from './commodity.mjs';
 
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 const pick = (value, keys) => Object.fromEntries(keys.filter(k => value?.[k] !== undefined).map(k => [k, value[k]]));
@@ -476,8 +478,10 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
     // LLM is unavailable we fall back to a deterministic heuristic so generation still behaves predictably.
     emit('plan', 'running', 'LLM 正在判断检索范围…');
     guard();
+    // Retrieval targets the commodity's own knowledge base when one is configured per-commodity.
+    const retrievalKbId = kbIdFor(config, request.variety);
     const plan = analysisRequested
-      ? await planKnowledgeRetrieval({ llm: getLlm(), model: getDefaultModel()?.currentSelection?.(), request, analysisPrompt, connector: getConnector(), kbId: config.publishKbId, memory: lookupRetrievalMemory(b.sessionId, request.variety), signal })
+      ? await planKnowledgeRetrieval({ llm: getLlm(), model: getDefaultModel()?.currentSelection?.(), request, analysisPrompt, connector: getConnector(), kbId: retrievalKbId, memory: lookupRetrievalMemory(b.sessionId, request.variety), signal })
       : { enabled: false, wantHistory: false, queries: [], folderPath: null, source: 'none' };
     emit('plan', 'ok', '检索规划完成');
     guard();
@@ -508,7 +512,7 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
     // weekly reports + uploaded material) do not duplicate a doc. Image/asset knowledge (charts) is kept.
     if (plan.enabled) {
       const connector = getConnector();
-      if (connector?.search && validString(config.publishKbId)) {
+      if (connector?.search && validString(retrievalKbId)) {
         const requested = typeof input.knowledgeQuery === 'string' && input.knowledgeQuery.trim();
         const queries = (Array.isArray(plan.queries) && plan.queries.length ? plan.queries : [request.variety || '']).filter(q => validString(q, 8192));
         if (requested && !queries.includes(input.knowledgeQuery)) queries.unshift(input.knowledgeQuery.trim().slice(0, 8192));
@@ -531,14 +535,14 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
         if (wantsScope && typeof connector.listKnowledge === 'function') {
           try {
             let scopePath = scopeFolder || undefined;
-            const listRes = await connector.listKnowledge(config.publishKbId, { folderPath: scopePath, recursive: true, startTime, page: 1, pageSize: 200 });
+            const listRes = await connector.listKnowledge(retrievalKbId, { folderPath: scopePath, recursive: true, startTime, page: 1, pageSize: 200 });
             let rows = (listRes?.ok === true && Array.isArray(listRes.data?.data)) ? listRes.data.data : null;
             // A user-named folder that didn't resolve exactly (e.g. planner returned a short name) -> map it to the
             // real tree once, so "笔记" becomes the true <...>/笔记 path instead of silently yielding nothing.
             if (scopeFolder && (rows === null || rows.length === 0)) {
-              const resolved = await resolveKbFolderPath(connector, config.publishKbId, scopeFolder);
+              const resolved = await resolveKbFolderPath(connector, retrievalKbId, scopeFolder);
               if (resolved && resolved !== scopeFolder) {
-                const r2 = await connector.listKnowledge(config.publishKbId, { folderPath: resolved, recursive: true, startTime, page: 1, pageSize: 200 });
+                const r2 = await connector.listKnowledge(retrievalKbId, { folderPath: resolved, recursive: true, startTime, page: 1, pageSize: 200 });
                 if (r2?.ok === true && Array.isArray(r2.data?.data)) { rows = r2.data.data; scopeFolder = resolved; }
               }
             }
@@ -561,7 +565,7 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
             searchOpts = { matchCount };
             if (scopeStatus === 'ok' && Array.isArray(scopedIds) && scopedIds.length) searchOpts.knowledgeIds = scopedIds;
             for (const query of queries) {
-              const found = await connector.search(config.publishKbId, query, searchOpts);
+              const found = await connector.search(retrievalKbId, query, searchOpts);
               if (found?.ok !== true || !Array.isArray(found.data?.data)) continue;
               for (const row of (found.data.data || [])) {
                 if (!row || !validString(row.content, 32768)) continue;
@@ -581,7 +585,7 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
             if (scopeStatus === 'ok' && Array.isArray(scopedIds) && scopedIds.length && perDoc.size === 0 && typeof connector.chunks === 'function') {
               for (const id of scopedIds.slice(0, 40)) {
                 try {
-                  const cr = await connector.chunks(config.publishKbId, id, { page: 1, pageSize: 100 });
+                  const cr = await connector.chunks(retrievalKbId, id, { page: 1, pageSize: 100 });
                   if (cr?.ok === true && Array.isArray(cr.data?.data)) {
                     const frags = cr.data.data.map(c => (c.content || '').trim()).filter(Boolean).slice(0, MAX_FRAGMENTS_PER_DOC);
                     if (frags.length) perDoc.set(id, { id, title: id, knowledgeId: id, fragments: frags });
@@ -605,7 +609,7 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
             signal,
             requery: async (q) => {
               if (!connector.search) return [];
-              const found = await connector.search(config.publishKbId, q, searchOpts);
+              const found = await connector.search(retrievalKbId, q, searchOpts);
               if (found?.ok !== true || !Array.isArray(found.data?.data)) return [];
               return found.data.data.filter(row => row && validString(row.content, 32768)).map(row => {
                 const kid = row.knowledge_id, key = validString(row.id, 128) ? row.id : (kid || '');
@@ -834,20 +838,23 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
   async function publishPlan(b, input) {
     const connector = getConnector(); if (!connector?.createReviewHost) fail('CONNECTOR_UNAVAILABLE');
     const i = await requireIdentity();
-    if (!validString(config.publishKbId)) fail('PUBLISH_TARGET_REQUIRED');
     const version = await core.exportVersion({ ...b, versionId: input.versionId }); assertAuthor(version, i);
+    // Per-commodity target knowledge base: an explicit per-commodity override (settings) wins, else the
+    // global publishKbId. This is what routes 锡 (or any commodity) to its own WeKnora knowledge base.
+    const kbId = kbIdFor(config, version.variety);
+    if (!validString(kbId)) fail('PUBLISH_TARGET_REQUIRED');
     const guardWarnings = await publicationGuard(b, { versionId: version.versionId });
     let manifest;
-    try { manifest = preparePublicationManifest(version, { kbId: config.publishKbId }); }
+    try { manifest = preparePublicationManifest(version, { kbId }); }
     catch (e) { if (e.code === 'UNSUPPORTED_ASSET_REFERENCE') fail('IMAGES_UNSUPPORTED'); throw e; }
     const itemMeta = manifest.items.map(it => ({ itemKey: it.key, type: it.type, title: it.title, hash: it.hash, ...(it.type === 'image' ? { assetId: it.assetId, sha256: it.sha256, caption: it.caption } : {}) }));
     // Persist frozen plan digest + per-item intents (resume-safe before any remote effect).
-    const record = await core.savePublicationPlan({ ...b, versionId: version.versionId, target: config.publishKbId, payload: { digest: manifest.digest, title: manifest.title, items: itemMeta } });
+    const record = await core.savePublicationPlan({ ...b, versionId: version.versionId, target: kbId, payload: { digest: manifest.digest, title: manifest.title, items: itemMeta } });
     const publishToken = token();
     for (const [key, p] of plans) if (p.expiresAt < Date.now()) plans.delete(key);
-    plans.set(publishToken, { ...b, versionId: version.versionId, planId: record.planId, digest: manifest.digest, authorId: i.authorId, kbId: config.publishKbId, expiresAt: Date.now() + ttl });
+    plans.set(publishToken, { ...b, versionId: version.versionId, planId: record.planId, digest: manifest.digest, authorId: i.authorId, kbId, expiresAt: Date.now() + ttl });
     return { planId: record.planId, versionId: version.versionId, digest: manifest.digest, publishToken, title: manifest.title,
-      target: config.publishKbId, items: itemMeta, warnings: [...guardWarnings, ...manifest.warnings],
+      target: kbId, items: itemMeta, warnings: [...guardWarnings, ...manifest.warnings],
       expiresAt: new Date(Date.now() + ttl).toISOString() };
   }
   async function publish(b, input) {
@@ -977,8 +984,14 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
       // sub-folders so the report body, its assets and the human-review entries are isolated and retrievable
       // without piling everything into a flat folder. Delegated to the standalone folder-move module: it is
       // fail-soft (a move failure surfaces as a warning, never rolls back uploads or breaks the publish).
-      const folder = resolveFolderPath({ variety: v.variety, title: v.title, groupMap: commodityGroups(), folderRoot: config.folderRoot, reportType: '周报', reportKey: v.reportId });
+      const folderProfile = commodityFolder(v.variety);
+      // Per-commodity hardcoded folder (e.g. 锡 -> 根目录/周报) wins; otherwise fall back to the
+      // group-based placement (商品策略/<group>/周报/<reportKey>).
+      const folder = folderProfile
+        ? { variety: v.variety, folderPath: folderProfile, invalidGroup: false, ungrouped: false, kind: 'profile' }
+        : resolveFolderPath({ variety: v.variety, title: v.title, groupMap: commodityGroups(), folderRoot: config.folderRoot, reportType: '周报', reportKey: v.reportId });
       const warnings = [];
+      if (folder.kind === 'profile') warnings.push(`商品「${v.variety}」按商品映射上传到「${folder.folderPath}」（资产→「${folder.folderPath}/${SUBDIR.asset}」，人工修改→「${folder.folderPath}/${SUBDIR.human}」）。`);
       // Place EVERY artifact that reached WeKnora (i.e. has a valid remote id) into the report folder — even one
       // whose publish phase was `unknown`, so nothing the plugin produced is left straggling at the root.
       const built = itemResults.filter(r => ['report', 'image', 'pdf', 'human'].includes(r.type) && remoteIdValid(r.remoteId));
@@ -1026,7 +1039,7 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
             if (!expectByFolder.has(target)) expectByFolder.set(target, []);
             expectByFolder.get(target).push(r.remoteId);
           }
-          const listIds = async (fp) => { try { const vr = await connector.listKnowledge(config.publishKbId, { folderPath: fp, recursive: true, page: 1, pageSize: 200 }); return new Set((vr?.ok === true && Array.isArray(vr.data?.data)) ? vr.data.data.map(x => x.id) : []); } catch { return new Set(); } };
+          const listIds = async (fp) => { try { const vr = await connector.listKnowledge(retrievalKbId, { folderPath: fp, recursive: true, page: 1, pageSize: 200 }); return new Set((vr?.ok === true && Array.isArray(vr.data?.data)) ? vr.data.data.map(x => x.id) : []); } catch { return new Set(); } };
           // Scan the root once: what is still at root after the initial move.
           let rootIds = await listIds('');
           for (const [fp, ids] of expectByFolder) {
@@ -1128,6 +1141,7 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
       case 'templateList': if (!core.listPromptTemplates) fail('TEMPLATE_UNAVAILABLE'); return { templates: await core.listPromptTemplates({ sessionId: b.sessionId }) };
       case 'templateSave': if (!core.savePromptTemplate) fail('TEMPLATE_UNAVAILABLE'); return { template: await core.savePromptTemplate({ sessionId: b.sessionId, id: input.id, name: input.name, content: input.content }) };
       case 'templateDelete': if (!core.deletePromptTemplate) fail('TEMPLATE_UNAVAILABLE'); return { deleted: await core.deletePromptTemplate({ sessionId: b.sessionId, id: input.id }) };
+      case 'commodityOptions': return commodityProfilesView(config);
       case 'retrievalRecordCorrection': if (!human) fail('HUMAN_CLICK_REQUIRED'); return recordRetrievalCorrection({ sessionId: b.sessionId, variety: input.variety, utterance: input.utterance, scope: input.scope, correction: input.correction });
       case 'retrievalMemory': return { entries: lookupRetrievalMemory(b.sessionId, input.variety) };
       // Connection settings are a Host concern delegated to config.settingsApi (the bundle adapter); key
@@ -1136,6 +1150,7 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
       case 'settingsSave': { if (!human) fail('HUMAN_CLICK_REQUIRED'); if (!config.settingsApi?.update) fail('SETTINGS_UNAVAILABLE');
         const view = await config.settingsApi.update(input.settings);
         if (validString(view?.publishKbId)) config.publishKbId = view.publishKbId;
+        if (view?.commodityKbIds && typeof view.commodityKbIds === 'object') config.commodityKbIds = view.commodityKbIds;
         return view; }
       case 'settingsTest': if (!human) fail('HUMAN_CLICK_REQUIRED'); if (!config.settingsApi?.test) fail('SETTINGS_UNAVAILABLE'); return config.settingsApi.test();
       default: fail('ACTION_UNSUPPORTED');
@@ -1200,6 +1215,26 @@ export function createReviewHost({ core, pdf, sessions, getConnector = () => und
         if ((await draft(b)).saveToken !== stored.saveToken) fail('PREVIEW_STALE');
         return new Response(bytes, { headers: { 'content-type':'application/pdf', 'cache-control':'private, no-store', 'x-content-type-options':'nosniff', 'content-disposition':'inline; filename="report-preview.pdf"' } });
       } catch(e) { return json(safeError(e), e.code === 'SESSION_FORBIDDEN' ? 403 : e.code === 'PREVIEW_STALE' ? 409 : 404); }
+    },
+    async fetchLookup(request) {
+      try {
+        if (request.method !== 'POST') return json({ ok:false, error:{code:'METHOD_NOT_ALLOWED',message:'POST required'} },405);
+        const text = await request.text(); if (Buffer.byteLength(text) > maxBodyBytes) fail('BODY_TOO_LARGE');
+        let input; try { input = JSON.parse(text); } catch { fail('INVALID_INPUT'); }
+        if (!input || typeof input !== 'object' || Array.isArray(input)) fail('INVALID_INPUT');
+        const query = validString(input.query, 256) ? input.query.trim() : '';
+        if (!query) return json({ ok:false, error:{ code:'INVALID_QUERY', message:'缺少查询词' } }, 400);
+        const commodity = (validString(input.commodity, 128) ? input.commodity.trim() : '') ||
+                          (validString(input.variety, 128) ? input.variety.trim() : '');
+        const windowMs = Number.isFinite(input.windowMs) && input.windowMs > 0 ? input.windowMs : undefined;
+        const withSeries = input.withSeries !== false;
+        const source = getSource();
+        const baseUrl = source?.options?.baseUrl || undefined;
+        const result = await lookupData(query, { variety: commodity, baseUrl, windowMs, withSeries });
+        return json(result);
+      } catch (e) {
+        return json(safeError(e), 502);
+      }
     },
     async fetchAiStream(request) {
       // Streaming LLM endpoint for the BlockNote XL-AI bridge. The client already
@@ -1494,6 +1529,7 @@ export function apply(ctx, config = {}) {
   ctx.connection.fetch.register({ path:'/api/run19/review', methods:['POST'], requestBody:'buffered', fetch: request => api.fetchReview(request) });
   ctx.connection.fetch.register({ path:'/api/run19/generate', methods:['POST'], requestBody:'buffered', fetch: request => api.fetchGenerate(request) });
   ctx.connection.fetch.register({ path:'/api/run19/ai-stream', methods:['POST'], requestBody:'buffered', fetch: request => api.fetchAiStream(request) });
+  ctx.connection.fetch.register({ path:'/api/run19/lookup', methods:['POST'], requestBody:'buffered', fetch: request => api.fetchLookup(request) });
   ctx.connection.fetch.register({ path:'/api/run19/asr', methods:['POST'], requestBody:'buffered', fetch: request => api.fetchAsr(request) });
   ctx.connection.fetch.register({ path:'/api/run19/asr-polish', methods:['POST'], requestBody:'buffered', fetch: request => api.fetchAsrPolish(request) });
   ctx.connection.fetch.register({ path:'/api/run19/pdf', methods:['GET'], requestBody:'buffered', fetch: request => api.fetchPdf(request) });

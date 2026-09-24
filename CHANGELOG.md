@@ -1,5 +1,22 @@
 # 更新记录
 
+## 0.1.15 — 周报工作台商品改为「下拉选择」并按商品映射到正确的知识库/目录
+
+- **商品由手填改为下拉选择**：工作台「生成周报」上方的商品输入改为 `<select>`，选项来自宿主 `commodityOptions`（当前 `锡/铝/氧化铝/锌/碳酸锂`）。不同商品名称、数据库、知识库结构与文件夹结构不同，选对商品才能生成并上传到正确位置。选中后即时提示该商品将上传到的目录。
+- **按商品映射到正确知识库（`commodityKbIds`）**：新增 `packages/report-review/src/commodity.mjs` 商品档案模块。每个商品可配独立的**知识库 id**，在「⚙ 设置 → 按商品知识库 ID」里填写（留空则用全局「知识库 ID」）。检索与发布都按商品解析目标知识库：`publishPlan` 生成发布计划时按 `version.variety` 取 `kbIdFor(config, variety)`（每商品覆盖优先，回退全局）；`publish` 全程用该 `kbId`；AI 检索段（`planKnowledgeRetrieval`/`listKnowledge`/`search`/`chunks`）同样按 `request.variety` 解析，保证不同商品读取各自数据库。
+- **按商品映射到正确目录（可写死）**：新增 `DEFAULT_COMMODITY_FOLDERS`，如 `锡 → 根目录/周报`（字面「根目录」文件夹内的「周报」）。发布放置时优先用该目录（`commodityFolder` 命中则直接落盘，资产/人工修改分别置于其下 `资产`/`人工修改`），否则回退到分组映射 `商品策略/<组>/周报/<reportId>`。匹配时在发布清单提示「商品「锡」按商品映射上传到「根目录/周报」」。
+- **根目录漏移自动归位**：发布完成后仍会列出目标知识库根目录，若发现本报告产物（报告/资产/人工修改）留在根目录，自动把它移进对应目录并逐条提示「移动了几条/哪几条」；移动数不一致会明确告警（沿用并强化既有 reconcile 逻辑）。
+- 存储：`commodityKbIds` 随连接设置写入 `<pluginHome>/weknora-settings.json`（仅知识库 id，非密钥），`settingsView`/`updateSettings` 已接纳并校验（每个值须匹配 `[A-Za-z0-9_-]{1,128}`）。
+- 注意：若某商品的 `commodityKbIds` 指向一个**新的知识库 id**，需把它加进 WeKnora 连接配置的 `allowedKbs` 允许列表，否则该知识库上的检索/发布会被连接器拒绝。
+
+## 0.1.14 — AI 编辑可调用「本地数据源取数」工具（lookup_data_ref）
+
+- **AI 编辑工具 `lookup_data_ref`**：在周报工作台用自然语言写「把 xx 数据也加入到周报中」时，AI 现在能**主动调用**一个取数工具，从本地数据源（默认 `127.0.0.1:5100` 行情镜像）解析并取回该指标的 `reference` 与序列值，再写入正文——无需在 prompt 里说明怎么查，也不用到别处/瞎编数据。
+- 取数能力为**运行时、按查询词驱动**：新增 Node 解析模块 `weekly-report-source/lib/lookup.mjs`，直接读取 `python/rzlib/catalog.json`（2400+ 序列），用「归一化 + 字符双字组重叠 + 字段命中 + 品种加权」把中文指标名解析到唯一引用，并从 5100 拉取值（最新/前值/环比/近端序列）。跨平台（macOS/Windows），不依赖 Python 运行时。
+- **多回合续写**：`ai-bridge.mjs` 的 `createNativeChat.sendMessage` 支持「查数 → 宿主取数 → 回填上下文 → 模型续写」循环（最多 4 回合），取数结果以上下文字段喂回，模型随后按 `applyDocumentOperations` 写入正文；`lookup_data_ref` 部件不会误触发 BlockNote 的文档操作执行器。宿主新增 `POST /api/run19/lookup`，复用源服务 `options.baseUrl`。
+- 工具为**通用可扩展**：单次查询、可多次调用；将来可并排放 web-search 等同类取数工具。
+- 测试：端到端验证 `巴西发运量→RZ_04793`、`BHP发运量→RZ_04795`、`碳酸锂表观需求→RZ_16374`、`沪锡收盘价→RZ_08594` 等解析结果与取值；无匹配查询返回 `ok:false`（不再误配任意序列）。
+
 ## 0.1.13 — AI 编辑可调用宿主工具 + 实时动作提示
 
 - **AI 编辑可先取数再改稿**：文档 AI 菜单此前只能调用 `applyDocumentOperations`，没有任何取数手段。现在把宿主工具注册表（`ctx.tools.schemas()`）合并进请求，模型发出的非编辑类调用由 Host 侧就地执行（`toolRuntime.execute`）并把结果回灌，直到模型给出真正的编辑。可以直接说「搜一下上周锡价补进来」。
