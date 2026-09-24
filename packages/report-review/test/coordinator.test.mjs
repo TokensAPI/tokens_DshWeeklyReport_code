@@ -119,19 +119,48 @@ test('commodityGroups config maps a commodity and moves md/pdf into that weknora
   t.after(() => api.dispose());
   const assetPath = join(root, 'chart.png'); await writeFile(assetPath, png);
   const aid = hash(png);
-  // Title "锡周报" (no ASCII separator) must still derive variety 锡 → 有色/锡铝氧化铝锌.
+  // Title "锑周报" (no ASCII separator) must still derive variety 锑 → 有色/锑. 锑 is deliberately
+  // used here instead of 锡: 锡 is in DEFAULT_COMMODITY_FOLDERS, whose per-commodity folder takes
+  // precedence over this group map (covered by the next test), which would bypass what this asserts.
+  let d = await core.createDraft({ sessionId: 's1', title: '锑周报', markdown: `# 锑周报\n\n![库存](asset:${aid})`, assets: [{ path: assetPath }] });
+  const v = await core.confirm({ sessionId: 's1', reportId: d.reportId, saveToken: d.saveToken, author: { authorId: 'u1', displayName: '测试用户' } });
+  const plan = await api.dispatchHuman({ action: 'publishPlan', sessionId: 's1', reportId: d.reportId, versionId: v.versionId });
+  const receipt = await api.dispatchHuman({ action: 'publish', sessionId: 's1', reportId: d.reportId, ...plan, userInitiated: true });
+  assert.equal(receipt.status, 'submitted');
+  assert.equal(moves.length, 2);
+  assert.equal(moves[0].folderPath, `商品策略/有色/锑/周报/${d.reportId}`);
+  assert.equal(moves[1].folderPath, `${moves[0].folderPath}/资产`);
+  assert.equal(moves[0].kb, 'kb1');
+  assert.equal(moves[0].ids.length, 1); // report body
+  assert.equal(moves[1].ids.length, 2); // PDF + image
+  assert.ok(receipt.warnings.some(w => w.includes('商品策略/有色/锑/周报')));
+});
+
+test('per-commodity folder profile wins over the commodityGroups map', async t => {
+  const root = await mkdtemp(join(tmpdir(), 'run19-coordp-')); t.after(() => rm(root, { recursive: true, force: true }));
+  const moves = [];
+  const connector = {
+    identity: async () => ({ verified: true, credentialPurpose: 'publish', principal: { userId: 'u1', username: '测试用户' } }),
+    async moveToFolder(kb, ids, folderPath) { moves.push({ kb, ids, folderPath }); return { ok: true }; },
+    createReviewHost() { return { approve(v) { return Object.freeze({ v }); }, async execute(cap) { if (cap.v.operation === 'publishImage') return { ok: true, data: { id: 'image1', knowledge_base_id: 'kb1', file_path: `resource://${handle}` } }; return { ok: true, data: { id: 'report1', knowledge_base_id: 'kb1' } }; } }; }
+  };
+  // 锡 is present in BOTH the group map and DEFAULT_COMMODITY_FOLDERS (锡 → 根目录/周报). The
+  // hardcoded per-commodity folder takes precedence, so the group path is NOT used here.
+  const { core, api } = makeHost(root, connector, { commodityGroups: { 锡: '有色/锡铝氧化铝锌' } });
+  t.after(() => api.dispose());
+  const assetPath = join(root, 'chart.png'); await writeFile(assetPath, png);
+  const aid = hash(png);
   let d = await core.createDraft({ sessionId: 's1', title: '锡周报', markdown: `# 锡周报\n\n![库存](asset:${aid})`, assets: [{ path: assetPath }] });
   const v = await core.confirm({ sessionId: 's1', reportId: d.reportId, saveToken: d.saveToken, author: { authorId: 'u1', displayName: '测试用户' } });
   const plan = await api.dispatchHuman({ action: 'publishPlan', sessionId: 's1', reportId: d.reportId, versionId: v.versionId });
   const receipt = await api.dispatchHuman({ action: 'publish', sessionId: 's1', reportId: d.reportId, ...plan, userInitiated: true });
   assert.equal(receipt.status, 'submitted');
   assert.equal(moves.length, 2);
-  assert.equal(moves[0].folderPath, `商品策略/有色/锡铝氧化铝锌/周报/${d.reportId}`);
-  assert.equal(moves[1].folderPath, `${moves[0].folderPath}/资产`);
-  assert.equal(moves[0].kb, 'kb1');
-  assert.equal(moves[0].ids.length, 1); // report body
-  assert.equal(moves[1].ids.length, 2); // PDF + image
-  assert.ok(receipt.warnings.some(w => w.includes('商品策略/有色/锡铝氧化铝锌/周报')));
+  // Flat per-commodity folder, no /周报/<reportId> nesting; assets go to its 资产 sub-folder.
+  assert.equal(moves[0].folderPath, '根目录/周报');
+  assert.equal(moves[1].folderPath, '根目录/周报/资产');
+  assert.ok(!moves.some(m => m.folderPath.includes('商品策略')));
+  assert.ok(receipt.warnings.some(w => w.includes('根目录/周报')));
 });
 
 test('unknown commodity uses unclassified report folder and surfaces a warning', async t => {
