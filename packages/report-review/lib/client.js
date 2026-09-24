@@ -121064,6 +121064,30 @@ function createHoldGate(flush) {
   };
 }
 
+// packages/report-review/src/ai-error.mjs
+var messageOf = (e6) => {
+  if (!e6) return "";
+  if (typeof e6 === "string") return e6;
+  if (typeof e6.message === "string" && e6.message) return e6.message;
+  return "";
+};
+function describeAiError(input, maxDepth = 4) {
+  let node2 = input && typeof input === "object" && "ok" in input && "error" in input ? input.error : input;
+  const seen = [];
+  for (let depth = 0; node2 && depth < maxDepth; depth++) {
+    const message = messageOf(node2);
+    if (message && !seen.includes(message)) seen.push(message);
+    const next = node2.cause;
+    if (next && typeof next === "object" && !messageOf(next)) {
+      const detail = Object.entries(next).filter(([, v]) => typeof v === "string" || typeof v === "number").map(([k6, v]) => `${k6}=${v}`).join(" ");
+      if (detail && !seen.includes(detail)) seen.push(detail);
+      break;
+    }
+    node2 = next;
+  }
+  return seen.join(" \u2190 ") || "\u672A\u77E5\u9519\u8BEF";
+}
+
 // packages/report-review/src/block-editor.jsx
 var import_jsx_runtime130 = require("react/jsx-runtime");
 var sourceBlock = Ai2({ type: "source", propSchema: { raw: { default: "" } }, content: "none" }, {
@@ -121203,7 +121227,16 @@ function BlockEditor({ value, onChange, readOnly: readOnly2, onSource, sessionId
     const store = session?.editor.getExtension(AIExtension)?.store;
     if (!store?.subscribe) return;
     gateRef.current.onAiState(store.state?.aiMenuState);
-    return store.subscribe(({ currentVal }) => gateRef.current.onAiState(currentVal?.aiMenuState));
+    return store.subscribe(({ currentVal }) => {
+      const menu = currentVal?.aiMenuState;
+      gateRef.current.onAiState(menu);
+      if (menu && menu !== "closed" && menu.status === "error") {
+        const message = describeAiError(menu.error);
+        setAiDiag((d) => ({ ...d || {}, error: message }));
+        clearTimeout(diagTimer.current);
+        diagTimer.current = setTimeout(() => setAiDiag(null), 15e3);
+      }
+    });
   }, [session]);
   (0, import_react168.useEffect)(() => {
     const unsub = chatRef.current["~registerStatusCallback"]?.((s4) => callbacks.current.onAiBusy?.(s4 === "submitted"));

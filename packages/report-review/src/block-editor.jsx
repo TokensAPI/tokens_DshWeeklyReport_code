@@ -15,6 +15,7 @@ import editorCss from './block-editor-styles.mjs';
 import { MarkdownPreview } from './preview.jsx';
 import { loadBlockMarkdown, saveBlockMarkdown, fingerprint } from './block-markdown.mjs';
 import { createHoldGate } from './ai-hold.mjs';
+import { describeAiError } from './ai-error.mjs';
 
 const sourceBlock = createReactBlockSpec({ type: 'source', propSchema: { raw: { default: '' } }, content: 'none' }, {
   render: ({ block }) => <div className="rr-preserved-block" contentEditable={false}><span className="rr-muted">此片段暂未开放可视化编辑 · 可切换 CodeMirror 修改</span><MarkdownPreview text={block.props.raw} /></div>
@@ -156,7 +157,19 @@ export function BlockEditor({ value, onChange, readOnly, onSource, sessionId, re
     const store = session?.editor.getExtension(AIExtension)?.store;
     if (!store?.subscribe) return;
     gateRef.current.onAiState(store.state?.aiMenuState);
-    return store.subscribe(({ currentVal }) => gateRef.current.onAiState(currentVal?.aiMenuState));
+    return store.subscribe(({ currentVal }) => {
+      const menu = currentVal?.aiMenuState;
+      gateRef.current.onAiState(menu);
+      // An operation the executor refused fails the whole edit, but the reason never reached the
+      // screen: it lives in a non-enumerable `message`, so the console object looks empty. Put it
+      // on the diag strip, which is where this project expects to be debugged from.
+      if (menu && menu !== 'closed' && menu.status === 'error') {
+        const message = describeAiError(menu.error);
+        setAiDiag(d => ({ ...(d || {}), error: message }));
+        clearTimeout(diagTimer.current);
+        diagTimer.current = setTimeout(() => setAiDiag(null), 15000);
+      }
+    });
   }, [session]);
   // Any AI edit (the "/" slash menu or a selection edit) drives the same persistent chat, so
   // reflect its running status on the parent so the workspace can block report switching
