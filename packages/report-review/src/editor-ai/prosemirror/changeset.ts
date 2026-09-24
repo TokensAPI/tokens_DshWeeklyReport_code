@@ -193,6 +193,26 @@ const createEncoder = (doc: Node, updatedDoc: Node) => {
  * @param updateToPos the position to end the update at (can be used for selections)
  * @returns the granular steps to apply to the editor to get to the updated doc
  */
+/**
+ * A single step that swaps a block for its updated self.
+ *
+ * Both ends of the slice sit on node boundaries, so `openStart` and `openEnd` are 0 — that is
+ * what lets this step travel through `getStepsAsAgent` / `applyAgentStep`, which reject any
+ * non-structure step carrying an open slice.
+ */
+function wholeBlockReplaceStep(id: string, doc: Node, updatedDoc: Node) {
+  const before = getNodeById(id, doc)!;
+  const after = getNodeById(id, updatedDoc)!;
+  return new ReplaceStep(
+    before.posBeforeNode,
+    before.posBeforeNode + before.node.nodeSize,
+    updatedDoc.slice(
+      after.posBeforeNode,
+      after.posBeforeNode + after.node.nodeSize,
+    ),
+  );
+}
+
 export function updateToReplaceSteps(
   op: {
     id: string;
@@ -308,9 +328,23 @@ export function updateToReplaceSteps(
     const replacement = updatedDoc.slice(step.fromB, step.toB);
 
     if (replacement.openEnd > 0 && replacement.size > 1) {
-      throw new Error(
-        "unexpected, openEnd > 0 and size > 1, this should have been split into two steps",
-      );
+      // The splitter above only ever peels one level of nesting: it requires `openStart === 0`,
+      // which stops holding the moment a level has been peeled off (the remainder then starts
+      // inside the node). A table is `table > row > cell > paragraph`, so its slices arrive with
+      // openEnd 2-3 and no amount of peeling expresses them. This used to throw, and because the
+      // throw escapes the whole executor it killed the entire edit — every attempt to have the
+      // AI fill in a table failed outright.
+      //
+      // Fall back to replacing the block in one whole-node step. That slice is closed at both
+      // ends, so the flat-slice contract the rest of the pipeline relies on (see agent.ts) still
+      // holds and suggestion marks are still tracked. The cost is that this block appears at
+      // once instead of typing itself in.
+      if (dontReplaceContentAtEnd) {
+        // Still streaming. Swapping the whole block on every partial chunk would flicker and
+        // would repeatedly publish a half-built table, so wait for the complete content.
+        return [];
+      }
+      return [wholeBlockReplaceStep(op.id, doc, updatedDoc)];
     }
 
     if (

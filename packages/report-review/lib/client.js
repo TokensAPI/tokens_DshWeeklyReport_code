@@ -104940,6 +104940,18 @@ var createEncoder = (doc4, updatedDoc) => {
   };
   return encoder;
 };
+function wholeBlockReplaceStep(id3, doc4, updatedDoc) {
+  const before = Zt(id3, doc4);
+  const after = Zt(id3, updatedDoc);
+  return new ReplaceStep(
+    before.posBeforeNode,
+    before.posBeforeNode + before.node.nodeSize,
+    updatedDoc.slice(
+      after.posBeforeNode,
+      after.posBeforeNode + after.node.nodeSize
+    )
+  );
+}
 function updateToReplaceSteps(op, doc4, dontReplaceContentAtEnd = false, updateFromPos, updateToPos) {
   const blockPos = Zt(op.id, doc4);
   const updatedTr = new Transform(doc4);
@@ -105016,9 +105028,10 @@ function updateToReplaceSteps(op, doc4, dontReplaceContentAtEnd = false, updateF
     const step = changes[i3];
     const replacement = updatedDoc.slice(step.fromB, step.toB);
     if (replacement.openEnd > 0 && replacement.size > 1) {
-      throw new Error(
-        "unexpected, openEnd > 0 and size > 1, this should have been split into two steps"
-      );
+      if (dontReplaceContentAtEnd) {
+        return [];
+      }
+      return [wholeBlockReplaceStep(op.id, doc4, updatedDoc)];
     }
     if (i3 === changes.length - 1 && dontReplaceContentAtEnd && step.type === "mark-update") {
       continue;
